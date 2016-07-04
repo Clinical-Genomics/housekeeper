@@ -1,0 +1,16 @@
+---
+'16074':
+  ADM1594A12:
+    Clinical_db:
+      - IEM
+    Family ID: '16074'
+    Individual ID: ADM1594A12
+    Maternal ID: '0'
+    Paternal ID: '0'
+    Phenotype: '2'
+    Sequencing_type:
+      - WGS
+    Sex: '1'
+    display_name:
+      - 16074-I-1A
+

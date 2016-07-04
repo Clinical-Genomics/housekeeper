@@ -1,0 +1,2 @@
+#Family ID	Individual ID	Paternal ID	Maternal ID	Sex	Phenotype	Clinical_db	display_name	Sequencing_type
+16074	ADM1594A12	0	0	1	2	IEM	16074-I-1A	WGS
