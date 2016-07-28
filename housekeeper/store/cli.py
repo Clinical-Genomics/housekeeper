@@ -2,7 +2,7 @@
 import click
 from path import path
 
-from housekeeper.store import Analysis, Metadata, get_manager
+from housekeeper.store import Analysis, Metadata, get_manager, Asset, Sample
 
 
 def delete_analysis(manager, name):
@@ -29,6 +29,18 @@ def archive_analysis(manager, name):
     manager.commit()
 
 
+def get_assets(analysis, sample, category):
+    """Get files from the database."""
+    query = Asset.query
+    if analysis:
+        query = query.join(Asset.analysis).filter(Analysis.name == analysis)
+    if sample:
+        query = query.join(Asset.sample).filter(Sample.name == sample)
+    if category:
+        query = query.filter(Asset.category == category)
+    return query
+
+
 @click.command()
 @click.argument('name')
 @click.pass_context
@@ -46,3 +58,17 @@ def delete(context, name):
     """Delete an analysis and files."""
     manager = get_manager(context.obj['database'])
     delete_analysis(manager, name)
+
+
+@click.command()
+@click.option('-a', '--analysis')
+@click.option('-s', '--sample')
+@click.option('-c', '--category')
+@click.pass_context
+def get(context, analysis, sample, category):
+    """Ask Housekeeper for a file."""
+    get_manager(context.obj['database'])
+    assets = get_assets(analysis, sample, category)
+    paths = [asset.path for asset in assets]
+    output = ' '.join(paths)
+    click.echo(output, nl=False)

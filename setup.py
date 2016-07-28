@@ -116,6 +116,7 @@ setup(
             'init = housekeeper.initiate:init',
             'delete = housekeeper.store.cli:delete',
             'archive = housekeeper.store.cli:archive',
+            'get = housekeeper.store.cli:get',
         ],
     },
 
