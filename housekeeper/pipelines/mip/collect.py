@@ -39,14 +39,18 @@ def analysis(config_path):
     bcf_raw = family['BCFFile']['Path']
     bcf_clinical = family['BCFFile']['Clinical']['Path']
     bcf_research = family['BCFFile']['Research']['Path']
+    vcf_clinical = family['VCFFile']['Clinical']['Path']
+    vcf_research = family['VCFFile']['Clinical']['Path']
     qc_metrics = family['Program']['QCCollect']['QCCollectMetricsFile']['Path']
     log_file = family['lastLogFilePath']
 
     assets = [
         general_asset(ped, 'pedigree'),
-        general_asset(bcf_raw, 'vcf-raw', for_archive=True),
-        general_asset(bcf_clinical, 'vcf-clinical', for_archive=True),
-        general_asset(bcf_research, 'vcf-research', for_archive=True),
+        general_asset(bcf_raw, 'bcf-raw', for_archive=True),
+        general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
+        general_asset(bcf_research, 'bcf-research', for_archive=True),
+        general_asset(vcf_clinical, 'vcf-clinical'),
+        general_asset(vcf_research, 'vcf-research'),
         general_asset(log_file, 'log', for_archive=True),
     ]
 
