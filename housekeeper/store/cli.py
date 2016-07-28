@@ -14,6 +14,30 @@ def delete_analysis(manager, name):
     manager.commit()
 
 
+def archive_analysis(manager, name):
+    """Archive an analysis."""
+    analysis_obj = Analysis.query.filter_by(name=name).one()
+
+    # remove all files that aren't marked for archive
+    for asset in analysis_obj.assets:
+        if not asset.to_archive:
+            path(asset.path).remove()
+            asset.delete()
+
+    # marked the case as "archived"
+    analysis_obj.status = 'archived'
+    manager.commit()
+
+
+@click.command()
+@click.argument('name')
+@click.pass_context
+def archive(context, name):
+    """Delete an analysis and files."""
+    manager = get_manager(context.obj['database'])
+    archive_analysis(manager, name)
+
+
 @click.command()
 @click.argument('name')
 @click.pass_context

@@ -115,6 +115,7 @@ setup(
             'add = housekeeper.pipelines.cli:add',
             'init = housekeeper.initiate:init',
             'delete = housekeeper.store.cli:delete',
+            'archive = housekeeper.store.cli:archive',
         ],
     },
 
