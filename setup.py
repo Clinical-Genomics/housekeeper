@@ -117,6 +117,7 @@ setup(
             'delete = housekeeper.store.cli:delete',
             'archive = housekeeper.store.cli:archive',
             'get = housekeeper.store.cli:get',
+            'list = housekeeper.store.cli:list_cmd',
         ],
     },
 

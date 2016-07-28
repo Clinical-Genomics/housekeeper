@@ -14,7 +14,7 @@ MULTIQC_SAMTOOLS = 'multiqc/multiqc_data/multiqc_samtools.txt'
 log = logging.getLogger(__name__)
 
 
-def analysis(config_path):
+def analysis(config_path, analysis_id=None):
     """Prepare info for a MIP analysis."""
     with open(config_path, 'r') as stream:
         config = yaml.load(stream)

@@ -73,3 +73,20 @@ def get(context, analysis, sample, category):
     paths = [asset.path for asset in assets]
     output = ' '.join(paths)
     click.echo(output, nl=False)
+
+
+@click.command('list')
+@click.option('-c', '--compressed', is_flag=True)
+@click.option('-l', '--limit', default=10)
+@click.argument('analysis_id', required=False)
+@click.pass_context
+def list_cmd(context, analysis_id, compressed, limit):
+    """List added analyses."""
+    get_manager(context.obj['database'])
+    query = Analysis.query.order_by(Analysis.analyzed_at)
+
+    if analysis_id:
+        query = query.filter(Analysis.name.contains(analysis_id))
+
+    for analysis in query.limit(limit):
+        click.echo(analysis.to_json(pretty=not compressed))

@@ -3,7 +3,7 @@ from datetime import datetime
 import json
 
 import alchy
-import bson
+from bson import json_util
 from path import path
 from sqlalchemy import Column, ForeignKey, orm, types
 
@@ -15,8 +15,7 @@ class JsonModel(alchy.ModelBase):
     def to_json(self, pretty=False):
         """Serialize Model to JSON."""
         kwargs = dict(indent=4, sort_keys=True) if pretty else dict()
-        return json.dumps(self.to_dict(), default=bson.json_util.default,
-                          **kwargs)
+        return json.dumps(self.to_dict(), default=json_util.default, **kwargs)
 
 
 Model = alchy.make_declarative_base(Base=JsonModel)
