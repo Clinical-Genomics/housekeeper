@@ -4,7 +4,6 @@ import logging
 import os
 import pkg_resources
 
-from alchy import Manager
 import click
 import yaml
 
@@ -15,14 +14,10 @@ class EntryPointsCLI(click.MultiCommand):
 
     """Add subcommands dynamically to a CLI via entry points."""
 
-    def __init__(self, entry_point, *args, **kwargs):
-        super(EntryPointsCLI, self).__init__(*args, **kwargs)
-        self.entry_point = entry_point
-
     def _iter_commands(self):
         """Iterate over all subcommands as defined by the entry point."""
         return {entry_point.name: entry_point for entry_point in
-                pkg_resources.iter_entry_points(self.entry_point)}
+                pkg_resources.iter_entry_points('housekeeper.subcommands.1')}
 
     def list_commands(self, ctx):
         """List the available commands."""
@@ -47,12 +42,10 @@ def build_cli(title, Model):
                   type=click.Path(), help='path to config file')
     @click.option('-d', '--database', help='path/URI of the SQL database')
     @click.option('-l', '--log-level', default='INFO')
-    @click.option('-r', '--reset', is_flag=True,
-                  help='reset database from scratch')
     @click.option('--log-file', type=click.Path())
     @click.version_option(version, prog_name=title)
     @click.pass_context
-    def root(context, config, database, reset, log_level, log_file):
+    def root(context, config, database, log_level, log_file):
         """Interact with CLI."""
         log.info("{}: version {}".format(title, version))
 
@@ -63,15 +56,7 @@ def build_cli(title, Model):
         else:
             context.obj = {}
 
-        if context.invoked_subcommand != 'serve':
-            # setup database
-            uri = database or context.obj.get('database') or 'sqlite://'
-            if '://' not in uri:
-                # guess it's a path to SQLite database
-                uri = "sqlite:///{}".format(uri)
-            config = dict(SQLALCHEMY_DATABASE_URI=uri)
-            context.obj['db'] = Manager(config=config, Model=Model)
+        if database:
+            context.obj['database'] = database
 
-            if reset:
-                context.obj['db'].drop_all()
-            context.obj['db'].create_all()
+    return root

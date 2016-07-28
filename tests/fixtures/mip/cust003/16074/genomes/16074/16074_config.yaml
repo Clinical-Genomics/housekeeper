@@ -56,7 +56,7 @@ GATKVariantReCalibrationexcludeNonVariantsFile: '0'
 GenomeCoverageBEDMaxCoverage: '30'
 MIP: 1
 QCCollectRegExpFile: qc_regExp_v1.11.yaml
-QCCollectSampleInfoFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/genomes/16074/16074_qc_sampleInfo.yaml
+QCCollectSampleInfoFile: tests/fixtures/mip/cust003/16074/genomes/16074/16074_qc_sampleInfo.yaml
 VTDecompose: '1'
 VTNormalize: '1'
 VTgenmodFilter: '1'
@@ -70,7 +70,7 @@ analysisConstantPath: analysis
 analysisType: genomes
 annovarGenomeBuildVersion: hg19
 annovarMAFThreshold: '0'
-annovarPath: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/modules/annovar
+annovarPath: tests/fixtures/mip/cust003/16074/modules/annovar
 bwaBuildReference: Homo_sapiens.GRCh37.d5.fasta
 bwaMemCram: '1'
 bwaMemHLA: '1'
@@ -94,17 +94,17 @@ genomeAnalysisToolKitPath: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/GenomeAnal
 genomicSet: noUserInfo
 humanGenomeReference: Homo_sapiens.GRCh37.d5.fasta
 inFilesDirs:
-  - /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/genomes/ADM1594A12/fastq
+  - tests/fixtures/mip/cust003/16074/genomes/ADM1594A12/fastq
 inScriptDir: /mnt/hds/proj/bioinfo/develop/modules/MIP
 instanceTag:
   - cust003
 javaUseLargePages: yes
-logFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/mip_log/2016-06-27/mip.pl_2016-06-27T15:06:51.log
+logFile: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/mip_log/2016-06-27/mip.pl_2016-06-27T15:06:51.log
 maximumCores: '16'
 mosaikBuildMedianFragLength: '375'
 nodeRamMemory: '128'
-outDataDir: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes
-outScriptDir: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/genomes_scripts
+outDataDir: tests/fixtures/mip/cust003/16074/analysis/genomes
+outScriptDir: tests/fixtures/mip/cust003/16074/genomes_scripts
 pAnalysisRunStatus: '1'
 pAnnovar: 0
 pBAMCalibrationBlock: '0'
@@ -159,7 +159,7 @@ pVCFParser: 1
 pVT: 1
 pVariantAnnotationBlock: '0'
 pVariantEffectPredictor: 1
-pedigreeFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/genomes/16074/16074_pedigree.txt
+pedigreeFile: tests/fixtures/mip/cust003/16074/genomes/16074/16074_pedigree.txt
 picardToolsPath: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip3.0/bin
 platForm: ILLUMINA
 printProgramMode: '2'
@@ -183,7 +183,7 @@ sambambaDepthNoDuplicates: '1'
 sambambaDepthNoFailedQualityControl: '1'
 sampleIDs:
   - ADM1594A12
-sampleInfoFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/genomes/16074/16074_qc_sampleInfo.yaml
+sampleInfoFile: tests/fixtures/mip/cust003/16074/genomes/16074/16074_qc_sampleInfo.yaml
 snpEffAnn: '1'
 snpEffGenomeBuildVersion: GRCh37.75
 snpEffPath: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip3.0/bin
@@ -326,5 +326,5 @@ vepPlugins:
   - LoF
 vepReference: '0'
 wholeGene: '1'
-writeConfigFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/genomes/16074/16074_config.yaml
+writeConfigFile: tests/fixtures/mip/cust003/16074/genomes/16074/16074_config.yaml
 

@@ -6,10 +6,10 @@
     AnalysisType: genomes
     BCFFile:
       Clinical:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.bcf
-      Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_BOTH.bcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.bcf
+      Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_BOTH.bcf
       Research:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.bcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.bcf
     HumanGenomeBuild:
       Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references_3.0/Homo_sapiens.GRCh37.d5.fasta
       Source: GRCh
@@ -18,110 +18,110 @@
       - cust003
     MIPVersion: v3.0.4
     PedigreeFile:
-      Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/genomes/16074/16074_pedigree.txt
+      Path: tests/fixtures/mip/cust003/16074/genomes/16074/16074_pedigree.txt
     PedigreeFileAnalysis:
-      Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/qc_pedigree.yaml
+      Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/qc_pedigree.yaml
     Program:
       Bcftools:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/freebayes
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/freebayes
         OutFile: 16074_sorted_md_rreal_brecal_freebayes_BOTH.vcf
       Freebayes:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/freebayes
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/freebayes
         OutFile: 16074_sorted_md_rreal_brecal_freebayes_BOTH.vcf
       GATK:
         Version: '3.6'
       Genmod:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf
       InbreedingFactor:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/samplecheck
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/samplecheck
         OutFile: 16074.het
       Manta:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/manta
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/manta
         OutFile: 16074_sorted_md_rreal_brecal_manta_SV.vcf
       PedigreeCheck:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_gvcf_vrecal_BOTH.vcf
       PicardTools:
         Version: 2.3.0(9a00c87b7ffdb01cfb5a0d6e76556146196babb8_1463071327)
       QCCollect:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074
         OutFile: 16074_qcmetrics.yaml
         QCCollectMetricsFile:
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/16074_qcmetrics.yaml
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/16074_qcmetrics.yaml
       RankVariants:
         Clinical:
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf
         RankModel:
           File: rank_model_cmms_v1.16.ini
           Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references_3.0/rank_model_cmms_v1.16.ini
           Version: '1.16'
         Research:
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.vcf
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.vcf
       SVCombineVariantCallSets:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/info/
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/info/
         OutFile: SVCombineVariantCallSets_16074_SV.0.stderr.txt
       SVGenmod:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.selected.vcf
       SVRankVariants:
         Clinical:
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.selected.vcf
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.selected.vcf
         RankModel:
           File: svrank_model_cmms_v1.0.ini
           Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references_3.0/svrank_model_cmms_v1.0.ini
           Version: '1.0'
         Research:
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.vcf
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.vcf
       SVVCFParser:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_comb_vep_parsed_SV_1.vcf
       SVVariantEffectPredictor:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_comb_vep_SV_1.vcf
       SVVariantEffectPredictorSummary:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_comb_vep_SV_1.vcf_summary.html
       Sambamba:
         Version: 0.6.1
       Samtools:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/samtools
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/samtools
         OutFile: 16074_sorted_md_rreal_brecal_mpileup_BOTH.vcf
       SexCheck:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/samplecheck
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/samplecheck
         OutFile: 16074.sexcheck
       SnpEff:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_BOTH_1.selected.vcf
       VCFParser:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_BOTH_1.vcf
       VariantAnnotationBlock:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/info/
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/info/
         OutFile: VariantAnnotationBlock_16074.0.stderr.txt
       VariantEffectPredictor:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_BOTH_1.vcf
       VariantEffectPredictorSummary:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk
         OutFile: 16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_BOTH_1.vcf_summary.html
       vt:
-        OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/info/
+        OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/info/
         OutFile: VariantAnnotationBlock_16074.0.stderr.txt
     ResearchEthicalApproval: notApproved
     SVBCFFile:
       Clinical:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.selected.bcf
-      Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_SV.bcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.selected.bcf
+      Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_SV.bcf
       Research:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.bcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.bcf
     SVVCFFile:
       Clinical:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.selected.vcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.selected.vcf
       ReadyVcf:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_SV.vcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_SV.vcf
       Research:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.vcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_comb_vep_parsed_ranked_SV.vcf
     SVVCFParser:
       RangeFile:
         Database:
@@ -215,11 +215,11 @@
         Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references_3.0/cust000-Clinical_master_list.txt
     VCFFile:
       Clinical:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf
       ReadyVcf:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_BOTH.vcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_BOTH.vcf
       Research:
-        Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.vcf
+        Path: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/bwa/gatk/16074_sorted_md_rreal_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.vcf
     VCFParser:
       RangeFile:
         Database:
@@ -311,12 +311,12 @@
             GenomeBuild: 'GRCh37.p13																											'
             Version: '8.0'
         Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references_3.0/cust000-Clinical_master_list.txt
-    lastLogFilePath: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/mip_log/2016-06-27/mip.pl_2016-06-27T15:06:51.log
-    logFileDir: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/16074/mip_log
+    lastLogFilePath: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/mip_log/2016-06-27/mip.pl_2016-06-27T15:06:51.log
+    logFileDir: tests/fixtures/mip/cust003/16074/analysis/genomes/16074/mip_log
   ADM1594A12:
     File:
       ADM1594A12.160623_HNCLTCCXX-11-Undetermined_CTGAAGCT.lane7:
-        CramFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-11-Undetermined_CTGAAGCT.lane7_sorted.cram
+        CramFile: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-11-Undetermined_CTGAAGCT.lane7_sorted.cram
         ReadDirectionFile:
           ADM1594A12.160623_HNCLTCCXX-11-Undetermined_CTGAAGCT.lane7_1:
             Date: 2016-06-23
@@ -339,7 +339,7 @@
         SequenceLength: '151'
         SequenceRunType: Paired-end
       ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7:
-        CramFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7_sorted.cram
+        CramFile: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7_sorted.cram
         ReadDirectionFile:
           ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7_1:
             Date: 2016-06-23
@@ -362,7 +362,7 @@
         SequenceLength: '151'
         SequenceRunType: Paired-end
       ADM1594A12.160623_HNCLTCCXX-21-Undetermined_CTGAAGCT.lane7:
-        CramFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-21-Undetermined_CTGAAGCT.lane7_sorted.cram
+        CramFile: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-21-Undetermined_CTGAAGCT.lane7_sorted.cram
         ReadDirectionFile:
           ADM1594A12.160623_HNCLTCCXX-21-Undetermined_CTGAAGCT.lane7_1:
             Date: 2016-06-23
@@ -385,7 +385,7 @@
         SequenceLength: '151'
         SequenceRunType: Paired-end
       ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7:
-        CramFile: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7_sorted.cram
+        CramFile: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7_sorted.cram
         ReadDirectionFile:
           ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7_1:
             Date: 2016-06-23
@@ -408,85 +408,85 @@
         SequenceLength: '151'
         SequenceRunType: Paired-end
     MostCompleteBAM:
-      Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/gatk/ADM1594A12_lanes_7777_sorted_md_rreal_brecal.bam
+      Path: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/gatk/ADM1594A12_lanes_7777_sorted_md_rreal_brecal.bam
     Phenotype: '2'
     Program:
       BamStats:
         ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa
           OutFile: ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7_sorted.stats
         ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa
           OutFile: ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7_sorted.stats
       Bwa:
         ADM1594A12.160623_HNCLTCCXX-11-Undetermined_CTGAAGCT.lane7:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/info/
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/info/
           OutFile: BwaMem_ADM1594A12.0.stderr.txt
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-11-Undetermined_CTGAAGCT.lane7_sorted.cram
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-11-Undetermined_CTGAAGCT.lane7_sorted.cram
         ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/info/
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/info/
           OutFile: BwaMem_ADM1594A12.1.stderr.txt
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7_sorted.cram
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-11_CTGAAGCT.lane7_sorted.cram
         ADM1594A12.160623_HNCLTCCXX-21-Undetermined_CTGAAGCT.lane7:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/info/
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/info/
           OutFile: BwaMem_ADM1594A12.2.stderr.txt
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-21-Undetermined_CTGAAGCT.lane7_sorted.cram
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-21-Undetermined_CTGAAGCT.lane7_sorted.cram
         ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/info/
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/info/
           OutFile: BwaMem_ADM1594A12.3.stderr.txt
-          Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7_sorted.cram
+          Path: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/ADM1594A12.160623_HNCLTCCXX-21_CTGAAGCT.lane7_sorted.cram
       CalculateHsMetrics:
         ADM1594A12_lanes_7777:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport
           OutFile: ADM1594A12_lanes_7777_sorted_md_rreal_brecal_CalculateHsMetrics
       Chanjo:
         ADM1594A12_lanes_7777:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport
           OutFile: ADM1594A12_lanes_7777_sorted_md_rreal_brecal_chanjoSexCheck.log
       ChanjoSexCheck:
         ADM1594A12_lanes_7777:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport
           OutFile: ADM1594A12_lanes_7777_sorted_md_rreal_brecal.sexcheck
       CollectMultipleMetrics:
         ADM1594A12_lanes_7777:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport
           OutFile: ADM1594A12_lanes_7777_sorted_md_rreal_brecal.alignment_summary_metrics
       FastQC:
         7_160623_HNCLTCCXX-11-Undetermined_ADM1594A12_CTGAAGCT_1.fastq.gz:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-11-Undetermined_ADM1594A12_CTGAAGCT_1_fastqc
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-11-Undetermined_ADM1594A12_CTGAAGCT_1_fastqc
           OutFile: fastqc_data.txt
         7_160623_HNCLTCCXX-11-Undetermined_ADM1594A12_CTGAAGCT_2.fastq.gz:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-11-Undetermined_ADM1594A12_CTGAAGCT_2_fastqc
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-11-Undetermined_ADM1594A12_CTGAAGCT_2_fastqc
           OutFile: fastqc_data.txt
         7_160623_HNCLTCCXX-11_ADM1594A12_CTGAAGCT_1.fastq.gz:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-11_ADM1594A12_CTGAAGCT_1_fastqc
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-11_ADM1594A12_CTGAAGCT_1_fastqc
           OutFile: fastqc_data.txt
         7_160623_HNCLTCCXX-11_ADM1594A12_CTGAAGCT_2.fastq.gz:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-11_ADM1594A12_CTGAAGCT_2_fastqc
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-11_ADM1594A12_CTGAAGCT_2_fastqc
           OutFile: fastqc_data.txt
         7_160623_HNCLTCCXX-21-Undetermined_ADM1594A12_CTGAAGCT_1.fastq.gz:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-21-Undetermined_ADM1594A12_CTGAAGCT_1_fastqc
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-21-Undetermined_ADM1594A12_CTGAAGCT_1_fastqc
           OutFile: fastqc_data.txt
         7_160623_HNCLTCCXX-21-Undetermined_ADM1594A12_CTGAAGCT_2.fastq.gz:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-21-Undetermined_ADM1594A12_CTGAAGCT_2_fastqc
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-21-Undetermined_ADM1594A12_CTGAAGCT_2_fastqc
           OutFile: fastqc_data.txt
         7_160623_HNCLTCCXX-21_ADM1594A12_CTGAAGCT_1.fastq.gz:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-21_ADM1594A12_CTGAAGCT_1_fastqc
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-21_ADM1594A12_CTGAAGCT_1_fastqc
           OutFile: fastqc_data.txt
         7_160623_HNCLTCCXX-21_ADM1594A12_CTGAAGCT_2.fastq.gz:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-21_ADM1594A12_CTGAAGCT_2_fastqc
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/fastqc/7_160623_HNCLTCCXX-21_ADM1594A12_CTGAAGCT_2_fastqc
           OutFile: fastqc_data.txt
       SambambaDepth:
         ADM1594A12_lanes_7777:
           Bed:
-            Path: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport/ADM1594A12_lanes_7777_sorted_md_rreal_brecal_coverage.bed
+            Path: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/coveragereport/ADM1594A12_lanes_7777_sorted_md_rreal_brecal_coverage.bed
       VariantEval_All:
         ADM1594A12_lanes_7777:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/gatk/varianteval
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/gatk/varianteval
           OutFile: ADM1594A12_lanes_7777_sorted_md_rreal_brecal_gvcf_vrecal_comb_BOTH.vcf.varianteval
       VariantEval_Exome:
         ADM1594A12_lanes_7777:
-          OutDirectory: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust003/16074/analysis/genomes/ADM1594A12/bwa/gatk/varianteval
+          OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/gatk/varianteval
           OutFile: ADM1594A12_lanes_7777_sorted_md_rreal_brecal_gvcf_vrecal_comb_BOTH_exome.vcf.varianteval
     Sex: 1
 

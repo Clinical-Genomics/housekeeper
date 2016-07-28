@@ -111,6 +111,11 @@ setup(
         'console_scripts': [
             'housekeeper = housekeeper.cli:root',
         ],
+        'housekeeper.subcommands.1': [
+            'add = housekeeper.pipelines.cli:add',
+            'init = housekeeper.initiate:init',
+            'delete = housekeeper.store.cli:delete',
+        ],
     },
 
     # See: http://pypi.python.org/pypi?%3Aaction=list_classifiers
