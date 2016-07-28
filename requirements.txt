@@ -1,3 +1,5 @@
 alchy
 bson==0.4.3
 Click
+path.py
+pyyaml
