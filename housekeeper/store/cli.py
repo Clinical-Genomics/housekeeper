@@ -57,7 +57,8 @@ def archive(context, name):
 def delete(context, name):
     """Delete an analysis and files."""
     manager = get_manager(context.obj['database'])
-    delete_analysis(manager, name)
+    if click.confirm('Are you sure?'):
+        delete_analysis(manager, name)
 
 
 @click.command()
