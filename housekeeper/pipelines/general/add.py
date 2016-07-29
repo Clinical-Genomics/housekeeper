@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from path import path
 import hashlib
 
 from housekeeper.store import Analysis, Sample, Asset
@@ -19,10 +20,11 @@ def analysis(name, pipeline, version, analyzed_at, samples=None):
     return new_analysis
 
 
-def asset(path, category, for_archive=False):
+def asset(asset_path, category, for_archive=False):
     """Store an analysis file."""
-    sha1 = checksum(path)
-    new_asset = Asset(original_path=path, checksum=sha1, category=category,
+    abs_path = path(asset_path).abspath()
+    sha1 = checksum(abs_path)
+    new_asset = Asset(original_path=abs_path, checksum=sha1, category=category,
                       to_archive=for_archive)
     return new_asset
 

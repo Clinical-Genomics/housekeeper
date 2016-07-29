@@ -40,7 +40,7 @@ def analysis(config_path, analysis_id=None):
     bcf_clinical = family['BCFFile']['Clinical']['Path']
     bcf_research = family['BCFFile']['Research']['Path']
     vcf_clinical = family['VCFFile']['Clinical']['Path']
-    vcf_research = family['VCFFile']['Clinical']['Path']
+    vcf_research = family['VCFFile']['Research']['Path']
     qc_metrics = family['Program']['QCCollect']['QCCollectMetricsFile']['Path']
     log_file = family['lastLogFilePath']
 

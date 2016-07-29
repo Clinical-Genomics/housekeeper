@@ -7,6 +7,8 @@ import pkg_resources
 import click
 import yaml
 
+from .log import init_log
+
 log = logging.getLogger(__name__)
 
 
@@ -47,6 +49,7 @@ def build_cli(title, Model):
     @click.pass_context
     def root(context, config, database, log_level, log_file):
         """Interact with CLI."""
+        init_log(logging.getLogger(), loglevel=log_level, filename=log_file)
         log.info("{}: version {}".format(title, version))
 
         # read in config file if it exists
