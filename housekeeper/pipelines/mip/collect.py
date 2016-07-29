@@ -87,15 +87,17 @@ def analysis(config_path, analysis_id=None):
     for sample_id in sample_ids:
         out_root = path(config['outDataDir'])
         multiqc_path = out_root.joinpath(sample_id, MULTIQC_SAMTOOLS)
-        mapped_reads = total_mapped(multiqc_path)
-        qc_samples[sample_id] = mapped_reads
+        mapped_data = total_mapped(multiqc_path)
+        qc_samples[sample_id] = mapped_data
 
     with open(qc_metrics, 'r') as stream:
         qc_data = yaml.load(stream)
         qc_rootkey = qc_data.keys()[0]
 
-    for sample_id, mapped_reads in qc_samples.items():
-        qc_data[qc_rootkey][sample_id]['MappedReads'] = mapped_reads
+    for sample_id, mapped_data in qc_samples.items():
+        qc_data[qc_rootkey][sample_id]['MappedReads'] = mapped_data['mapped']
+        qc_data[qc_rootkey][sample_id]['TotalReads'] = mapped_data['total']
+        qc_data[qc_rootkey][sample_id]['MappedRate'] = mapped_data['percentage']
 
     log.info('create updated qc metrics')
     new_qcmetrics = path(qc_metrics.replace('.yaml', '.mod.yaml'))
@@ -118,4 +120,8 @@ def total_mapped(multiqc_path):
         for row in data:
             total += float(row['raw total sequences'])
             mapped += float(row['reads mapped'])
-    return mapped / total
+    return {
+        'mapped': mapped,
+        'total': total,
+        'percentage': mapped / total
+    }
