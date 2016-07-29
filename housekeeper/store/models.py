@@ -3,11 +3,18 @@ from datetime import datetime
 import json
 
 import alchy
-from bson import json_util
 from path import path
 from sqlalchemy import Column, ForeignKey, orm, types
 
 from housekeeper.constants import PIPELINES
+
+
+def json_serial(obj):
+    """JSON serializer for objects not serializable by default json code"""
+    if isinstance(obj, datetime):
+        serial = obj.isoformat()
+        return serial
+    raise TypeError('Type not serializable')
 
 
 class JsonModel(alchy.ModelBase):
@@ -15,7 +22,7 @@ class JsonModel(alchy.ModelBase):
     def to_json(self, pretty=False):
         """Serialize Model to JSON."""
         kwargs = dict(indent=4, sort_keys=True) if pretty else dict()
-        return json.dumps(self.to_dict(), default=json_util.default, **kwargs)
+        return json.dumps(self.to_dict(), default=json_serial, **kwargs)
 
 
 Model = alchy.make_declarative_base(Base=JsonModel)
