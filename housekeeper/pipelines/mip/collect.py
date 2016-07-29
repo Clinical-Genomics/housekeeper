@@ -2,6 +2,7 @@
 from __future__ import division
 import csv
 import logging
+import re
 
 from path import path
 import yaml
@@ -90,6 +91,10 @@ def analysis(config_path, analysis_id=None):
         mapped_data = total_mapped(multiqc_path)
         qc_samples[sample_id] = mapped_data
 
+        # duplicates
+        duplicates = get_duplicates(out_root, sample_id)
+        qc_samples[sample_id]['duplicates'] = duplicates
+
     with open(qc_metrics, 'r') as stream:
         qc_data = yaml.load(stream)
         qc_rootkey = qc_data.keys()[0]
@@ -98,6 +103,7 @@ def analysis(config_path, analysis_id=None):
         qc_data[qc_rootkey][sample_id]['MappedReads'] = mapped_data['mapped']
         qc_data[qc_rootkey][sample_id]['TotalReads'] = mapped_data['total']
         qc_data[qc_rootkey][sample_id]['MappedRate'] = mapped_data['percentage']
+        qc_data[qc_rootkey][sample_id]['Duplicates'] = mapped_data['duplicates']
 
     log.info('create updated qc metrics')
     new_qcmetrics = path(qc_metrics.replace('.yaml', '.mod.yaml'))
@@ -125,3 +131,14 @@ def total_mapped(multiqc_path):
         'total': total,
         'percentage': mapped / total
     }
+
+
+def get_duplicates(out_root, sample_id):
+    """Parse out the duplicate rate."""
+    files = out_root.glob("{0}/bwa/{0}_lanes_*_sorted_md_metric"
+                          .format(sample_id))
+    if len(files) == 1:
+        with open(files[0], 'r') as stream:
+            content = stream.read()
+        dups = float(re.search('Fraction Duplicates: (.*)', content).groups()[0])
+    return dups
