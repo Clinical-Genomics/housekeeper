@@ -88,5 +88,8 @@ def list_cmd(context, analysis_id, compressed, limit):
     if analysis_id:
         query = query.filter(Analysis.name.contains(analysis_id))
 
-    for analysis in query.limit(limit):
-        click.echo(analysis.to_json(pretty=not compressed))
+    if query.first() is None:
+        click.echo('No analyses found.')
+    else:
+        for analysis in query.limit(limit):
+            click.echo(analysis.to_json(pretty=not compressed))

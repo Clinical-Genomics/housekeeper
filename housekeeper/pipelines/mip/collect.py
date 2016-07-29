@@ -67,7 +67,7 @@ def analysis(config_path, analysis_id=None):
         new_samples[sample_id].assets.append(coverage_asset)
 
         complete_bam = sample['MostCompleteBAM']['Path']
-        log.info("adding asset: %s", complete_bam)
+        log.info("adding asset: %s", path(complete_bam).basename())
         bam_asset = general_asset(complete_bam, 'bam')
         bai_asset = general_asset("{}.bai".format(complete_bam), 'bai')
         assets.append(bam_asset)
@@ -77,7 +77,7 @@ def analysis(config_path, analysis_id=None):
 
         for input_file in sample['File'].values():
             cram = input_file['CramFile']
-            log.info("adding asset: %s", cram)
+            log.info("adding asset: %s", path(cram).basename())
             cram_asset = general_asset(cram, 'cram', for_archive=True)
             assets.append(cram_asset)
             new_samples[sample_id].assets.append(cram_asset)
