@@ -1,4 +1,4 @@
-# Housekeeper
+# Housekeeper [![PyPI version][fury-image]][fury-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![bioconda-badge][bioconda-img]][bioconda-url]
 
 Housekeeper is a tool to be used to keep track of **successful** analyses. It will keep track of various output files and metadata. It also provides archival functions. It's pipeline agnostic as far as possible.
 
@@ -115,3 +115,10 @@ root/
         ├── alignment.sample_2.cram
         └── variants.vcf
 ```
+
+
+[travis-url]: https://travis-ci.org/robinandeer/housekeeper
+[travis-image]: https://img.shields.io/travis/robinandeer/housekeeper.svg?style=flat-square
+
+[coveralls-url]: https://coveralls.io/r/robinandeer/housekeeper
+[coveralls-image]: https://img.shields.io/coveralls/robinandeer/housekeeper.svg?style=flat-square
