@@ -46,6 +46,8 @@ def analysis(config_path, analysis_id=None):
 
     assets = [
         general_asset(ped, 'pedigree'),
+        general_asset(sampleinfo_path, 'sampleinfo', for_archive=True),
+        general_asset(config_path, 'config', for_archive=True),
         general_asset(bcf_raw, 'bcf-raw', for_archive=True),
         general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
         general_asset(bcf_research, 'bcf-research', for_archive=True),
@@ -65,6 +67,7 @@ def analysis(config_path, analysis_id=None):
         new_samples[sample_id].assets.append(coverage_asset)
 
         complete_bam = sample['MostCompleteBAM']['Path']
+        log.info("adding asset: %s", complete_bam)
         bam_asset = general_asset(complete_bam, 'bam')
         bai_asset = general_asset("{}.bai".format(complete_bam), 'bai')
         assets.append(bam_asset)
@@ -74,6 +77,7 @@ def analysis(config_path, analysis_id=None):
 
         for input_file in sample['File'].values():
             cram = input_file['CramFile']
+            log.info("adding asset: %s", cram)
             cram_asset = general_asset(cram, 'cram', for_archive=True)
             assets.append(cram_asset)
             new_samples[sample_id].assets.append(cram_asset)
