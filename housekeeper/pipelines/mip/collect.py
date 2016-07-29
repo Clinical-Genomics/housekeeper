@@ -37,6 +37,7 @@ def analysis(config_path, analysis_id=None):
     new_samples = {sample.name: sample for sample in new_analysis.samples}
 
     ped = family['PedigreeFile']['Path']
+    qcped = family['PedigreeFileAnalysis']['Path']
     bcf_raw = family['BCFFile']['Path']
     bcf_clinical = family['BCFFile']['Clinical']['Path']
     bcf_research = family['BCFFile']['Research']['Path']
@@ -47,6 +48,7 @@ def analysis(config_path, analysis_id=None):
 
     assets = [
         general_asset(ped, 'pedigree'),
+        general_asset(qcped, 'qcpedigree'),
         general_asset(sampleinfo_path, 'sampleinfo', for_archive=True),
         general_asset(config_path, 'config', for_archive=True),
         general_asset(bcf_raw, 'bcf-raw', for_archive=True),
