@@ -1,4 +1,4 @@
-# Housekeeper [![PyPI version][fury-image]][fury-url] [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url] [![bioconda-badge][bioconda-img]][bioconda-url]
+# Housekeeper [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
 Housekeeper is a tool to be used to keep track of **successful** analyses. It will keep track of various output files and metadata. It also provides archival functions. It's pipeline agnostic as far as possible.
 
