@@ -117,8 +117,8 @@ root/
 ```
 
 
-[travis-url]: https://travis-ci.org/robinandeer/housekeeper
-[travis-image]: https://img.shields.io/travis/robinandeer/housekeeper.svg?style=flat-square
+[travis-url]: https://travis-ci.org/Clinical-Genomics/housekeeper
+[travis-image]: https://img.shields.io/travis/Clinical-Genomics/housekeeper.svg?style=flat-square
 
-[coveralls-url]: https://coveralls.io/r/robinandeer/housekeeper
-[coveralls-image]: https://img.shields.io/coveralls/robinandeer/housekeeper.svg?style=flat-square
+[coveralls-url]: https://coveralls.io/r/Clinical-Genomics/housekeeper
+[coveralls-image]: https://img.shields.io/coveralls/Clinical-Genomics/housekeeper.svg?style=flat-square
