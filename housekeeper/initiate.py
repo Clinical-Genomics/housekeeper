@@ -21,7 +21,7 @@ def setup(root_path, uri=None):
     db = get_manager(db_uri)
     db.create_all()
 
-    # add metadata about the system
+    log.debug('add metadata about the system')
     meta = Metadata(root=abs_root)
     db.add_commit(meta)
 

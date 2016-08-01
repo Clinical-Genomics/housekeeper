@@ -17,10 +17,12 @@ log = logging.getLogger(__name__)
 
 def analysis(config_path, analysis_id=None):
     """Prepare info for a MIP analysis."""
+    log.debug("parse config YAML: %s", config_path)
     with open(config_path, 'r') as stream:
         config = yaml.load(stream)
 
     sampleinfo_path = config['sampleInfoFile']
+    log.debug("parse sampleinfo YAML: %s", sampleinfo_path)
     with open(sampleinfo_path, 'r') as stream:
         sampleinfo = yaml.load(stream)
 
@@ -32,6 +34,7 @@ def analysis(config_path, analysis_id=None):
     sample_ids = config['sampleIDs']
     customer = family['InstanceTag'][0]
     name = "{}-{}".format(customer, fam_key)
+    log.debug("build new analysis record: %s", name)
     new_analysis = general_analysis(name, 'mip', version, analyzed_at,
                                     sample_ids)
     new_samples = {sample.name: sample for sample in new_analysis.samples}
@@ -60,6 +63,7 @@ def analysis(config_path, analysis_id=None):
     ]
 
     for sample_id in sample_ids:
+        log.debug("parse assets for sample: %s", sample_id)
         sample = sampleinfo[fam_key][sample_id]
 
         coverage_files = sample['Program']['SambambaDepth'].values()
@@ -90,13 +94,16 @@ def analysis(config_path, analysis_id=None):
     for sample_id in sample_ids:
         out_root = path(config['outDataDir'])
         multiqc_path = out_root.joinpath(sample_id, MULTIQC_SAMTOOLS)
+        log.debug("calculate total mapped reads for: %s", sample_id)
         mapped_data = total_mapped(multiqc_path)
         qc_samples[sample_id] = mapped_data
 
         # duplicates
+        log.debug("calculate duplicates for: %s", sample_id)
         duplicates = get_duplicates(out_root, sample_id)
         qc_samples[sample_id]['duplicates'] = duplicates
 
+    log.debug("parse QC metrics YAML: %s", qc_metrics)
     with open(qc_metrics, 'r') as stream:
         qc_data = yaml.load(stream)
         qc_rootkey = qc_data.keys()[0]
@@ -107,13 +114,14 @@ def analysis(config_path, analysis_id=None):
         qc_data[qc_rootkey][sample_id]['MappedRate'] = mapped_data['percentage']
         qc_data[qc_rootkey][sample_id]['Duplicates'] = mapped_data['duplicates']
 
-    log.info('create updated qc metrics')
     new_qcmetrics = path(qc_metrics.replace('.yaml', '.mod.yaml'))
+    log.info("create updated qc metrics: %s", new_qcmetrics)
     with new_qcmetrics.open('w') as stream:
         dump = yaml.dump(qc_data, default_flow_style=False, allow_unicode=True)
         stream.write(dump.decode('utf-8'))
     assets.append(general_asset(new_qcmetrics, 'qc', for_archive=True))
 
+    log.debug('assciate assets with analysis')
     for asset in assets:
         new_analysis.assets.append(asset)
     return new_analysis

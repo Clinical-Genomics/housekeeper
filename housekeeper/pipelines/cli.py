@@ -20,3 +20,4 @@ def mip(context, config):
     """Add MIP analysis."""
     new_analysis = mip_analysis(config)
     commit_analysis(context.obj['db'], new_analysis)
+    click.echo("added new analysis: ", new_analysis.name)

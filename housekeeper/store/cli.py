@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
+import logging
+
 import click
 from path import path
 
 from housekeeper.store import Analysis, Metadata, get_manager, Asset, Sample
+
+log = logging.getLogger(__name__)
 
 
 def delete_analysis(manager, name):
@@ -86,10 +90,11 @@ def list_cmd(context, analysis_id, compressed, limit):
     query = Analysis.query.order_by(Analysis.analyzed_at)
 
     if analysis_id:
+        log.debug("filter analyses on id pattern: ", analysis_id)
         query = query.filter(Analysis.name.contains(analysis_id))
 
     if query.first() is None:
-        click.echo('No analyses found.')
+        log.warn('sorry, no analyses found')
     else:
         for analysis in query.limit(limit):
             click.echo(analysis.to_json(pretty=not compressed))
