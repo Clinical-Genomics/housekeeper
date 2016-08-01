@@ -26,3 +26,5 @@ def mip(context, config):
     new_analysis = mip_analysis(config)
     commit_analysis(context.obj['db'], new_analysis)
     click.echo("added new analysis: {}".format(new_analysis.name))
+    sample_ids = ', '.join(sample.name for sample in new_analysis.samples)
+    click.echo("including samples: {}".format(sample_ids))
