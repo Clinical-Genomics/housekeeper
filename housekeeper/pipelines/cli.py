@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
+import logging
+
 import click
 
 from housekeeper.store import get_manager
 from .mip import analysis as mip_analysis
 from .general import commit_analysis
+
+log = logging.getLogger(__name__)
 
 
 @click.group()
@@ -18,6 +22,7 @@ def add(context):
 @click.pass_context
 def mip(context, config):
     """Add MIP analysis."""
+    log.info("adding analysis with config: %s", config)
     new_analysis = mip_analysis(config)
     commit_analysis(context.obj['db'], new_analysis)
-    click.echo("added new analysis: ", new_analysis.name)
+    click.echo("added new analysis: {}".format(new_analysis.name))
