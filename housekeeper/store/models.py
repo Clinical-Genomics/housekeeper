@@ -61,6 +61,14 @@ class Analysis(Model):
     assets = orm.relationship('Asset', cascade='all,delete', backref='analysis')
     samples = orm.relationship('Sample', cascade='all,delete', backref='analysis')
 
+    def to_dict(self, skip_samples=False):
+        """Also include samples in the dict serialization."""
+        analysis_dict = super(Analysis, self).to_dict()
+        if not skip_samples:
+            sample_dicts = [sample.to_dict() for sample in self.samples]
+            analysis_dict['samples'] = sample_dicts
+        return analysis_dict
+
 
 class Sample(Model):
 
