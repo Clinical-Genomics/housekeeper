@@ -4,12 +4,9 @@ import logging
 from path import path
 
 from housekeeper.store import Metadata, Analysis
+from housekeeper.exc import AnalysisConflictError
 
 log = logging.getLogger(__name__)
-
-
-class AnalysisConflictError(Exception):
-    pass
 
 
 def analysis(manager, analysis_obj):
