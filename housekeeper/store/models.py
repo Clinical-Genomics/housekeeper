@@ -53,6 +53,7 @@ class Analysis(Model):
     pipeline_version = Column(types.String(32))
     analyzed_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
+    archived_at = Column(types.DateTime)
 
     # status (internal)
     status = Column(types.Enum('active', 'archived'))

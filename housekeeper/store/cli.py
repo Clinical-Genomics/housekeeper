@@ -4,7 +4,8 @@ import logging
 import click
 from path import path
 
-from housekeeper.store import Analysis, Metadata, get_manager, Asset, Sample
+from .models import Analysis, Metadata
+from .utils import get_assets, get_manager
 
 log = logging.getLogger(__name__)
 
@@ -33,18 +34,6 @@ def archive_analysis(manager, name):
     manager.commit()
 
 
-def get_assets(analysis, sample, category):
-    """Get files from the database."""
-    query = Asset.query
-    if analysis:
-        query = query.join(Asset.analysis).filter(Analysis.name == analysis)
-    if sample:
-        query = query.join(Asset.sample).filter(Sample.name == sample)
-    if category:
-        query = query.filter(Asset.category == category)
-    return query
-
-
 @click.command()
 @click.argument('name')
 @click.pass_context
@@ -61,8 +50,12 @@ def archive(context, name):
 def delete(context, name):
     """Delete an analysis and files."""
     manager = get_manager(context.obj['database'])
+    meta = Metadata.query.first()
+    analyses_root = path(meta.analyses_root)
+    analysis_root = analyses_root.joinpath(name)
+    click.echo("you are about to delete: {}".format(analysis_root))
     if click.confirm('Are you sure?'):
-        delete_analysis(manager, name)
+        delete_analysis(manager, analyses_root, name)
 
 
 @click.command()
