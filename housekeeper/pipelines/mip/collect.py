@@ -42,6 +42,7 @@ def analysis(config_path, analysis_id=None):
     ped = family['PedigreeFile']['Path']
     qcped = family['PedigreeFileAnalysis']['Path']
     bcf_raw = family['BCFFile']['Path']
+    bcf_raw_index = "{}.csi".format(bcf_raw)
     bcf_clinical = family['BCFFile']['Clinical']['Path']
     bcf_research = family['BCFFile']['Research']['Path']
     vcf_clinical = family['VCFFile']['Clinical']['Path']
@@ -55,6 +56,7 @@ def analysis(config_path, analysis_id=None):
         general_asset(sampleinfo_path, 'sampleinfo', for_archive=True),
         general_asset(config_path, 'config', for_archive=True),
         general_asset(bcf_raw, 'bcf-raw', for_archive=True),
+        general_asset(bcf_raw_index, 'bcf-raw-index'),
         general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
         general_asset(bcf_research, 'bcf-research', for_archive=True),
         general_asset(vcf_clinical, 'vcf-clinical'),
@@ -136,11 +138,7 @@ def total_mapped(multiqc_path):
         for row in data:
             total += float(row['raw total sequences'])
             mapped += float(row['reads mapped'])
-    return {
-        'mapped': mapped,
-        'total': total,
-        'percentage': mapped / total
-    }
+    return {'mapped': mapped, 'total': total, 'percentage': mapped / total}
 
 
 def get_duplicates(out_root, sample_id):
@@ -151,4 +149,6 @@ def get_duplicates(out_root, sample_id):
         with open(files[0], 'r') as stream:
             content = stream.read()
         dups = float(re.search('Fraction Duplicates: (.*)', content).groups()[0])
+    else:
+        raise Exception('no picard tools file!')
     return dups
