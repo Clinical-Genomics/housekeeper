@@ -93,5 +93,6 @@ def list_cmd(context, analysis_id, compressed, names, limit):
         if names:
             analysis_ids = (analysis.name for analysis in query)
             click.echo(' '.join(analysis_ids))
-        for analysis in query:
-            click.echo(analysis.to_json(pretty=not compressed))
+        else:
+            for analysis in query:
+                click.echo(analysis.to_json(pretty=not compressed))
