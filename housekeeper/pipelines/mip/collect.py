@@ -81,7 +81,7 @@ def analysis(config_path, analysis_id=None):
         bai_paths = ["{}.bai".format(complete_bam),
                      complete_bam.replace('.bam', '.bai')]
         existing_bai = [bai_path for bai_path in bai_paths
-                        if path(bai_path).exist()]
+                        if path(bai_path).exists()]
         if len(existing_bai):
             MissingFileError(bai_paths)
         else:
