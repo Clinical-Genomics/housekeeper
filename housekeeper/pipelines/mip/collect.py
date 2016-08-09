@@ -101,6 +101,7 @@ def analysis(config_path, analysis_id=None):
                 qc_samples[sample_id] = mapped_data
         else:
             log.warn("multiqc output missing for %s", sample_id)
+            qc_samples[sample_id] = {}
 
         # duplicates
         log.debug("calculate duplicates for: %s", sample_id)
