@@ -55,7 +55,7 @@ def delete(context, name):
     analysis_root = analyses_root.joinpath(name)
     click.echo("you are about to delete: {}".format(analysis_root))
     if click.confirm('Are you sure?'):
-        delete_analysis(manager, analyses_root, name)
+        delete_analysis(manager, name)
 
 
 @click.command()
