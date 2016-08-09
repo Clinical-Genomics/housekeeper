@@ -31,4 +31,4 @@ def mip(context, config):
         sample_ids = ', '.join(sample.name for sample in new_analysis.samples)
         click.echo("including samples: {}".format(sample_ids))
     except AnalysisConflictError:
-        click.echo("analysis already loaded: %s", new_analysis.name)
+        click.echo("analysis already loaded: {}".format(new_analysis.name))
