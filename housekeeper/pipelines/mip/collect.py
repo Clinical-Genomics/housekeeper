@@ -7,6 +7,7 @@ import re
 from path import path
 import yaml
 
+from housekeeper.exc import MissingFileError
 from housekeeper.pipelines.general.add import asset as general_asset
 from housekeeper.pipelines.general.add import analysis as general_analysis
 
@@ -77,7 +78,16 @@ def analysis(config_path, analysis_id=None):
 
         complete_bam = sample['MostCompleteBAM']['Path']
         bam_asset = general_asset(complete_bam, 'bam')
-        bai_asset = general_asset("{}.bai".format(complete_bam), 'bai')
+        bai_paths = ["{}.bai".format(complete_bam),
+                     complete_bam.replace('.bam', '.bai')]
+        existing_bai = [bai_path for bai_path in bai_paths
+                        if path(bai_path).exist()]
+        if len(existing_bai):
+            MissingFileError(bai_paths)
+        else:
+            bai_path = existing_bai[0]
+
+        bai_asset = general_asset(bai_path, 'bai')
         assets.append(bam_asset)
         assets.append(bai_asset)
         new_samples[sample_id].assets.append(bam_asset)

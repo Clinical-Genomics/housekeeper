@@ -3,3 +3,7 @@
 
 class AnalysisConflictError(Exception):
     pass
+
+
+class MissingFileError(Exception):
+    pass
