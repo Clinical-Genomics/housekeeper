@@ -26,9 +26,9 @@ def analysis(manager, analysis_obj):
     analysis_root.makedirs_p()
 
     for asset in analysis_obj.assets:
-        log.info("adding asset: %s", path(asset.original_path).basename())
         original_path = path(asset.original_path)
         filename = original_path.basename()
+        log.info("adding asset: %s", filename)
         new_path = analysis_root.joinpath(filename)
         asset.path = new_path
         # sha1 = checksum(asset.original_path)
