@@ -24,11 +24,13 @@ def setup(root_path, db_uri):
         stream.write(dump.decode('utf-8'))
 
 
-def setup_db(root_path, uri=None):
+def setup_db(root_path, uri=None, reset=False):
     abs_root = path(root_path).abspath()
     db_uri = uri or "sqlite:///{}".format(abs_root.joinpath('store.sqlite3'))
     log.info("setup a new database: %s", db_uri)
     db = get_manager(db_uri)
+    if reset:
+        db.drop_all()
     db.create_all()
 
     log.debug('add metadata about the system')
@@ -39,11 +41,12 @@ def setup_db(root_path, uri=None):
 
 @click.command()
 @click.option('--db-only', is_flag=True)
+@click.option('--reset', is_flag=True)
 @click.argument('root', type=click.Path())
 @click.pass_context
-def init(context, db_only, root):
+def init(context, db_only, reset, root):
     """Setup the housekeeper."""
-    db_uri = setup_db(root, uri=context.obj.get('database'))
+    db_uri = setup_db(root, uri=context.obj.get('database'), reset=reset)
     if not db_only:
         if path(root).exists():
             log.error("root folder already exists: %s", root)
