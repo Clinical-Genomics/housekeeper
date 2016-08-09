@@ -90,7 +90,7 @@ class Asset(Model):
 
     id = Column(types.Integer, primary_key=True)
     original_path = Column(types.Text)
-    path = Column(types.Text, nullable=False, unique=True)
+    path = Column(types.String(256), nullable=False, unique=True)
     checksum = Column(types.String(128))
     category = Column(types.String(32))
     to_archive = Column(types.Boolean)
