@@ -4,6 +4,7 @@ import logging
 import click
 
 from housekeeper.store import get_manager
+from housekeeper.exc import AnalysisConflictError
 from .mip import analysis as mip_analysis
 from .general import commit_analysis
 
@@ -24,7 +25,10 @@ def mip(context, config):
     """Add MIP analysis."""
     log.info("adding analysis with config: %s", config)
     new_analysis = mip_analysis(config)
-    commit_analysis(context.obj['db'], new_analysis)
-    click.echo("added new analysis: {}".format(new_analysis.name))
-    sample_ids = ', '.join(sample.name for sample in new_analysis.samples)
-    click.echo("including samples: {}".format(sample_ids))
+    try:
+        commit_analysis(context.obj['db'], new_analysis)
+        click.echo("added new analysis: {}".format(new_analysis.name))
+        sample_ids = ', '.join(sample.name for sample in new_analysis.samples)
+        click.echo("including samples: {}".format(sample_ids))
+    except AnalysisConflictError:
+        click.echo("analysis already loaded: %s", new_analysis.name)
