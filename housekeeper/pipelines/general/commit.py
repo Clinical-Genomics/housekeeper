@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import hashlib
 import logging
 
 from path import path
@@ -6,6 +7,7 @@ from path import path
 from housekeeper.store import Metadata, Analysis
 from housekeeper.exc import AnalysisConflictError
 
+BLOCKSIZE = 65536
 log = logging.getLogger(__name__)
 
 
@@ -28,6 +30,8 @@ def analysis(manager, analysis_obj):
         filename = original_path.basename()
         new_path = analysis_root.joinpath(filename)
         asset.path = new_path
+        # sha1 = checksum(asset.original_path)
+        # asset.checksum = sha1
 
     log.debug("commit new analysis to database")
     manager.add_commit(analysis_obj)
@@ -39,3 +43,14 @@ def analysis(manager, analysis_obj):
     except Exception:
         log.warn("linking error, cleaning up database")
         analysis_obj.delete()
+
+
+def checksum(path):
+    """Calculcate checksum for a file."""
+    hasher = hashlib.sha1()
+    with open(path, 'rb') as stream:
+        buf = stream.read(BLOCKSIZE)
+        while len(buf) > 0:
+            hasher.update(buf)
+            buf = stream.read(BLOCKSIZE)
+    return hasher.hexdigest()
