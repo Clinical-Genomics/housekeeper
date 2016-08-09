@@ -74,13 +74,14 @@ def get(context, analysis, sample, category):
 
 @click.command('list')
 @click.option('-c', '--compressed', is_flag=True)
+@click.option('-n', '--names', is_flag=True)
 @click.option('-l', '--limit', default=10)
 @click.argument('analysis_id', required=False)
 @click.pass_context
-def list_cmd(context, analysis_id, compressed, limit):
+def list_cmd(context, analysis_id, compressed, names, limit):
     """List added analyses."""
     get_manager(context.obj['database'])
-    query = Analysis.query.order_by(Analysis.analyzed_at)
+    query = Analysis.query.order_by(Analysis.analyzed_at).limit(limit)
 
     if analysis_id:
         log.debug("filter analyses on id pattern: ", analysis_id)
@@ -89,5 +90,8 @@ def list_cmd(context, analysis_id, compressed, limit):
     if query.first() is None:
         log.warn('sorry, no analyses found')
     else:
-        for analysis in query.limit(limit):
+        if names:
+            analysis_ids = (analysis.name for analysis in query)
+            click.echo(' '.join(analysis_ids))
+        for analysis in query:
             click.echo(analysis.to_json(pretty=not compressed))
