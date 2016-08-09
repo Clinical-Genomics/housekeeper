@@ -41,11 +41,12 @@ def analysis(manager, analysis_obj):
         for asset in analysis_obj.assets:
             log.debug("link asset: %s -> %s", asset.original_path, asset.path)
             path(asset.original_path).link(asset.path)
-    except Exception:
+    except Exception as error:
         log.warn("linking error: %s -> %s", asset.original_path, asset.path)
         log.debug('cleaning up database')
         analysis_obj.delete()
         manager.commit()
+        raise error
 
 
 def checksum(path):

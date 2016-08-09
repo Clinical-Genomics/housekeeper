@@ -83,7 +83,7 @@ def analysis(config_path, analysis_id=None):
         existing_bai = [bai_path for bai_path in bai_paths
                         if path(bai_path).exists()]
         if len(existing_bai) == 0:
-            MissingFileError(bai_paths)
+            raise MissingFileError(bai_paths)
         else:
             bai_path = existing_bai[0]
 
