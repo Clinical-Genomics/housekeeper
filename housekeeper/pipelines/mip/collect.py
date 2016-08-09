@@ -76,7 +76,6 @@ def analysis(config_path, analysis_id=None):
         new_samples[sample_id].assets.append(coverage_asset)
 
         complete_bam = sample['MostCompleteBAM']['Path']
-        log.info("adding asset: %s", path(complete_bam).basename())
         bam_asset = general_asset(complete_bam, 'bam')
         bai_asset = general_asset("{}.bai".format(complete_bam), 'bai')
         assets.append(bam_asset)
@@ -86,7 +85,6 @@ def analysis(config_path, analysis_id=None):
 
         for input_file in sample['File'].values():
             cram = input_file['CramFile']
-            log.info("adding asset: %s", path(cram).basename())
             cram_asset = general_asset(cram, 'cram', for_archive=True)
             assets.append(cram_asset)
             new_samples[sample_id].assets.append(cram_asset)
@@ -96,9 +94,13 @@ def analysis(config_path, analysis_id=None):
     for sample_id in sample_ids:
         out_root = path(config['outDataDir'])
         multiqc_path = out_root.joinpath(sample_id, MULTIQC_SAMTOOLS)
-        log.debug("calculate total mapped reads for: %s", sample_id)
-        mapped_data = total_mapped(multiqc_path)
-        qc_samples[sample_id] = mapped_data
+        if multiqc_path.exists():
+            log.debug("calculate total mapped reads for: %s", sample_id)
+            with open(multiqc_path, 'r') as stream:
+                mapped_data = total_mapped(stream)
+                qc_samples[sample_id] = mapped_data
+        else:
+            log.warn("multiqc output missing for %s", sample_id)
 
         # duplicates
         log.debug("calculate duplicates for: %s", sample_id)
@@ -111,9 +113,9 @@ def analysis(config_path, analysis_id=None):
         qc_rootkey = qc_data.keys()[0]
 
     for sample_id, mapped_data in qc_samples.items():
-        qc_data[qc_rootkey][sample_id]['MappedReads'] = mapped_data['mapped']
-        qc_data[qc_rootkey][sample_id]['TotalReads'] = mapped_data['total']
-        qc_data[qc_rootkey][sample_id]['MappedRate'] = mapped_data['percentage']
+        qc_data[qc_rootkey][sample_id]['MappedReads'] = mapped_data.get('mapped')
+        qc_data[qc_rootkey][sample_id]['TotalReads'] = mapped_data.get('total')
+        qc_data[qc_rootkey][sample_id]['MappedRate'] = mapped_data.get('percentage')
         qc_data[qc_rootkey][sample_id]['Duplicates'] = mapped_data['duplicates']
 
     new_qcmetrics = path(qc_metrics.replace('.yaml', '.mod.yaml'))
@@ -129,15 +131,14 @@ def analysis(config_path, analysis_id=None):
     return new_analysis
 
 
-def total_mapped(multiqc_path):
+def total_mapped(stream):
     """Extract the percentage of mapped reads across all lanes."""
-    with open(multiqc_path, 'r') as stream:
-        data = csv.DictReader(stream, delimiter='\t', quoting=csv.QUOTE_NONE)
-        total = 0
-        mapped = 0
-        for row in data:
-            total += float(row['raw total sequences'])
-            mapped += float(row['reads mapped'])
+    data = csv.DictReader(stream, delimiter='\t', quoting=csv.QUOTE_NONE)
+    total = 0
+    mapped = 0
+    for row in data:
+        total += float(row['raw total sequences'])
+        mapped += float(row['reads mapped'])
     return {'mapped': mapped, 'total': total, 'percentage': mapped / total}
 
 
