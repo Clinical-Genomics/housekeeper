@@ -54,6 +54,7 @@ class Analysis(Model):
     analyzed_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
     archived_at = Column(types.DateTime)
+    will_archive_at = Column(types.DateTime)
 
     # status (internal)
     status = Column(types.Enum('active', 'archived'))
