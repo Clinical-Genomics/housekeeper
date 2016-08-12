@@ -6,32 +6,9 @@ from path import path
 
 from .models import Analysis, Metadata
 from .utils import get_assets, get_manager
+from . import api
 
 log = logging.getLogger(__name__)
-
-
-def delete_analysis(manager, name):
-    """Delete an analysis."""
-    analysis_obj = Analysis.query.filter_by(name=name).one()
-    analysis_obj.delete()
-    meta = Metadata.query.first()
-    path(meta.analyses_root).joinpath(analysis_obj.name).rmtree_p()
-    manager.commit()
-
-
-def archive_analysis(manager, name):
-    """Archive an analysis."""
-    analysis_obj = Analysis.query.filter_by(name=name).one()
-
-    # remove all files that aren't marked for archive
-    for asset in analysis_obj.assets:
-        if not asset.to_archive:
-            path(asset.path).remove()
-            asset.delete()
-
-    # marked the case as "archived"
-    analysis_obj.status = 'archived'
-    manager.commit()
 
 
 @click.command()
@@ -40,8 +17,12 @@ def archive_analysis(manager, name):
 def archive(context, name):
     """Delete an analysis and files."""
     manager = get_manager(context.obj['database'])
-    if click.confirm('Are you sure?'):
-        archive_analysis(manager, name)
+    analysis_obj = api.analysis(name)
+    if analysis_obj is None:
+        click.echo("sorry, couldn't find an analysis by that name")
+    elif click.confirm('Are you sure?'):
+        api.archive(analysis_obj)
+        manager.commit()
 
 
 @click.command()
@@ -50,12 +31,16 @@ def archive(context, name):
 def delete(context, name):
     """Delete an analysis and files."""
     manager = get_manager(context.obj['database'])
-    meta = Metadata.query.first()
-    analyses_root = path(meta.analyses_root)
-    analysis_root = analyses_root.joinpath(name)
-    click.echo("you are about to delete: {}".format(analysis_root))
-    if click.confirm('Are you sure?'):
-        delete_analysis(manager, name)
+    analysis_obj = api.analysis(name)
+    if analysis_obj is None:
+        click.echo("sorry, couldn't find an analysis by that name")
+    else:
+        meta = Metadata.query.first()
+        analysis_root = path(meta.analyses_root).joinpath(name)
+        click.echo("you are about to delete: {}".format(analysis_root))
+        if click.confirm('Are you sure?'):
+            api.delete(analysis_obj)
+            manager.commit()
 
 
 @click.command()
