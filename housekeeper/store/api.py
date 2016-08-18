@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import logging
 
 from path import path
@@ -49,3 +50,8 @@ def archive(analysis_obj):
 
     # marked the case as "archived"
     analysis_obj.status = 'archived'
+
+
+def postpone(analysis_obj, time=datetime.timedelta(days=30)):
+    """Postpone the automatic archival of analysis by X time."""
+    analysis_obj.will_archive_at += time

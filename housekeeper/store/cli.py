@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import datetime
 import logging
 
 import click
@@ -55,6 +56,20 @@ def get(context, analysis, sample, category):
     paths = [asset.path for asset in assets]
     output = ' '.join(paths)
     click.echo(output, nl=False)
+
+
+@click.command()
+@click.option('-d', '--days', default=30)
+@click.argument('analysis_id')
+@click.pass_context
+def postpone(context, days, analysis_id):
+    """Ask Housekeeper for a file."""
+    manager = get_manager(context.obj['database'])
+    analysis_obj = api.analysis(analysis_id)
+    api.postpone(analysis_obj, time=datetime.timedelta(days=days))
+    manager.commit()
+    click.echo("analysis will be archived on: {}"
+               .format(analysis_obj.will_archive_at))
 
 
 @click.command('list')
