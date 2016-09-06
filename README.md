@@ -1,12 +1,12 @@
 # Housekeeper [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
-Housekeeper is a tool to be used to keep track of **successful** analyses. It will keep track of various output files and metadata. It also provides archival functions. It's pipeline agnostic as far as possible.
+Housekeeper is a tool for keeping track of **successful** analyses. It will manage various output files and metadata. It also provides archival functions. As far as possible, it's pipeline agnostic.
 
 ## Concerns
 
-1. Store access to analysis output files
-2. Offer stable public API to files and listing completed analyses
-3. Keep track of status of analyses (active, archived, backed-up)
+1.  store analysis output files
+2.  offer stable API to files and listing completed analyses
+3.  keep track of status of analyses (active, archived, backed-up)
 
 It's outside the scope of the tool to store results and provide detailed access to them. Housekeeper will only provide easy access to reading in the data by other tools.
 
@@ -22,13 +22,13 @@ The first thing to do is setting up a root folder and database.
 $ housekeeper init /path/to/root
 ```
 
-The folder can't exist already or the tool will complain. If successful it will put a config file in the root directory. It will store the location of the root folder in the database so the only thing you need to supply is the path to the database.
+The folder can't exist already or the tool will complain. If successful it will store the location of the root folder in the database so no need for a separate config file.
 
 ### Adding new analyses
 
 Housekeeper can store files from completed analyses. Supported pipelines include:
 
-- MIP
+-   MIP
 
 ```bash
 $ housekeeper add mip /path/to/familyId_config.yaml
@@ -71,8 +71,8 @@ And if multiple files match the query it will simply print them on one line sepa
 
 When you add a new analysis you tell Housekeeper which files are eventually to be archived. We can certainly do a lot more with this functionality but for now what happens when you archive an analysis is:
 
-1. you update the status to "archived"
-2. remove all files and references that are not marked as "to_archive"
+1.  you update the status to "archived"
+2.  remove all files and references that are not marked as "to_archive"
 
 ```bash
 $ housekeeper archive customer-family
