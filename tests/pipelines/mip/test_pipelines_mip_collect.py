@@ -8,9 +8,10 @@ def test_total_mapped():
     path = ("tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/"
             "multiqc/multiqc_data/multiqc_samtools.txt")
     # WHEN calculating the overall mapping rate
-    mapped_reads = collect.total_mapped(path)
+    with open(path, 'r') as stream:
+        mapped_reads = collect.total_mapped(stream)
     # THEN it should return the correct value
-    assert mapped_reads == 891591355 / 920254494
+    assert mapped_reads['percentage'] == 891591355 / 920254494
 
 
 def test_analysis(mip_output):
