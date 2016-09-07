@@ -3,6 +3,7 @@ from __future__ import division
 import csv
 import logging
 import re
+import tempfile
 
 from path import path
 import yaml
@@ -58,7 +59,9 @@ def analysis(config_path, analysis_id=None):
     log_file = family['lastLogFilePath']
 
     meta_output = build_meta(new_analysis, qcped)
-    meta_path = "{}/meta.yaml".format(config['clusterConstantPath'])
+
+    tmp_dir = tempfile.mkdtemp()
+    meta_path = "{}/meta.yaml".format(tmp_dir)
     with open(meta_path, 'w') as out_handle:
         out_handle.write(meta_output)
 
