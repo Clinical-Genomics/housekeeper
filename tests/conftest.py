@@ -7,7 +7,7 @@ from path import path
 import pytest
 
 from housekeeper.cli import root
-from housekeeper.store import Model, get_manager
+from housekeeper.store import Model, get_manager, Metadata
 from housekeeper.initiate import setup
 
 
@@ -55,7 +55,10 @@ def setup_tmp(tmpdir):
     db_path = tmp_path.joinpath('store.sqlite3')
     uri = "sqlite:///{}".format(db_path)
     manager = get_manager(uri)
-    setup(tmp_path, uri=uri)
+    manager.create_all()
+    meta = Metadata(root=tmp_path)
+    manager.add_commit(meta)
+    setup(tmp_path, db_uri=uri)
     data = dict(uri=uri, path=str(db_path), manager=manager)
     yield data
     manager.drop_all()

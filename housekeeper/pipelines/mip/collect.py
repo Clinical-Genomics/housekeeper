@@ -3,6 +3,7 @@ from __future__ import division
 import csv
 import logging
 import re
+import tempfile
 
 from path import path
 import yaml
@@ -10,6 +11,7 @@ import yaml
 from housekeeper.exc import MissingFileError
 from housekeeper.pipelines.general.add import asset as general_asset
 from housekeeper.pipelines.general.add import analysis as general_analysis
+from .meta import build_meta
 
 MULTIQC_SAMTOOLS = 'multiqc/multiqc_data/multiqc_samtools.txt'
 
@@ -56,6 +58,13 @@ def analysis(config_path, analysis_id=None):
     qc_metrics = family['Program']['QCCollect']['QCCollectMetricsFile']['Path']
     log_file = family['lastLogFilePath']
 
+    meta_output = build_meta(new_analysis, qcped)
+
+    tmp_dir = tempfile.mkdtemp()
+    meta_path = "{}/meta.yaml".format(tmp_dir)
+    with open(meta_path, 'w') as out_handle:
+        out_handle.write(meta_output)
+
     assets = [
         general_asset(ped, 'pedigree'),
         general_asset(qcped, 'qcpedigree'),
@@ -73,6 +82,7 @@ def analysis(config_path, analysis_id=None):
         general_asset(svvcf_clinical, 'vcf-clinical-sv'),
         general_asset(svvcf_research, 'vcf-research-sv'),
         general_asset(log_file, 'log', for_archive=True),
+        general_asset(meta_path, 'meta', for_archive=True),
     ]
 
     for sample_id in sample_ids:
