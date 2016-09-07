@@ -4,25 +4,40 @@ import logging
 
 from path import path
 
-from housekeeper.store import Metadata, Analysis
+from housekeeper.store import Metadata, Analysis, AnalysisRun
 from housekeeper.exc import AnalysisConflictError
 
 BLOCKSIZE = 65536
 log = logging.getLogger(__name__)
 
 
+def check_existing(analysis_obj, run_obj):
+    """Check if the analysis is already added."""
+    old_analysis = Analysis.query.filter_by(name=analysis_obj.name).first()
+    if old_analysis:
+        filters = dict(analysis=run_obj.analysis,
+                       analyzed_at=run_obj.analyzed_at)
+        old_run = AnalysisRun.filter_by(**filters).first()
+        if old_run:
+            # loaded before, this is the same run
+            raise AnalysisConflictError("'{}' already added"
+                                        .format(analysis_obj.name))
+        else:
+            # loaded before, this is a new run
+            return old_analysis
+    else:
+        # not loaded before
+        return None
+
+
 def analysis(manager, analysis_obj):
     """Store an analysis with files to the backend."""
     log.debug("check if analysis is already added: %s", analysis_obj.name)
-    if Analysis.query.filter_by(name=analysis_obj.name).first():
-        raise AnalysisConflictError(
-            "'{}' already added".format(analysis_obj.name))
-
     meta = Metadata.query.first()
     analysis_root = path(meta.analyses_root).joinpath(analysis_obj.name)
     if analysis_root.isdir():
-        raise AnalysisConflictError(
-            "'{}' already exists".format(analysis_root))
+        raise AnalysisConflictError("'{}' analysis output exists"
+                                    .format(analysis_root))
     analysis_root.makedirs_p()
 
     for asset in analysis_obj.assets:

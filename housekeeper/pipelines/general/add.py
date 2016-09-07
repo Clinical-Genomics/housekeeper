@@ -4,7 +4,7 @@ import logging
 
 from path import path
 
-from housekeeper.store import Analysis, Sample, Asset
+from housekeeper.store import Analysis, Sample, Asset, AnalysisRun
 from housekeeper.constants import TIME_TO_ARCHIVE
 
 log = logging.getLogger(__name__)
@@ -16,15 +16,16 @@ def analysis(name, pipeline, version, analyzed_at, samples=None):
     This is the most low level implementation of how to store files from an
     analysis.
     """
-    new_analysis = Analysis(name=name, pipeline=pipeline,
-                            pipeline_version=version, analyzed_at=analyzed_at)
+    new_analysis = Analysis(name=name, pipeline=pipeline)
+    new_run = AnalysisRun(analysis=name, pipeline_version=version,
+                          analyzed_at=analyzed_at)
 
     # set the future date for archiving
     new_analysis.will_archive_at = datetime.now() + TIME_TO_ARCHIVE
 
     for sample_id in (samples or []):
         new_analysis.samples.append(Sample(name=sample_id))
-    return new_analysis
+    return new_analysis, new_run
 
 
 def asset(asset_path, category, for_archive=False):

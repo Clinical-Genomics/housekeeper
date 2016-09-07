@@ -38,8 +38,8 @@ def analysis(config_path, analysis_id=None):
     customer = family['InstanceTag'][0]
     name = "{}-{}".format(customer, fam_key)
     log.debug("build new analysis record: %s", name)
-    new_analysis = general_analysis(name, 'mip', version, analyzed_at,
-                                    sample_ids)
+    new_analysis, new_run = general_analysis(name, 'mip', version, analyzed_at,
+                                             sample_ids)
     new_samples = {sample.name: sample for sample in new_analysis.samples}
 
     ped = family['PedigreeFile']['Path']
@@ -159,7 +159,7 @@ def analysis(config_path, analysis_id=None):
     log.debug('assciate assets with analysis')
     for asset in assets:
         new_analysis.assets.append(asset)
-    return new_analysis
+    return new_analysis, new_run
 
 
 def total_mapped(stream):

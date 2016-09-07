@@ -4,7 +4,7 @@ import json
 
 import alchy
 from path import path
-from sqlalchemy import Column, ForeignKey, orm, types
+from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 
 from housekeeper.constants import PIPELINES
 
@@ -34,15 +34,29 @@ class Metadata(Model):
 
     id = Column(types.Integer, primary_key=True)
     created_at = Column(types.DateTime, default=datetime.now)
-    root = Column(types.String(128), nullable=False)
+    root = Column(types.String(128), nullable=False
 
     @property
     def analyses_root(self):
         return path(self.root).joinpath('analyses')
 
 
-class Analysis(Model):
+class AnalysisRun(Model):
+    """Store information about a specific analysis run."""
 
+    __table_args__ = (UniqueConstraint('analysis', 'analyzed_at',
+                                       name='_uc_analysis_analyzed_at'),)
+
+    pipeline_version = Column(types.String(32))
+    analyzed_at = Column(types.DateTime)
+    delivered_at = Column(types.DateTime)
+    archived_at = Column(types.DateTime)
+    # status (internal)
+    status = Column(types.Enum('active', 'archived'))
+    analysis = Column(types.String(128))
+
+
+class Analysis(Model):
     """Analysis record."""
 
     id = Column(types.Integer, primary_key=True)
@@ -50,14 +64,7 @@ class Analysis(Model):
 
     # metadata
     pipeline = Column(types.Enum(*PIPELINES))
-    pipeline_version = Column(types.String(32))
-    analyzed_at = Column(types.DateTime)
-    delivered_at = Column(types.DateTime)
-    archived_at = Column(types.DateTime)
     will_archive_at = Column(types.DateTime)
-
-    # status (internal)
-    status = Column(types.Enum('active', 'archived'))
 
     # assets
     assets = orm.relationship('Asset', cascade='all,delete', backref='analysis')
