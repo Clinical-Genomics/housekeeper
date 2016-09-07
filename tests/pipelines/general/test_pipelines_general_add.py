@@ -24,9 +24,10 @@ def test_analysis():
     analyzed_at = datetime.now()
     samples = ['sample_1']
     # WHEN building a new analysis model
-    new_analysis = add.analysis(name, pipeline, version, analyzed_at,
-                                samples=samples)
+    new_analysis, new_run = add.analysis(name, pipeline, version,
+                                         analyzed_at, samples=samples)
     # THEN it should return the analysis model with samples
     assert new_analysis.name == name
+    assert new_run.analysis == name
     assert len(new_analysis.samples) == 1
     assert new_analysis.samples[0].name == samples[0]

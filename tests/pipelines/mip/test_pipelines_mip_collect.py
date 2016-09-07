@@ -21,7 +21,7 @@ def test_analysis(mip_output):
                                         "16074_qcmetrics.mod.yaml")
     assert not mod_qcmetrics.exists()
     # WHEN collecting information/preparing it for housekeeper
-    new_analysis = collect.analysis(config)
+    new_analysis, new_run = collect.analysis(config)
     # THEN it should produce the modded qc metrics file
     assert mod_qcmetrics.exists()
     assert new_analysis.name == 'cust003-16074'
