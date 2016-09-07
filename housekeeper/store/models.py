@@ -34,7 +34,7 @@ class Metadata(Model):
 
     id = Column(types.Integer, primary_key=True)
     created_at = Column(types.DateTime, default=datetime.now)
-    root = Column(types.String(128), nullable=False
+    root = Column(types.String(128), nullable=False)
 
     @property
     def analyses_root(self):
@@ -44,10 +44,13 @@ class Metadata(Model):
 class AnalysisRun(Model):
     """Store information about a specific analysis run."""
 
+    __tablename__ = 'analysis_run'
     __table_args__ = (UniqueConstraint('analysis', 'analyzed_at',
                                        name='_uc_analysis_analyzed_at'),)
 
+    id = Column(types.Integer, primary_key=True)
     pipeline_version = Column(types.String(32))
+    created_at = Column(types.DateTime, default=datetime.now)
     analyzed_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
     archived_at = Column(types.DateTime)
@@ -61,6 +64,7 @@ class Analysis(Model):
 
     id = Column(types.Integer, primary_key=True)
     name = Column(types.String(128), unique=True)
+    created_at = Column(types.DateTime, default=datetime.now)
 
     # metadata
     pipeline = Column(types.Enum(*PIPELINES))

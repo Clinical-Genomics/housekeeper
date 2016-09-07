@@ -58,7 +58,7 @@ def analysis(config_path, analysis_id=None):
     qc_metrics = family['Program']['QCCollect']['QCCollectMetricsFile']['Path']
     log_file = family['lastLogFilePath']
 
-    meta_output = build_meta(new_analysis, qcped)
+    meta_output = build_meta(new_analysis, new_run, qcped)
 
     tmp_dir = tempfile.mkdtemp()
     meta_path = "{}/meta.yaml".format(tmp_dir)

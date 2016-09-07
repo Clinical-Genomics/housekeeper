@@ -81,7 +81,7 @@ def postpone(context, days, analysis_id):
 def list_cmd(context, analysis_id, compressed, names, limit):
     """List added analyses."""
     get_manager(context.obj['database'])
-    query = Analysis.query.order_by(Analysis.analyzed_at).limit(limit)
+    query = Analysis.query.order_by(Analysis.created_at).limit(limit)
 
     if analysis_id:
         log.debug("filter analyses on id pattern: ", analysis_id)

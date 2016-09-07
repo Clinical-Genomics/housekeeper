@@ -17,20 +17,18 @@ def check_existing(analysis_obj, run_obj):
     if old_analysis:
         filters = dict(analysis=run_obj.analysis,
                        analyzed_at=run_obj.analyzed_at)
-        old_run = AnalysisRun.filter_by(**filters).first()
+        old_run = AnalysisRun.query.filter_by(**filters).first()
         if old_run:
-            # loaded before, this is the same run
-            raise AnalysisConflictError("'{}' already added"
-                                        .format(analysis_obj.name))
+            return old_analysis, old_run
         else:
             # loaded before, this is a new run
-            return old_analysis
+            return old_analysis, None
     else:
         # not loaded before
-        return None
+        return None, None
 
 
-def analysis(manager, analysis_obj):
+def analysis(manager, analysis_obj, run_obj):
     """Store an analysis with files to the backend."""
     log.debug("check if analysis is already added: %s", analysis_obj.name)
     meta = Metadata.query.first()
@@ -50,7 +48,7 @@ def analysis(manager, analysis_obj):
         # asset.checksum = sha1
 
     log.debug("commit new analysis to database")
-    manager.add_commit(analysis_obj)
+    manager.add_commit([analysis_obj, run_obj])
 
     try:
         for asset in analysis_obj.assets:

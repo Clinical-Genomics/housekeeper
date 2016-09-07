@@ -2,7 +2,7 @@
 import yaml
 
 
-def build_meta(analysis, qc_ped):
+def build_meta(analysis, run, qc_ped):
     """Build metadata information content.
 
     Args:
@@ -14,19 +14,19 @@ def build_meta(analysis, qc_ped):
     """
     with open(qc_ped, 'r') as stream:
         qcped_data = yaml.load(stream)
-    metadata = analysis_metadata(analysis)
+    metadata = analysis_metadata(analysis, run)
     sample_map = sampleid_map(qcped_data)
     metadata['samples'] = sample_map
     return yaml.dump(metadata)
 
 
-def analysis_metadata(analysis):
+def analysis_metadata(analysis, run):
     """Build metadata information about an analysis run/case."""
     data = {
         'name': analysis.name,
-        'analyzed_at': analysis.analyzed_at,
+        'analyzed_at': run.analyzed_at,
         'pipeline': analysis.pipeline,
-        'pipeline_version': analysis.pipeline_version,
+        'pipeline_version': run.pipeline_version,
     }
     return data
 
