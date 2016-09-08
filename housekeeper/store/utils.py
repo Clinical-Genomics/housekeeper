@@ -8,9 +8,9 @@ from .models import Model, Asset, Analysis, Sample
 log = logging.getLogger(__name__)
 
 
-def get_manager(uri):
-    log.debug('open connection to database: %s', uri)
-    db = Manager(config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=Model)
+def get_manager(db_uri):
+    log.debug('open connection to database: %s', db_uri)
+    db = Manager(config=dict(SQLALCHEMY_DATABASE_URI=db_uri), Model=Model)
     return db
 
 

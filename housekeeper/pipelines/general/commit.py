@@ -32,7 +32,7 @@ def analysis(manager, analysis_obj, run_obj):
     """Store an analysis with files to the backend."""
     log.debug("check if analysis is already added: %s", analysis_obj.name)
     meta = Metadata.query.first()
-    analysis_root = path(meta.analyses_root).joinpath(analysis_obj.name)
+    analysis_root = meta.root_path.joinpath(analysis_obj.name)
     if analysis_root.isdir():
         raise AnalysisConflictError("'{}' analysis output exists"
                                     .format(analysis_root))

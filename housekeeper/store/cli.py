@@ -3,7 +3,6 @@ import datetime
 import logging
 
 import click
-from path import path
 
 from .models import Analysis, Metadata
 from .utils import get_assets, get_manager
@@ -37,7 +36,7 @@ def delete(context, name):
         click.echo("sorry, couldn't find an analysis by that name")
     else:
         meta = Metadata.query.first()
-        analysis_root = path(meta.analyses_root).joinpath(name)
+        analysis_root = meta.root_path.joinpath(name)
         click.echo("you are about to delete: {}".format(analysis_root))
         if click.confirm('Are you sure?'):
             api.delete(analysis_obj)

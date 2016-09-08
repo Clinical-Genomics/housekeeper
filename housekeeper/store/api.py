@@ -31,7 +31,7 @@ def delete(analysis_obj):
     """
     analysis_obj.delete()
     meta = Metadata.query.first()
-    analysis_dir = path(meta.analyses_root).joinpath(analysis_obj.name)
+    analysis_dir = meta.root_path.joinpath(analysis_obj.name)
     log.info("removing files under: %s", analysis_dir)
     analysis_dir.rmtree_p()
 

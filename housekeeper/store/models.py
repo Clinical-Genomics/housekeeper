@@ -29,7 +29,6 @@ Model = alchy.make_declarative_base(Base=JsonModel)
 
 
 class Metadata(Model):
-
     """Store information about the system."""
 
     id = Column(types.Integer, primary_key=True)
@@ -37,8 +36,8 @@ class Metadata(Model):
     root = Column(types.String(128), nullable=False)
 
     @property
-    def analyses_root(self):
-        return path(self.root).joinpath('analyses')
+    def root_path(self):
+        return path(self.root)
 
 
 class AnalysisRun(Model):
