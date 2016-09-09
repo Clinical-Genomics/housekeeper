@@ -4,7 +4,7 @@ import logging
 import click
 
 from housekeeper.store import get_manager, api
-from housekeeper.exc import AnalysisConflictError
+from housekeeper.exc import AnalysisConflictError, AnalysisNotFinishedError
 from .mip import analysis as mip_analysis
 from .general import commit_analysis, check_existing
 
@@ -27,7 +27,7 @@ def mip(context, force, yes, config):
     """Add MIP analysis."""
     log.info("adding analysis with config: %s", config)
     manager = context.obj['db']
-    records = mip_analysis(config)
+    records = mip_analysis(config, force=force)
     case_name = records['case'].name
     old_analysis, old_run = check_existing(case_name, records['analysis'],
                                            records['run'])

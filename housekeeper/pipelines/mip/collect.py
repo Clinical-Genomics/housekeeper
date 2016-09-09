@@ -3,12 +3,11 @@ from __future__ import division
 import csv
 import logging
 import re
-import tempfile
 
 from path import path
 import yaml
 
-from housekeeper.exc import MissingFileError
+from housekeeper.exc import MissingFileError, AnalysisNotFinishedError
 from housekeeper.pipelines.general.add import asset as general_asset
 from housekeeper.pipelines.general.add import analysis as general_analysis
 from .meta import build_meta
@@ -18,7 +17,7 @@ MULTIQC_SAMTOOLS = 'multiqc/multiqc_data/multiqc_samtools.txt'
 log = logging.getLogger(__name__)
 
 
-def analysis(config_path, analysis_id=None):
+def analysis(config_path, analysis_id=None, force=False):
     """Prepare info for a MIP analysis."""
     log.debug("parse config YAML: %s", config_path)
     with open(config_path, 'r') as stream:
@@ -31,6 +30,12 @@ def analysis(config_path, analysis_id=None):
 
     fam_key = sampleinfo.keys()[0]
     family = sampleinfo[fam_key][fam_key]
+
+    run_status = family['AnalysisRunStatus']
+    if run_status != 'Finished':
+        log.warn("analysis not finished: %s", run_status)
+        if not force:
+            raise AnalysisNotFinishedError(fam_key)
 
     analyzed_at = family['AnalysisDate']
     version = family['MIPVersion']

@@ -7,3 +7,7 @@ class AnalysisConflictError(Exception):
 
 class MissingFileError(Exception):
     pass
+
+
+class AnalysisNotFinishedError(Exception):
+    pass
