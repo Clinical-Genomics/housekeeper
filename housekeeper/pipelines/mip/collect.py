@@ -60,8 +60,7 @@ def analysis(config_path, analysis_id=None):
 
     meta_output = build_meta(new_objs['case'].name, new_objs['run'], qcped)
 
-    tmp_dir = tempfile.mkdtemp()
-    meta_path = "{}/meta.yaml".format(tmp_dir)
+    meta_path = "{}/meta.yaml".format(config['outDataDir'])
     with open(meta_path, 'w') as out_handle:
         out_handle.write(meta_output)
 
