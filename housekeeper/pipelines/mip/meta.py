@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import yaml
 
+from housekeeper.exc import MalformattedPedigreeError
+
 
 def build_meta(name, run, qc_ped):
     """Build metadata information content.
@@ -36,5 +38,8 @@ def sampleid_map(qc_ped):
     fam_key = qc_ped.keys()[0]
     samples = {}
     for sample in qc_ped[fam_key].values():
-        samples[sample['Individual ID']] = sample['display_name'][0]
+        sample_id = sample.get('Individual ID', sample.get('SampleID'))
+        if sample_id is None:
+            raise MalformattedPedigreeError(fam_key)
+        samples[sample_id] = sample['display_name'][0]
     return samples

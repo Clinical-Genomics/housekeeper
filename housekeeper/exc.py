@@ -15,3 +15,7 @@ class AnalysisNotFinishedError(Exception):
 
 class UnsupportedVersionError(Exception):
     pass
+
+
+class MalformattedPedigreeError(Exception):
+    pass
