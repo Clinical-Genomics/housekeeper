@@ -4,7 +4,7 @@ import logging
 import click
 
 from housekeeper.store import get_manager, api
-from housekeeper.exc import AnalysisConflictError, AnalysisNotFinishedError
+from housekeeper.exc import AnalysisConflictError
 from .mip import analysis as mip_analysis
 from .general import commit_analysis, check_existing
 

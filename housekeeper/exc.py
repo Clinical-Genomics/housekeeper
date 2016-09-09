@@ -11,3 +11,7 @@ class MissingFileError(Exception):
 
 class AnalysisNotFinishedError(Exception):
     pass
+
+
+class UnsupportedVersionError(Exception):
+    pass

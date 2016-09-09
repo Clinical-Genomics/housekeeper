@@ -7,7 +7,8 @@ import re
 from path import path
 import yaml
 
-from housekeeper.exc import MissingFileError, AnalysisNotFinishedError
+from housekeeper.exc import (MissingFileError, AnalysisNotFinishedError,
+                             UnsupportedVersionError)
 from housekeeper.pipelines.general.add import asset as general_asset
 from housekeeper.pipelines.general.add import analysis as general_analysis
 from .meta import build_meta
@@ -39,6 +40,11 @@ def analysis(config_path, analysis_id=None, force=False):
 
     analyzed_at = family['AnalysisDate']
     version = family['MIPVersion']
+    if not version.startswith('v3'):
+        log.warn("analysis to old: %s", version)
+        if not force:
+            raise UnsupportedVersionError(fam_key)
+
     sample_ids = config['sampleIDs']
     customer = family['InstanceTag'][0]
     name = "{}-{}".format(customer, fam_key)
