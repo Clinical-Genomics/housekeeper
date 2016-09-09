@@ -18,6 +18,7 @@ def case(name):
     Returns:
         Case or None: the case or None if not found
     """
+    # 'name' is a unique column so it will always return 1 or 0 records
     case_obj = Case.query.filter_by(name=name).first()
     return case_obj
 
@@ -31,7 +32,6 @@ def analysis(name):
     Returns:
         Analysis or None: the analysis or None if not found
     """
-    # 'name' is a unique column so it will always return 1 or 0 records
     analysis_obj = (Analysis.query.join(Analysis.case)
                             .filter(Case.name == name)
                             .first())

@@ -65,7 +65,8 @@ def analysis(manager, case, analysis, run):
     except Exception as error:
         log.warn("linking error: %s -> %s", asset.original_path, asset.path)
         log.debug('cleaning up database')
-        new_case.analysis.delete()
+        api.delete(new_case.analysis)
+        run.delete()
         manager.commit()
         raise error
 
