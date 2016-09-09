@@ -38,7 +38,7 @@ def init(context, db_only, reset, root):
     root_path = path(root).abspath()
     if root_path.exists():
         log.error("root path already exists: %s", root_path)
-        click.abort()
+        context.abort()
     uri = context.obj.get('database')
     db_uri = uri or "sqlite:///{}".format(root_path.joinpath('store.sqlite3'))
     setup_db(root_path, db_uri=db_uri, reset=reset)

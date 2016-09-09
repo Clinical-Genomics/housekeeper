@@ -4,7 +4,7 @@ import logging
 
 import click
 
-from .models import Analysis, Metadata
+from .models import Analysis, Case, Metadata
 from .utils import get_assets, get_manager
 from . import api
 
@@ -84,13 +84,14 @@ def list_cmd(context, analysis_id, compressed, names, limit):
 
     if analysis_id:
         log.debug("filter analyses on id pattern: ", analysis_id)
-        query = query.filter(Analysis.name.contains(analysis_id))
+        query = (query.join(Analysis.case)
+                      .filter(Case.name.contains(analysis_id)))
 
     if query.first() is None:
         log.warn('sorry, no analyses found')
     else:
         if names:
-            analysis_ids = (analysis.name for analysis in query)
+            analysis_ids = (analysis.case.name for analysis in query)
             click.echo(' '.join(analysis_ids))
         else:
             for analysis in query:

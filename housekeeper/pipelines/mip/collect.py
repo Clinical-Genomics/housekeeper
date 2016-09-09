@@ -38,9 +38,9 @@ def analysis(config_path, analysis_id=None):
     customer = family['InstanceTag'][0]
     name = "{}-{}".format(customer, fam_key)
     log.debug("build new analysis record: %s", name)
-    new_analysis, new_run = general_analysis(name, 'mip', version, analyzed_at,
-                                             sample_ids)
-    new_samples = {sample.name: sample for sample in new_analysis.samples}
+    new_objs = general_analysis(name, 'mip', version, analyzed_at, sample_ids)
+    new_samples = {sample.name: sample for sample in
+                   new_objs['analysis'].samples}
 
     ped = family['PedigreeFile']['Path']
     qcped = family['PedigreeFileAnalysis']['Path']
@@ -58,7 +58,7 @@ def analysis(config_path, analysis_id=None):
     qc_metrics = family['Program']['QCCollect']['QCCollectMetricsFile']['Path']
     log_file = family['lastLogFilePath']
 
-    meta_output = build_meta(new_analysis, new_run, qcped)
+    meta_output = build_meta(new_objs['case'].name, new_objs['run'], qcped)
 
     tmp_dir = tempfile.mkdtemp()
     meta_path = "{}/meta.yaml".format(tmp_dir)
@@ -158,8 +158,8 @@ def analysis(config_path, analysis_id=None):
 
     log.debug('assciate assets with analysis')
     for asset in assets:
-        new_analysis.assets.append(asset)
-    return new_analysis, new_run
+        new_objs['analysis'].assets.append(asset)
+    return new_objs
 
 
 def total_mapped(stream):

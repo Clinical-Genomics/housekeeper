@@ -10,4 +10,4 @@ def test_add_mip(invoke_cli, mip_output, setup_tmp):
     result = invoke_cli(['-d', setup_tmp['uri'], 'add', 'mip', config])
     # THEN it should add the analysis and files to the database
     assert result.exit_code == 0
-    assert Analysis.query.first().name == 'cust003-16074'
+    assert Analysis.query.first().case.name == 'cust003-16074'
