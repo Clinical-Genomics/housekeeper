@@ -3,7 +3,7 @@
 import logging
 import os
 
-from flask import abort, Flask, render_template, request, redirect
+from flask import abort, Flask, render_template, request, redirect, url_for
 from flask_alchy import Alchy
 from flask_bootstrap import Bootstrap
 
@@ -22,6 +22,12 @@ app.config.from_object(__name__)
 
 Bootstrap(app)
 db = Alchy(app, Model=Model)
+
+
+@app.route('/')
+def index():
+    """Just redirect for now."""
+    return redirect(url_for('cases'))
 
 
 @app.route('/cases')
