@@ -23,6 +23,11 @@ def case(name):
     return case_obj
 
 
+def cases():
+    """Get multiple cases from the database."""
+    return Case.query.order_by(Case.created_at.desc())
+
+
 def analysis(name):
     """Get an analysis from the database.
 

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+  {% for case in cases %}
+    {{ case_item(case) }}
+  {% endfor %}
+</div>
+{% endblock %}
+
+{% macro case_item(case) %}
+{% if case.analysis and case.analysis.archive_in < 10 %}
+  {% if case.analysis.archive_in < 3 %}
+    {% set panel_class = 'panel-danger' %}
+  {% else %}
+    {% set panel_class = 'panel-warning' %}
+  {% endif %}
+{% else %}
+  {% set panel_class = 'panel-default' %}
+{% endif %}
+
+<div class="panel {{ panel_class }}">
+  <div class="panel-heading">
+    <strong>{{ case.name }}</strong> runs
+    <div class="pull-right">
+      <form action="{{ url_for('case_postpone', case_name=case.name) }}" method="POST" accept-charset="utf-8">
+        <button class="btn btn-default btn-xs">
+          Archive: -{{ case.analysis.archive_in }} days
+          <span class="glyphicon glyphicon-repeat"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Pipeline</th>
+        <th>Version</th>
+        <th>Analyzed</th>
+        <th>Delivered</th>
+        <th>Archived</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for run in case.runs %}
+        <tr>
+          <td>{{ run.pipeline }}</td>
+          <td>{{ run.pipeline_version }}</td>
+          <td>{{ run.analyzed_at.date() }}</td>
+          <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
+          <td>{{ run.archived_at.date() if run.archived_at }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endmacro %}
