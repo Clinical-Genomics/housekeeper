@@ -57,8 +57,8 @@ def analysis(config_path, analysis_id=None, force=False):
     qcped = family['PedigreeFileAnalysis']['Path']
     bcf_raw = family['BCFFile']['Path']
     bcf_raw_index = "{}.csi".format(bcf_raw)
-    bcf_clinical = family['BCFFile']['Clinical']['Path']
-    bcf_research = family['BCFFile']['Research']['Path']
+    # bcf_clinical = family['BCFFile']['Clinical']['Path']
+    # bcf_research = family['BCFFile']['Research']['Path']
     vcf_clinical = family['VCFFile']['Clinical']['Path']
     vcf_research = family['VCFFile']['Research']['Path']
 
@@ -78,10 +78,10 @@ def analysis(config_path, analysis_id=None, force=False):
         general_asset(config_path, 'config', for_archive=True),
         general_asset(bcf_raw, 'bcf-raw', for_archive=True),
         general_asset(bcf_raw_index, 'bcf-raw-index'),
-        general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
-        general_asset(bcf_research, 'bcf-research', for_archive=True),
-        general_asset(vcf_clinical, 'vcf-clinical'),
-        general_asset(vcf_research, 'vcf-research'),
+        # general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
+        # general_asset(bcf_research, 'bcf-research', for_archive=True),
+        general_asset(vcf_clinical, 'vcf-clinical', for_archive=True),
+        general_asset(vcf_research, 'vcf-research', for_archive=True),
         general_asset(log_file, 'log', for_archive=True),
         general_asset(meta_path, 'meta', for_archive=True),
     ]
@@ -89,16 +89,20 @@ def analysis(config_path, analysis_id=None, force=False):
     # these are not required
     if 'SVBCFFile' in family:
         svbcf_raw = family['SVBCFFile']['Path']
-        svbcf_clinical = family['SVBCFFile']['Clinical']['Path']
-        svbcf_research = family['SVBCFFile']['Research']['Path']
+        # svbcf_clinical = family['SVBCFFile']['Clinical']['Path']
+        # svbcf_research = family['SVBCFFile']['Research']['Path']
         svvcf_clinical = family['SVVCFFile']['Clinical']['Path']
         svvcf_research = family['SVVCFFile']['Research']['Path']
 
         assets.append(general_asset(svbcf_raw, 'bcf-raw-sv', for_archive=True))
-        assets.append(general_asset(svbcf_clinical, 'bcf-clinical-sv', for_archive=True))
-        assets.append(general_asset(svbcf_research, 'bcf-research-sv', for_archive=True))
-        assets.append(general_asset(svvcf_clinical, 'vcf-clinical-sv'))
-        assets.append(general_asset(svvcf_research, 'vcf-research-sv'))
+        # assets.append(general_asset(svbcf_clinical, 'bcf-clinical-sv',
+        #                             for_archive=True))
+        # assets.append(general_asset(svbcf_research, 'bcf-research-sv',
+        #                             for_archive=True))
+        assets.append(general_asset(svvcf_clinical, 'vcf-clinical-sv',
+                                    for_archive=True))
+        assets.append(general_asset(svvcf_research, 'vcf-research-sv',
+                                    for_archive=True))
 
     for sample_id in sample_ids:
         log.debug("parse assets for sample: %s", sample_id)
