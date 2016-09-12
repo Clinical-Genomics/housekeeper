@@ -7,3 +7,15 @@ class AnalysisConflictError(Exception):
 
 class MissingFileError(Exception):
     pass
+
+
+class AnalysisNotFinishedError(Exception):
+    pass
+
+
+class UnsupportedVersionError(Exception):
+    pass
+
+
+class MalformattedPedigreeError(Exception):
+    pass

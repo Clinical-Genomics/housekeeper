@@ -1,3 +1,4 @@
 # -*- coding: utf-8 -*-
-from .models import Analysis, Asset, Sample, Model, Metadata, AnalysisRun
+from .models import (Analysis, AnalysisRun, Asset, Case, Metadata, Model,
+                     Sample)
 from .utils import get_manager, get_assets
