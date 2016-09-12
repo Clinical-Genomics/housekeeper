@@ -3,9 +3,8 @@ import datetime
 import logging
 
 import click
-from path import path
 
-from .models import Analysis, Metadata
+from .models import Analysis, Case, Metadata
 from .utils import get_assets, get_manager
 from . import api
 
@@ -37,7 +36,7 @@ def delete(context, name):
         click.echo("sorry, couldn't find an analysis by that name")
     else:
         meta = Metadata.query.first()
-        analysis_root = path(meta.analyses_root).joinpath(name)
+        analysis_root = meta.root_path.joinpath(name)
         click.echo("you are about to delete: {}".format(analysis_root))
         if click.confirm('Are you sure?'):
             api.delete(analysis_obj)
@@ -81,17 +80,18 @@ def postpone(context, days, analysis_id):
 def list_cmd(context, analysis_id, compressed, names, limit):
     """List added analyses."""
     get_manager(context.obj['database'])
-    query = Analysis.query.order_by(Analysis.analyzed_at).limit(limit)
+    query = Analysis.query.order_by(Analysis.created_at).limit(limit)
 
     if analysis_id:
         log.debug("filter analyses on id pattern: ", analysis_id)
-        query = query.filter(Analysis.name.contains(analysis_id))
+        query = (query.join(Analysis.case)
+                      .filter(Case.name.contains(analysis_id)))
 
     if query.first() is None:
         log.warn('sorry, no analyses found')
     else:
         if names:
-            analysis_ids = (analysis.name for analysis in query)
+            analysis_ids = (analysis.case.name for analysis in query)
             click.echo(' '.join(analysis_ids))
         else:
             for analysis in query:

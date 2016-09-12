@@ -3,30 +3,20 @@ import logging
 
 import click
 from path import path
-import yaml
 
 from housekeeper.store import get_manager, Metadata
 
 log = logging.getLogger(__name__)
 
 
-def setup(root_path, db_uri):
-    """Setup a new structure and database."""
-    log.info("create the root directory: %s", root_path)
-    abs_root = path(root_path).abspath()
-    abs_root.joinpath('analyses').makedirs_p()
+def setup_db(root_path, db_uri, reset=False):
+    """Setup database with tables and store config.
 
-    config = abs_root.joinpath('housekeeper.yaml')
-    log.info("generate a config file: %s", config)
-    data = dict(database=db_uri, root=str(abs_root))
-    with config.open('w') as stream:
-        dump = yaml.dump(data, default_flow_style=False, allow_unicode=True)
-        stream.write(dump.decode('utf-8'))
-
-
-def setup_db(root_path, uri=None, reset=False):
-    abs_root = path(root_path).abspath()
-    db_uri = uri or "sqlite:///{}".format(abs_root.joinpath('store.sqlite3'))
+    Args:
+        root_path (path): root to store analyses
+        db_uri (str): connection string to database
+        reset (Optional[bool]): whether to reset an existing database
+    """
     log.info("setup a new database: %s", db_uri)
     db = get_manager(db_uri)
     if reset:
@@ -34,9 +24,8 @@ def setup_db(root_path, uri=None, reset=False):
     db.create_all()
 
     log.debug('add metadata about the system')
-    meta = Metadata(root=abs_root)
+    meta = Metadata(root=root_path)
     db.add_commit(meta)
-    return db_uri
 
 
 @click.command()
@@ -46,10 +35,13 @@ def setup_db(root_path, uri=None, reset=False):
 @click.pass_context
 def init(context, db_only, reset, root):
     """Setup the housekeeper."""
-    db_uri = setup_db(root, uri=context.obj.get('database'), reset=reset)
+    root_path = path(root).abspath()
+    if root_path.exists():
+        log.error("root path already exists: %s", root_path)
+        context.abort()
+    uri = context.obj.get('database')
+    db_uri = uri or "sqlite:///{}".format(root_path.joinpath('store.sqlite3'))
+    setup_db(root_path, db_uri=db_uri, reset=reset)
     if not db_only:
-        if path(root).exists():
-            log.error("root folder already exists: %s", root)
-            context.abort()
-        else:
-            setup(root, db_uri)
+        log.info("create root folder to store analyses: %s", root)
+        path(root).makedirs_p()

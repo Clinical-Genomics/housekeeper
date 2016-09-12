@@ -489,4 +489,3 @@
           OutDirectory: tests/fixtures/mip/cust003/16074/analysis/genomes/ADM1594A12/bwa/gatk/varianteval
           OutFile: ADM1594A12_lanes_7777_sorted_md_rreal_brecal_gvcf_vrecal_comb_BOTH_exome.vcf.varianteval
     Sex: 1
-

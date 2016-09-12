@@ -10,8 +10,6 @@ Housekeeper is a tool for keeping track of **successful** analyses. It will mana
 
 It's outside the scope of the tool to store results and provide detailed access to them. Housekeeper will only provide easy access to reading in the data by other tools.
 
-**QUESTION**: should we allow for samples to belong to multiple analyses?
-
 ## Usage guide
 
 ### Setup
@@ -36,11 +34,11 @@ $ housekeeper add mip /path/to/familyId_config.yaml
 
 This command will do some pre-processing and collect assets to be linked. In the case of MIP it will pre-calculate the mapping rate since it isn't available in the main QC metrics file.
 
-Housekeeper will use create an analysis id in the format of `[customerId]-[familyId]`.
+Housekeeper will create an analysis id in the format of `[customerId]-[familyId]`.
 
 ### Deleting an existing analysis
 
-You can of course delete an analysis you've stored in the database. It will remove the reference to the analysis along with all the links to the assets.
+You can of course delete an analysis you've stored in the database. It will remove the reference to the analysis along with all the links to the assets. It will keep a reference to the run and the case, however.
 
 ```bash
 $ housekeeper delete customer-family
@@ -90,10 +88,6 @@ SQL(ite) database containing references to the analyses and in which state they 
 ### CLI
 
 Likely the main entry point for accessing the API. However, it should to do the least possible. Abstract away anything that isn't directly concerning parsing command line arguments etc. Uses the Click-framework.
-
-### Web interface
-
-Built using the Flask-framework. Barebones. Should provide overviews for analyses in different states. Could additionally provide access to manually archiving/unarchiving analyses.
 
 ## File structure
 

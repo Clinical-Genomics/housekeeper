@@ -3,12 +3,12 @@ from __future__ import division
 import csv
 import logging
 import re
-import tempfile
 
 from path import path
 import yaml
 
-from housekeeper.exc import MissingFileError
+from housekeeper.exc import (MissingFileError, AnalysisNotFinishedError,
+                             UnsupportedVersionError)
 from housekeeper.pipelines.general.add import asset as general_asset
 from housekeeper.pipelines.general.add import analysis as general_analysis
 from .meta import build_meta
@@ -18,7 +18,7 @@ MULTIQC_SAMTOOLS = 'multiqc/multiqc_data/multiqc_samtools.txt'
 log = logging.getLogger(__name__)
 
 
-def analysis(config_path, analysis_id=None):
+def analysis(config_path, analysis_id=None, force=False):
     """Prepare info for a MIP analysis."""
     log.debug("parse config YAML: %s", config_path)
     with open(config_path, 'r') as stream:
@@ -32,36 +32,42 @@ def analysis(config_path, analysis_id=None):
     fam_key = sampleinfo.keys()[0]
     family = sampleinfo[fam_key][fam_key]
 
+    run_status = family['AnalysisRunStatus']
+    if run_status != 'Finished':
+        log.warn("analysis not finished: %s", run_status)
+        if not force:
+            raise AnalysisNotFinishedError(fam_key)
+
     analyzed_at = family['AnalysisDate']
     version = family['MIPVersion']
+    if not version.startswith('v3'):
+        log.warn("analysis to old: %s", version)
+        if not force:
+            raise UnsupportedVersionError(fam_key)
+
     sample_ids = config['sampleIDs']
     customer = family['InstanceTag'][0]
     name = "{}-{}".format(customer, fam_key)
     log.debug("build new analysis record: %s", name)
-    new_analysis = general_analysis(name, 'mip', version, analyzed_at,
-                                    sample_ids)
-    new_samples = {sample.name: sample for sample in new_analysis.samples}
+    new_objs = general_analysis(name, 'mip', version, analyzed_at, sample_ids)
+    new_samples = {sample.name: sample for sample in
+                   new_objs['analysis'].samples}
 
     ped = family['PedigreeFile']['Path']
     qcped = family['PedigreeFileAnalysis']['Path']
     bcf_raw = family['BCFFile']['Path']
     bcf_raw_index = "{}.csi".format(bcf_raw)
-    bcf_clinical = family['BCFFile']['Clinical']['Path']
-    bcf_research = family['BCFFile']['Research']['Path']
+    # bcf_clinical = family['BCFFile']['Clinical']['Path']
+    # bcf_research = family['BCFFile']['Research']['Path']
     vcf_clinical = family['VCFFile']['Clinical']['Path']
     vcf_research = family['VCFFile']['Research']['Path']
-    svbcf_raw = family['SVBCFFile']['Path']
-    svbcf_clinical = family['SVBCFFile']['Clinical']['Path']
-    svbcf_research = family['SVBCFFile']['Research']['Path']
-    svvcf_clinical = family['SVVCFFile']['Clinical']['Path']
-    svvcf_research = family['SVVCFFile']['Research']['Path']
+
     qc_metrics = family['Program']['QCCollect']['QCCollectMetricsFile']['Path']
     log_file = family['lastLogFilePath']
 
-    meta_output = build_meta(new_analysis, qcped)
+    meta_output = build_meta(new_objs['case'].name, new_objs['run'], qcped)
 
-    tmp_dir = tempfile.mkdtemp()
-    meta_path = "{}/meta.yaml".format(tmp_dir)
+    meta_path = "{}/meta.yaml".format(config['outDataDir'])
     with open(meta_path, 'w') as out_handle:
         out_handle.write(meta_output)
 
@@ -72,18 +78,31 @@ def analysis(config_path, analysis_id=None):
         general_asset(config_path, 'config', for_archive=True),
         general_asset(bcf_raw, 'bcf-raw', for_archive=True),
         general_asset(bcf_raw_index, 'bcf-raw-index'),
-        general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
-        general_asset(bcf_research, 'bcf-research', for_archive=True),
-        general_asset(vcf_clinical, 'vcf-clinical'),
-        general_asset(vcf_research, 'vcf-research'),
-        general_asset(svbcf_raw, 'bcf-raw-sv', for_archive=True),
-        general_asset(svbcf_clinical, 'bcf-clinical-sv', for_archive=True),
-        general_asset(svbcf_research, 'bcf-research-sv', for_archive=True),
-        general_asset(svvcf_clinical, 'vcf-clinical-sv'),
-        general_asset(svvcf_research, 'vcf-research-sv'),
+        # general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
+        # general_asset(bcf_research, 'bcf-research', for_archive=True),
+        general_asset(vcf_clinical, 'vcf-clinical', for_archive=True),
+        general_asset(vcf_research, 'vcf-research', for_archive=True),
         general_asset(log_file, 'log', for_archive=True),
         general_asset(meta_path, 'meta', for_archive=True),
     ]
+
+    # these are not required
+    if 'SVBCFFile' in family:
+        svbcf_raw = family['SVBCFFile']['Path']
+        # svbcf_clinical = family['SVBCFFile']['Clinical']['Path']
+        # svbcf_research = family['SVBCFFile']['Research']['Path']
+        svvcf_clinical = family['SVVCFFile']['Clinical']['Path']
+        svvcf_research = family['SVVCFFile']['Research']['Path']
+
+        assets.append(general_asset(svbcf_raw, 'bcf-raw-sv', for_archive=True))
+        # assets.append(general_asset(svbcf_clinical, 'bcf-clinical-sv',
+        #                             for_archive=True))
+        # assets.append(general_asset(svbcf_research, 'bcf-research-sv',
+        #                             for_archive=True))
+        assets.append(general_asset(svvcf_clinical, 'vcf-clinical-sv',
+                                    for_archive=True))
+        assets.append(general_asset(svvcf_research, 'vcf-research-sv',
+                                    for_archive=True))
 
     for sample_id in sample_ids:
         log.debug("parse assets for sample: %s", sample_id)
@@ -158,8 +177,8 @@ def analysis(config_path, analysis_id=None):
 
     log.debug('assciate assets with analysis')
     for asset in assets:
-        new_analysis.assets.append(asset)
-    return new_analysis
+        new_objs['analysis'].assets.append(asset)
+    return new_objs
 
 
 def total_mapped(stream):

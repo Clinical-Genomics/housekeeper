@@ -4,28 +4,49 @@ import logging
 
 from path import path
 
-from housekeeper.store import Metadata, Analysis
+from housekeeper.store import Metadata, AnalysisRun, api
 from housekeeper.exc import AnalysisConflictError
 
 BLOCKSIZE = 65536
 log = logging.getLogger(__name__)
 
 
-def analysis(manager, analysis_obj):
+def check_existing(name, analysis_obj, run_obj):
+    """Check if the analysis is already added."""
+    old_analysis = api.analysis(name)
+    if old_analysis:
+        query = api.runs(name).filter(AnalysisRun.analyzed_at == run_obj.analyzed_at)
+        old_run = query.first()
+        if old_run:
+            return old_analysis, old_run
+        else:
+            # loaded before, this is a new run
+            return old_analysis, None
+    else:
+        # not loaded before
+        return None, None
+
+
+def analysis(manager, case, analysis, run):
     """Store an analysis with files to the backend."""
-    log.debug("check if analysis is already added: %s", analysis_obj.name)
-    if Analysis.query.filter_by(name=analysis_obj.name).first():
-        raise AnalysisConflictError(
-            "'{}' already added".format(analysis_obj.name))
+    log.debug("check if case is already added: %s", case.name)
+    old_case = api.case(case.name)
+    if old_case:
+        new_case = old_case
+    else:
+        new_case = case
+
+    new_case.analysis = analysis
+    new_case.runs.append(run)
 
     meta = Metadata.query.first()
-    analysis_root = path(meta.analyses_root).joinpath(analysis_obj.name)
+    analysis_root = meta.root_path.joinpath(new_case.name)
     if analysis_root.isdir():
-        raise AnalysisConflictError(
-            "'{}' already exists".format(analysis_root))
+        raise AnalysisConflictError("'{}' analysis output exists"
+                                    .format(analysis_root))
     analysis_root.makedirs_p()
 
-    for asset in analysis_obj.assets:
+    for asset in new_case.analysis.assets:
         original_path = path(asset.original_path)
         filename = original_path.basename()
         log.info("adding asset: %s", filename)
@@ -35,16 +56,17 @@ def analysis(manager, analysis_obj):
         # asset.checksum = sha1
 
     log.debug("commit new analysis to database")
-    manager.add_commit(analysis_obj)
+    manager.add_commit(new_case)
 
     try:
-        for asset in analysis_obj.assets:
+        for asset in new_case.analysis.assets:
             log.debug("link asset: %s -> %s", asset.original_path, asset.path)
             path(asset.original_path).link(asset.path)
     except Exception as error:
         log.warn("linking error: %s -> %s", asset.original_path, asset.path)
         log.debug('cleaning up database')
-        analysis_obj.delete()
+        api.delete(new_case.analysis)
+        run.delete()
         manager.commit()
         raise error
 

@@ -4,7 +4,7 @@ import json
 
 import alchy
 from path import path
-from sqlalchemy import Column, ForeignKey, orm, types
+from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 
 from housekeeper.constants import PIPELINES
 
@@ -29,7 +29,6 @@ Model = alchy.make_declarative_base(Base=JsonModel)
 
 
 class Metadata(Model):
-
     """Store information about the system."""
 
     id = Column(types.Integer, primary_key=True)
@@ -37,35 +36,57 @@ class Metadata(Model):
     root = Column(types.String(128), nullable=False)
 
     @property
-    def analyses_root(self):
-        return path(self.root).joinpath('analyses')
+    def root_path(self):
+        return path(self.root)
 
 
-class Analysis(Model):
-
-    """Analysis record."""
+class Case(Model):
+    """Store a permanent reference to a case."""
 
     id = Column(types.Integer, primary_key=True)
     name = Column(types.String(128), unique=True)
+    created_at = Column(types.DateTime, default=datetime.now)
 
-    # metadata
+    runs = orm.relationship('AnalysisRun', cascade='all,delete',
+                            backref='case')
+    analysis = orm.relationship('Analysis', uselist=False,
+                                backref='case', cascade='all,delete')
+
+
+class AnalysisRun(Model):
+    """Store information about a specific analysis run."""
+
+    __tablename__ = 'analysis_run'
+    __table_args__ = (UniqueConstraint('case_id', 'analyzed_at',
+                                       name='_uc_analysis_analyzed_at'),)
+
+    id = Column(types.Integer, primary_key=True)
+    created_at = Column(types.DateTime, default=datetime.now)
     pipeline = Column(types.Enum(*PIPELINES))
     pipeline_version = Column(types.String(32))
     analyzed_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
     archived_at = Column(types.DateTime)
-    will_archive_at = Column(types.DateTime)
-
-    # status (internal)
     status = Column(types.Enum('active', 'archived'))
 
-    # assets
+    case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
+
+
+class Analysis(Model):
+    """Analysis record."""
+
+    id = Column(types.Integer, primary_key=True)
+    created_at = Column(types.DateTime, default=datetime.now)
+    will_archive_at = Column(types.DateTime)
+
+    case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='analysis')
     samples = orm.relationship('Sample', cascade='all,delete', backref='analysis')
 
     def to_dict(self, skip_samples=False):
         """Also include samples in the dict serialization."""
         analysis_dict = super(Analysis, self).to_dict()
+        analysis_dict['name'] = self.case.name
         if not skip_samples:
             sample_dicts = [sample.to_dict() for sample in self.samples]
             analysis_dict['samples'] = sample_dicts
@@ -73,20 +94,17 @@ class Analysis(Model):
 
 
 class Sample(Model):
-
     """Sample record."""
 
     id = Column(types.Integer, primary_key=True)
     name = Column(types.String(32), unique=True)
 
-    # relationships
     analysis_id = Column(types.Integer, ForeignKey('analysis.id'),
                          nullable=False)
     assets = orm.relationship('Asset', backref='sample')
 
 
 class Asset(Model):
-
     """Asset/file belonging to an analysis."""
 
     id = Column(types.Integer, primary_key=True)
@@ -96,7 +114,6 @@ class Asset(Model):
     category = Column(types.String(32))
     to_archive = Column(types.Boolean)
 
-    # relationships
     analysis_id = Column(types.Integer, ForeignKey('analysis.id'),
                          nullable=False)
     sample_id = Column(types.Integer, ForeignKey('sample.id'))

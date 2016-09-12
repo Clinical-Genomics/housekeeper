@@ -4,10 +4,10 @@ import logging
 
 def init_log(logger, filename=None, loglevel=None):
     """Initializes the log file in the proper format.
-    Arguments:
-        filename (str): Path to a file. Or None if logging is to
-                         be disabled.
-        loglevel (str): Determines the level of the log output.
+
+    Args:
+        filename (Optional[path]): default is no logging to file
+        loglevel (Optional[str]): determine the level of log output
     """
     template = "[%(asctime)s] %(levelname)-8s: %(name)-25s: %(message)s"
     formatter = logging.Formatter(template)
