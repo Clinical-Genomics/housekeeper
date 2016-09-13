@@ -82,7 +82,7 @@ class Analysis(Model):
 
     id = Column(types.Integer, primary_key=True)
     created_at = Column(types.DateTime, default=datetime.now)
-    will_cleanup_at = Column(types.Date)
+    will_cleanup_at = Column(types.DateTime)
 
     case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='analysis')

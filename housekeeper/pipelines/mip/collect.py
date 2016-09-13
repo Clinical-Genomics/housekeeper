@@ -77,7 +77,7 @@ def analysis(config_path, analysis_id=None, force=False):
         general_asset(sampleinfo_path, 'sampleinfo', for_archive=True),
         general_asset(config_path, 'config', for_archive=True),
         general_asset(bcf_raw, 'bcf-raw', for_archive=True),
-        general_asset(bcf_raw_index, 'bcf-raw-index'),
+        general_asset(bcf_raw_index, 'bcf-raw-index', for_archive=True),
         # general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
         # general_asset(bcf_research, 'bcf-research', for_archive=True),
         general_asset(vcf_clinical, 'vcf-clinical', for_archive=True),
@@ -88,21 +88,24 @@ def analysis(config_path, analysis_id=None, force=False):
 
     # these are not required
     if 'SVBCFFile' in family:
-        svbcf_raw = family['SVBCFFile']['Path']
+        svfiles = [
+            ('bcf-raw-sv', family['SVBCFFile']['Path']),
+            ('vcf-clinical-sv', family['SVVCFFile']['Clinical']['Path']),
+            ('vcf-research-sv', family['SVVCFFile']['Research']['Path']),
+        ]
         # svbcf_clinical = family['SVBCFFile']['Clinical']['Path']
         # svbcf_research = family['SVBCFFile']['Research']['Path']
-        svvcf_clinical = family['SVVCFFile']['Clinical']['Path']
-        svvcf_research = family['SVVCFFile']['Research']['Path']
 
-        assets.append(general_asset(svbcf_raw, 'bcf-raw-sv', for_archive=True))
+        for category, file_path in svfiles:
+            if path(file_path).exists():
+                assets.append(general_asset(file_path, category,
+                                            for_archive=True))
+            else:
+                log.warn("skipping missing file: %s", file_path)
         # assets.append(general_asset(svbcf_clinical, 'bcf-clinical-sv',
         #                             for_archive=True))
         # assets.append(general_asset(svbcf_research, 'bcf-research-sv',
         #                             for_archive=True))
-        assets.append(general_asset(svvcf_clinical, 'vcf-clinical-sv',
-                                    for_archive=True))
-        assets.append(general_asset(svvcf_research, 'vcf-research-sv',
-                                    for_archive=True))
 
     for sample_id in sample_ids:
         log.debug("parse assets for sample: %s", sample_id)
