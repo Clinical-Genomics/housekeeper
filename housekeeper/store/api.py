@@ -54,33 +54,38 @@ def delete(run_obj):
         run_obj (AnalysisRun): the analysis run to delete
     """
     run_dir = get_rundir(run_obj.case.name, run_obj)
-    log.info("removing files under: %s", run_dir)
-    run_dir.rmtree_p()
+    delete_dir(run_dir)
     run_obj.delete()
 
 
-def archive(run_obj):
-    """Archive an analysis run.
-
-    Args:
-        run_obj (AnalysisRun): the analysis run to archive
-    """
-    # mark case as "archived"
-    run_obj.archived_at = datetime.datetime.now()
-
-
-def clean_up(run_obj, keep_archive=False):
+def clean_up(run_obj, force=False):
     """Clean up files for an analysis."""
-    # remove all files that aren't marked for archive
-    for asset in run_obj.assets:
-        if not asset.archive_type or not keep_archive:
-            log.info("removing asset", asset.path)
-            path(asset.path).remove()
-            asset.delete()
+    # check if run is ready
+    if not force and not all([run_obj.archived_at, run_obj.delivered_at]):
+        # not ready for clean up!
+        log.warn("run not ready for clean up")
+    else:
+        for asset in run_obj.assets:
+            if not asset.archive_type:
+                asset.delete()
+            else:
+                asset.is_local = False
 
-    run_obj.cleanedup_at = datetime.datetime.now()
+        run_dir = get_rundir(run_obj.case.name, run_obj)
+        log.info("removing rundir: %s", run_dir)
+        delete_dir(run_dir)
+        run_obj.cleanedup_at = datetime.datetime.now()
 
 
 def postpone(run_obj, time=datetime.timedelta(days=30)):
     """Postpone the automatic archival of analysis by X time."""
     run_obj.will_cleanup_at += time
+
+
+def delete_dir(directory):
+    directory_path = path(directory)
+    if directory_path.exists():
+        log.info("removing files under: %s", directory)
+        directory_path.rmtree_p()
+    else:
+        log.debug("run directory not found: %s", directory)

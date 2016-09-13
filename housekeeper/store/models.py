@@ -74,6 +74,8 @@ class AnalysisRun(Model):
 
     data_checksum = Column(types.String(128))
     result_checksum = Column(types.String(128))
+    data_archive = Column(types.String(256))
+    result_archive = Column(types.String(256))
 
     case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='run')

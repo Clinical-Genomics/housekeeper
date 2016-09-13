@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import hashlib
 import logging
 
 from path import path
@@ -8,7 +7,6 @@ from housekeeper.store import AnalysisRun, api
 from housekeeper.store.utils import get_rundir
 from housekeeper.exc import AnalysisConflictError
 
-BLOCKSIZE = 65536
 log = logging.getLogger(__name__)
 
 
@@ -54,14 +52,3 @@ def analysis(manager, case, run):
         api.delete(run)
         manager.commit()
         raise error
-
-
-def checksum(path):
-    """Calculcate checksum for a file."""
-    hasher = hashlib.sha1()
-    with open(path, 'rb') as stream:
-        buf = stream.read(BLOCKSIZE)
-        while len(buf) > 0:
-            hasher.update(buf)
-            buf = stream.read(BLOCKSIZE)
-    return hasher.hexdigest()
