@@ -55,12 +55,14 @@
     <td>{{ run.analyzed_at.date() }}</td>
     <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
     <td>
-      {% if run.archived_at %}
-        {{ run.archived_at }}
+      {{ run.archived_at.date() if run.archived_at }}
+    </td>
+    <td>
+      {% if run.cleanedup_at %}
+        {{ run.cleanedup_at }}
       {% else %}
         {{ postpone_btn(case) }}
       {% endif %}
     </td>
-    <td>{{ run.celanedup_at.date() if run.celanedup_at }}</td>
   </tr>
 {% endmacro %}
