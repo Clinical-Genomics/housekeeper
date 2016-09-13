@@ -80,16 +80,22 @@ def archive(analysis_obj):
     Args:
         analysis_obj (Analysis): the analysis to delete
     """
+    # mark case as "archived"
+    analysis_obj.archived_at = datetime.datetime.now()
+
+
+def clean_up(analysis_obj, save_archive=False):
+    """Clean up files for an analysis."""
     # remove all files that aren't marked for archive
     for asset in analysis_obj.assets:
-        if not asset.to_archive:
+        if not asset.to_archive or not save_archive:
+            log.info("removing asset", asset.path)
             path(asset.path).remove()
             asset.delete()
 
-    # marked the case as "archived"
-    analysis_obj.status = 'archived'
+    analysis_obj.cleanedup_at = datetime.datetime.now()
 
 
 def postpone(analysis_obj, time=datetime.timedelta(days=30)):
     """Postpone the automatic archival of analysis by X time."""
-    analysis_obj.will_archive_at += time
+    analysis_obj.will_cleanup_at += time

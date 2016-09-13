@@ -1,7 +1,7 @@
 
 {% macro postpone_btn(case) %}
-  {% if case.analysis and case.analysis.archive_in < 10 %}
-    {% if case.analysis.archive_in < 3 %}
+  {% if case.analysis and case.analysis.cleanup_in < 10 %}
+    {% if case.analysis.cleanup_in < 3 %}
       {% set btn_class = 'btn-danger' %}
     {% else %}
       {% set btn_class = 'btn-warning' %}
@@ -12,7 +12,7 @@
 
   <form action="{{ url_for('case_postpone', case_name=case.name) }}" method="POST" accept-charset="utf-8">
     <button class="btn {{ btn_class }} btn-xs">
-      - {{ case.analysis.archive_in }} days
+      - {{ case.analysis.cleanup_in }} days
       <span class="glyphicon glyphicon-repeat"></span>
     </button>
   </form>
@@ -25,9 +25,10 @@
         <th>Case</th>
         <th>Pipeline</th>
         <th>Version</th>
-        <th>Analyzed</th>
-        <th>Delivered</th>
-        <th>Archived</th>
+        <th>Analyzed at</th>
+        <th>Delivered at</th>
+        <th>Archived at</th>
+        <th>Cleaned up at</th>
       </tr>
     </thead>
     <tbody>
@@ -60,5 +61,6 @@
         {{ postpone_btn(case) }}
       {% endif %}
     </td>
+    <td>{{ run.celanedup_at.date() if run.celanedup_at }}</td>
   </tr>
 {% endmacro %}

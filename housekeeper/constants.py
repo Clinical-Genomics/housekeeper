@@ -2,5 +2,5 @@
 from datetime import timedelta
 
 PIPELINES = ('mip',)
-# three months before archive by default
-TIME_TO_ARCHIVE = timedelta(days=(30 * 3))
+# three months before clean up by default
+TIME_TO_CLEANUP = timedelta(days=(30 * 3))

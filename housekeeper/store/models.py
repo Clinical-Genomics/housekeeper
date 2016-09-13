@@ -72,6 +72,7 @@ class AnalysisRun(Model):
     analyzed_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
     archived_at = Column(types.DateTime)
+    cleanedup_at = Column(types.DateTime)
 
     case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
 
@@ -81,16 +82,16 @@ class Analysis(Model):
 
     id = Column(types.Integer, primary_key=True)
     created_at = Column(types.DateTime, default=datetime.now)
-    will_archive_at = Column(types.Date)
+    will_cleanup_at = Column(types.Date)
 
     case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='analysis')
     samples = orm.relationship('Sample', cascade='all,delete', backref='analysis')
 
     @property
-    def archive_in(self):
+    def cleanup_in(self):
         """Return number of days until archive happens."""
-        time_diff = self.will_archive_at - datetime.today()
+        time_diff = self.will_cleanup_at - datetime.today()
         return time_diff.days
 
     def to_dict(self, skip_samples=False):

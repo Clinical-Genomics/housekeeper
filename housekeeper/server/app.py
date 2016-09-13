@@ -54,7 +54,7 @@ def case(name):
 
 @app.route('/cases/<case_name>/postpone', methods=['POST'])
 def case_postpone(case_name):
-    """Postpone case archival date."""
+    """Postpone case clean up date."""
     case_obj = api.case(case_name)
     if case_obj is None:
         return abort(404)

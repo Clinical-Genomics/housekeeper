@@ -25,6 +25,21 @@ def archive(context, name):
         manager.commit()
 
 
+@click.command('clean-up')
+@click.option('--save-archive', is_flag=True, default=False)
+@click.argument('name')
+@click.pass_context
+def cleanup(context, save_archive, name):
+    """Clean up files for an analysis."""
+    manager = get_manager(context.obj['database'])
+    analysis_obj = api.analysis(name)
+    if analysis_obj is None:
+        click.echo("sorry, couldn't find an analysis by that name")
+    elif click.confirm('Are you sure?'):
+        api.clean_up(analysis_obj, save_archive=save_archive)
+        manager.commit()
+
+
 @click.command()
 @click.argument('name')
 @click.pass_context

@@ -36,6 +36,7 @@ def mip(context, force, yes, config):
         existing_run = api.runs(name=case_name).first()
         is_delivered = 'yes' if existing_run.delivered_at else 'no'
         is_archived = 'yes' if existing_run.archived_at else 'no'
+        is_cleanedup = 'yes' if existing_run.cleanedup_at else 'no'
         if old_run:
             click.echo("identical run detected: {}".format(case_name))
             if not force:
@@ -44,7 +45,8 @@ def mip(context, force, yes, config):
                 manager.delete_commit(old_run)
 
         click.echo("analysis already loaded: {}".format(case_name))
-        click.echo("delivered: {}, archived: {}".format(is_delivered, is_archived))
+        click.echo("delivered: {}, archived: {}, cleaned up: {}"
+                   .format(is_delivered, is_archived, is_cleanedup))
         question = "old analysis run detected, replace it?"
         if force or yes or click.confirm(question):
             # delete it!

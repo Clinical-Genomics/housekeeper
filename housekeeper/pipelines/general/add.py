@@ -5,7 +5,7 @@ import logging
 from path import path
 
 from housekeeper.store import Analysis, Case, Sample, Asset, AnalysisRun
-from housekeeper.constants import TIME_TO_ARCHIVE
+from housekeeper.constants import TIME_TO_CLEANUP
 
 log = logging.getLogger(__name__)
 
@@ -23,7 +23,7 @@ def analysis(name, pipeline, version, analyzed_at, samples=None):
                           status='active')
 
     # set the future date for archiving
-    new_analysis.will_archive_at = datetime.now() + TIME_TO_ARCHIVE
+    new_analysis.will_cleanup_at = datetime.now() + TIME_TO_CLEANUP
 
     for sample_id in (samples or []):
         new_analysis.samples.append(Sample(name=sample_id))
