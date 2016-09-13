@@ -48,9 +48,14 @@ class Case(Model):
     created_at = Column(types.DateTime, default=datetime.now)
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
-                            backref='case')
+                            backref='case', order_by='-AnalysisRun.id')
     analysis = orm.relationship('Analysis', uselist=False,
                                 backref='case', cascade='all,delete')
+
+    @property
+    def current(self):
+        """Return the current (active) run."""
+        return self.runs[0]
 
 
 class AnalysisRun(Model):
@@ -122,3 +127,7 @@ class Asset(Model):
     analysis_id = Column(types.Integer, ForeignKey('analysis.id'),
                          nullable=False)
     sample_id = Column(types.Integer, ForeignKey('sample.id'))
+
+    @property
+    def basename(self):
+        return path(self.path).basename()

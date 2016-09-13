@@ -1,0 +1,64 @@
+
+{% macro postpone_btn(case) %}
+  {% if case.analysis and case.analysis.archive_in < 10 %}
+    {% if case.analysis.archive_in < 3 %}
+      {% set btn_class = 'btn-danger' %}
+    {% else %}
+      {% set btn_class = 'btn-warning' %}
+    {% endif %}
+  {% else %}
+    {% set btn_class = 'btn-default' %}
+  {% endif %}
+
+  <form action="{{ url_for('case_postpone', case_name=case.name) }}" method="POST" accept-charset="utf-8">
+    <button class="btn {{ btn_class }} btn-xs">
+      - {{ case.analysis.archive_in }} days
+      <span class="glyphicon glyphicon-repeat"></span>
+    </button>
+  </form>
+{% endmacro %}
+
+{% macro runs_table(case=None, cases=None) %}
+  <table class="table table-bordered table-hover">
+    <thead>
+      <tr>
+        <th>Case</th>
+        <th>Pipeline</th>
+        <th>Version</th>
+        <th>Analyzed</th>
+        <th>Delivered</th>
+        <th>Archived</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if case %}
+        {% for run in case.runs %}
+          {{ run_row(case, run) }}
+        {% endfor %}
+      {% elif cases %}
+        {% for case in cases %}
+          {{ run_row(case, case.current) }}
+        {% endfor %}
+      {% endif %}
+    </tbody>
+  </table>
+{% endmacro %}
+
+{% macro run_row(case, run) %}
+  <tr>
+    <td>
+      <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
+    </td>
+    <td>{{ run.pipeline }}</td>
+    <td>{{ run.pipeline_version }}</td>
+    <td>{{ run.analyzed_at.date() }}</td>
+    <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
+    <td>
+      {% if run.archived_at %}
+        {{ run.archived_at }}
+      {% else %}
+        {{ postpone_btn(case) }}
+      {% endif %}
+    </td>
+  </tr>
+{% endmacro %}

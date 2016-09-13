@@ -23,9 +23,12 @@ def case(name):
     return case_obj
 
 
-def cases():
+def cases(query_str=None):
     """Get multiple cases from the database."""
-    return Case.query.order_by(Case.created_at.desc())
+    query = Case.query.order_by(Case.created_at.desc())
+    if query_str:
+        query = query.filter(Case.name.like("%{}%".format(query_str)))
+    return query
 
 
 def analysis(name):

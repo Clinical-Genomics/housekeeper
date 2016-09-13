@@ -33,8 +33,23 @@ def index():
 @app.route('/cases')
 def cases():
     """Overview all loaded cases."""
-    cases_q = api.cases().limit(20)
-    return render_template('cases.html', cases=cases_q)
+    page = int(request.args.get('page', '1'))
+    qargs = {
+        'query_str': request.args.get('query_str'),
+        'per_page': 20,
+    }
+    cases_q = api.cases(query_str=qargs['query_str'])
+    cases_page = cases_q.paginate(page, per_page=qargs['per_page'])
+    return render_template('cases.html', cases=cases_page, qargs=qargs)
+
+
+@app.route('/cases/<name>')
+def case(name):
+    """Show more information about a case."""
+    case_obj = api.case(name)
+    if case_obj is None:
+        return abort(404)
+    return render_template('case.html', case=case_obj)
 
 
 @app.route('/cases/<case_name>/postpone', methods=['POST'])
