@@ -6,7 +6,7 @@ import alchy
 from path import path
 from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 
-from housekeeper.constants import PIPELINES
+from housekeeper.constants import PIPELINES, ARCHIVE_TYPES
 
 
 def json_serial(obj):
@@ -49,8 +49,6 @@ class Case(Model):
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
                             backref='case', order_by='-AnalysisRun.id')
-    analysis = orm.relationship('Analysis', uselist=False,
-                                backref='case', cascade='all,delete')
 
     @property
     def current(self):
@@ -61,7 +59,6 @@ class Case(Model):
 class AnalysisRun(Model):
     """Store information about a specific analysis run."""
 
-    __tablename__ = 'analysis_run'
     __table_args__ = (UniqueConstraint('case_id', 'analyzed_at',
                                        name='_uc_analysis_analyzed_at'),)
 
@@ -73,20 +70,14 @@ class AnalysisRun(Model):
     delivered_at = Column(types.DateTime)
     archived_at = Column(types.DateTime)
     cleanedup_at = Column(types.DateTime)
-
-    case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
-
-
-class Analysis(Model):
-    """Analysis record."""
-
-    id = Column(types.Integer, primary_key=True)
-    created_at = Column(types.DateTime, default=datetime.now)
     will_cleanup_at = Column(types.DateTime)
 
+    data_checksum = Column(types.String(128))
+    result_checksum = Column(types.String(128))
+
     case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
-    assets = orm.relationship('Asset', cascade='all,delete', backref='analysis')
-    samples = orm.relationship('Sample', cascade='all,delete', backref='analysis')
+    assets = orm.relationship('Asset', cascade='all,delete', backref='run')
+    samples = orm.relationship('Sample', cascade='all,delete', backref='run')
 
     @property
     def cleanup_in(self):
@@ -94,9 +85,14 @@ class Analysis(Model):
         time_diff = self.will_cleanup_at - datetime.today()
         return time_diff.days
 
+    @property
+    def analysis_date(self):
+        """Date of the analysis run."""
+        return self.analyzed_at.date()
+
     def to_dict(self, skip_samples=False):
         """Also include samples in the dict serialization."""
-        analysis_dict = super(Analysis, self).to_dict()
+        analysis_dict = super(AnalysisRun, self).to_dict()
         analysis_dict['name'] = self.case.name
         if not skip_samples:
             sample_dicts = [sample.to_dict() for sample in self.samples]
@@ -107,11 +103,14 @@ class Analysis(Model):
 class Sample(Model):
     """Sample record."""
 
-    id = Column(types.Integer, primary_key=True)
-    name = Column(types.String(32), unique=True)
+    __table_args__ = (UniqueConstraint('name', 'run_id',
+                                       name='_uc_name_run_id'),)
 
-    analysis_id = Column(types.Integer, ForeignKey('analysis.id'),
-                         nullable=False)
+    id = Column(types.Integer, primary_key=True)
+    name = Column(types.String(32))
+
+    run_id = Column(types.Integer, ForeignKey('analysis_run.id'),
+                    nullable=False)
     assets = orm.relationship('Asset', backref='sample')
 
 
@@ -121,14 +120,13 @@ class Asset(Model):
     id = Column(types.Integer, primary_key=True)
     original_path = Column(types.Text)
     path = Column(types.String(256), nullable=False, unique=True)
-    checksum = Column(types.String(128))
     category = Column(types.String(32))
-    to_archive = Column(types.Boolean)
+    archive_type = Column(types.Enum(*ARCHIVE_TYPES))
+    is_local = Column(types.Boolean, default=True)
 
-    analysis_id = Column(types.Integer, ForeignKey('analysis.id'),
-                         nullable=False)
+    run_id = Column(types.Integer, ForeignKey('analysis_run.id'),
+                    nullable=False)
     sample_id = Column(types.Integer, ForeignKey('sample.id'))
 
-    @property
     def basename(self):
-        return path(self.path).basename()
+        return path(self.original_path).basename()

@@ -29,37 +29,19 @@ def mip(context, force, yes, config):
     manager = context.obj['db']
     records = mip_analysis(config, force=force)
     case_name = records['case'].name
-    old_analysis, old_run = check_existing(case_name, records['analysis'],
-                                           records['run'])
+    old_run = check_existing(case_name, records['run'])
 
-    if old_analysis:
-        existing_run = api.runs(name=case_name).first()
-        is_delivered = 'yes' if existing_run.delivered_at else 'no'
-        is_archived = 'yes' if existing_run.archived_at else 'no'
-        is_cleanedup = 'yes' if existing_run.cleanedup_at else 'no'
-        if old_run:
-            click.echo("identical run detected: {}".format(case_name))
-            if not force:
-                context.abort()
-            else:
-                manager.delete_commit(old_run)
-
-        click.echo("analysis already loaded: {}".format(case_name))
-        click.echo("delivered: {}, archived: {}, cleaned up: {}"
-                   .format(is_delivered, is_archived, is_cleanedup))
-        question = "old analysis run detected, replace it?"
-        if force or yes or click.confirm(question):
-            # delete it!
-            api.delete(old_analysis)
-            manager.commit()
-        else:
+    if old_run:
+        click.echo("identical run detected: {}".format(case_name))
+        if not force:
             context.abort()
+        else:
+            api.delete(old_run)
 
     try:
         commit_analysis(manager, **records)
         click.echo("added new analysis: {}".format(case_name))
-        sample_ids = ', '.join(sample.name for sample in
-                               records['analysis'].samples)
+        sample_ids = ', '.join(sample.name for sample in records['run'].samples)
         click.echo("including samples: {}".format(sample_ids))
     except AnalysisConflictError:
         click.echo("analysis output not removed: {}".format(case_name))

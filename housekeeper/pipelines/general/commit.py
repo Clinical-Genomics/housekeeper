@@ -4,31 +4,23 @@ import logging
 
 from path import path
 
-from housekeeper.store import Metadata, AnalysisRun, api
+from housekeeper.store import AnalysisRun, api
+from housekeeper.store.utils import get_rundir
 from housekeeper.exc import AnalysisConflictError
 
 BLOCKSIZE = 65536
 log = logging.getLogger(__name__)
 
 
-def check_existing(name, analysis_obj, run_obj):
+def check_existing(name, run_obj):
     """Check if the analysis is already added."""
-    old_analysis = api.analysis(name)
-    if old_analysis:
-        query = api.runs(name).filter(AnalysisRun.analyzed_at == run_obj.analyzed_at)
-        old_run = query.first()
-        if old_run:
-            return old_analysis, old_run
-        else:
-            # loaded before, this is a new run
-            return old_analysis, None
-    else:
-        # not loaded before
-        return None, None
+    same_date = AnalysisRun.analyzed_at == run_obj.analyzed_at
+    old_run = api.runs(name).filter(same_date).first()
+    return old_run
 
 
-def analysis(manager, case, analysis, run):
-    """Store an analysis with files to the backend."""
+def analysis(manager, case, run):
+    """Store an analysis run with files to the backend."""
     log.debug("check if case is already added: %s", case.name)
     old_case = api.case(case.name)
     if old_case:
@@ -36,37 +28,30 @@ def analysis(manager, case, analysis, run):
     else:
         new_case = case
 
-    new_case.analysis = analysis
-    new_case.runs.append(run)
+    run_root = get_rundir(new_case.name, run)
+    if run_root.isdir():
+        raise AnalysisConflictError("'{}' analysis run output exists"
+                                    .format(run_root))
+    run_root.makedirs_p()
 
-    meta = Metadata.query.first()
-    analysis_root = meta.root_path.joinpath(new_case.name)
-    if analysis_root.isdir():
-        raise AnalysisConflictError("'{}' analysis output exists"
-                                    .format(analysis_root))
-    analysis_root.makedirs_p()
-
-    for asset in new_case.analysis.assets:
-        original_path = path(asset.original_path)
-        filename = original_path.basename()
+    for asset in run.assets:
+        filename = asset.basename()
         log.info("adding asset: %s", filename)
-        new_path = analysis_root.joinpath(filename)
+        new_path = run_root.joinpath(filename)
         asset.path = new_path
-        # sha1 = checksum(asset.original_path)
-        # asset.checksum = sha1
 
     log.debug("commit new analysis to database")
+    new_case.runs.append(run)
     manager.add_commit(new_case)
 
     try:
-        for asset in new_case.analysis.assets:
+        for asset in run.assets:
             log.debug("link asset: %s -> %s", asset.original_path, asset.path)
             path(asset.original_path).link(asset.path)
     except Exception as error:
         log.warn("linking error: %s -> %s", asset.original_path, asset.path)
         log.debug('cleaning up database')
-        api.delete(new_case.analysis)
-        run.delete()
+        api.delete(run)
         manager.commit()
         raise error
 

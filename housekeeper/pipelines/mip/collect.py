@@ -18,7 +18,7 @@ MULTIQC_SAMTOOLS = 'multiqc/multiqc_data/multiqc_samtools.txt'
 log = logging.getLogger(__name__)
 
 
-def analysis(config_path, analysis_id=None, force=False):
+def analysis(config_path, force=False):
     """Prepare info for a MIP analysis."""
     log.debug("parse config YAML: %s", config_path)
     with open(config_path, 'r') as stream:
@@ -50,8 +50,7 @@ def analysis(config_path, analysis_id=None, force=False):
     name = "{}-{}".format(customer, fam_key)
     log.debug("build new analysis record: %s", name)
     new_objs = general_analysis(name, 'mip', version, analyzed_at, sample_ids)
-    new_samples = {sample.name: sample for sample in
-                   new_objs['analysis'].samples}
+    new_samples = {sample.name: sample for sample in new_objs['run'].samples}
 
     ped = family['PedigreeFile']['Path']
     qcped = family['PedigreeFileAnalysis']['Path']
@@ -74,16 +73,16 @@ def analysis(config_path, analysis_id=None, force=False):
     assets = [
         general_asset(ped, 'pedigree'),
         general_asset(qcped, 'qcpedigree'),
-        general_asset(sampleinfo_path, 'sampleinfo', for_archive=True),
-        general_asset(config_path, 'config', for_archive=True),
-        general_asset(bcf_raw, 'bcf-raw', for_archive=True),
-        general_asset(bcf_raw_index, 'bcf-raw-index', for_archive=True),
-        # general_asset(bcf_clinical, 'bcf-clinical', for_archive=True),
-        # general_asset(bcf_research, 'bcf-research', for_archive=True),
-        general_asset(vcf_clinical, 'vcf-clinical', for_archive=True),
-        general_asset(vcf_research, 'vcf-research', for_archive=True),
-        general_asset(log_file, 'log', for_archive=True),
-        general_asset(meta_path, 'meta', for_archive=True),
+        general_asset(sampleinfo_path, 'sampleinfo', archive_type='result'),
+        general_asset(config_path, 'config', archive_type='result'),
+        general_asset(bcf_raw, 'bcf-raw', archive_type='result'),
+        general_asset(bcf_raw_index, 'bcf-raw-index', archive_type='result'),
+        # general_asset(bcf_clinical, 'bcf-clinical', archive_type='result'),
+        # general_asset(bcf_research, 'bcf-research', archive_type='result'),
+        general_asset(vcf_clinical, 'vcf-clinical', archive_type='result'),
+        general_asset(vcf_research, 'vcf-research', archive_type='result'),
+        general_asset(log_file, 'log', archive_type='result'),
+        general_asset(meta_path, 'meta', archive_type='meta'),
     ]
 
     # these are not required
@@ -99,13 +98,13 @@ def analysis(config_path, analysis_id=None, force=False):
         for category, file_path in svfiles:
             if path(file_path).exists():
                 assets.append(general_asset(file_path, category,
-                                            for_archive=True))
+                                            archive_type='result'))
             else:
                 log.warn("skipping missing file: %s", file_path)
         # assets.append(general_asset(svbcf_clinical, 'bcf-clinical-sv',
-        #                             for_archive=True))
+        #                             archive_type='result'))
         # assets.append(general_asset(svbcf_research, 'bcf-research-sv',
-        #                             for_archive=True))
+        #                             archive_type='result'))
 
     for sample_id in sample_ids:
         log.debug("parse assets for sample: %s", sample_id)
@@ -137,7 +136,7 @@ def analysis(config_path, analysis_id=None, force=False):
 
         for input_file in sample['File'].values():
             cram = input_file['CramFile']
-            cram_asset = general_asset(cram, 'cram', for_archive=True)
+            cram_asset = general_asset(cram, 'cram', archive_type='data')
             assets.append(cram_asset)
             new_samples[sample_id].assets.append(cram_asset)
 
@@ -176,11 +175,11 @@ def analysis(config_path, analysis_id=None, force=False):
     with new_qcmetrics.open('w') as stream:
         dump = yaml.dump(qc_data, default_flow_style=False, allow_unicode=True)
         stream.write(dump.decode('utf-8'))
-    assets.append(general_asset(new_qcmetrics, 'qc', for_archive=True))
+    assets.append(general_asset(new_qcmetrics, 'qc', archive_type='result'))
 
     log.debug('assciate assets with analysis')
     for asset in assets:
-        new_objs['analysis'].assets.append(asset)
+        new_objs['run'].assets.append(asset)
     return new_objs
 
 
