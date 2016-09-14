@@ -4,7 +4,8 @@ import logging
 
 from path import path
 
-from .models import Analysis, AnalysisRun, Case, Metadata
+from .models import AnalysisRun, Case
+from .utils import get_rundir
 
 log = logging.getLogger(__name__)
 
@@ -31,71 +32,60 @@ def cases(query_str=None):
     return query
 
 
-def analysis(name):
-    """Get an analysis from the database.
-
-    Args:
-        name (str): the unique name of the case
-
-    Returns:
-        Analysis or None: the analysis or None if not found
-    """
-    analysis_obj = (Analysis.query.join(Analysis.case)
-                            .filter(Case.name == name)
-                            .first())
-    return analysis_obj
-
-
-def runs(name):
+def runs(case_name):
     """Get runs for a case from the database.
 
     Args:
-        name (str): the unique name of the case
+        case_name (str): the unique name of the case
 
     Returns:
         Query: all runs for the case
     """
     run_query = (AnalysisRun.query.join(AnalysisRun.case)
-                            .filter(Case.name == name)
+                            .filter(Case.name == case_name)
                             .order_by(AnalysisRun.created_at.desc()))
     return run_query
 
 
-def delete(analysis_obj):
-    """Delete an analysis along with related files on the system.
+def delete(run_obj):
+    """Delete an analysis run along with related files on the system.
 
     Args:
-        analysis_obj (Analysis): the analysis to delete
+        run_obj (AnalysisRun): the analysis run to delete
     """
-    analysis_obj.delete()
-    meta = Metadata.query.first()
-    analysis_dir = meta.root_path.joinpath(analysis_obj.case.name)
-    log.info("removing files under: %s", analysis_dir)
-    analysis_dir.rmtree_p()
+    run_dir = get_rundir(run_obj.case.name, run_obj)
+    delete_dir(run_dir)
+    run_obj.delete()
 
 
-def archive(analysis_obj):
-    """Archive an analysis and remove files not marked for archival.
-
-    Args:
-        analysis_obj (Analysis): the analysis to delete
-    """
-    # mark case as "archived"
-    analysis_obj.archived_at = datetime.datetime.now()
-
-
-def clean_up(analysis_obj, save_archive=False):
+def clean_up(run_obj, force=False):
     """Clean up files for an analysis."""
-    # remove all files that aren't marked for archive
-    for asset in analysis_obj.assets:
-        if not asset.to_archive or not save_archive:
-            log.info("removing asset", asset.path)
-            path(asset.path).remove()
-            asset.delete()
+    # check if run is ready
+    if not force and not all([run_obj.archived_at, run_obj.delivered_at]):
+        # not ready for clean up!
+        log.warn("run not ready for clean up")
+    else:
+        for asset in run_obj.assets:
+            if not asset.archive_type:
+                asset.delete()
+            else:
+                asset.is_local = False
 
-    analysis_obj.cleanedup_at = datetime.datetime.now()
+        run_dir = get_rundir(run_obj.case.name, run_obj)
+        log.info("removing rundir: %s", run_dir)
+        delete_dir(run_dir)
+        run_obj.cleanedup_at = datetime.datetime.now()
 
 
-def postpone(analysis_obj, time=datetime.timedelta(days=30)):
+def postpone(run_obj, time=datetime.timedelta(days=30)):
     """Postpone the automatic archival of analysis by X time."""
-    analysis_obj.will_cleanup_at += time
+    run_obj.will_cleanup_at += time
+
+
+def delete_dir(directory):
+    directory_path = path(directory)
+    if directory_path.exists():
+        log.info("removing files under: %s", directory)
+        directory_path.rmtree_p()
+    else:
+        log.debug("run directory not found: %s", directory)

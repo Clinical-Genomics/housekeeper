@@ -54,10 +54,10 @@ def case(name):
 
 @app.route('/cases/<case_name>/postpone', methods=['POST'])
 def case_postpone(case_name):
-    """Postpone case clean up date."""
-    case_obj = api.case(case_name)
-    if case_obj is None:
+    """Postpone clean up date for the latest run of a case."""
+    run_obj = api.runs(case_name).first()
+    if run_obj is None:
         return abort(404)
-    api.postpone(case_obj.analysis)
+    api.postpone(run_obj)
     db.commit()
     return redirect(request.referrer)

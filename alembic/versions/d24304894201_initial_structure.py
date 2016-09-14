@@ -1,14 +1,14 @@
-"""make clean up field DateTime
+"""initial structure
 
-Revision ID: d1b57526951f
-Revises: 17085dda2b9d
-Create Date: 2016-09-13 13:28:59.804431
+Revision ID: d24304894201
+Revises: 
+Create Date: 2016-09-13 18:45:06.579220
 
 """
 
 # revision identifiers, used by Alembic.
-revision = 'd1b57526951f'
-down_revision = '17085dda2b9d'
+revision = 'd24304894201'
+down_revision = None
 branch_labels = None
 depends_on = None
 

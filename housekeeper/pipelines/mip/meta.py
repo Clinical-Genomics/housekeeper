@@ -8,7 +8,7 @@ def build_meta(name, run, qc_ped):
     """Build metadata information content.
 
     Args:
-        analysis (Analysis): analysis record
+        run (AnalysisRun): analysis run record
         qc_ped (path): path to qc pedigree file
 
     Returns:

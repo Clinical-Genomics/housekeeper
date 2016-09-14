@@ -25,4 +25,4 @@ def test_analysis(mip_output):
     # THEN it should produce the modded qc metrics file
     assert mod_qcmetrics.exists()
     assert records['case'].name == 'cust003-16074'
-    assert len(records['analysis'].samples) == 1
+    assert len(records['run'].samples) == 1

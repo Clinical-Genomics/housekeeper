@@ -12,7 +12,6 @@ def test_asset(pedigree):
     new_asset = add.asset(pedigree['path'], 'pedigree')
     # THEN it should return a model with checksum
     assert new_asset.original_path == path(pedigree['path']).abspath()
-    assert new_asset.checksum is None
     assert new_asset.category == 'pedigree'
 
 
@@ -28,9 +27,8 @@ def test_analysis():
                            samples=samples)
     # THEN it should return the analysis model with samples
     new_case = records['case']
-    new_analysis = records['analysis']
     new_run = records['run']
     assert new_case.name == name
     assert new_run.pipeline == 'mip'
-    assert len(new_analysis.samples) == 1
-    assert new_analysis.samples[0].name == samples[0]
+    assert len(new_run.samples) == 1
+    assert new_run.samples[0].name == samples[0]
