@@ -16,7 +16,8 @@ def compress_run(run_obj):
     run_dir = path(get_rundir(run_obj.case.name, run_obj))
     for group, paths in group_assets(run_obj.assets):
         group_out = run_dir.joinpath("{}.tar.gz".format(group))
-        tar_files(group_out, paths)
+        filenames = [path(full_path).basename() for full_path in paths]
+        tar_files(group_out, run_dir, filenames)
         sha1 = checksum(group_out)
         yield ArchiveGroup(id=group, out=group_out, checksum=sha1)
 

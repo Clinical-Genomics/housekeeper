@@ -71,7 +71,7 @@ def analysis(config_path, force=False):
         out_handle.write(meta_output)
 
     assets = [
-        general_asset(ped, 'pedigree'),
+        general_asset(ped, 'pedigree', archive_type='data'),
         general_asset(qcped, 'qcpedigree'),
         general_asset(sampleinfo_path, 'sampleinfo', archive_type='result'),
         general_asset(config_path, 'config', archive_type='result'),
