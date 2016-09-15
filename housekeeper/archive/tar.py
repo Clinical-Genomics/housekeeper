@@ -24,5 +24,5 @@ def tar_files(out_file, root_dir, filenames):
 
 def untar_files(out_dir, tar_file):
     """Ungroup tar-ed filed into a directory."""
-    with tarfile.open(tar_file, mode='r') as in_handle:
+    with tarfile.open(tar_file, mode='r:*') as in_handle:
         in_handle.extractall(out_dir)

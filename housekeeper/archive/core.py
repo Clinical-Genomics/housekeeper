@@ -13,9 +13,11 @@ ArchiveGroup = namedtuple('ArchiveGroup', ['id', 'out', 'checksum'])
 
 def compress_run(run_obj):
     """Archive a run into data+results archives."""
-    run_dir = path(get_rundir(run_obj.case.name, run_obj))
+    case_dir = path(get_rundir(run_obj.case.name))
+    run_dir = path(get_rundir(run_obj.case.name, run=run_obj))
     for group, paths in group_assets(run_obj.assets):
-        group_out = run_dir.joinpath("{}.tar.gz".format(group))
+        run_date = run_obj.analyzed_at.date()
+        group_out = case_dir.joinpath("{}.{}.tar.gz".format(run_date, group))
         filenames = [path(full_path).basename() for full_path in paths]
         tar_files(group_out, run_dir, filenames)
         sha1 = checksum(group_out)

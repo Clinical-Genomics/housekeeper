@@ -113,12 +113,14 @@ setup(
             'housekeeper = housekeeper.cli:root',
         ],
         'housekeeper.subcommands.1': [
-            'add = housekeeper.pipelines.cli:add',
             'init = housekeeper.initiate:init',
-            'delete = housekeeper.store.cli:delete',
-            'archive = housekeeper.store.cli:archive',
+            'add = housekeeper.pipelines.cli:add',
             'get = housekeeper.store.cli:get',
-            'list = housekeeper.store.cli:list_cmd',
+            'postpone = housekeeper.store.cli:postpone',
+            'delete = housekeeper.store.cli:delete',
+            'archive = housekeeper.archive.cli:archive',
+            'clean = housekeeper.store.cli:clean',
+            'restore = housekeeper.archive.cli:restore',
         ],
     },
 
