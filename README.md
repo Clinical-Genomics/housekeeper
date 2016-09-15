@@ -1,80 +1,108 @@
 # Housekeeper [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
 
-Housekeeper is a tool for keeping track of **successful** analyses. It will manage various output files and metadata. It also provides archival functions. As far as possible, it's pipeline agnostic.
+Housekeeper is a tool for keeping track of **successful** analysis runs. It will manage various output files and metadata. It also provides archival functions. As far as possible, it's pipeline agnostic.
 
 ## Concerns
 
-1.  store analysis output files
+1.  store analysis output files _per_ run
 2.  offer stable API to files and listing completed analyses
-3.  keep track of status of analyses (active, archived, backed-up)
+3.  keep track of status of analysis runs and files (active, archived, cleaned up)
 
 It's outside the scope of the tool to store results and provide detailed access to them. Housekeeper will only provide easy access to reading in the data by other tools.
 
 ## Usage guide
 
-### Setup
+### 1. Setup
 
-The first thing to do is setting up a root folder and database.
+The first thing to do is set up a root folder and database.
 
 ```bash
-$ housekeeper init /path/to/root
+$ housekeeper --database sqlite:///path/to/store.sqlite3 init /path/to/analyses
 ```
 
-The folder can't exist already or the tool will complain. If successful it will store the location of the root folder in the database so no need for a separate config file.
+If successful it will store the location of the root analyses folder in the database so no need for a separate config file - just keep pointing to the database.
 
-### Adding new analyses
+### 2. Adding new analysis runs
 
 Housekeeper can store files from completed analyses. Supported pipelines include:
 
 -   MIP
 
 ```bash
-$ housekeeper add mip /path/to/familyId_config.yaml
+$ housekeeper add /path/to/familyId_config.yaml
 ```
 
 This command will do some pre-processing and collect assets to be linked. In the case of MIP it will pre-calculate the mapping rate since it isn't available in the main QC metrics file.
 
 Housekeeper will create an analysis id in the format of `[customerId]-[familyId]`.
 
-### Deleting an existing analysis
+### 3. Deleting an existing analysis run
 
-You can of course delete an analysis you've stored in the database. It will remove the reference to the analysis along with all the links to the assets. It will keep a reference to the run and the case, however.
+You can of course delete an analysis run you've stored in the database. It will remove the reference to the run along with all the links to the assets. It will keep a reference to the case, however.
 
 ```bash
 $ housekeeper delete customer-family
 Are you sure? [Y/n]
 ```
 
-### Getting files
+### 4. Getting files
 
 This is where the fun starts! Since we have control over all the assets and how they relate to analyses and samples we can hand back information to you.
 
 Say you wanted to know the path to the raw BCF file for a given analysis. Let's ask Housekeeper!
 
 ```bash
-$ housekeeper get --analysis customer-family --category bcf-raw
+$ housekeeper get --\case customer-family --category bcf-raw
 /path/to/root/analyses/customer-family/all.variants.bcf
 ```
 
 Note that it will print to console without new line so you can just as well do:
 
 ```bash
-$ ls -l $(housekeeper get --analysis customer-family --category bcf-raw)
+$ ls -l $(housekeeper get --\case customer-family --category bcf-raw)
 -rw-r--r--  2 robinandeer  staff    72K Jul 27 14:33 /path/to/root/analyses/customer-family/all.variants.bcf
 ```
 
-And if multiple files match the query it will simply print them on one line separated by a single space.
+> If multiple files match the query it will simply print them on one line separated by a single space.
 
-### Archiving an analysis
+### 5. Archiving analysis runs
 
-When you add a new analysis you tell Housekeeper which files are eventually to be archived. We can certainly do a lot more with this functionality but for now what happens when you archive an analysis is:
+When you add a new analysis you tell Housekeeper which files are eventually to be archived by assigning a "archive type": data or result. The archive process will take these files and bundle and compress them into two separate `tar.gz` archives that are places under the case directory (see below).
 
-1.  you update the status to "archived"
-2.  remove all files and references that are not marked as "to_archive"
+The database is also updated with checksums for the archives and paths to where archives are stored.
 
 ```bash
 $ housekeeper archive customer-family
 Are you sure? [Y/n]
+```
+
+### 6. Restoring an archive
+
+```bash
+$ housekeeper restore data /path/to/2016-04-12.data.tar.gz
+```
+
+When the archives were created, they were grouped with a special `meta.yaml` file which contains information about the run. This information will help out in putting the files back in place and updating the status in the database.
+
+### 7. Cleaning up an analysis run
+
+```bash
+$ housekeeper clean customer-family
+Are you sure? [Y/n]
+```
+
+This command will remove the whole run directory with all files similar to "delete". However, this command will keep the reference to the run in the database. The only thing which is lost are the references to files that weren't marked with an "archive_type".
+
+This means that you can restore files from these runs using the command above.
+
+Housekeeper will be careful about which runs it cleans up and check that they have been archived and delivered. To override this, supply the `--force` flag.
+
+### 8. Postponing the date for clean up
+
+Housekeeper provides a way to store a date (default 90 days after addition) for each run after which you could automate clean up of the files. If you want to manually extend the time before this happens you can run:
+
+```bash
+$ housekeeper postpone customer-family
 ```
 
 ## API structure and architecture
@@ -100,14 +128,11 @@ root/
 ├── housekeeper.yaml
 ├── store.sqlite3
 └── analyses/
-    ├── analysis_1/
-    │   ├── alignment.sample_1.bam
-    │   ├── variants.vcf
-    │   └── traceback.log
-    └── analysis_2/
-        ├── alignment.sample_1.cram
-        ├── alignment.sample_2.cram
-        └── variants.vcf
+    └── analysis_1/
+        └── 2016-04-12
+            ├── alignment.sample_1.bam
+            ├── variants.vcf
+            └── traceback.log
 ```
 
 
