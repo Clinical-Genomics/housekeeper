@@ -60,7 +60,7 @@ def delete(context, date, case_name):
         manager.commit()
 
 
-@click.command('clean-up')
+@click.command()
 @click.option('-f', '--force', is_flag=True)
 @click.option('-d', '--date', help="date of the particular run")
 @click.argument('case_name')

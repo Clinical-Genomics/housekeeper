@@ -115,3 +115,12 @@ def delete_dir(directory):
         directory_path.rmtree_p()
     else:
         log.debug("run directory not found: %s", directory)
+
+
+def add_asset(run_obj, asset_path, category, archive_type=None, sample=None):
+    """Link an asset to a run."""
+    abs_path = path(asset_path).abspath()
+    new_asset = Asset(original_path=abs_path, category=category,
+                      archive_type=archive_type)
+    new_asset.sample = sample
+    return new_asset
