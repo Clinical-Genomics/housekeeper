@@ -5,7 +5,7 @@ import click
 from path import path
 
 from housekeeper.store import api
-from housekeeper.store.utils import build_date
+from housekeeper.store.utils import build_date, get_rundir
 from housekeeper.exc import AnalysisConflictError
 from .mip import analysis as mip_analysis
 from .general import commit_analysis, check_existing
@@ -66,7 +66,14 @@ def extend(context, date, category, sample, archive_type, case_name, asset_path)
         sample_obj = None
     new_asset = api.add_asset(run_obj, asset_path, category, archive_type,
                               sample=sample_obj)
+
+    run_root = get_rundir(run_obj.case.name, run_obj)
+    filename = new_asset.basename()
+    new_path = run_root.joinpath(filename)
+    new_asset.path = new_path
+
     log.debug("link asset: %s -> %s", new_asset.original_path, new_asset.path)
     path(new_asset.original_path).link(new_asset.path)
-    run_obj.append(new_asset)
+    run_obj.assets.append(new_asset)
+    log.info("add asset: %s", new_asset.path)
     manager.commit()
