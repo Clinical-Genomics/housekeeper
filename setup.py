@@ -120,6 +120,7 @@ setup(
             'extend = housekeeper.pipelines.cli:extend',
             'delete = housekeeper.store.cli:delete',
             'compile = housekeeper.compile.cli:compile',
+            'archive = housekeeper.archive.cli:archive',
             'clean = housekeeper.store.cli:clean',
             'restore = housekeeper.compile.cli:restore',
         ],
