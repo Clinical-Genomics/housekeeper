@@ -27,6 +27,7 @@
         <th>Version</th>
         <th>Analyzed at</th>
         <th>Delivered at</th>
+        <th>Compiled at</th>
         <th>Archived at</th>
         <th>Cleaned up at</th>
       </tr>
@@ -54,6 +55,7 @@
     <td>{{ run.pipeline_version }}</td>
     <td>{{ run.analyzed_at.date() }}</td>
     <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
+    <td>{{ run.compiled_at.date() if run.compiled_at }}</td>
     <td>{{ run.archived_at.date() if run.archived_at }}</td>
     <td>
       {% if run.cleanedup_at %}
