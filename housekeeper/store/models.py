@@ -67,15 +67,11 @@ class AnalysisRun(Model):
     pipeline = Column(types.Enum(*PIPELINES))
     pipeline_version = Column(types.String(32))
     analyzed_at = Column(types.DateTime)
+    compiled_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
     archived_at = Column(types.DateTime)
     cleanedup_at = Column(types.DateTime)
     will_cleanup_at = Column(types.DateTime)
-
-    data_checksum = Column(types.String(128))
-    result_checksum = Column(types.String(128))
-    data_archive = Column(types.String(256))
-    result_archive = Column(types.String(256))
 
     case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='run')
@@ -125,6 +121,7 @@ class Asset(Model):
     category = Column(types.String(32))
     archive_type = Column(types.Enum(*ARCHIVE_TYPES))
     is_local = Column(types.Boolean, default=True)
+    checksum = Column(types.String(128))
 
     run_id = Column(types.Integer, ForeignKey('analysis_run.id'),
                     nullable=False)

@@ -119,9 +119,9 @@ setup(
             'postpone = housekeeper.store.cli:postpone',
             'extend = housekeeper.pipelines.cli:extend',
             'delete = housekeeper.store.cli:delete',
-            'archive = housekeeper.archive.cli:archive',
+            'compile = housekeeper.compile.cli:compile',
             'clean = housekeeper.store.cli:clean',
-            'restore = housekeeper.archive.cli:restore',
+            'restore = housekeeper.compile.cli:restore',
         ],
     },
 
