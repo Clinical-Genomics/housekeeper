@@ -4,9 +4,9 @@ import logging
 import click
 
 from housekeeper.store import api, AnalysisRun
-from housekeeper.store.utils import build_date
 from housekeeper.compile.cli import compile as compile_cmd
 from .core import archive_run
+from housekeeper.cli.utils import run_orabort
 
 log = logging.getLogger(__name__)
 
@@ -19,12 +19,7 @@ log = logging.getLogger(__name__)
 def archive(context, date, force, case_name):
     """Archive compiled assets to PDC."""
     manager = api.manager(context.obj['database'])
-    run_date = build_date(date) if date else None
-    run_obj = api.runs(case_name, run_date=run_date).first()
-    if run_obj is None:
-        log.error("no analysis run found for case: %s", case_name)
-        context.abort()
-
+    run_obj = run_orabort(context, case_name, date)
     if not run_obj.compiled_at:
         log.warn("run not compiled yet: %s", case_name)
         if force or click.confirm("do you want to compile the run?"):

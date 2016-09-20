@@ -6,6 +6,7 @@ from path import path
 
 from housekeeper.store import api
 from housekeeper.store.utils import build_date, get_rundir
+from housekeeper.cli.utils import run_orabort
 from housekeeper.exc import AnalysisConflictError
 from .mip import analysis as mip_analysis
 from .general import commit_analysis, check_existing
@@ -21,12 +22,11 @@ log = logging.getLogger(__name__)
 def add(context, force, yes, config):
     """Add analyses from different pipelines."""
     manager = api.manager(context.obj['database'])
-
     log.info("adding analysis with config: %s", config)
     records = mip_analysis(config, force=force)
     case_name = records['case'].name
-    old_run = check_existing(case_name, records['run'])
 
+    old_run = check_existing(case_name, records['run'])
     if old_run:
         click.echo("identical run detected: {}".format(case_name))
         if not force:
@@ -54,11 +54,7 @@ def add(context, force, yes, config):
 def extend(context, date, category, sample, archive_type, case_name, asset_path):
     """Add an additional asset to a run."""
     manager = api.manager(context.obj['database'])
-    run_date = build_date(date) if date else None
-    run_obj = api.runs(case_name, run_date=run_date).first()
-    if run_obj is None:
-        log.error("no analysis run found for case: %s", case_name)
-        context.abort()
+    run_obj = run_orabort(context, case_name, date)
     if sample:
         sample_map = {smpl.name: smpl for smpl in run_obj.samples}
         sample_obj = sample_map[sample]

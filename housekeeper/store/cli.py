@@ -4,6 +4,7 @@ import logging
 
 import click
 
+from housekeeper.cli.utils import run_orabort
 from .utils import get_rundir, build_date
 from . import api
 
@@ -31,10 +32,7 @@ def get(context, case, sample, category):
 def postpone(context, days, case_name):
     """Ask Housekeeper for a file."""
     manager = api.manager(context.obj['database'])
-    run_obj = api.runs(case_name).first()
-    if run_obj is None:
-        log.error("no analysis run found for case: %s", case_name)
-        context.abort()
+    run_obj = run_orabort(case_name)
     api.postpone(run_obj, time=datetime.timedelta(days=days))
     manager.commit()
     click.echo("analysis will be archived on: {}"
@@ -48,11 +46,7 @@ def postpone(context, days, case_name):
 def delete(context, date, case_name):
     """Delete an analysis run and files."""
     manager = api.manager(context.obj['database'])
-    run_date = build_date(date) if date else None
-    run_obj = api.runs(case_name, run_date=run_date).first()
-    if run_obj is None:
-        log.error("no analysis run found for case: %s", case_name)
-        context.abort()
+    run_obj = run_orabort(context, case_name, date)
     run_root = get_rundir(case_name, run_obj)
     click.echo("you are about to delete: {}".format(run_root))
     if click.confirm('Are you sure?'):
@@ -68,11 +62,7 @@ def delete(context, date, case_name):
 def clean(context, force, date, case_name):
     """Clean up files for an analysis."""
     manager = api.manager(context.obj['database'])
-    run_date = build_date(date) if date else None
-    run_obj = api.runs(case_name, run_date=run_date).first()
-    if run_obj is None:
-        log.error("no analysis run found for case: %s", case_name)
-        context.abort()
+    run_obj = run_orabort(context, case_name, date)
     elif force or click.confirm('Are you sure?'):
         api.clean_up(run_obj, force=force)
         manager.commit()
