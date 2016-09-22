@@ -84,6 +84,11 @@ class AnalysisRun(Model):
         return time_diff.days
 
     @property
+    def sample_map(self):
+        """Return dict of samples."""
+        return {sample.name: sample for sample in self.samples}
+
+    @property
     def analysis_date(self):
         """Date of the analysis run."""
         return self.analyzed_at.date()

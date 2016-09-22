@@ -1,0 +1,99 @@
+---
+- category: config
+  source: config
+  key: writeConfigFile
+  archive_type: result
+
+- category: sampleinfo
+  source: config
+  key: sampleInfoFile
+  archive_type: result
+
+- category: pedigree
+  source: family
+  key: PedigreeFile|Path
+  archive_type: data
+
+- category: qcpedigree
+  source: family
+  key: PedigreeFileAnalysis|Path
+
+- category: bcf-raw
+  source: family
+  key: BCFFile|Path
+  archive_type: result
+
+- category: bcf-raw-index
+  source: family
+  key: BCFFile|Path
+  suffix: .csi
+  archive_type: result
+
+- category: vcf-clinical
+  source: family
+  key: VCFFile|Clinical|Path
+  archive_type: result
+
+- category: vcf-research
+  source: family
+  key: VCFFile|Research|Path
+  archive_type: result
+
+- category: log
+  source: family
+  key: lastLogFilePath
+  archive_type: result
+
+- category: meta
+  source: config
+  key: outDataDir
+  suffix: /meta.yaml
+  archive_type: meta
+
+- category: bcf-raw-sv
+  source: family
+  key: SVBCFFile|Path
+  archive_type: result
+  required: no
+
+- category: vcf-clinical-sv
+  source: family
+  key: SVVCFFile|Clinical|Path
+  archive_type: result
+  required: no
+
+- category: vcf-research-sv
+  source: family
+  key: SVVCFFile|Research|Path
+  archive_type: result
+  required: no
+
+- category: coverage
+  source: samples
+  key: Program|SambambaDepth|0|Bed|Path
+  sample: yes
+
+- category: bam
+  source: samples
+  key: MostCompleteBAM|Path
+  sample: yes
+
+- category: bai
+  source: samples
+  key: MostCompleteBAM|Path
+  suffix: .bai
+  sample: yes
+
+- category: qc
+  source: family
+  key: Program|QCCollect|QCCollectMetricsFile|Path
+  archive_type: result
+  replace:
+    old_str: .yaml
+    new_str: .mod.yaml
+
+# for input_file in sample['File'].values():
+# cram = input_file['CramFile']
+# cram_asset = general_asset(cram, 'cram', archive_type='data')
+# assets.append(cram_asset)
+# new_samples[sample_id].assets.append(cram_asset)

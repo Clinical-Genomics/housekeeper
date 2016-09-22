@@ -327,4 +327,3 @@ vepPlugins:
 vepReference: '0'
 wholeGene: '1'
 writeConfigFile: tests/fixtures/mip/cust003/16074/genomes/16074/16074_config.yaml
-

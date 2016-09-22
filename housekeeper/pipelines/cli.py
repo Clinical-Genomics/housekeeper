@@ -3,12 +3,13 @@ import logging
 
 import click
 from path import path
+import yaml
 
 from housekeeper.store import api
-from housekeeper.store.utils import build_date, get_rundir
+from housekeeper.store.utils import get_rundir
 from housekeeper.cli.utils import run_orabort
 from housekeeper.exc import AnalysisConflictError
-from .mip import analysis as mip_analysis
+from .mip import parse_mip
 from .general import commit_analysis, check_existing
 
 log = logging.getLogger(__name__)
@@ -17,15 +18,16 @@ log = logging.getLogger(__name__)
 @click.command()
 @click.option('-y', '--yes', is_flag=True, help='auto replace old runs')
 @click.option('-f', '--force', is_flag=True, help='replace identical runs')
-@click.argument('config', type=click.Path(exists=True))
+@click.option('-r', '--references', type=click.File('r'))
+@click.argument('config', type=click.File('r'))
 @click.pass_context
-def add(context, force, yes, config):
+def add(context, force, yes, references, config):
     """Add analyses from different pipelines."""
     manager = api.manager(context.obj['database'])
-    log.info("adding analysis with config: %s", config)
-    records = mip_analysis(config, force=force)
+    config_data = yaml.load(config)
+    reference_data = yaml.load(references)
+    records = parse_mip(config_data, reference_data, force=force)
     case_name = records['case'].name
-
     old_run = check_existing(case_name, records['run'])
     if old_run:
         click.echo("identical run detected: {}".format(case_name))

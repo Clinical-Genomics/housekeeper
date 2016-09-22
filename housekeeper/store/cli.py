@@ -63,6 +63,6 @@ def clean(context, force, date, case_name):
     """Clean up files for an analysis."""
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
-    elif force or click.confirm('Are you sure?'):
+    if force or click.confirm('Are you sure?'):
         api.clean_up(run_obj, force=force)
         manager.commit()
