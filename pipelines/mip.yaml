@@ -92,6 +92,12 @@
     old_str: .yaml
     new_str: .mod.yaml
 
+- category: cram
+  source: samples
+  key: File|*|CramFile
+  sample: yes
+  multiple: yes
+
 # for input_file in sample['File'].values():
 # cram = input_file['CramFile']
 # cram_asset = general_asset(cram, 'cram', archive_type='data')

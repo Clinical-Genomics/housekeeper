@@ -12,19 +12,20 @@ def parse_references(references, params, segments):
         config_data = yaml.load(in_handle)
     segments = prepare_inputs(config_data)
     for reference in references:
-        if reference['source'] == 'param':
-            path = params[reference['key']]
-            yield {'reference': reference, 'path': path}
-        else:
-            source = segments[reference['source']]
-            if reference.get('sample'):
-                for sample_id, values in source.items():
-                    path = get_path(reference, values)
-                    yield {'reference': reference, 'path': path,
+        keys = reference['key'].split('|')
+        source = segments[reference['source']]
+        if reference.get('sample'):
+            for sample_id, values in source.items():
+                ref_paths = parse_tree(values, keys)
+                for ref_path in ref_paths:
+                    ref_path = format_path(reference, ref_path)
+                    yield {'reference': reference, 'path': ref_path,
                            'sample': sample_id}
-            else:
-                path = get_path(reference, source)
-                yield {'reference': reference, 'path': path}
+        else:
+            ref_paths = parse_tree(source, keys)
+            for ref_path in ref_paths:
+                ref_path = format_path(reference, ref_path)
+                yield {'reference': reference, 'path': ref_path}
 
 
 def prepare_inputs(config_data):
@@ -40,22 +41,34 @@ def prepare_inputs(config_data):
     return {'family': family, 'samples': samples, 'config': config_data}
 
 
-def get_path(reference, source):
+def format_path(reference, orig_path):
     """Get a file from analysis output."""
-    keys = reference['key'].split('|')
-    for key in keys:
-        if key.isdigit():
-            if isinstance(source, dict):
-                source = source.values()[int(key)]
-            else:
-                source = source[int(key)]
-        else:
-            source = source[key]
-
     if 'suffix' in reference:
-        source = source + reference['suffix']
+        new_path = orig_path + reference['suffix']
     elif 'replace' in reference:
-        source = source.replace(reference['replace']['old_str'],
-                                reference['replace']['new_str'])
+        new_path = orig_path.replace(reference['replace']['old_str'],
+                                     reference['replace']['new_str'])
+    else:
+        new_path = orig_path
+    return new_path
 
-    return source
+
+def parse_tree(tree, keys):
+    """Parse a dict using a list of keys."""
+    for index, key in enumerate(keys):
+        if key.isdigit():
+            if isinstance(tree, dict):
+                tree = tree.values()[int(key)]
+            else:
+                tree = tree[int(key)]
+        elif key == '*':
+            subtrees = tree.values()
+            paths = []
+            for subtree in subtrees:
+                values = parse_tree(subtree, keys[index + 1:])
+                for value in values:
+                    paths.append(value)
+            return paths
+        else:
+            tree = tree[key]
+    return [tree]
