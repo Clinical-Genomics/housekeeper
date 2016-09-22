@@ -82,11 +82,11 @@ setup(
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     include_package_data=True,
-    # package_data={
-    #     'taboo': [
-    #         'server/genotype/templates/genotype/*.html',
-    #     ]
-    # },
+    package_data={
+        'housekeeper': [
+            'pipelines/references/*.yaml',
+        ]
+    },
     zip_safe=False,
 
     # Although 'package_data' is the preferred approach, in some case you

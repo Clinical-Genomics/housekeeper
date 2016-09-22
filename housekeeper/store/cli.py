@@ -5,7 +5,7 @@ import logging
 import click
 
 from housekeeper.cli.utils import run_orabort
-from .utils import get_rundir, build_date
+from .utils import get_rundir
 from . import api
 
 log = logging.getLogger(__name__)
@@ -40,16 +40,17 @@ def postpone(context, days, case_name):
 
 
 @click.command()
-@click.argument('case_name')
+@click.option('-y', '--yes', is_flag=True, help="skip confirmation")
 @click.option('-d', '--date', help="date of the particular run")
+@click.argument('case_name')
 @click.pass_context
-def delete(context, date, case_name):
+def delete(context, date, yes, case_name):
     """Delete an analysis run and files."""
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
     run_root = get_rundir(case_name, run_obj)
     click.echo("you are about to delete: {}".format(run_root))
-    if click.confirm('Are you sure?'):
+    if yes or click.confirm('Are you sure?'):
         api.delete(run_obj)
         manager.commit()
 

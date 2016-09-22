@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import pkg_resources
 
 import click
 from path import path
@@ -25,6 +26,9 @@ def add(context, force, yes, references, config):
     """Add analyses from different pipelines."""
     manager = api.manager(context.obj['database'])
     config_data = yaml.load(config)
+    if not references:
+        default_ref = "pipelines/references/mip.yaml"
+        references = pkg_resources.resource_string("housekeeper", default_ref)
     reference_data = yaml.load(references)
     records = parse_mip(config_data, reference_data, force=force)
     case_name = records['case'].name
