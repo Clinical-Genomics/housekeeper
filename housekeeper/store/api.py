@@ -83,7 +83,11 @@ def delete(run_obj):
     """
     run_dir = get_rundir(run_obj.case.name, run_obj)
     delete_dir(run_dir)
-    run_obj.delete()
+
+    if len(run_obj.case.runs) == 1:
+        run_obj.case.delete()
+    else:
+        run_obj.delete()
 
 
 def delete_asset(asset_obj):
