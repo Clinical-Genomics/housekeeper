@@ -30,7 +30,7 @@
             {% endif %}
           </div>
           <div class="col-xs-4 text-center">
-            Page {{ cases.page }}
+            Page {{ cases.page }} <small class="text-muted">({{ cases.total }} cases)</small>
           </div>
           <div class="col-xs-4 text-right">
             {% if cases.has_next %}
