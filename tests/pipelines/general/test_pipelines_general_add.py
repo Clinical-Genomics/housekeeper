@@ -1,18 +1,7 @@
 # -*- coding: utf-8 -*-
 from datetime import datetime
 
-from path import path
-
 from housekeeper.pipelines.general import add
-
-
-def test_asset(pedigree):
-    # GIVEN a pedigree asset
-    # WHEN preparing an asset model
-    new_asset = add.asset(pedigree['path'], 'pedigree')
-    # THEN it should return a model with checksum
-    assert new_asset.original_path == path(pedigree['path']).abspath()
-    assert new_asset.category == 'pedigree'
 
 
 def test_analysis():

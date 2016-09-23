@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from housekeeper.archive import core
+from housekeeper.compile import core
 
 
 def test_checksum(pedigree):

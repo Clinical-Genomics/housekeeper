@@ -82,11 +82,11 @@ setup(
     # If there are data files included in your packages that need to be
     # installed, specify them here.
     include_package_data=True,
-    # package_data={
-    #     'taboo': [
-    #         'server/genotype/templates/genotype/*.html',
-    #     ]
-    # },
+    package_data={
+        'housekeeper': [
+            'pipelines/references/*.yaml',
+        ]
+    },
     zip_safe=False,
 
     # Although 'package_data' is the preferred approach, in some case you
@@ -119,9 +119,10 @@ setup(
             'postpone = housekeeper.store.cli:postpone',
             'extend = housekeeper.pipelines.cli:extend',
             'delete = housekeeper.store.cli:delete',
+            'compile = housekeeper.compile.cli:compile',
             'archive = housekeeper.archive.cli:archive',
             'clean = housekeeper.store.cli:clean',
-            'restore = housekeeper.archive.cli:restore',
+            'restore = housekeeper.compile.cli:restore',
         ],
     },
 

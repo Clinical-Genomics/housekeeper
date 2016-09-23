@@ -1,45 +1,39 @@
 # -*- coding: utf-8 -*-
-import hashlib
-from collections import namedtuple
+"""Archive a run to PDC.
 
-from path import path
+1. get the archives for the run
+2. send to PDC function (magic happens)
+3. update new table with information about archive
+4. remove the archive files
+5. update that the case is archived
+"""
+from datetime import datetime
+import logging
 
-from housekeeper.store.utils import get_rundir
-from .tar import tar_files
+from housekeeper.store import api
 
-BLOCKSIZE = 65536
-ArchiveGroup = namedtuple('ArchiveGroup', ['id', 'out', 'checksum'])
-
-
-def compress_run(run_obj):
-    """Archive a run into data+results archives."""
-    case_dir = path(get_rundir(run_obj.case.name))
-    run_dir = path(get_rundir(run_obj.case.name, run=run_obj))
-    for group, paths in group_assets(run_obj.assets):
-        run_date = run_obj.analyzed_at.date()
-        group_out = case_dir.joinpath("{}.{}.tar.gz".format(run_date, group))
-        filenames = [path(full_path).basename() for full_path in paths]
-        tar_files(group_out, run_dir, filenames)
-        sha1 = checksum(group_out)
-        yield ArchiveGroup(id=group, out=group_out, checksum=sha1)
+log = logging.getLogger(__name__)
 
 
-def group_assets(assets):
-    """Groups asset paths based on archive type."""
-    # group files base on type
-    groups = ('data', 'result')
-    for group in groups:
-        paths = [asset.path for asset in assets
-                 if asset.archive_type in (group, 'meta')]
-        yield group, paths
+def archive_run(run_obj):
+    """Archive a run to PDC."""
+    assert run_obj.compiled_at, "run not compiled yet"
+    # fetch the archive assets
+    assets = get_archiveassets(run_obj.id)
+    # do PDC magic....
+    # remove the archive assets
+    for archive_type, asset in assets:
+        log.debug("deleting: %s", asset.path)
+        api.delete_asset(asset)
+    run_obj.compiled_at = None
+    # mark the case as archived
+    run_obj.archived_at = datetime.now()
 
 
-def checksum(path):
-    """Calculcate checksum for a file."""
-    hasher = hashlib.sha1()
-    with open(path, 'rb') as stream:
-        buf = stream.read(BLOCKSIZE)
-        while len(buf) > 0:
-            hasher.update(buf)
-            buf = stream.read(BLOCKSIZE)
-    return hasher.hexdigest()
+def get_archiveassets(run_id):
+    """Get the archive assets for a run."""
+    for archive_type in ("data", "result"):
+        category = "archive-{}".format(archive_type)
+        query = api.assets(run_id=run_id, category=category)
+        asset = query.first()
+        yield archive_type, asset

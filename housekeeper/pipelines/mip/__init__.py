@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from .collect import analysis
+from .core import parse_mip

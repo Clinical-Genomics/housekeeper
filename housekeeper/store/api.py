@@ -18,10 +18,12 @@ def manager(db_uri):
     return db
 
 
-def assets(case_name=None, sample=None, category=None):
+def assets(case_name=None, sample=None, category=None, run_id=None):
     """Get files from the database."""
     query = Asset.query
-    if case_name:
+    if run_id:
+        query = query.filter_by(run_id=run_id)
+    elif case_name:
         query = (query.join(Asset.run, AnalysisRun.case)
                       .filter(Case.name == case_name))
     if sample:
@@ -82,6 +84,13 @@ def delete(run_obj):
     run_dir = get_rundir(run_obj.case.name, run_obj)
     delete_dir(run_dir)
     run_obj.delete()
+
+
+def delete_asset(asset_obj):
+    """Delete an asset completely from the database."""
+    if asset_obj.is_local:
+        path(asset_obj.path).remove_p()
+    asset_obj.delete()
 
 
 def clean_up(run_obj, force=False):
