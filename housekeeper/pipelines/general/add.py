@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 import logging
 
 from housekeeper.store import AnalysisRun, Case, Sample
@@ -19,7 +18,7 @@ def analysis(name, pipeline, version, analyzed_at, samples=None):
                           analyzed_at=analyzed_at)
 
     # set the future date for archiving
-    new_run.will_cleanup_at = datetime.now() + TIME_TO_CLEANUP
+    new_run.will_cleanup_at = analyzed_at + TIME_TO_CLEANUP
 
     for sample_id in (samples or []):
         new_run.samples.append(Sample(name=sample_id))
