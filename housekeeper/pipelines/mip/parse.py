@@ -12,20 +12,27 @@ def parse_references(references, params, segments):
         config_data = yaml.load(in_handle)
     segments = prepare_inputs(config_data)
     for reference in references:
-        keys = reference['key'].split('|')
-        source = segments[reference['source']]
-        if reference.get('sample'):
-            for sample_id, values in source.items():
-                ref_paths = parse_tree(values, keys)
+        try:
+            keys = reference['key'].split('|')
+            source = segments[reference['source']]
+            if reference.get('sample'):
+                for sample_id, values in source.items():
+                    ref_paths = parse_tree(values, keys)
+                    for ref_path in ref_paths:
+                        ref_path = format_path(reference, ref_path)
+                        yield {'reference': reference, 'path': ref_path,
+                               'sample': sample_id}
+            else:
+                ref_paths = parse_tree(source, keys)
                 for ref_path in ref_paths:
                     ref_path = format_path(reference, ref_path)
-                    yield {'reference': reference, 'path': ref_path,
-                           'sample': sample_id}
-        else:
-            ref_paths = parse_tree(source, keys)
-            for ref_path in ref_paths:
-                ref_path = format_path(reference, ref_path)
-                yield {'reference': reference, 'path': ref_path}
+                    yield {'reference': reference, 'path': ref_path}
+        except KeyError as error:
+            if reference.get('required') is False:
+                log.warn(error.message)
+                continue
+            else:
+                raise error
 
 
 def prepare_inputs(config_data):
