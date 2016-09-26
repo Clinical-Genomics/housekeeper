@@ -14,12 +14,16 @@ log = logging.getLogger(__name__)
 @click.command()
 @click.option('-c', '--case')
 @click.option('-s', '--sample')
+@click.option('-i', '--infer-case', is_flag=True)
 @click.option('-c', '--category')
 @click.pass_context
-def get(context, case, sample, category):
+def get(context, case, sample, infer_case, category):
     """Ask Housekeeper for a file."""
     api.manager(context.obj['database'])
-    assets = api.assets(case, sample, category)
+    if infer_case:
+        case = api.sample(sample).run.case.name
+        sample = None
+    assets = api.assets(case_name=case, sample=sample, category=category)
     paths = [asset.path for asset in assets]
     output = ' '.join(paths)
     click.echo(output, nl=False)
@@ -79,7 +83,8 @@ def ls(context, pretty, limit, since, category):
     """List recently added runs."""
     api.manager(context.obj['database'])
     date_obj = build_date(since) if since else None
-    query = api.runs(since=date_obj).limit(limit)
+    query = api.runs(since=date_obj)
+    query = query.limit(limit) if since is None else query
     if query.first() is None:
         log.warn('sorry, no runs found')
     else:
