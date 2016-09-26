@@ -21,7 +21,11 @@ def get(context, case, sample, infer_case, category):
     """Ask Housekeeper for a file."""
     api.manager(context.obj['database'])
     if infer_case:
-        case = api.sample(sample).run.case.name
+        sample_obj = api.sample(sample)
+        if sample_obj is None:
+            log.warn('sorry, sample not found')
+            context.abort()
+        case = sample_obj.run.case.name
         sample = None
     assets = api.assets(case_name=case, sample=sample, category=category)
     paths = [asset.path for asset in assets]
@@ -87,6 +91,7 @@ def ls(context, pretty, limit, since, category):
     query = query.limit(limit) if since is None else query
     if query.first() is None:
         log.warn('sorry, no runs found')
+        context.abort()
     else:
         cases = set()
         asset_paths = []
