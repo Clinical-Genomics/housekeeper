@@ -55,7 +55,7 @@ def cases(query_str=None):
     return query
 
 
-def runs(case_name, run_date=None):
+def runs(case_name=None, run_date=None, since=None):
     """Get runs for a case from the database.
 
     Args:
@@ -69,9 +69,12 @@ def runs(case_name, run_date=None):
         next_day = run_date + delta
         condition = AnalysisRun.analyzed_at.between(run_date, next_day)
         return AnalysisRun.query.filter(condition)
-    run_query = (AnalysisRun.query.join(AnalysisRun.case)
-                            .filter(Case.name == case_name)
-                            .order_by(AnalysisRun.created_at.desc()))
+    run_query = AnalysisRun.query.order_by(AnalysisRun.created_at.desc())
+    if since:
+        run_query = run_query.filter(AnalysisRun.created_at > since)
+    if case_name:
+        run_query = (run_query.join(AnalysisRun.case)
+                              .filter(Case.name == case_name))
     return run_query
 
 

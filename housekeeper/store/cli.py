@@ -67,3 +67,32 @@ def clean(context, force, date, case_name):
     if force or click.confirm('Are you sure?'):
         api.clean_up(run_obj, force=force)
         manager.commit()
+
+
+@click.command()
+@click.option('-p', '--pretty', is_flag=True)
+@click.option('-l', '--limit', default=20)
+@click.option('-s', '--since', help='consider runs since date')
+@click.option('-c', '--category', default='bcf-raw')
+@click.pass_context
+def ls(context, pretty, limit, since, category):
+    """List recently added runs."""
+    api.manager(context.obj['database'])
+    date_obj = build_date(since) if since else None
+    query = api.runs(since=date_obj).limit(limit)
+    if query.first() is None:
+        log.warn('sorry, no runs found')
+    else:
+        cases = set()
+        asset_paths = []
+        for run_obj in query:
+            if run_obj.case_id not in cases:
+                asset = api.assets(run_id=run_obj.id, category=category).first()
+                asset_paths.append(asset.path)
+            cases.add(run_obj.case_id)
+        click.echo(" ".join(asset_paths))
+
+
+def build_date(date_str):
+    """Parse date out of string."""
+    return datetime.date(*map(int, date_str.split('-')))

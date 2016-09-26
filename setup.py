@@ -64,7 +64,7 @@ setup(
     # Versions should comply with PEP440. For a discussion on
     # single-sourcing the version across setup.py and the project code,
     # see http://packaging.python.org/en/latest/tutorial.html#version
-    version='1.0.0-beta5',
+    version='1.0.0-beta6',
 
     description=('Housekeeper takes care of files.'),
     long_description=long_description,
@@ -123,6 +123,7 @@ setup(
             'archive = housekeeper.archive.cli:archive',
             'clean = housekeeper.store.cli:clean',
             'restore = housekeeper.compile.cli:restore',
+            'ls = housekeeper.store.cli:ls',
         ],
     },
 
