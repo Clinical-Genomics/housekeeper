@@ -4,15 +4,14 @@ import yaml
 from housekeeper.exc import MalformattedPedigreeError
 
 
-def write_meta(case_name, family_data, qcped, outdata_dir):
+def write_meta(meta_output, outdata_dir):
     """Write meta files."""
-    meta_output = build_meta(case_name, family_data, qcped)
     meta_path = "{}/meta.yaml".format(outdata_dir)
     with open(meta_path, 'w') as out_handle:
         out_handle.write(meta_output)
 
 
-def build_meta(case_name, family_data, qc_ped):
+def build_meta(case_name, family_data, qc_ped, version=None):
     """Build metadata information content.
 
     Args:
@@ -28,11 +27,11 @@ def build_meta(case_name, family_data, qc_ped):
     metadata = {
         'name': case_name,
         'pipeline': 'mip',
-        'pipeline_version': family_data['MIPVersion'],
+        'pipeline_version': version or family_data['MIPVersion'],
         'analyzed_at': family_data['AnalysisDate'],
         'samples': sample_map,
     }
-    return yaml.dump(metadata)
+    return yaml.dump(metadata, default_flow_style=False)
 
 
 def sampleid_map(qc_ped):

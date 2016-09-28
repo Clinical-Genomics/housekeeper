@@ -6,11 +6,8 @@ import yaml
 log = logging.getLogger(__name__)
 
 
-def parse_references(references, params, segments):
+def parse_references(references, segments):
     """Combine the functions."""
-    with open(params['config'], 'r') as in_handle:
-        config_data = yaml.load(in_handle)
-    segments = prepare_inputs(config_data)
     for reference in references:
         try:
             keys = reference['key'].split('|')

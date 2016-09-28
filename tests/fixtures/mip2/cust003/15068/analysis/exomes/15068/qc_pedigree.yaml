@@ -1,0 +1,16 @@
+---
+'15068':
+  ADM1054A1:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    Clinical_db:
+      - IEM
+    FamilyID: '15068'
+    Father: '0'
+    Mother: '0'
+    Phenotype: '2'
+    SampleID: ADM1054A1
+    Sex: '1'
+    display_name:
+      - 15068-I-1A
+

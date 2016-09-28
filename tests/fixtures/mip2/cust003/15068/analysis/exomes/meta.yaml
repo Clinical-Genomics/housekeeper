@@ -1,0 +1,6 @@
+analyzed_at: 2015-07-02 15:30:26
+name: cust003-15068
+pipeline: mip
+pipeline_version: v2.x
+samples:
+  ADM1054A1: 15068-I-1A

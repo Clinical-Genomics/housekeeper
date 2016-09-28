@@ -1,0 +1,35 @@
+---
+- category: config
+  source: config
+  key: writeConfigFile
+  archive_type: result
+
+- category: sampleinfo
+  source: config
+  key: sampleInfoFile
+  archive_type: result
+
+- category: pedigree
+  source: family
+  key: PedigreeFile|Path
+  archive_type: data
+
+- category: qcpedigree
+  source: family
+  key: PedigreeFileAnalysis|Path
+
+- category: vcf-clinical
+  source: family
+  key: VCFFile|Clinical|Path
+  archive_type: result
+
+- category: vcf-research
+  source: family
+  key: VCFFile|Research|Path
+  archive_type: result
+
+- category: meta
+  source: config
+  key: outDataDir
+  suffix: /meta.yaml
+  archive_type: meta

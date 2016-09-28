@@ -1,0 +1,2 @@
+#FamilyID	SampleID	Father	Mother	Sex	Phenotype	Capture_kit	Clinical_db	display_name
+15068	ADM1054A1	0	0	1	2	Agilent_SureSelectCRE.V1	IEM	15068-I-1A

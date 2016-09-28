@@ -8,7 +8,7 @@ from path import path
 import yaml
 
 from housekeeper.exc import AnalysisNotFinishedError, UnsupportedVersionError
-from .meta import write_meta
+from .meta import build_meta, write_meta
 
 MULTIQC_SAMTOOLS = 'multiqc/multiqc_data/multiqc_samtools.txt'
 
@@ -25,7 +25,8 @@ def prepare_run(segments, force=False):
     fam_key = segments['config']['familyID']
     customer = segments['family']['InstanceTag'][0]
     case_name = "{}-{}".format(customer, fam_key)
-    write_meta(case_name, segments['family'], qcped_path, outdata_dir)
+    meta_output = build_meta(case_name, segments['family'], qcped_path)
+    write_meta(meta_output, outdata_dir)
 
     qcmetrics_path = (segments['family']['Program']['QCCollect']
                               ['QCCollectMetricsFile']['Path'])
@@ -42,7 +43,7 @@ def validate(family):
 
     version = family['MIPVersion']
     if not version.startswith('v3'):
-        log.warn("analysis to old: %s", version)
+        log.warn("analysis too old: %s", version)
         raise UnsupportedVersionError(version)
 
 

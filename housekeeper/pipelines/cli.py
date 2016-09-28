@@ -11,26 +11,32 @@ from housekeeper.store.utils import get_rundir
 from housekeeper.cli.utils import run_orabort
 from housekeeper.exc import AnalysisConflictError
 from .mip import parse_mip
+from .mip2 import parse as parse_mip2
 from .general import commit_analysis, check_existing
 
 log = logging.getLogger(__name__)
+
+LOADERS = {'mip': parse_mip, 'mip2': parse_mip2}
 
 
 @click.command()
 @click.option('-y', '--yes', is_flag=True, help='auto replace old runs')
 @click.option('-f', '--force', is_flag=True, help='replace identical runs')
 @click.option('-r', '--references', type=click.File('r'))
+@click.option('-p', '--pipeline', type=click.Choice(LOADERS.keys()),
+              default='mip')
 @click.argument('config', type=click.File('r'))
 @click.pass_context
-def add(context, force, yes, references, config):
+def add(context, force, yes, references, pipeline, config):
     """Add analyses from different pipelines."""
     manager = api.manager(context.obj['database'])
     config_data = yaml.load(config)
     if not references:
-        default_ref = "pipelines/references/mip.yaml"
+        default_ref = "pipelines/references/{}.yaml".format(pipeline)
         references = pkg_resources.resource_string("housekeeper", default_ref)
     reference_data = yaml.load(references)
-    records = parse_mip(config_data, reference_data, force=force)
+    loader = LOADERS[pipeline]
+    records = loader(config_data, reference_data, force=force)
     case_name = records['case'].name
     old_run = check_existing(case_name, records['run'])
     if old_run:

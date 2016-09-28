@@ -1,0 +1,237 @@
+---
+'15068':
+  '15068':
+    AnalysisDate: 2015-07-02T15:30:26
+    AnalysisRunStatus: Finished
+    HumanGenomeBuild:
+      Path: tests/fixtures/mip2/references/Homo_sapiens.GRCh37.d5.fasta
+      Source: GRCh
+      Version: '37'
+    InstanceTag:
+      - cust003
+    PedigreeFile:
+      Path: tests/fixtures/mip2/cust003/15068/exomes/15068/15068_pedigree.txt
+    PedigreeFileAnalysis:
+      Path: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/qc_pedigree.yaml
+    Program:
+      ChanjoBuild:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068
+        OutFile: 15068.sqlite
+      GATK:
+        Version: 3.3-0
+      InbreedingFactor:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/samplecheck
+        OutFile: 15068.het
+      PedigreeCheck:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk
+        OutFile: 15068_sorted_pmd_rreal_brecal_gvcf_vrecal_BOTH.vcf
+      PicardTools:
+        Version: '1.129'
+      QCCollect:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068
+        OutFile: 15068_qcmetrics.yaml
+      RankVariants:
+        Clinical:
+          Path: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk/15068_sorted_pmd_rreal_brecal_gvcf_vrecal_vep_parsed_snpeff_ranked_BOTH.selected.vcf
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk
+        OutFile: 15068_sorted_pmd_rreal_brecal_gvcf_vrecal_vep_parsed_snpeff_ranked_BOTH.selected.vcf
+        RankModel:
+          File: rank_model_cmms_v1.5.ini
+          Version: '1.5'
+        Research:
+          Path: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk/15068_sorted_pmd_rreal_brecal_gvcf_vrecal_vep_parsed_snpeff_ranked_BOTH.vcf
+      RelationCheck:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/samplecheck
+        OutFile: 15068.mibs
+      SexCheck:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/samplecheck
+        OutFile: 15068.sexcheck
+      SnpEff:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk
+        OutFile: 15068_sorted_pmd_rreal_brecal_gvcf_vrecal_vep_parsed_snpeff_BOTH_1.selected.vcf
+      VCFParser:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk
+        OutFile: 15068_sorted_pmd_rreal_brecal_gvcf_vrecal_vep_parsed_BOTH_1.vcf
+      VariantAnnotationBlock:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/info/
+        OutFile: VariantAnnotationBlock_15068.0.stderr.txt
+      VariantEffectPredictor:
+        OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk
+        OutFile: 15068_sorted_pmd_rreal_brecal_gvcf_vrecal_vep_BOTH_1.vcf_summary.html
+    ResearchEthicalApproval: notApproved
+    VCFFile:
+      Clinical:
+        Path: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk/15068_sorted_pmd_rreal_brecal_gvcf_vrecal_vep_parsed_snpeff_ranked_BOTH.selected.vcf
+      ReadyVcf:
+        Path: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk/15068_sorted_pmd_rreal_brecal_gvcf_vrecal_BOTH.vcf
+      Research:
+        Path: tests/fixtures/mip2/cust003/15068/analysis/exomes/15068/bwa/gatk/15068_sorted_pmd_rreal_brecal_gvcf_vrecal_vep_parsed_snpeff_ranked_BOTH.vcf
+    VCFParser:
+      RangeFile:
+        Database:
+          cust000-Research.txt_Research:
+            Acronym: Research
+            CompleteName: Research
+            Date: 2015-03-01
+            FileName: cust000-Research.txt
+            GenomeBuild: GRCh37.p13
+            Version: '6.8'
+        File: cust000-Research.txt
+      SelectFile:
+        Database:
+          cust000-Clinical_master_list.txt_FullList:
+            Acronym: FullList
+            CompleteName: Clinical master list
+            FileName: cust000-Clinical_master_list.txt
+            GenomeBuild: GRCh37.p13
+            Version: '9.0'
+          cust002-OMIM.txt_OMIM:
+            Acronym: OMIM
+            CompleteName: Online Mendelian Inheritance in Man of 141201
+            Date: 2015-05-10
+            FileName: cust002-OMIM.txt
+            GenomeBuild: GRCh37.p13
+            Version: '41.9'
+          cust002-SKD.txt_SKD:
+            Acronym: SKD
+            CompleteName: Skeletal dysplasia
+            Date: 2015-05-10
+            FileName: cust002-SKD.txt
+            GenomeBuild: GRCh37.p13
+            Version: '42.4'
+          cust003-CMMS.txt_EP:
+            Acronym: EP
+            CompleteName: Epilepsy
+            Date: 2015-05-18
+            FileName: cust003-CMMS.txt
+            GenomeBuild: GRCh37.p13
+            Version: '6.2'
+          cust003-CMMS.txt_IEM:
+            Acronym: IEM
+            CompleteName: Inborn Errors of Metabolism
+            Date: 2015-05-18
+            FileName: cust003-CMMS.txt
+            GenomeBuild: GRCh37.p13
+            Version: '6.2'
+          cust003-CMMS.txt_MIT:
+            Acronym: MIT
+            CompleteName: Mitochondrial
+            Date: 2015-05-18
+            FileName: cust003-CMMS.txt
+            GenomeBuild: GRCh37.p13
+            Version: '6.2'
+          cust004-PID.txt_PID:
+            Acronym: PID
+            CompleteName: Primary Immune Deficiency
+            Date: 2015-05-09
+            FileName: cust004-PID.txt
+            GenomeBuild: GRCh37.p13
+            Version: '6.2'
+        File: cust000-Clinical_master_list.txt
+  ADM1054A1:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    ExomeTargetBedInfileLists: Agilent_SureSelectCRE.V1.GRCh37_targets.bed.infile_list
+    ExomeTargetPaddedBedInfileLists: Agilent_SureSelectCRE.V1.GRCh37_targets.bed.pad100.infile_list
+    Father: '0'
+    File:
+      ADM1054A1.150630_HT5FMADXX_CAGCGTTA.lane1:
+        SequenceRunType: Paired-end
+      ADM1054A1.150630_HT5FMADXX_CAGCGTTA.lane1_1:
+        Date: 2015-06-30
+        Flow-cell: HT5FMADXX
+        Lane: '1'
+        OriginalFileName: 1_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_1.fastq.gz
+        OriginalFileNameNoEnding: 1_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_1
+        ReadDirection: 1
+        RunBarcode: 150630_HT5FMADXX_1_CAGCGTTA
+        SampleBarcode: CAGCGTTA
+        SequenceLength: '101'
+      ADM1054A1.150630_HT5FMADXX_CAGCGTTA.lane1_2:
+        Date: 2015-06-30
+        Flow-cell: HT5FMADXX
+        Lane: '1'
+        OriginalFileName: 1_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_2.fastq.gz
+        OriginalFileNameNoEnding: 1_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_2
+        ReadDirection: 2
+        RunBarcode: 150630_HT5FMADXX_1_CAGCGTTA
+        SampleBarcode: CAGCGTTA
+        SequenceLength: '101'
+      ADM1054A1.150630_HT5FMADXX_CAGCGTTA.lane2:
+        SequenceRunType: Paired-end
+      ADM1054A1.150630_HT5FMADXX_CAGCGTTA.lane2_1:
+        Date: 2015-06-30
+        Flow-cell: HT5FMADXX
+        Lane: '2'
+        OriginalFileName: 2_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_1.fastq.gz
+        OriginalFileNameNoEnding: 2_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_1
+        ReadDirection: 1
+        RunBarcode: 150630_HT5FMADXX_2_CAGCGTTA
+        SampleBarcode: CAGCGTTA
+        SequenceLength: '101'
+      ADM1054A1.150630_HT5FMADXX_CAGCGTTA.lane2_2:
+        Date: 2015-06-30
+        Flow-cell: HT5FMADXX
+        Lane: '2'
+        OriginalFileName: 2_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_2.fastq.gz
+        OriginalFileNameNoEnding: 2_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_2
+        ReadDirection: 2
+        RunBarcode: 150630_HT5FMADXX_2_CAGCGTTA
+        SampleBarcode: CAGCGTTA
+        SequenceLength: '101'
+    MostCompleteBAM:
+      Path: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/gatk/ADM1054A1_lanes_12_sorted_merged_pmd_rreal_brecal.bam
+    Mother: '0'
+    Program:
+      Bwa:
+        ADM1054A1.150630_HT5FMADXX_CAGCGTTA.lane1:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/info/
+          OutFile: BwaMem_ADM1054A1.0.stderr.txt
+        ADM1054A1.150630_HT5FMADXX_CAGCGTTA.lane2:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/info/
+          OutFile: BwaMem_ADM1054A1.1.stderr.txt
+      CalculateHsMetrics:
+        ADM1054A1_lanes_12:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/coveragereport
+          OutFile: ADM1054A1_lanes_12_sorted_merged_pmd_rreal_brecal_gvcf_CalculateHsMetrics
+      ChanjoAnnotate:
+        ADM1054A1_lanes_12:
+          Bed:
+            Path: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/coveragereport/ADM1054A1_lanes_12_sorted_merged_pmd_rreal_brecal_gvcf_coverage.bed
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/coveragereport
+          OutFile: ADM1054A1_lanes_12_sorted_merged_pmd_rreal_brecal_chanjoAnnotate.log
+      ChanjoSexCheck:
+        ADM1054A1_lanes_12:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/coveragereport
+          OutFile: ADM1054A1_lanes_12_sorted_merged_pmd_rreal_brecal_gvcf.sexcheck
+      CollectMultipleMetrics:
+        ADM1054A1_lanes_12:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/coveragereport
+          OutFile: ADM1054A1_lanes_12_sorted_merged_pmd_rreal_brecal.alignment_summary_metrics
+      FastQC:
+        1_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_1.fastq.gz:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/fastqc/1_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_1_fastqc
+          OutFile: fastqc_data.txt
+        1_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_2.fastq.gz:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/fastqc/1_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_2_fastqc
+          OutFile: fastqc_data.txt
+        2_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_1.fastq.gz:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/fastqc/2_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_1_fastqc
+          OutFile: fastqc_data.txt
+        2_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_2.fastq.gz:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/fastqc/2_150630_HT5FMADXX_ADM1054A1_CAGCGTTA_2_fastqc
+          OutFile: fastqc_data.txt
+      MarkDuplicates:
+        ADM1054A1_lanes_12:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/coveragereport
+          OutFile: ADM1054A1_lanes_12_sorted_merged_pmd_rreal_brecal_gvcf_metric
+      VariantEval_All:
+        ADM1054A1_lanes_12:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/gatk/varianteval
+          OutFile: ADM1054A1_lanes_12_sorted_pmd_rreal_brecal_gvcf_vrecal_BOTH.vcf.varianteval
+      VariantEval_Exome:
+        ADM1054A1_lanes_12:
+          OutDirectory: tests/fixtures/mip2/cust003/15068/analysis/exomes/ADM1054A1/bwa/gatk/varianteval
+          OutFile: ADM1054A1_lanes_12_sorted_pmd_rreal_brecal_gvcf_vrecal_BOTH_exome.vcf.varianteval
+    Sex: '1'
+
