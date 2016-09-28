@@ -97,9 +97,4 @@
   key: File|*|CramFile
   sample: yes
   multiple: yes
-
-# for input_file in sample['File'].values():
-# cram = input_file['CramFile']
-# cram_asset = general_asset(cram, 'cram', archive_type='data')
-# assets.append(cram_asset)
-# new_samples[sample_id].assets.append(cram_asset)
+  archive_type: data
