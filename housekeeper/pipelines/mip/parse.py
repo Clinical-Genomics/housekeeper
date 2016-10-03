@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 import logging
 
+from path import path
 import yaml
+
+from housekeeper.exc import MissingFileError
 
 log = logging.getLogger(__name__)
 
@@ -54,6 +57,12 @@ def format_path(reference, orig_path):
     elif 'replace' in reference:
         new_path = orig_path.replace(reference['replace']['old_str'],
                                      reference['replace']['new_str'])
+    elif 'glob' in reference:
+        matches = path(orig_path).glob(reference['glob'])
+        if len(matches) == 0:
+            glob = reference['glob']
+            raise MissingFileError("{}, {}".format(orig_path, glob))
+        new_path = matches[0]
     else:
         new_path = orig_path
     return new_path

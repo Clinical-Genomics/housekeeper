@@ -1,0 +1,200 @@
+---
+015701600403fam:
+  ADM1221A1:
+    GATKTargetPaddedBedIntervalLists: Agilent_SureSelectCRE.V1.GenomeReferenceSourceVersion_targets.bed.pad100.interval_list
+    exomeTargetBedInfileLists: Agilent_SureSelectCRE.V1.GRCh37_targets.bed.infile_list
+    exomeTargetPaddedBedInfileLists: Agilent_SureSelectCRE.V1.GRCh37_targets.bed.pad100.infile_list
+GATKBaseReCalibrationOverClippedRead: '1'
+GATKBaseReCalibrationSNPKnownSet: dbsnp_138.b37.vcf
+GATKBundleDownLoadVersion: '2.8'
+GATKDownSampleToCoverage: '1000'
+GATKGenoTypeGVCFsAllSites: '0'
+GATKGenoTypeGVCFsRefGVCF: Merged_reference_infiles.gvcf
+GATKHaploTypeCallerSNPKnownSet: dbsnp_138.b37.vcf
+GATKHaploTypeCallerSoftClippedBases: '1'
+GATKReAlignerINDELKnownSet1: 1000G_phase1.indels.b37.vcf
+GATKReAlignerINDELKnownSet2: Mills_and_1000G_gold_standard.indels.b37.vcf
+GATKTargetPaddedBedIntervalLists: 1
+GATKVariantEvalDbSNP: dbsnp_138.b37.excluding_sites_after_129.vcf
+GATKVariantEvalGold: Mills_and_1000G_gold_standard.indels.b37.vcf
+GATKVariantReCalibrationBCFFile: '1'
+GATKVariantReCalibrationMaxGaussians: '0'
+GATKVariantReCalibrationTSFilterLevel: '99.9'
+GATKVariantReCalibrationTrainingSet1000GOmni: 1000G_omni2.5.b37.sites.vcf
+GATKVariantReCalibrationTrainingSet1000GSNP: 1000G_phase1.snps.high_confidence.b37.vcf
+GATKVariantReCalibrationTrainingSetDbSNP: dbsnp_138.b37.vcf
+GATKVariantReCalibrationTrainingSetHapMap: hapmap_3.3.b37.sites.vcf
+GATKVariantReCalibrationTrainingSetMills: Mills_and_1000G_gold_standard.indels.b37.vcf
+GATKVariantReCalibrationexcludeNonVariantsFile: '0'
+GenomeCoverageBEDMaxCoverage: '30'
+MIP: 1
+QCCollectRegExpFile: qc_regExp_v1.3.yaml
+QCCollectSampleInfoFile: tests/fixtures/miparchive/015701600403fam/exomes/015701600403fam/015701600403fam_qc_sampleInfo.yaml
+VTDecompose: '1'
+VTNormalize: '1'
+VcfParserOutputFileCount: 2
+aligner: bwa
+analysisConstantPath: analysis
+analysisType: exomes
+annovarGenomeBuildVersion: hg19
+annovarMAFThreshold: '0'
+annovarPath: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/annovar
+annovarTableNames:
+  - refGene
+bwaBuildReference: Homo_sapiens.GRCh37.d5.fasta
+bwaMemCram: '1'
+cadd1000Genomes: 1
+cadd1000GenomesFile: 1000G.v1.3.tsv.gz
+caddWGSSNVs: 1
+caddWGSSNVsFile: whole_genome_SNVs.v1.3.tsv.gz
+chanjoAnnotateCutoff: '10'
+chanjoBuildDb: CCDS.current.txt
+clusterConstantPath: tests/fixtures/miparchive/015701600403fam
+configFile: tests/fixtures/miparchive/cust004-Exomes_Config.v1.1.yaml
+dryRunAll: '0'
+email: emma.sernstad@scilifelab.se
+emailType: F
+exomeTargetBedInfileLists: ~
+exomeTargetPaddedBedInfileLists: ~
+familyID: 015701600403fam
+genmodModelsFamilyType: cmms
+genomeAnalysisToolKitPath: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/GenomeAnalysisTK-3.4-46
+genomicSet: noUserInfo
+humanGenomeReference: Homo_sapiens.GRCh37.d5.fasta
+inFilesDirs:
+  - tests/fixtures/miparchive/015701600403fam/exomes/ADM1221A1/fastq
+inScriptDir: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/MIP
+instanceTag:
+  - cust004
+javaUseLargePages: yes
+logFile: tests/fixtures/miparchive/015701600403fam/analysis/exomes/015701600403fam/mip_log/2015-11-30/mip.pl_2015-11-30T14:06:55.log
+maximumCores: '16'
+mosaikBuildMedianFragLength: '375'
+nodeRamMemory: '128'
+outDataDir: tests/fixtures/miparchive/015701600403fam/analysis/exomes
+outScriptDir: tests/fixtures/miparchive/015701600403fam/exomes_scripts
+pAnalysisRunStatus: '1'
+pAnnovar: 0
+pBAMCalibrationAndGTBlock: '0'
+pBwaAln: 0
+pBwaMem: 1
+pBwaSampe: 0
+pChanjoAnnotate: 1
+pChanjoBuild: 1
+pChanjoImport: '0'
+pChanjoSexCheck: '1'
+pFastQC: 1
+pGATKBaseRecalibration: 1
+pGATKGenoTypeGVCFs: 1
+pGATKHaploTypeCaller: 1
+pGATKPhaseByTransmission: '0'
+pGATKReadBackedPhasing: 0
+pGATKRealigner: 1
+pGATKVariantEvalAll: 1
+pGATKVariantEvalExome: 1
+pGATKVariantRecalibration: 1
+pGZipFastq: 1
+pGenomeCoverageBED: 1
+pMadeline: 0
+pMosaikAlign: 0
+pMosaikBuild: 0
+pPicardToolsCalculateHSMetrics: 1
+pPicardToolsCollectMultipleMetrics: '1'
+pPicardToolsMarkduplicatesForQCMetrics: '1'
+pPicardToolsMarkduplicatesWithMateCigar: '1'
+pPicardToolsMergeRapidReads: '0'
+pPicardToolsMergeSamFiles: 1
+pQCCollect: 1
+pRCovPlots: '0'
+pRankVariants: 1
+pRemoveRedundantFiles: '1'
+pSampleCheck: 1
+pSnpEff: 1
+pVCFParser: 1
+pVT: 1
+pVariantAnnotationBlock: '0'
+pVariantEffectPredictor: 1
+pedigreeFile: tests/fixtures/miparchive/015701600403fam/exomes/015701600403fam/015701600403fam_pedigree.txt
+picardToolsPath: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/picard-tools-1.137
+projectID: prod001
+pythonVirtualEnvironment: prod
+pythonVirtualEnvironmentCommand:
+  - source activate
+rankModelFile: rank_model_cmms_v1.11.ini
+reduceIO: '1'
+referencesDir: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references
+researchEthicalApproval: notApproved
+sampleIDs:
+  - ADM1221A1
+sampleInfoFile: tests/fixtures/miparchive/015701600403fam/exomes/015701600403fam/015701600403fam_qc_sampleInfo.yaml
+snpEffPath: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/snpEff.v4.1
+snpSiftAnnotationFiles:
+  ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz: AF
+  ExAC.r0.3.sites.vep.vcf.gz: AF
+  clinvar_20150901.vcf.gz: 'CLNSIG,CLNACC'
+  dbsnp_138.b37.excluding_sites_after_129.vcf.gz: CAF
+snpSiftAnnotationOutInfoKey:
+  ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz: 1000GAF
+  ExAC.r0.3.sites.vep.vcf.gz: EXACAF
+snpSiftDbNSFPAnnotations:
+  - SIFT_score
+  - SIFT_pred
+  - Polyphen2_HVAR_score
+  - Polyphen2_HVAR_pred
+  - MutationTaster_score
+  - MutationTaster_pred
+  - FATHMM_score
+  - FATHMM_pred
+  - Reliability_index
+  - GERP++_RS
+  - GERP++_NR
+  - phyloP46way_primate
+  - phyloP100way_vertebrate
+  - phastCons46way_primate
+  - phastCons100way_vertebrate
+  - SiPhy_29way_logOdds
+  - MutationAssessor_score
+  - MutationTaster_pred
+snpSiftDbNSFPFile: dbNSFP2.9.txt.gz
+tempDirectory: /scratch/$SLURM_JOB_ID
+vcfParserRangeFeatureAnnotationColumns:
+  - '3'
+  - '4'
+  - '5'
+  - '6'
+  - '7'
+  - '8'
+vcfParserRangeFeatureFile: cust000-Research.txt
+vcfParserSelectFeatureAnnotationColumns:
+  - '3'
+  - '10'
+  - '11'
+  - '14'
+  - '16'
+  - '17'
+  - '18'
+  - '19'
+  - '20'
+  - '21'
+vcfParserSelectFile: cust000-Clinical_master_list.txt
+vcfParserSelectFileMatchingColumn: '3'
+vcfParserVepTranscripts: '1'
+vepDirectoryCache: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/ensembl-tools-release-81/cache
+vepDirectoryPath: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/ensembl-tools-release-81/scripts/variant_effect_predictor
+vepFeatures:
+  - hgvs
+  - symbol
+  - numbers
+  - sift
+  - polyphen
+  - humdiv
+  - domains
+  - protein
+  - ccds
+  - uniprot
+  - biotype
+  - regulatory
+  - tsl
+wholeGene: '1'
+writeConfigFile: tests/fixtures/miparchive/015701600403fam/exomes/015701600403fam/015701600403fam_config.yaml
+

@@ -1,0 +1,2 @@
+#FamilyID	SampleID	Father	Mother	Sex	Phenotype	Capture_kit	Clinical_db	display_name
+015701600403fam	ADM1221A1	0	0	1	2	Agilent_SureSelectCRE.V1	PID	015701600403

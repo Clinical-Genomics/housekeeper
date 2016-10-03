@@ -1,0 +1,432 @@
+[INFO] 2015/11/30 14:06:56 MIPLogger - Read pedigree file: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_pedigree.txt
+[INFO] 2015/11/30 14:06:56 MIPLogger - Wrote: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/qc_pedigree.yaml
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: gzip installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: bcftools installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: fastqc installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: bedtools installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: vt installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: sed installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: bgzip installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: tabix installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: vcftools installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: plink installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - ProgramCheck: bwa installed
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set exomeTargetBedInfileLists to: Agilent_SureSelectCRE.V1.GRCh37_targets.bed.infile_list
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set exomeTargetPaddedBedInfileLists to: Agilent_SureSelectCRE.V1.GRCh37_targets.bed.pad100.infile_list
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set MIP to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set clusterConstantPath to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set analysisConstantPath to: analysis
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set familyID to: 015701600403fam
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set outDataDir to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set logFile to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/mip_log/2015-11-30/mip.pl_2015-11-30T14:06:55.log
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set projectID to: prod001
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set email to: emma.sernstad@scilifelab.se
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set emailType to: F
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set maximumCores to: 16
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set configFile to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/cust004-Exomes_Config.v1.1.yaml
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set analysisType to: exomes
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set outScriptDir to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set writeConfigFile to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_config.yaml
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pedigreeFile to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_pedigree.txt
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set sampleInfoFile to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_qc_sampleInfo.yaml
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set researchEthicalApproval to: notApproved
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set inScriptDir to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/MIP
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set referencesDir to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set dryRunAll to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set nodeRamMemory to: 128
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set tempDirectory to: /scratch/$SLURM_JOB_ID
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set genomicSet to: noUserInfo
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set reduceIO to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGZipFastq to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pFastQC to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pMadeline to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pMosaikBuild to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set mosaikBuildMedianFragLength to: 375
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pMosaikAlign to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pBwaMem to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set bwaMemCram to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pBwaAln to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pBwaSampe to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set bwaBuildReference to: notSetYet
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set aligner to: bwa
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pPicardToolsMergeRapidReads to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pBAMCalibrationAndGTBlock to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pPicardToolsMergeSamFiles to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pPicardToolsMarkduplicatesWithMateCigar to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKRealigner to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKReAlignerINDELKnownSet1 to: 1000G_phase1.indels.b37.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKReAlignerINDELKnownSet2 to: Mills_and_1000G_gold_standard.indels.b37.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKBaseRecalibration to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKBaseReCalibrationSNPKnownSet to: dbsnp_138.b37.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKBaseReCalibrationOverClippedRead to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKHaploTypeCaller to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKHaploTypeCallerSNPKnownSet to: dbsnp_138.b37.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKHaploTypeCallerSoftClippedBases to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pPicardToolsMarkduplicatesForQCMetrics to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pChanjoSexCheck to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pChanjoBuild to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set chanjoBuildDb to: CCDS.current.txt
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pChanjoAnnotate to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set chanjoAnnotateCutoff to: 10
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pChanjoImport to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGenomeCoverageBED to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GenomeCoverageBEDMaxCoverage to: 30
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pPicardToolsCollectMultipleMetrics to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pPicardToolsCalculateHSMetrics to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pRCovPlots to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set picardToolsPath to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/picard-tools-1.137
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKGenoTypeGVCFs to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKGenoTypeGVCFsRefGVCF to: Merged_reference_infiles.gvcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKGenoTypeGVCFsAllSites to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKVariantRecalibration to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationTrainingSetHapMap to: hapmap_3.3.b37.sites.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationTrainingSetDbSNP to: dbsnp_138.b37.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationTrainingSet1000GSNP to: 1000G_phase1.snps.high_confidence.b37.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationTrainingSet1000GOmni to: 1000G_omni2.5.b37.sites.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationTrainingSetMills to: Mills_and_1000G_gold_standard.indels.b37.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationTSFilterLevel to: 99.9
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationMaxGaussians to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationexcludeNonVariantsFile to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantReCalibrationBCFFile to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pVariantAnnotationBlock to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pVT to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set VTDecompose to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set VTNormalize to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKPhaseByTransmission to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKReadBackedPhasing to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKVariantEvalAll to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pGATKVariantEvalExome to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantEvalDbSNP to: dbsnp_138.b37.excluding_sites_after_129.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKVariantEvalGold to: Mills_and_1000G_gold_standard.indels.b37.vcf
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKDownSampleToCoverage to: 1000
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set GATKBundleDownLoadVersion to: 2.8
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pVariantEffectPredictor to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vepDirectoryPath to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/ensembl-tools-release-81/scripts/variant_effect_predictor
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vepDirectoryCache to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/ensembl-tools-release-81/cache
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pVCFParser to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vcfParserVepTranscripts to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vcfParserRangeFeatureFile to: cust000-Research.txt
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vcfParserSelectFile to: cust000-Clinical_master_list.txt
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vcfParserSelectFileMatchingColumn to: 3
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pAnnovar to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set annovarPath to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/annovar
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set annovarGenomeBuildVersion to: hg19
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set annovarMAFThreshold to: 0
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pSnpEff to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set snpEffPath to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/snpEff.v4.1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set snpSiftDbNSFPFile to: dbNSFP2.9.txt.gz
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set javaUseLargePages to: yes
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set genomeAnalysisToolKitPath to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/GenomeAnalysisTK-3.4-46
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pSampleCheck to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pRankVariants to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set genmodModelsFamilyType to: cmms
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set caddWGSSNVs to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set caddWGSSNVsFile to: whole_genome_SNVs.v1.3.tsv.gz
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set cadd1000Genomes to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set cadd1000GenomesFile to: 1000G.v1.3.tsv.gz
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set wholeGene to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set rankModelFile to: rank_model_cmms_v1.11.ini
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pythonVirtualEnvironment to: prod
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pQCCollect to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set QCCollectSampleInfoFile to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_qc_sampleInfo.yaml
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set QCCollectRegExpFile to: qc_regExp_v1.3.yaml
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pRemoveRedundantFiles to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pAnalysisRunStatus to: 1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set humanGenomeReference to: Homo_sapiens.GRCh37.d5.fasta
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set pythonVirtualEnvironmentCommand to: source activate
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set instanceTag to: cust004
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set sampleIDs to: ADM1221A1
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set inFilesDirs to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/ADM1221A1/fastq
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vepFeatures to: hgvs,symbol,numbers,sift,polyphen,humdiv,domains,protein,ccds,uniprot,biotype,regulatory,tsl
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vcfParserRangeFeatureAnnotationColumns to: 3,4,5,6,7,8
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set vcfParserSelectFeatureAnnotationColumns to: 3,10,11,14,16,17,18,19,20,21
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set annovarTableNames to: refGene
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set snpSiftDbNSFPAnnotations to: SIFT_score,SIFT_pred,Polyphen2_HVAR_score,Polyphen2_HVAR_pred,MutationTaster_score,MutationTaster_pred,FATHMM_score,FATHMM_pred,Reliability_index,GERP++_RS,GERP++_NR,phyloP46way_primate,phyloP100way_vertebrate,phastCons46way_primate,phastCons100way_vertebrate,SiPhy_29way_logOdds,MutationAssessor_score,MutationTaster_pred
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set snpSiftAnnotationFiles to: clinvar_20150901.vcf.gz=CLNSIG,CLNACC,dbsnp_138.b37.excluding_sites_after_129.vcf.gz=CAF,ExAC.r0.3.sites.vep.vcf.gz=AF,ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz=AF
+[INFO] 2015/11/30 14:06:56 MIPLogger - Set snpSiftAnnotationOutInfoKey to: ExAC.r0.3.sites.vep.vcf.gz=EXACAF,ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz=1000GAF
+[INFO] 2015/11/30 14:06:56 MIPLogger - Wrote: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_config.yaml
+[INFO] 2015/11/30 14:06:56 MIPLogger - mip.pl -MIP 1 -clusterConstantPath /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam -analysisConstantPath analysis -familyID 015701600403fam -outDataDir /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes -logFile /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/mip_log/2015-11-30/mip.pl_2015-11-30T14:06:55.log -projectID prod001 -email emma.sernstad@scilifelab.se -emailType F -maximumCores 16 -configFile /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/cust004-Exomes_Config.v1.1.yaml -analysisType exomes -outScriptDir /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts -writeConfigFile /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_config.yaml -pedigreeFile /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_pedigree.txt -sampleInfoFile /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_qc_sampleInfo.yaml -researchEthicalApproval notApproved -inScriptDir /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/MIP -referencesDir /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references -dryRunAll 0 -nodeRamMemory 128 -tempDirectory /scratch/$SLURM_JOB_ID -genomicSet noUserInfo -reduceIO 1 -pGZipFastq 1 -pFastQC 1 -pMadeline 0 -pMosaikBuild 0 -mosaikBuildMedianFragLength 375 -pMosaikAlign 0 -pBwaMem 1 -bwaMemCram 1 -pBwaAln 0 -pBwaSampe 0 -bwaBuildReference Homo_sapiens.GRCh37.d5.fasta -aligner bwa -pPicardToolsMergeRapidReads 0 -pBAMCalibrationAndGTBlock 0 -pPicardToolsMergeSamFiles 1 -pPicardToolsMarkduplicatesWithMateCigar 1 -pGATKRealigner 1 -GATKReAlignerINDELKnownSet1 1000G_phase1.indels.b37.vcf -GATKReAlignerINDELKnownSet2 Mills_and_1000G_gold_standard.indels.b37.vcf -pGATKBaseRecalibration 1 -GATKBaseReCalibrationSNPKnownSet dbsnp_138.b37.vcf -GATKBaseReCalibrationOverClippedRead 1 -pGATKHaploTypeCaller 1 -GATKHaploTypeCallerSNPKnownSet dbsnp_138.b37.vcf -GATKHaploTypeCallerSoftClippedBases 1 -pPicardToolsMarkduplicatesForQCMetrics 1 -pChanjoSexCheck 1 -pChanjoBuild 1 -chanjoBuildDb CCDS.current.txt -pChanjoAnnotate 1 -chanjoAnnotateCutoff 10 -pChanjoImport 0 -pGenomeCoverageBED 1 -GenomeCoverageBEDMaxCoverage 30 -pPicardToolsCollectMultipleMetrics 1 -pPicardToolsCalculateHSMetrics 1 -pRCovPlots 0 -picardToolsPath /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/picard-tools-1.137 -pGATKGenoTypeGVCFs 1 -GATKGenoTypeGVCFsRefGVCF Merged_reference_infiles.gvcf -GATKGenoTypeGVCFsAllSites 0 -pGATKVariantRecalibration 1 -GATKVariantReCalibrationTrainingSetHapMap hapmap_3.3.b37.sites.vcf -GATKVariantReCalibrationTrainingSetDbSNP dbsnp_138.b37.vcf -GATKVariantReCalibrationTrainingSet1000GSNP 1000G_phase1.snps.high_confidence.b37.vcf -GATKVariantReCalibrationTrainingSet1000GOmni 1000G_omni2.5.b37.sites.vcf -GATKVariantReCalibrationTrainingSetMills Mills_and_1000G_gold_standard.indels.b37.vcf -GATKVariantReCalibrationTSFilterLevel 99.9 -GATKVariantReCalibrationMaxGaussians 0 -GATKVariantReCalibrationexcludeNonVariantsFile 0 -GATKVariantReCalibrationBCFFile 1 -pVariantAnnotationBlock 0 -pVT 1 -VTDecompose 1 -VTNormalize 1 -pGATKPhaseByTransmission 0 -pGATKReadBackedPhasing 0 -pGATKVariantEvalAll 1 -pGATKVariantEvalExome 1 -GATKVariantEvalDbSNP dbsnp_138.b37.excluding_sites_after_129.vcf -GATKVariantEvalGold Mills_and_1000G_gold_standard.indels.b37.vcf -GATKDownSampleToCoverage 1000 -GATKBundleDownLoadVersion 2.8 -pVariantEffectPredictor 1 -vepDirectoryPath /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/ensembl-tools-release-81/scripts/variant_effect_predictor -vepDirectoryCache /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/ensembl-tools-release-81/cache -pVCFParser 1 -vcfParserVepTranscripts 1 -vcfParserRangeFeatureFile cust000-Research.txt -vcfParserSelectFile cust000-Clinical_master_list.txt -vcfParserSelectFileMatchingColumn 3 -pAnnovar 0 -annovarPath /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/annovar -annovarGenomeBuildVersion hg19 -annovarMAFThreshold 0 -pSnpEff 1 -snpEffPath /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/snpEff.v4.1 -snpSiftDbNSFPFile dbNSFP2.9.txt.gz -javaUseLargePages yes -genomeAnalysisToolKitPath /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/GenomeAnalysisTK-3.4-46 -pSampleCheck 1 -pRankVariants 1 -genmodModelsFamilyType cmms -caddWGSSNVs 1 -caddWGSSNVsFile whole_genome_SNVs.v1.3.tsv.gz -cadd1000Genomes 1 -cadd1000GenomesFile 1000G.v1.3.tsv.gz -wholeGene 1 -rankModelFile rank_model_cmms_v1.11.ini -pythonVirtualEnvironment prod -pQCCollect 1 -QCCollectSampleInfoFile /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_qc_sampleInfo.yaml -QCCollectRegExpFile qc_regExp_v1.3.yaml -pRemoveRedundantFiles 1 -pAnalysisRunStatus 1 -humanGenomeReference Homo_sapiens.GRCh37.d5.fasta -pythonVirtualEnvironmentCommand source activate -instanceTag cust004 -sampleIDs ADM1221A1 -inFilesDirs /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/ADM1221A1/fastq -vepFeatures hgvs,symbol,numbers,sift,polyphen,humdiv,domains,protein,ccds,uniprot,biotype,regulatory,tsl -vcfParserRangeFeatureAnnotationColumns 3,4,5,6,7,8 -vcfParserSelectFeatureAnnotationColumns 3,10,11,14,16,17,18,19,20,21 -annovarTableNames refGene -snpSiftDbNSFPAnnotations SIFT_score,SIFT_pred,Polyphen2_HVAR_score,Polyphen2_HVAR_pred,MutationTaster_score,MutationTaster_pred,FATHMM_score,FATHMM_pred,Reliability_index,GERP++_RS,GERP++_NR,phyloP46way_primate,phyloP100way_vertebrate,phastCons46way_primate,phastCons100way_vertebrate,SiPhy_29way_logOdds,MutationAssessor_score,MutationTaster_pred -snpSiftAnnotationFiles clinvar_20150901.vcf.gz=CLNSIG,CLNACC -snpSiftAnnotationFiles dbsnp_138.b37.excluding_sites_after_129.vcf.gz=CAF -snpSiftAnnotationFiles ExAC.r0.3.sites.vep.vcf.gz=AF -snpSiftAnnotationFiles ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz=AF -snpSiftAnnotationOutInfoKey ExAC.r0.3.sites.vep.vcf.gz=EXACAF -snpSiftAnnotationOutInfoKey ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz=1000GAF 
+[INFO] 2015/11/30 14:06:56 MIPLogger - MIP Version: v2.4.7
+[INFO] 2015/11/30 14:06:56 MIPLogger - Script parameters and info from mip.pl are saved in file: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/mip_log/2015-11-30/mip.pl_2015-11-30T14:06:55.log
+[INFO] 2015/11/30 14:06:56 MIPLogger - Reads from Platform
+[INFO] 2015/11/30 14:06:56 MIPLogger - Sample ID: ADM1221A1
+[INFO] 2015/11/30 14:06:56 MIPLogger - 	Inputfiles:
+[INFO] 2015/11/30 14:06:56 MIPLogger - 		1_151127_HF5F2BCXX_ADM1221A1_ACAAGCTA_1.fastq.gz
+[INFO] 2015/11/30 14:06:56 MIPLogger - 		1_151127_HF5F2BCXX_ADM1221A1_ACAAGCTA_2.fastq.gz
+[INFO] 2015/11/30 14:06:56 MIPLogger - 		2_151127_HF5F2BCXX_ADM1221A1_ACAAGCTA_1.fastq.gz
+[INFO] 2015/11/30 14:06:56 MIPLogger - 		2_151127_HF5F2BCXX_ADM1221A1_ACAAGCTA_2.fastq.gz
+[INFO] 2015/11/30 14:06:56 MIPLogger - Wrote: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/015701600403fam.fam
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/1000G_phase1.indels.b37.vcf vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/1000G_phase1.indels.b37.vcf vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/Mills_and_1000G_gold_standard.indels.b37.vcf vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/Mills_and_1000G_gold_standard.indels.b37.vcf vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/dbsnp_138.b37.vcf vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/dbsnp_138.b37.vcf vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/hapmap_3.3.b37.sites.vcf vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/hapmap_3.3.b37.sites.vcf vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/1000G_omni2.5.b37.sites.vcf vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/1000G_omni2.5.b37.sites.vcf vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/1000G_phase1.snps.high_confidence.b37.vcf vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/1000G_phase1.snps.high_confidence.b37.vcf vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/dbsnp_138.b37.excluding_sites_after_129.vcf vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/dbsnp_138.b37.excluding_sites_after_129.vcf vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/clinvar_20150901.vcf.gz vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/clinvar_20150901.vcf.gz vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/dbsnp_138.b37.excluding_sites_after_129.vcf.gz vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/dbsnp_138.b37.excluding_sites_after_129.vcf.gz vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/ExAC.r0.3.sites.vep.vcf.gz vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/ExAC.r0.3.sites.vep.vcf.gz vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz vt:normalize - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/references/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz vt:decompose - PASS
+[INFO] 2015/11/30 14:06:56 MIPLogger - [FastQC]
+[INFO] 2015/11/30 14:06:56 MIPLogger - Creating sbatch script for FastQC and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/fastqc/FastQC_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:56 MIPLogger - Sbatch script FastQC data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/fastqc
+[INFO] 2015/11/30 14:06:56 MIPLogger - Sbatch script submitted, job id: 585257
+[INFO] 2015/11/30 14:06:56 MIPLogger - To check status of job, please run 'squeue -j 585257'
+[INFO] 2015/11/30 14:06:56 MIPLogger - To cancel job, please run 'scancel 585257'
+[INFO] 2015/11/30 14:06:56 MIPLogger - [BWA Mem]
+[INFO] 2015/11/30 14:06:56 MIPLogger - Creating sbatch script for BwaMem and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/BwaMem_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:56 MIPLogger - Sbatch script BwaMem data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa
+[INFO] 2015/11/30 14:06:56 MIPLogger - Sbatch script submitted, job id: 585258
+[INFO] 2015/11/30 14:06:56 MIPLogger - To check status of job, please run 'squeue -j 585258'
+[INFO] 2015/11/30 14:06:56 MIPLogger - To cancel job, please run 'scancel 585258'
+[INFO] 2015/11/30 14:06:56 MIPLogger - Creating sbatch script for BwaMem and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/BwaMem_ADM1221A1.1.sh
+[INFO] 2015/11/30 14:06:56 MIPLogger - Sbatch script BwaMem data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa
+[INFO] 2015/11/30 14:06:56 MIPLogger - Sbatch script submitted, job id: 585259
+[INFO] 2015/11/30 14:06:56 MIPLogger - To check status of job, please run 'squeue -j 585259'
+[INFO] 2015/11/30 14:06:56 MIPLogger - To cancel job, please run 'scancel 585259'
+[INFO] 2015/11/30 14:06:56 MIPLogger - [BAMCalibrationAndGTBlock]
+[INFO] 2015/11/30 14:06:56 MIPLogger - 	[PicardTool MergeSamFiles]
+[INFO] 2015/11/30 14:06:56 MIPLogger - 	[PicardTools MarkDuplicatesWithMateCigar]
+[INFO] 2015/11/30 14:06:56 MIPLogger - 	[GATK ReAlignerTargetCreator/IndelRealigner]
+[INFO] 2015/11/30 14:06:56 MIPLogger - 	[GATK BaseRecalibrator/PrintReads]
+[INFO] 2015/11/30 14:06:56 MIPLogger - 	[GATK HaplotypeCaller]
+[INFO] 2015/11/30 14:06:56 MIPLogger - Creating sbatch script for BAMCalibrationAndGTBlock and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/BAMCalibrationAndGTBlock_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:56 MIPLogger - Sbatch script BAMCalibrationAndGTBlock data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585260
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585260'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585260'
+[INFO] 2015/11/30 14:06:57 MIPLogger - [PicardTools MarkDuplicatesForQCMetrics]
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for PicardToolsMarkduplicatesForQCMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/coveragereport/PicardToolsMarkduplicatesForQCMetrics_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script PicardToolsMarkduplicatesForQCMetrics data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa/coveragereport
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585261
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585261'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585261'
+[INFO] 2015/11/30 14:06:57 MIPLogger - [ChanjoSexCheck]
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for ChanjoSexCheck and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/coveragereport/ChanjoSexCheck_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script ChanjoSexCheck data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa/coveragereport
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585262
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585262'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585262'
+[INFO] 2015/11/30 14:06:57 MIPLogger - [ChanjoBuild]
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for ChanjoBuild and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/chanjobuild/ChanjoBuild_015701600403fam.0.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script ChanjoBuild data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/chanjobuild
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585263
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585263'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585263'
+[INFO] 2015/11/30 14:06:57 MIPLogger - [ChanjoAnnotate]
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for ChanjoAnnotate and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/coveragereport/ChanjoAnnotate_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script ChanjoAnnotate data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa/coveragereport
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585264
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585264'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585264'
+[INFO] 2015/11/30 14:06:57 MIPLogger - [GenomeCoverageBED]
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GenomeCoverageBED and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/coveragereport/GenomeCoverageBED_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GenomeCoverageBED data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa/coveragereport
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585265
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585265'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585265'
+[INFO] 2015/11/30 14:06:57 MIPLogger - [PicardToolsCollectMultipleMetrics]
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for PicardToolsCollectMultipleMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/coveragereport/PicardToolsCollectMultipleMetrics_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script PicardToolsCollectMultipleMetrics data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa/coveragereport
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585266
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585266'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585266'
+[INFO] 2015/11/30 14:06:57 MIPLogger - [PicardToolsCalculateHSMetrics]
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for PicardToolsCalculateHSMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/coveragereport/PicardToolsCalculateHSMetrics_ADM1221A1.0.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script PicardToolsCalculateHSMetrics data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa/coveragereport
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585267
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585267'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585267'
+[INFO] 2015/11/30 14:06:57 MIPLogger - [GATK GenoTypeGVCFs]
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.0.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585268
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585268'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585268'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.1.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585269
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585269'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585269'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.2.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585270
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585270'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585270'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.3.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585271
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585271'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585271'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.4.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585272
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585272'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585272'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.5.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585273
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585273'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585273'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.6.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585274
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585274'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585274'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.7.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585275
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585275'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585275'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.8.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585276
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585276'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585276'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.9.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585277
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585277'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585277'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.10.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585278
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585278'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585278'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.11.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585279
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585279'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585279'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.12.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585280
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585280'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585280'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.13.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585281
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585281'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585281'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.14.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585282
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585282'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585282'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.15.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585283
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585283'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585283'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.16.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585284
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585284'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585284'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.17.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585285
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585285'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585285'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.18.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585286
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585286'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585286'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.19.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585287
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585287'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585287'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.20.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585288
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585288'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585288'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.21.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585289
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585289'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585289'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.22.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585290
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585290'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585290'
+[INFO] 2015/11/30 14:06:57 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.23.sh
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:57 MIPLogger - Sbatch script submitted, job id: 585291
+[INFO] 2015/11/30 14:06:57 MIPLogger - To check status of job, please run 'squeue -j 585291'
+[INFO] 2015/11/30 14:06:57 MIPLogger - To cancel job, please run 'scancel 585291'
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.24.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585292
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585292'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585292'
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKGenoTypeGVCFs_015701600403fam_BOTH.25.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585293
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585293'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585293'
+[INFO] 2015/11/30 14:06:58 MIPLogger - [GATK VariantRecalibrator/ApplyRecalibration]
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for GATKVariantRecalibration and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/gatk/GATKVariantRecalibration_015701600403fam_BOTH.0.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script GATKVariantRecalibration data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/gatk
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585294
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585294'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585294'
+[INFO] 2015/11/30 14:06:58 MIPLogger - [SampleCheck]
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for SampleCheck and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/samplecheck/SampleCheck_015701600403fam_BOTH.0.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script SampleCheck data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa/samplecheck
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585295
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585295'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585295'
+[INFO] 2015/11/30 14:06:58 MIPLogger - [GATK VariantEval All]
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for GATKVariantEvalAll and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/gatk/varianteval/GATKVariantEvalAll_ADM1221A1_BOTH.0.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script GATKVariantEvalAll data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa/gatk/varianteval
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585296
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585296'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585296'
+[INFO] 2015/11/30 14:06:58 MIPLogger - [VariantAnnotationBlock]
+[INFO] 2015/11/30 14:06:58 MIPLogger - 	[VT]
+[INFO] 2015/11/30 14:06:58 MIPLogger - 	[VariantEffectPredictor]
+[INFO] 2015/11/30 14:06:58 MIPLogger - 	[VCFParser]
+[INFO] 2015/11/30 14:06:58 MIPLogger - 	[SnpEff]
+[INFO] 2015/11/30 14:06:58 MIPLogger - [RankVariants]
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for VariantAnnotationBlock and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/VariantAnnotationBlock_015701600403fam.0.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script VariantAnnotationBlock data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585297
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585297'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585297'
+[INFO] 2015/11/30 14:06:58 MIPLogger - [GATK VariantEval Exome]
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for GATKVariantEvalExome and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/ADM1221A1/bwa/gatk/varianteval/GATKVariantEvalExome_ADM1221A1_BOTH.0.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script GATKVariantEvalExome data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/ADM1221A1/bwa/gatk/varianteval
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585298
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585298'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585298'
+[INFO] 2015/11/30 14:06:58 MIPLogger - [QCCollect]
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for QCCollect and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/qccollect/QCCollect_015701600403fam.0.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script QCCollect data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/qccollect
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585299
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585299'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585299'
+[INFO] 2015/11/30 14:06:58 MIPLogger - [Removal of redundant files]
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for RemoveRedundantFiles and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/bwa/RemoveRedundantFiles_015701600403fam.0.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script RemoveRedundantFiles data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/bwa
+[INFO] 2015/11/30 14:06:58 MIPLogger - [AnalysisRunStatus]
+[INFO] 2015/11/30 14:06:58 MIPLogger - Creating sbatch script for AnalysisRunStatus and writing script file(s) to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes_scripts/015701600403fam/analysisrunstatus/AnalysisRunStatus_015701600403fam.0.sh
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script AnalysisRunStatus data files will be written to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/analysis/exomes/015701600403fam/analysisrunstatus
+[INFO] 2015/11/30 14:06:58 MIPLogger - Sbatch script submitted, job id: 585300
+[INFO] 2015/11/30 14:06:58 MIPLogger - To check status of job, please run 'squeue -j 585300'
+[INFO] 2015/11/30 14:06:58 MIPLogger - To cancel job, please run 'scancel 585300'
+[INFO] 2015/11/30 14:06:58 MIPLogger - Wrote: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/cust004/015701600403fam/exomes/015701600403fam/015701600403fam_qc_sampleInfo.yaml

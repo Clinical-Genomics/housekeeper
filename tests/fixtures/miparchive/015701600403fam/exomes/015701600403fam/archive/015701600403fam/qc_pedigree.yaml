@@ -1,0 +1,16 @@
+---
+015701600403fam:
+  ADM1221A1:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    Clinical_db:
+      - PID
+    FamilyID: 015701600403fam
+    Father: '0'
+    Mother: '0'
+    Phenotype: '2'
+    SampleID: ADM1221A1
+    Sex: '1'
+    display_name:
+      - '015701600403'
+

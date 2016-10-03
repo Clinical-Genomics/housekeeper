@@ -1,0 +1,56 @@
+---
+- category: config
+  source: config
+  key: writeConfigFile
+  archive_type: result
+
+- category: sampleinfo
+  source: config
+  key: sampleInfoFile
+  archive_type: result
+
+- category: pedigree
+  source: family
+  key: PedigreeFile|Path
+  archive_type: data
+
+- category: qcpedigree
+  source: family
+  key: ArchivePath
+  glob: "*/qc_pedigree.yaml"
+
+- category: bcf-raw
+  source: family
+  key: ArchivePath
+  glob: "*/*.bcf"
+  archive_type: result
+
+- category: bcf-raw-index
+  source: family
+  key: ArchivePath
+  glob: "*/*.bcf.csi"
+  archive_type: result
+
+- category: vcf-clinical
+  source: family
+  key: ArchivePath
+  glob: "*/*.selected.vcf"
+  archive_type: result
+
+- category: vcf-research
+  source: family
+  key: ArchivePath
+  glob: "*/*_BOTH.vcf"
+  archive_type: result
+
+- category: log
+  source: family
+  key: ArchivePath
+  glob: "*/*.log"
+  archive_type: result
+
+- category: meta
+  source: family
+  key: ArchivePath
+  suffix: /meta.yaml
+  archive_type: meta

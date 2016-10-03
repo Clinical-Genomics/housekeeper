@@ -12,11 +12,13 @@ from housekeeper.cli.utils import run_orabort
 from housekeeper import exc
 from .mip import parse_mip
 from .mip2 import parse as parse_mip2
+from .miparchive import parse as parse_miparchive
 from .general import commit_analysis, check_existing
 
 log = logging.getLogger(__name__)
 
-LOADERS = {'mip': parse_mip, 'mip2': parse_mip2}
+LOADERS = {'mip': parse_mip, 'mip2': parse_mip2,
+           'miparchive': parse_miparchive}
 
 
 @click.command()
