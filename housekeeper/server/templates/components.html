@@ -12,7 +12,7 @@
 
   <form action="{{ url_for('case_postpone', case_name=case_name) }}" method="POST" accept-charset="utf-8">
     <button class="btn {{ btn_class }} btn-xs">
-      - {{ run.cleanup_in }} days
+      {{ run.cleanup_in }} days
       <span class="glyphicon glyphicon-repeat"></span>
     </button>
   </form>
