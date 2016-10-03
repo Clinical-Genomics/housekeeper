@@ -9,7 +9,7 @@ import yaml
 from housekeeper.store import api
 from housekeeper.store.utils import get_rundir
 from housekeeper.cli.utils import run_orabort
-from housekeeper.exc import AnalysisConflictError
+from housekeeper.exc import AnalysisConflictError, UnsupportedVersionError
 from .mip import parse_mip
 from .mip2 import parse as parse_mip2
 from .general import commit_analysis, check_existing
@@ -36,7 +36,10 @@ def add(context, force, yes, references, pipeline, config):
         references = pkg_resources.resource_string("housekeeper", default_ref)
     reference_data = yaml.load(references)
     loader = LOADERS[pipeline]
-    records = loader(config_data, reference_data, force=force)
+    try:
+        records = loader(config_data, reference_data, force=force)
+    except UnsupportedVersionError:
+        context.abort()
     case_name = records['case'].name
     old_run = check_existing(case_name, records['run'])
     if old_run:

@@ -33,5 +33,6 @@ def validate(family):
         raise AnalysisNotFinishedError(run_status)
 
     if 'MIPVersion' in family:
+        version = family['MIPVersion']
         log.warn("analysis too new: %s", version)
         raise UnsupportedVersionError(version)
