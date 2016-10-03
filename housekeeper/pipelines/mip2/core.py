@@ -16,7 +16,8 @@ def parse(config_data, reference_data, force=False):
     # 2. post-process the output a bit
     prepare_run(segments, force=force)
     # 3. build the records
-    new_objs = build_analysis(segments, version='v2.x')
+    mip_version = segments['family'].get('MIPVersion', 'v2.x')
+    new_objs = build_analysis(segments, version=mip_version)
     # 4. parse references
     new_refs = parse_references(reference_data, segments=segments)
     # 5. build assets from references + link to new records
