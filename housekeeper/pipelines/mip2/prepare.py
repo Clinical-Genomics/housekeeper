@@ -32,7 +32,7 @@ def validate(family):
         log.warn("analysis not finished: %s", run_status)
         raise AnalysisNotFinishedError(run_status)
 
-    if 'MIPVersion' in family:
-        version = family['MIPVersion']
-        log.warn("analysis too new: %s", version)
-        raise UnsupportedVersionError(version)
+    mip_version = family.get('MIPVersion')
+    if mip_version and mip_version.startswith('v3'):
+        log.warn("pipeline too new: %s", mip_version)
+        raise UnsupportedVersionError(mip_version)
