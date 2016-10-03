@@ -29,6 +29,8 @@ def parse_references(references, segments):
                 log.warn(error.message)
                 continue
             else:
+                log.error("source: {}, key: {}".format(reference['source'],
+                                                       reference['key']))
                 raise error
 
 
