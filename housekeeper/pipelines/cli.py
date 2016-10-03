@@ -9,7 +9,7 @@ import yaml
 from housekeeper.store import api
 from housekeeper.store.utils import get_rundir
 from housekeeper.cli.utils import run_orabort
-from housekeeper.exc import AnalysisConflictError, UnsupportedVersionError
+from housekeeper import exc
 from .mip import parse_mip
 from .mip2 import parse as parse_mip2
 from .general import commit_analysis, check_existing
@@ -38,7 +38,7 @@ def add(context, force, yes, references, pipeline, config):
     loader = LOADERS[pipeline]
     try:
         records = loader(config_data, reference_data, force=force)
-    except UnsupportedVersionError:
+    except (exc.UnsupportedVersionError, exc.AnalysisNotFinishedError):
         context.abort()
     case_name = records['case'].name
     old_run = check_existing(case_name, records['run'])
@@ -54,7 +54,7 @@ def add(context, force, yes, references, pipeline, config):
         click.echo("added new analysis: {}".format(case_name))
         sample_ids = ', '.join(sample.name for sample in records['run'].samples)
         click.echo("including samples: {}".format(sample_ids))
-    except AnalysisConflictError:
+    except exc.AnalysisConflictError:
         click.echo("analysis output not removed: {}".format(case_name))
 
 
