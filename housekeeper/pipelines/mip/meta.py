@@ -42,5 +42,9 @@ def sampleid_map(qc_ped):
         sample_id = sample.get('Individual ID', sample.get('SampleID'))
         if sample_id is None:
             raise MalformattedPedigreeError(fam_key)
-        samples[sample_id] = sample['display_name'][0]
+        try:
+            samples[sample_id] = sample['display_name'][0]
+        except KeyError:
+            message = "{}: 'display_name'".format(fam_key)
+            raise MalformattedPedigreeError(message)
     return samples
