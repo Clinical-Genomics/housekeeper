@@ -6,7 +6,7 @@ import click
 
 from housekeeper.cli.utils import run_orabort
 from .utils import get_rundir
-from . import api, Asset, AnalysisRun
+from . import api, Asset, AnalysisRun, Sample
 
 log = logging.getLogger(__name__)
 
@@ -86,11 +86,11 @@ def ls(context, limit, since, category):
     """List files from recently added runs."""
     api.manager(context.obj['database'])
     if category == 'samples':
-        query = api.samples()
+        query = api.samples().join(Sample.run)
     else:
-        query = api.assets(category=category)
+        query = api.assets(category=category).join(Asset.run)
 
-    query = query.join(Asset.run).order_by(AnalysisRun.analyzed_at.desc())
+    query = query.order_by(AnalysisRun.analyzed_at.desc())
     if since:
         date_obj = build_date(since) if since else None
         query = query.filter(AnalysisRun.analyzed_at >= date_obj)
