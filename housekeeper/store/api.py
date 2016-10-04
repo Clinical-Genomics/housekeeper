@@ -47,6 +47,12 @@ def case(name):
     return case_obj
 
 
+def samples():
+    """Get samples from the database."""
+    sample_query = Sample.query
+    return sample_query
+
+
 def sample(name):
     """Get sample from the database."""
     sample_obj = Sample.query.filter_by(name=name).first()

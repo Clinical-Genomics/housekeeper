@@ -85,9 +85,12 @@ def clean(context, force, date, case_name):
 def ls(context, limit, since, category):
     """List files from recently added runs."""
     api.manager(context.obj['database'])
-    query = (api.assets(category=category)
-                .join(Asset.run)
-                .order_by(AnalysisRun.analyzed_at.desc()))
+    if category == 'samples':
+        query = api.samples()
+    else:
+        query = api.assets(category=category)
+
+    query = query.join(Asset.run).order_by(AnalysisRun.analyzed_at.desc())
     if since:
         date_obj = build_date(since) if since else None
         query = query.filter(AnalysisRun.analyzed_at >= date_obj)
@@ -98,14 +101,18 @@ def ls(context, limit, since, category):
         log.warn('sorry, no matching assets found')
         context.abort()
 
-    # we only consider files from the latest run per case
-    cases = set()
-    asset_paths = []
-    for asset in query:
-        if asset.run.case_id not in cases:
-            asset_paths.append(asset.path)
-            cases.add(asset.run.case_id)
-    click.echo(" ".join(asset_paths))
+    if category == 'samples':
+        # we only consider unqiue samples
+        output = set(sample.name for sample in query)
+    else:
+        # we only consider files from the latest run per case
+        cases = set()
+        output = []
+        for asset in query:
+            if asset.run.case_id not in cases:
+                output.append(asset.path)
+                cases.add(asset.run.case_id)
+    click.echo(" ".join(output))
 
 
 def build_date(date_str):
