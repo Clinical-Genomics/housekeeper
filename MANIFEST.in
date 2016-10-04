@@ -5,7 +5,7 @@ include requirements.txt
 include requirements-dev.txt
 include setup.cfg
 
-include housekeeper/pipelines/references *.yaml
+include housekeeper/pipelines/references/*.yaml
 
 recursive-include tests *
 recursive-exclude * __pycache__
