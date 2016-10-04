@@ -6,7 +6,7 @@ import click
 
 from housekeeper.cli.utils import run_orabort
 from .utils import get_rundir
-from . import api
+from . import api, Asset, AnalysisRun
 
 log = logging.getLogger(__name__)
 
@@ -78,29 +78,34 @@ def clean(context, force, date, case_name):
 
 
 @click.command()
-@click.option('-p', '--pretty', is_flag=True)
 @click.option('-l', '--limit', default=20)
 @click.option('-s', '--since', help='consider runs since date')
 @click.option('-c', '--category', default='bcf-raw')
 @click.pass_context
-def ls(context, pretty, limit, since, category):
-    """List recently added runs."""
+def ls(context, limit, since, category):
+    """List files from recently added runs."""
     api.manager(context.obj['database'])
-    date_obj = build_date(since) if since else None
-    query = api.runs(since=date_obj)
-    query = query.limit(limit) if since is None else query
-    if query.first() is None:
-        log.warn('sorry, no runs found')
-        context.abort()
+    query = (api.assets(category=category)
+                .join(Asset.run)
+                .order_by(AnalysisRun.analyzed_at.desc()))
+    if since:
+        date_obj = build_date(since) if since else None
+        query = query.filter(AnalysisRun.analyzed_at >= date_obj)
     else:
-        cases = set()
-        asset_paths = []
-        for run_obj in query:
-            if run_obj.case_id not in cases:
-                asset = api.assets(run_id=run_obj.id, category=category).first()
-                asset_paths.append(asset.path)
-            cases.add(run_obj.case_id)
-        click.echo(" ".join(asset_paths))
+        query = query.limit(limit)
+
+    if query.first() is None:
+        log.warn('sorry, no matching assets found')
+        context.abort()
+
+    # we only consider files from the latest run per case
+    cases = set()
+    asset_paths = []
+    for asset in query:
+        if asset.run.case_id not in cases:
+            asset_paths.append(asset.path)
+            cases.add(asset.run.case_id)
+    click.echo(" ".join(asset_paths))
 
 
 def build_date(date_str):
