@@ -36,12 +36,14 @@
   key: ArchivePath
   glob: "*/*.selected.vcf"
   archive_type: result
+  required: no
 
 - category: vcf-research
   source: family
   key: ArchivePath
   glob: "*/*_BOTH.vcf"
   archive_type: result
+  required: no
 
 - category: log
   source: family
