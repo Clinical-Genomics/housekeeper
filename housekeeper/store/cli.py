@@ -6,7 +6,7 @@ import click
 
 from housekeeper.cli.utils import run_orabort
 from .utils import get_rundir
-from . import api, Asset, AnalysisRun, Sample
+from . import api, Asset, AnalysisRun, Sample, Case
 
 log = logging.getLogger(__name__)
 
@@ -87,6 +87,8 @@ def ls(context, limit, since, category):
     api.manager(context.obj['database'])
     if category == 'samples':
         query = api.samples().join(Sample.run)
+    elif category == 'cases':
+        query = AnalysisRun.query
     else:
         query = api.assets(category=category).join(Asset.run)
 
@@ -104,6 +106,8 @@ def ls(context, limit, since, category):
     if category == 'samples':
         # we only consider unqiue samples
         output = set(sample.name for sample in query)
+    elif category == 'cases':
+        output = set(run.case.name for run in query)
     else:
         # we only consider files from the latest run per case
         cases = set()
