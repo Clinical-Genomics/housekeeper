@@ -61,7 +61,11 @@ def format_path(reference, orig_path):
         matches = path(orig_path).glob(reference['glob'])
         if len(matches) == 0:
             glob = reference['glob']
-            raise MissingFileError("{}, {}".format(orig_path, glob))
+            message = "missing: {}, {}".format(orig_path, glob)
+            if reference.get('required') is False:
+                log.debug(message)
+            else:
+                raise MissingFileError(message)
         new_path = matches[0]
     else:
         new_path = orig_path
