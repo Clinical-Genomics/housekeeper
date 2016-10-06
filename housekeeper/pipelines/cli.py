@@ -41,7 +41,15 @@ def add(context, force, yes, replace, references, pipeline, config):
     loader = LOADERS[pipeline]
     try:
         records = loader(config_data, reference_data, force=force)
-    except (exc.UnsupportedVersionError, exc.AnalysisNotFinishedError):
+    except exc.MalformattedPedigreeError as error:
+        log.error("bad PED formatting: %s", error.message)
+        context.abort()
+    except exc.AnalysisNotFinishedError as error:
+        log.error("analysis not finished: %s", error.message)
+        click.echo()
+    except exc.UnsupportedVersionError as error:
+        new_or_old = 'old' if pipeline == 'mip' else 'new'
+        log.error("pipeline too %s: %s", new_or_old, error.message)
         context.abort()
     case_name = records['case'].name
     old_run = check_existing(case_name, records['run'])

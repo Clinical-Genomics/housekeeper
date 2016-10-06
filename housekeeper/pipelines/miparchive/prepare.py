@@ -29,5 +29,4 @@ def validate(family):
     """Validate analysis."""
     run_status = family['AnalysisRunStatus']
     if run_status != 'Archived':
-        log.warn("analysis not archived: %s", run_status)
         raise AnalysisNotFinishedError(run_status)

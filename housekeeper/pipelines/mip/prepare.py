@@ -38,12 +38,10 @@ def validate(family):
     """Validate analysis."""
     run_status = family['AnalysisRunStatus']
     if run_status != 'Finished':
-        log.warn("analysis not finished: %s", run_status)
         raise AnalysisNotFinishedError(run_status)
 
     version = family['MIPVersion']
     if not version.startswith('v3'):
-        log.warn("analysis too old: %s", version)
         raise UnsupportedVersionError(version)
 
 
