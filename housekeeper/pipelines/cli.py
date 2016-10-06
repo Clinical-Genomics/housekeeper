@@ -46,7 +46,7 @@ def add(context, force, yes, replace, references, pipeline, config):
         context.abort()
     except exc.AnalysisNotFinishedError as error:
         log.error("analysis not finished: %s", error.message)
-        click.echo()
+        context.abort()
     except exc.UnsupportedVersionError as error:
         new_or_old = 'old' if pipeline == 'mip' else 'new'
         log.error("pipeline too %s: %s", new_or_old, error.message)
