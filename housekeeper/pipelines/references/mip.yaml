@@ -83,6 +83,16 @@
   key: MostCompleteBAM|Path
   suffix: .bai
   sample: yes
+  required: no
+
+- category: bai
+  source: samples
+  key: MostCompleteBAM|Path
+  replace:
+    old_str: .bam
+    new_str: .bai
+  sample: yes
+  required: no
 
 - category: qc
   source: family
