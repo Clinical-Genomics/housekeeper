@@ -9,6 +9,19 @@
   key: sampleInfoFile
   archive_type: result
 
+- category: bcf-raw
+  source: family
+  key: BCFFile|Path
+  archive_type: result
+  required: no
+
+- category: bcf-raw-index
+  source: family
+  key: BCFFile|Path
+  suffix: .csi
+  archive_type: result
+  required: no
+
 - category: pedigree
   source: family
   key: PedigreeFile|Path
