@@ -20,7 +20,7 @@ def prepare_run(segments, force=False):
     case_name = "{}-{}".format(customer, fam_key)
     mip_version = segments['family'].get('MIPVersion', 'v2.x')
     meta_output = build_meta(case_name, segments['family'], qcped_path,
-                             version=mip_version)
+                             version=mip_version, strict=False)
     write_meta(meta_output, outdata_dir)
 
 

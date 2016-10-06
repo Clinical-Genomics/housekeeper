@@ -21,7 +21,7 @@ def prepare_run(segments, force=False):
     customer = segments['family']['InstanceTag'][0]
     case_name = "{}-{}".format(customer, fam_key)
     meta_output = build_meta(case_name, segments['family'], qcped_path,
-                             version=mip_version)
+                             version=mip_version, strict=False)
     write_meta(meta_output, outdata_dir)
 
 

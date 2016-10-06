@@ -11,7 +11,7 @@ def write_meta(meta_output, outdata_dir):
         out_handle.write(meta_output)
 
 
-def build_meta(case_name, family_data, qc_ped, version=None):
+def build_meta(case_name, family_data, qc_ped, version=None, strict=True):
     """Build metadata information content.
 
     Args:
@@ -23,7 +23,7 @@ def build_meta(case_name, family_data, qc_ped, version=None):
     """
     with open(qc_ped, 'r') as stream:
         qcped_data = yaml.load(stream)
-    sample_map = sampleid_map(qcped_data)
+    sample_map = sampleid_map(qcped_data, strict=strict)
     metadata = {
         'name': case_name,
         'pipeline': 'mip',
@@ -34,7 +34,7 @@ def build_meta(case_name, family_data, qc_ped, version=None):
     return yaml.dump(metadata, default_flow_style=False)
 
 
-def sampleid_map(qc_ped):
+def sampleid_map(qc_ped, strict=True):
     """Take out information about internal/external sample names."""
     fam_key = qc_ped.keys()[0]
     samples = {}
@@ -42,9 +42,13 @@ def sampleid_map(qc_ped):
         sample_id = sample.get('Individual ID', sample.get('SampleID'))
         if sample_id is None:
             raise MalformattedPedigreeError(fam_key)
-        try:
-            samples[sample_id] = sample['display_name'][0]
-        except KeyError:
+        sample_names = sample.get('display_name')
+        if sample_names is None and not strict:
+            sample_names = sample.get('Display_name')
+        if isinstance(sample_names, list):
+            samples[sample_id] = sample_names[0]
+        else:
             message = "{}: 'display_name'".format(fam_key)
             raise MalformattedPedigreeError(message)
+
     return samples
