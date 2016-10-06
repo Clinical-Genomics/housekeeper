@@ -15,7 +15,7 @@ log = logging.getLogger(__name__)
 @click.option('-c', '--case')
 @click.option('-s', '--sample')
 @click.option('-i', '--infer-case', is_flag=True)
-@click.option('-c', '--category')
+@click.option('-t', '--category')
 @click.pass_context
 def get(context, case, sample, infer_case, category):
     """Ask Housekeeper for a file."""
