@@ -73,6 +73,7 @@ def add(context, force, yes, replace, references, pipeline, config):
 
 
 @click.command()
+@click.option('--no-link', is_flag=True, help='skip hard linking')
 @click.option('-d', '--date', help="date of the particular run")
 @click.option('-c', '--category', required=True)
 @click.option('-s', '--sample', help='sample id to link assets to')
@@ -80,7 +81,8 @@ def add(context, force, yes, replace, references, pipeline, config):
 @click.argument('case_name')
 @click.argument('asset_path')
 @click.pass_context
-def extend(context, date, category, sample, archive_type, case_name, asset_path):
+def extend(context, no_link, date, category, sample, archive_type, case_name,
+           asset_path):
     """Add an additional asset to a run."""
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
@@ -94,11 +96,14 @@ def extend(context, date, category, sample, archive_type, case_name, asset_path)
 
     run_root = get_rundir(run_obj.case.name, run_obj)
     filename = new_asset.basename()
-    new_path = run_root.joinpath(filename)
-    new_asset.path = new_path
+    if no_link:
+        new_path = asset_path
+    else:
+        new_path = run_root.joinpath(filename)
+        log.debug("link asset: %s -> %s", new_asset.original_path, new_path)
+        path(new_asset.original_path).link(new_path)
 
-    log.debug("link asset: %s -> %s", new_asset.original_path, new_asset.path)
-    path(new_asset.original_path).link(new_asset.path)
+    new_asset.path = new_path
     run_obj.assets.append(new_asset)
     log.info("add asset: %s", new_asset.path)
     manager.commit()
