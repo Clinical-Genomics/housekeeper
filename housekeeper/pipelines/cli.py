@@ -50,6 +50,7 @@ def add(context, force, yes, replace, references, pipeline, config):
         if force or replace:
             log.warn(message)
             api.delete(old_run)
+            manager.commit()
         else:
             log.error(message)
             context.abort()
