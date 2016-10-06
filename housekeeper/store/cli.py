@@ -16,8 +16,9 @@ log = logging.getLogger(__name__)
 @click.option('-s', '--sample')
 @click.option('-i', '--infer-case', is_flag=True)
 @click.option('-t', '--category')
+@click.option('-a', '--all', 'all_runs', is_flag=True, default=False)
 @click.pass_context
-def get(context, case, sample, infer_case, category):
+def get(context, case, sample, infer_case, category, all_runs):
     """Ask Housekeeper for a file."""
     api.manager(context.obj['database'])
     if infer_case:
@@ -27,7 +28,15 @@ def get(context, case, sample, infer_case, category):
             context.abort()
         case = sample_obj.run.case.name
         sample = None
-    assets = api.assets(case_name=case, sample=sample, category=category)
+    if not all_runs and case:
+        # get assets only from latest run
+        latest_run = api.runs(case_name=case).first()
+        run_id = latest_run.id
+    else:
+        # get assets from all runs
+        run_id = None
+    assets = api.assets(case_name=case, sample=sample, category=category,
+                        run_id=run_id)
     paths = [asset.path for asset in assets]
     output = ' '.join(paths)
     click.echo(output, nl=False)
