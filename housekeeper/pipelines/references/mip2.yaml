@@ -33,3 +33,8 @@
   key: outDataDir
   suffix: /meta.yaml
   archive_type: meta
+
+- category: qc
+  source: family
+  key: Program|QCCollect|QCCollectMetricsFile|Path
+  archive_type: result

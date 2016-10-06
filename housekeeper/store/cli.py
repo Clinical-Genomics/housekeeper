@@ -6,7 +6,7 @@ import click
 
 from housekeeper.cli.utils import run_orabort
 from .utils import get_rundir
-from . import api, Asset, AnalysisRun, Sample, Case
+from . import api, Asset, AnalysisRun, Sample
 
 log = logging.getLogger(__name__)
 

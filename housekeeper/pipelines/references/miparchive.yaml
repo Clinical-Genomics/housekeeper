@@ -56,3 +56,10 @@
   key: ArchivePath
   suffix: /meta.yaml
   archive_type: meta
+
+- category: qc
+  source: family
+  key: ArchivePath
+  glob: "*/*_qcmetrics.yaml"
+  archive_type: result
+  required: no
