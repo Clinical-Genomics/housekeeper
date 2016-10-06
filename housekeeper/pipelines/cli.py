@@ -45,10 +45,12 @@ def add(context, force, yes, references, pipeline, config):
     case_name = records['case'].name
     old_run = check_existing(case_name, records['run'])
     if old_run:
-        click.echo("identical run detected: {}".format(case_name))
+        message = "identical run detected: {}".format(case_name)
         if not force:
+            log.error(message)
             context.abort()
         else:
+            log.warn(message)
             api.delete(old_run)
 
     try:
