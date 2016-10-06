@@ -27,7 +27,7 @@ def parse_references(references, segments):
                 for ref_path in ref_paths:
                     ref_path = format_path(reference, ref_path)
                     yield {'reference': reference, 'path': ref_path}
-        except KeyError as error:
+        except (KeyError, MissingFileError) as error:
             if reference.get('required') is False:
                 log.warn(error.message)
                 continue
@@ -61,11 +61,7 @@ def format_path(reference, orig_path):
         matches = path(orig_path).glob(reference['glob'])
         if len(matches) == 0:
             glob = reference['glob']
-            message = "missing: {}, {}".format(orig_path, glob)
-            if reference.get('required') is False:
-                log.debug(message)
-            else:
-                raise MissingFileError(message)
+            raise MissingFileError("missing: {}, {}".format(orig_path, glob))
         new_path = matches[0]
     else:
         new_path = orig_path
