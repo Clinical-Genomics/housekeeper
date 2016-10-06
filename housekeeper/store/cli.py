@@ -31,6 +31,9 @@ def get(context, case, sample, infer_case, category, all_runs):
     if not all_runs and case:
         # get assets only from latest run
         latest_run = api.runs(case_name=case).first()
+        if latest_run is None:
+            log.error("no analysis run found: %s", case)
+            context.abort()
         run_id = latest_run.id
     else:
         # get assets from all runs
