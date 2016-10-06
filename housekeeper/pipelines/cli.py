@@ -23,13 +23,14 @@ LOADERS = {'mip': parse_mip, 'mip2': parse_mip2,
 
 @click.command()
 @click.option('-y', '--yes', is_flag=True, help='auto replace old runs')
-@click.option('-f', '--force', is_flag=True, help='replace identical runs')
+@click.option('-f', '--force', is_flag=True, help='skip ALL validations')
 @click.option('-r', '--references', type=click.File('r'))
 @click.option('-p', '--pipeline', type=click.Choice(LOADERS.keys()),
               default='mip')
+@click.option('-r', '--replace', is_flag='replace identical runs')
 @click.argument('config', type=click.File('r'))
 @click.pass_context
-def add(context, force, yes, references, pipeline, config):
+def add(context, force, yes, replace, references, pipeline, config):
     """Add analyses from different pipelines."""
     manager = api.manager(context.obj['database'])
     config_data = yaml.load(config)
@@ -46,12 +47,12 @@ def add(context, force, yes, references, pipeline, config):
     old_run = check_existing(case_name, records['run'])
     if old_run:
         message = "identical run detected: {}".format(case_name)
-        if not force:
-            log.error(message)
-            context.abort()
-        else:
+        if force or replace:
             log.warn(message)
             api.delete(old_run)
+        else:
+            log.error(message)
+            context.abort()
 
     try:
         commit_analysis(manager, **records)
