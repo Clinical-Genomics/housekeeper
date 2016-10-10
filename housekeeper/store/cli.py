@@ -42,7 +42,7 @@ def get(context, case, sample, infer_case, category, all_runs):
                         run_id=run_id)
     paths = [asset.path for asset in assets]
     output = ' '.join(paths)
-    click.echo(output, nl=False)
+    click.echo(output)
 
 
 @click.command()
