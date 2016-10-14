@@ -1,0 +1,92 @@
+#!/bin/bash
+#SBATCH -t 24:00:00
+#SBATCH -c 2
+#SBATCH -A prod001
+#SBATCH -J gpg_test
+#SBATCH --output=/mnt/hds/proj/bioinfo/LOG/gpg-test-%j.out
+#SBATCH --error=/mnt/hds/proj/bioinfo/LOG/gpg-test-%j.err
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=kenny.billiau@scilifelab.se
+
+set -e
+set -o pipefail
+
+#############
+# FUNCTIONS #
+#############
+
+log() {
+    NOW=$(date +"%Y%m%d%H%M%S")
+    echo "[${NOW}] $@"
+}
+
+finish() {
+    if [[ ! -z "${PASSPHRASEFILE}" && -f ${PASSPHRASEFILE} ]]; then
+        rm ${PASSPHRASEFILE}
+    fi
+
+    if [[ ! -f ${OUTDIR}/${COMPILATION}.sha1sum ]]; then
+        rm ${OUTDIR}/${COMPILATION}.sha1sum
+    fi
+    if [[ -f ${OUTDIR}/${COMPILATION}.tar.gz.degpg.md5sum ]]; then
+        rm ${OUTDIR}/${COMPILATION}.tar.gz.degpg.md5sum
+    fi
+}
+trap finish ERR EXIT
+
+########
+# VARS #
+########
+
+INFILE=$1
+OUTDIR=$2
+
+INDIR=$(dirname ${INFILE})
+COMPILATION=$(basename ${INFILE})
+
+########
+# MAIN #
+########
+
+export TMPDIR=${OUTDIR}
+PASSPHRASEFILE=$(mktemp)
+chmod a-rwx,u+rw ${PASSPHRASEFILE}
+
+cd ${INDIR}
+
+# can take some time when there is not a lot of entropy
+log "gpg --gen-random 1 256 > ${PASSPHRASEFILE}"
+gpg --gen-random 2 256 > ${PASSPHRASEFILE}
+
+# asymmetrically encrypt the passphrase file
+log "gpg -e -r 'Kenny Billiau' -o ${PASSPHRASEFILE}.gpg ${PASSPHRASEFILE}"
+gpg -e -r 'Kenny Billiau' -o ${PASSPHRASEFILE}.gpg ${PASSPHRASEFILE}
+ls -l ${PASSPHRASEFILE}*
+
+# previous step can take a long while, check if the compilation still is there
+if [[ ! -e ${COMPILATION} ]]; then
+    >&2 echo "${COMPILATION} is gone - aborting"
+    exit 1
+fi
+
+# get the checksum
+housekeeper sha1sum ${IN} > ${OUTDIR}/${COMPILATION}.sha1sum
+
+# GPG
+log "gpg --symmetric --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch --compress-algo none -o ${OUTDIR}/${COMPILATION}.gpg ${INFILE}"
+     gpg --symmetric --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch --compress-algo none -o ${OUTDIR}/${COMPILATION}.gpg ${INFILE}
+
+# decrypt and compare the md5sum
+log "gpg --decrypt --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch ${OUTDIR}/${COMPILATION}.gpg | sha1sum > ${OUTDIR}/${COMPILATION}.degpg.sha1sum"
+     gpg --decrypt --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch ${OUTDIR}/${COMPILATION}.gpg | sha1sum > ${OUTDIR}/${COMPILATION}.degpg.sha1sum
+
+# compare - with 'set -e' the script will exit on non-zero exit status of diff
+log "diff -q ${OUTDIR}/${COMPILATION}.sha1sum ${OUTDIR}/${COMPILATION}.degpg.sha1sum"
+     diff -q ${OUTDIR}/${COMPILATION}.sha1sum ${OUTDIR}/${COMPILATION}.degpg.sha1sum
+
+############
+# CLEAN UP #
+############
+
+cd -
+log "Finished"
