@@ -44,6 +44,16 @@ def get(context, case, sample, infer_case, category, all_runs):
     output = ' '.join(paths)
     click.echo(output)
 
+@click.command()
+@click.argument('asset_path')
+@click.pass_context
+def getsha1(context, asset_path):
+    """Ask Housekeeper for the sha1sum of a file."""
+    api.manager(context.obj['database'])
+
+    checksum = api.sha1(asset_path)
+    click.echo(" ".join((checksum, asset_path)))
+
 
 @click.command()
 @click.option('-d', '--days', default=30)

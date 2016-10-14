@@ -111,6 +111,7 @@ setup(
             'init = housekeeper.initiate:init',
             'add = housekeeper.pipelines.cli:add',
             'get = housekeeper.store.cli:get',
+            'getsha1 = housekeeper.store.cli:getsha1',
             'postpone = housekeeper.store.cli:postpone',
             'extend = housekeeper.pipelines.cli:extend',
             'delete = housekeeper.store.cli:delete',
