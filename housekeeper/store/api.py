@@ -158,7 +158,6 @@ def sha1(asset_path):
     """Retrieves the sha1sum from an asset"""
     abs_path = path(asset_path).abspath()
     query = Asset.query
-    import ipdb; ipdb.set_trace()
     checksum = query.filter(Asset.original_path == abs_path).first().checksum
 
     return checksum
