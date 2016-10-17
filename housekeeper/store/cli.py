@@ -46,13 +46,23 @@ def get(context, case, sample, infer_case, category, all_runs):
 
 @click.command()
 @click.argument('asset_path')
+@click.option('-s', '--short', is_flag=True, default=False, help='Print only the filename in the sha1sum file')
+@click.option('-d', '--dash', is_flag=True, default=False, help='Print a dash instead of the filename')
 @click.pass_context
-def getsha1(context, asset_path):
+def getsha1(context, asset_path, short, dash):
     """Ask Housekeeper for the sha1sum of a file."""
     api.manager(context.obj['database'])
 
+
     checksum = api.sha1(asset_path)
-    click.echo(" ".join((checksum, asset_path)))
+    checksum_of = asset_path
+    if short:
+        checksum_of = os.path.basename(asset_path)
+
+    if dash:
+        checksum_of = '-'
+
+    click.echo("  ".join((checksum, checksum_of))) # for some reason we need two spaces
 
 
 @click.command()
