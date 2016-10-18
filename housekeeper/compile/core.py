@@ -3,11 +3,13 @@ from collections import namedtuple
 from datetime import datetime
 import hashlib
 import logging
+import itertools
 
 from path import path
 
 from housekeeper.store import api
 from housekeeper.store.utils import get_rundir
+from .utils import launch
 from .tar import tar_files
 
 BLOCKSIZE = 65536
@@ -38,6 +40,22 @@ def compress_run(run_obj):
         tar_files(group_out, root_dir=run_dir, filenames=filenames)
         sha1 = checksum(group_out)
         yield ArchiveGroup(id=group, out=group_out, checksum=sha1)
+
+
+def encrypt_run(run_obj):
+    """ Encrypts an input file and places the encrypted archive
+    and key in the run dir.
+    """
+    run_dir = path(get_rundir(run_obj.case.name, run=run_obj))
+    groups = ('data', 'results')
+    archives = ()
+    for group in groups:
+        archive_group = api.assets(case_name=run_obj.case.name, catergory='archive-{}'.format(group))
+        archives.append(archive_group)
+
+    for asset in itertools.chain(*archives):
+        stdout = launch('encrypt.bash {} {}'.format(asset.path, rundir))
+        logging.debug(stdout)
 
 
 def group_assets(assets):

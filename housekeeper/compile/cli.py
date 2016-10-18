@@ -6,7 +6,7 @@ import click
 from housekeeper.archive import get_archiveassets
 from housekeeper.cli.utils import run_orabort
 from housekeeper.store import api
-from .core import compile_run
+from .core import compile_run, encrypt_run
 from .restore import restore_run, run_fromtar
 
 log = logging.getLogger(__name__)
@@ -15,9 +15,10 @@ log = logging.getLogger(__name__)
 @click.command()
 @click.option('-d', '--date', help="date of the particular run")
 @click.option("-f", "--force", is_flag=True, help="skip checks")
+@click.option("-e", "--encrypt", is_flag=True, help="encrypt compilation")
 @click.argument('case_name')
 @click.pass_context
-def compile(context, date, force, case_name):
+def compile(context, date, force, encrypt, case_name):
     """Delete an analysis and files."""
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
@@ -31,6 +32,8 @@ def compile(context, date, force, case_name):
 
     if force or click.confirm('Are you sure?'):
         compile_run(run_obj)
+        if encrypt:
+            encrypt_run(run_obj)
         manager.commit()
 
 
