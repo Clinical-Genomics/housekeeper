@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import pkg_resources
 from collections import namedtuple
 from datetime import datetime
 import hashlib
@@ -47,15 +48,19 @@ def encrypt_run(run_obj):
     and key in the run dir.
     """
     run_dir = path(get_rundir(run_obj.case.name, run=run_obj))
-    groups = ('data', 'results')
-    archives = ()
+    groups = ('data', 'result')
+    archives = []
     for group in groups:
-        archive_group = api.assets(case_name=run_obj.case.name, catergory='archive-{}'.format(group))
-        archives.append(archive_group)
+        archive_group = api.assets(case_name=run_obj.case.name, category='archive-{}'.format(group)).first()
+        if archive_group:
+            archives.append(archive_group)
 
-    for asset in itertools.chain(*archives):
-        stdout = launch('encrypt.bash {} {}'.format(asset.path, rundir))
+
+    encrypt_script = pkg_resources.resource_filename('housekeeper', 'scripts/encrypt.batch')
+    for asset in itertools.chain(archives):
+        stdout = launch('{} {} {}'.format(encrypt_script, asset.path, run_dir))
         logging.debug(stdout)
+        #asset.path = ''
 
 
 def group_assets(assets):

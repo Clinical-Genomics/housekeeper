@@ -32,6 +32,7 @@ def compile(context, date, force, encrypt, case_name):
 
     if force or click.confirm('Are you sure?'):
         compile_run(run_obj)
+        manager.commit()
         if encrypt:
             encrypt_run(run_obj)
         manager.commit()
