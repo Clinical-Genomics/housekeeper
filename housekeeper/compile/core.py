@@ -66,7 +66,7 @@ def encrypt_run(run_obj):
 
         compilation_path = asset.path
 
-        new_asset = api.add_asset(run_obj, compilation_path, asset.category)
+        new_asset = api.add_asset(run_obj, archive_path, asset.category)
         new_asset.path = archive_path
         new_asset.checksum = checksum(archive_path)
         run_obj.assets.append(new_asset)

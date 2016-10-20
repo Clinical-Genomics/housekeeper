@@ -134,7 +134,7 @@ class Asset(Model):
     sample_id = Column(types.Integer, ForeignKey('sample.id'))
 
     def basename(self):
-        return path(self.path).basename()
+        return path(self.original_path).basename()
 
 
 class Archive(Model):
