@@ -60,13 +60,13 @@ def build_config(run_obj):
     """Build a Scout config from a MIP run."""
     customer, family = run_obj.case.name.split('-', 1)
     vcf = api.assets(category='vcf-clinical', run_id=run_obj.id).one()
-    sv_vcf = api.assets(category='vcf-clinical-sv', run_id=run_obj.id).first()
-    research_vcf = api.assets(category='vcf-research', run_id=run_obj.id).one()
-    sv_researchvcf = api.assets(category='vcf-research-sv', run_id=run_obj.id).first()
+    vcf_sv = api.assets(category='vcf-clinical-sv', run_id=run_obj.id).first()
+    vcf_research = api.assets(category='vcf-research', run_id=run_obj.id).one()
+    vcf_research_sv = api.assets(category='vcf-research-sv', run_id=run_obj.id).first()
     sampleinfo = api.assets(category='sampleinfo', run_id=run_obj.id).one()
 
-    qc_ped = api.assets(category='qcpedigree', run_id=run_obj.id).one()
-    with open(qc_ped.path, 'r') as in_handle:
+    pedigree_qc = api.assets(category='qcpedigree', run_id=run_obj.id).one()
+    with open(pedigree_qc.path, 'r') as in_handle:
         content = yaml.load(in_handle)
         qc_samples = content[family]
     bams = api.assets(category='bam', run_id=run_obj.id)
@@ -104,14 +104,14 @@ def build_config(run_obj):
         'vcf': vcf.path,
         'institute': customer,
         'family': family,
-        'sv_vcf': sv_vcf.path,
+        'sv_vcf': vcf_sv.path,
         'samples': samples,
         'default_panels': default_panels,
         'rank_model_version': rank_model,
         'analysis_date': si_root[family]['AnalysisDate'],
         'human_genome_build': genome_build,
-        'research_vcf': research_vcf.path,
-        'research_sv_vcf': sv_researchvcf.path,
+        'research_vcf': vcf_research.path,
+        'research_sv_vcf': vcf_research_sv.path,
         'gene_list': {
             'path': gene_list,
             'panels': gene_panels
