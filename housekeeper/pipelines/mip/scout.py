@@ -32,7 +32,8 @@ def prepare_scout(run_obj, madeline_exe):
     # save the new scout config
     config_path = Path(run_root).joinpath('scout.conf.yaml')
     with open(config_path, 'w') as out_handle:
-        yaml.safe_dump(config_data, out_handle, default_flow_style=False)
+        yaml.safe_dump(config_data, out_handle, indent=4,
+                       default_flow_style=False)
 
     scout_asset = api.add_asset(run_obj, config_path, 'scout-config')
     scout_asset.path = config_path
