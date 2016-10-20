@@ -10,6 +10,8 @@
 
 set -e
 set -o pipefail
+shopt -s expand_aliases
+source /mnt/hds/proj/bioinfo/git/kenny/housekeeper/scripts/aliases
 
 #############
 # FUNCTIONS #
@@ -17,19 +19,18 @@ set -o pipefail
 
 log() {
     NOW=$(date +"%Y%m%d%H%M%S")
-    echo "[${NOW}] $@"
+    >&2 echo "[${NOW}] $@"
 }
 
 finish() {
     if [[ ! -z "${PASSPHRASEFILE}" && -f ${PASSPHRASEFILE} ]]; then
         rm ${PASSPHRASEFILE}
     fi
-
-    if [[ ! -f ${OUTDIR}/${COMPILATION}.sha1sum ]]; then
+    if [[ -f ${OUTDIR}/${COMPILATION}.sha1sum ]]; then
         rm ${OUTDIR}/${COMPILATION}.sha1sum
     fi
-    if [[ -f ${OUTDIR}/${COMPILATION}.tar.gz.degpg.md5sum ]]; then
-        rm ${OUTDIR}/${COMPILATION}.tar.gz.degpg.md5sum
+    if [[ -f ${OUTDIR}/${COMPILATION}.degpg.sha1sum ]]; then
+        rm ${OUTDIR}/${COMPILATION}.degpg.sha1sum
     fi
 }
 trap finish ERR EXIT
@@ -61,26 +62,25 @@ gpg --gen-random 2 256 > ${PASSPHRASEFILE}
 # asymmetrically encrypt the passphrase file
 log "gpg -e -r 'Kenny Billiau' -o ${PASSPHRASEFILE}.gpg ${PASSPHRASEFILE}"
 gpg -e -r 'Kenny Billiau' -o ${PASSPHRASEFILE}.gpg ${PASSPHRASEFILE}
-ls -l ${PASSPHRASEFILE}*
 
 # previous step can take a long while, check if the compilation still is there
 if [[ ! -e ${COMPILATION} ]]; then
-    >&2 echo "${COMPILATION} is gone - aborting"
+    log "${COMPILATION} is gone - aborting"
     exit 1
 fi
 
 # get the checksum
-housekeeper sha1sum ${IN} > ${OUTDIR}/${COMPILATION}.sha1sum
+housekeeper getsha1 --dash ${INFILE} > ${OUTDIR}/${COMPILATION}.sha1sum
 
 # GPG
 log "gpg --symmetric --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch --compress-algo none -o ${OUTDIR}/${COMPILATION}.gpg ${INFILE}"
      gpg --symmetric --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch --compress-algo none -o ${OUTDIR}/${COMPILATION}.gpg ${INFILE}
 
-# decrypt and compare the md5sum
+# decrypt and calc the sha1sum
 log "gpg --decrypt --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch ${OUTDIR}/${COMPILATION}.gpg | sha1sum > ${OUTDIR}/${COMPILATION}.degpg.sha1sum"
      gpg --decrypt --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch ${OUTDIR}/${COMPILATION}.gpg | sha1sum > ${OUTDIR}/${COMPILATION}.degpg.sha1sum
 
-# compare - with 'set -e' the script will exit on non-zero exit status of diff
+# check if the hashes match!
 log "diff -q ${OUTDIR}/${COMPILATION}.sha1sum ${OUTDIR}/${COMPILATION}.degpg.sha1sum"
      diff -q ${OUTDIR}/${COMPILATION}.sha1sum ${OUTDIR}/${COMPILATION}.degpg.sha1sum
 
@@ -88,5 +88,9 @@ log "diff -q ${OUTDIR}/${COMPILATION}.sha1sum ${OUTDIR}/${COMPILATION}.degpg.sha
 # CLEAN UP #
 ############
 
-cd -
+mv ${PASSPHRASEFILE}.gpg ${OUTDIR}/${COMPILATION}.key.gpg
+echo ${OUTDIR}/${COMPILATION}.gpg
+echo ${OUTDIR}/${COMPILATION}.key.gpg
+
+cd - > /dev/null
 log "Finished"

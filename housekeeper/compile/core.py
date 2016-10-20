@@ -51,7 +51,7 @@ def encrypt_run(run_obj):
     groups = ('data', 'result')
     archives = []
     for group in groups:
-        archive_group = api.assets(case_name=run_obj.case.name, category='archive-{}'.format(group)).first()
+        archive_group = api.assets(run_id=run_obj.id, category='archive-{}'.format(group)).first()
         if archive_group:
             archives.append(archive_group)
 
@@ -59,8 +59,25 @@ def encrypt_run(run_obj):
     encrypt_script = pkg_resources.resource_filename('housekeeper', 'scripts/encrypt.batch')
     for asset in itertools.chain(archives):
         stdout = launch('{} {} {}'.format(encrypt_script, asset.path, run_dir))
-        logging.debug(stdout)
-        #asset.path = ''
+        archive_path = '{}.gpg'.format(asset.path)
+        archive_key_path = '{}.key.gpg'.format(asset.path)
+        log.info(archive_path)
+        log.info(archive_key_path)
+
+        compilation_path = asset.path
+
+        new_asset = api.add_asset(run_obj, compilation_path, asset.category)
+        new_asset.path = archive_path
+        new_asset.checksum = checksum(archive_path)
+        run_obj.assets.append(new_asset)
+
+        new_key_asset = api.add_asset(run_obj, archive_key_path, asset.category)
+        new_key_asset.path = archive_key_path
+        new_key_asset.checksum = checksum(archive_key_path)
+        run_obj.assets.append(new_key_asset)
+
+        api.delete_asset(asset)
+    run_obj.compiled_at = datetime.now()
 
 
 def group_assets(assets):
