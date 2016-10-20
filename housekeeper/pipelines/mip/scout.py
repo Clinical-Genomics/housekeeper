@@ -24,7 +24,7 @@ def prepare_scout(run_obj, madeline_exe):
     madeline_path = build_madeline(pedigree.path, run_root, madeline_exe)
     if madeline_path:
         mad_asset = api.add_asset(run_obj, madeline_path, 'madeline')
-        mad_asset.path = madeline_path
+        mad_asset.path = str(madeline_path)
         log.info("add madeline asset: %s", mad_asset.path)
         run_obj.assets.append(mad_asset)
         config_data['madeline'] = mad_asset.path
