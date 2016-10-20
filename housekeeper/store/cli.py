@@ -12,6 +12,7 @@ from .migrate import migrate_root
 from .utils import get_rundir
 from . import api, Asset, AnalysisRun, Sample
 
+STATUSES = ['analyzed', 'compiled', 'delivered', 'archived', 'cleanedup']
 log = logging.getLogger(__name__)
 
 
@@ -220,6 +221,20 @@ def migrate(context, yes, only_db, new_root):
                 dump = yaml.dump(context.obj, default_flow_style=False,
                                  allow_unicode=True)
                 out_handle.write(dump.decode('utf-8'))
+
+
+@click.command()
+@click.option('-d', '--date', help="date of a particular run")
+@click.argument('case_name')
+@click.argument('status_type', type=click.Choice(STATUSES))
+@click.pass_context
+def status(context, date, case_name, status_type):
+    """Clean up files for an analysis."""
+    manager = api.manager(context.obj['database'])
+    run_obj = run_orabort(context, case_name, date)
+    status_field = "{}_at".format(status_type)
+    setattr(run_obj, status_field, datetime.datetime.now())
+    manager.commit()
 
 
 def build_date(date_str):
