@@ -29,6 +29,10 @@
   suffix: .csi
   archive_type: result
 
+- category: vcf-raw
+  source: family
+  key: VCFFile|ReadyVcf|Path
+
 - category: vcf-clinical
   source: family
   key: VCFFile|Clinical|Path
