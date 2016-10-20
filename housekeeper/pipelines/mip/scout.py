@@ -63,7 +63,6 @@ def build_config(run_obj):
     research_vcf = api.assets(category='vcf-research', run_id=run_obj.id).one()
     sv_researchvcf = api.assets(category='vcf-research-sv', run_id=run_obj.id).first()
     sampleinfo = api.assets(category='sampleinfo', run_id=run_obj.id).one()
-    vcf_raw = api.assets(category='vcf-raw', run_id=run_obj.id).one()
 
     qc_ped = api.assets(category='qcpedigree', run_id=run_obj.id).one()
     with open(qc_ped.path, 'r') as in_handle:
@@ -112,7 +111,6 @@ def build_config(run_obj):
         'human_genome_build': genome_build,
         'research_vcf': research_vcf.path,
         'research_sv_vcf': sv_researchvcf.path,
-        'igv_vcf': vcf_raw.path,
         'gene_list': {
             'path': gene_list,
             'panels': gene_panels
