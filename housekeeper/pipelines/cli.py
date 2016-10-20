@@ -122,6 +122,9 @@ def scout(context, madeline_exe, date, replace, case_name):
     madeline_exe = madeline_exe or context.obj['madeline_exe']
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
+    if not run_obj.pipeline_version.startswith('v3'):
+        log.error("unsupported pipeline version: %s", run_obj.pipeline_version)
+        context.abort()
 
     existing_conf = (api.assets(category='scout-config', run_id=run_obj.id)
                         .first())
