@@ -1,0 +1,693 @@
+---
+15026-miptest:
+  15026-miptest:
+    AnalysisDate: 2016-10-10T10:17:49
+    AnalysisRunStatus: Finished
+    AnalysisType:
+      ADM980A10-miptest: wes
+      ADM980A9-miptest: wes
+      ADM994A2-miptest: wes
+    BCFFile:
+      Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_BOTH.bcf
+    HumanGenomeBuild:
+      Path: /mnt/hds/proj/bioinfo/develop/references_4.0/Homo_sapiens.GRCh37.d5.fasta
+      Source: GRCh
+      Version: '37'
+    InstanceTag:
+      - CMMS
+    MIPVersion: v4.0.0
+    PedigreeFile:
+      Path: tests/fixtures/mip4/cust000/15026-miptest/exomes/15026-miptest/15026-miptest_pedigree.txt
+    PedigreeFileAnalysis:
+      Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/qc_pedigree.yaml
+    Program:
+      Bcftools:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/freebayes
+        OutFile: 15026-miptest_sorted_md_brecal_freebayes_BOTH.vcf
+      Freebayes:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/freebayes
+        OutFile: 15026-miptest_sorted_md_brecal_freebayes_BOTH.vcf
+      GATK:
+        Version: '3.6'
+      Genmod:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa
+        OutFile: 15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf
+      InbreedingFactor:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/samplecheck
+        OutFile: 15026-miptest.het
+      Manta:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/manta
+        OutFile: 15026-miptest_sorted_md_brecal_manta_SV.vcf
+      PedigreeCheck:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/gatk
+        OutFile: 15026-miptest_sorted_md_brecal_gvcf_vrecal_BOTH.vcf
+      PicardTools:
+        Version: 2.5.0(2c370988aefe41f579920c8a6a678a201c5261c1_1466708365)
+      Plink2:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/samplecheck/info/
+        OutFile: SampleCheck_15026-miptest_BOTH.0.stdout.txt
+      QCCollect:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest
+        OutFile: 15026-miptest_qcmetrics.yaml
+        QCCollectMetricsFile:
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/15026-miptest_qcmetrics.yaml
+      RankVariants:
+        Clinical:
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf
+        RankModel:
+          File: rank_model_cmms_v1.17.ini
+          Path: /mnt/hds/proj/bioinfo/develop/references_4.0/rank_model_cmms_v1.17.ini
+          Version: '1.17'
+        Research:
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.vcf
+      RelationCheck:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/samplecheck
+        OutFile: 15026-miptest.mibs
+      SVCombineVariantCallSets:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/info/
+        OutFile: SVCombineVariantCallSets_15026-miptest_SV.0.stderr.txt
+      SVGenmod:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa
+        OutFile: 15026-miptest_sorted_md_brecal_comb_vep_parsed_ranked_SV.selected.vcf
+      SVRankVariants:
+        Clinical:
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_comb_vep_parsed_ranked_SV.selected.vcf
+        RankModel:
+          File: svrank_model_cmms_v1.0.ini
+          Path: /mnt/hds/proj/bioinfo/develop/references_4.0/svrank_model_cmms_v1.0.ini
+          Version: '1.0'
+        Research:
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_comb_vep_parsed_ranked_SV.vcf
+      SVVCFParser:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa
+        OutFile: 15026-miptest_sorted_md_brecal_comb_vep_parsed_SV_1.vcf
+      SVVariantEffectPredictor:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa
+        OutFile: 15026-miptest_sorted_md_brecal_comb_vep_SV_1.vcf
+      SVVariantEffectPredictorSummary:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa
+        OutFile: 15026-miptest_sorted_md_brecal_comb_vep_SV_1.vcf_summary.html
+      Sambamba:
+        Version: 0.6.3
+      Samtools:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/samtools
+        OutFile: 15026-miptest_sorted_md_brecal_mpileup_BOTH.vcf
+      SexCheck:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/samplecheck
+        OutFile: 15026-miptest.sexcheck
+      SnpEff:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa
+        OutFile: 15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_BOTH_1.selected.vcf
+      VCFParser:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa
+        OutFile: 15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_BOTH_1.vcf
+      VariantAnnotationBlock:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/info/
+        OutFile: VariantAnnotationBlock_15026-miptest.1.stderr.txt
+      VariantEffectPredictor:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/info/
+        OutFile: VariantEffectPredictor_15026-miptest_BOTH.0.stderr.txt
+      VariantEffectPredictorSummary:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa
+        OutFile: 15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_BOTH_1.vcf_summary.html
+      Vcftools:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/samplecheck/info/
+        OutFile: SampleCheck_15026-miptest_BOTH.0.stderr.txt
+      vt:
+        OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/info/
+        OutFile: VT_15026-miptest_BOTH.0.stderr.txt
+    ResearchEthicalApproval: notApproved
+    SVBCFFile:
+      Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_comb_SV.bcf
+    SVVCFBinaryFile:
+      Clinical:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_comb_vep_parsed_ranked_SV.selected.vcf.gz
+      Research:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_comb_vep_parsed_ranked_SV.vcf.gz
+    SVVCFFile:
+      Clinical:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_comb_vep_parsed_ranked_SV.selected.vcf
+      ReadyVcf:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_comb_SV.vcf
+      Research:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_comb_vep_parsed_ranked_SV.vcf
+    SVVCFParser:
+      RangeFile:
+        Database:
+          cust000-Research.txt_Research:
+            Acronym: Research
+            CompleteName: Research
+            Date: 2015-03-01
+            FileName: cust000-Research.txt
+            GenomeBuild: GRCh37.p13
+            Version: '6.8'
+        Path: /mnt/hds/proj/bioinfo/develop/references_4.0/cust000-Research.txt
+      SelectFile:
+        Database:
+          cust000-Clinical_master_list.txt_FullList:
+            Acronym: FullList
+            CompleteName: Clinical master list
+            Date: 2016-05-19
+            FileName: cust000-Clinical_master_list.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '18.0'
+          cust002-OMIM.txt_OMIM:
+            Acronym: OMIM
+            CompleteName: OMIM of 2016-04-15
+            Date: 2016-04-22
+            FileName: cust002-OMIM.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '58.0'
+          cust002-SKD.txt_SKD:
+            Acronym: SKD
+            CompleteName: Skeletal dysplasia
+            Date: 2016-04-22
+            FileName: cust002-SKD.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '54.0'
+          cust003-CMMS.txt_ENDO:
+            Acronym: ENDO
+            CompleteName: Endocrinology
+            Date: 2016-04-25
+            FileName: cust003-CMMS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '7.0'
+          cust003-CMMS.txt_EP:
+            Acronym: EP
+            CompleteName: Epilepsy
+            Date: 2016-04-25
+            FileName: cust003-CMMS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '7.0'
+          cust003-CMMS.txt_IEM:
+            Acronym: IEM
+            CompleteName: Inborn Errors of Metabolism
+            Date: 2016-04-25
+            FileName: cust003-CMMS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '7.0'
+          cust003-CMMS.txt_MIT:
+            Acronym: MIT
+            CompleteName: Mitochondrial nuclear
+            Date: 2016-04-25
+            FileName: cust003-CMMS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '7.0'
+          cust003-mtDNA.txt_mtDNA:
+            Acronym: mtDNA
+            CompleteName: Mitochondrial DNA
+            Date: 2016-04-25
+            FileName: cust003-mtDNA.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '8.0'
+          cust004-IBMFS.txt_IBMFS:
+            Acronym: IBMFS
+            CompleteName: Inherited Bone Marrow Failure Syndromes
+            Date: 2016-02-03
+            FileName: cust004-IBMFS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '9.1'
+          cust004-PID.txt_PID:
+            Acronym: PID
+            CompleteName: Primary Immune Deficiency
+            Date: 2016-02-02
+            FileName: cust004-PID.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '8.0'
+          cust004-PID.txt_PIDCAD:
+            Acronym: PIDCAD
+            CompleteName: PID Candidates
+            Date: 2016-02-02
+            FileName: cust004-PID.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '8.0'
+        Path: /mnt/hds/proj/bioinfo/develop/references_4.0/cust000-Clinical_master_list.txt
+    VCFBinaryFile:
+      Clinical:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf.gz
+      Research:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.vcf.gz
+    VCFFile:
+      Clinical:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.selected.vcf
+      ReadyVcf:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_BOTH.vcf
+      Research:
+        Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/15026-miptest/bwa/15026-miptest_sorted_md_brecal_gvcf_vrecal_comb_vt_vep_parsed_snpeff_ranked_BOTH.vcf
+    VCFParser:
+      RangeFile:
+        Database:
+          cust000-Research.txt_Research:
+            Acronym: Research
+            CompleteName: Research
+            Date: 2015-03-01
+            FileName: cust000-Research.txt
+            GenomeBuild: GRCh37.p13
+            Version: '6.8'
+        Path: /mnt/hds/proj/bioinfo/develop/references_4.0/cust000-Research.txt
+      SelectFile:
+        Database:
+          cust000-Clinical_master_list.txt_FullList:
+            Acronym: FullList
+            CompleteName: Clinical master list
+            Date: 2016-05-19
+            FileName: cust000-Clinical_master_list.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '18.0'
+          cust002-OMIM.txt_OMIM:
+            Acronym: OMIM
+            CompleteName: OMIM of 2016-04-15
+            Date: 2016-04-22
+            FileName: cust002-OMIM.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '58.0'
+          cust002-SKD.txt_SKD:
+            Acronym: SKD
+            CompleteName: Skeletal dysplasia
+            Date: 2016-04-22
+            FileName: cust002-SKD.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '54.0'
+          cust003-CMMS.txt_ENDO:
+            Acronym: ENDO
+            CompleteName: Endocrinology
+            Date: 2016-04-25
+            FileName: cust003-CMMS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '7.0'
+          cust003-CMMS.txt_EP:
+            Acronym: EP
+            CompleteName: Epilepsy
+            Date: 2016-04-25
+            FileName: cust003-CMMS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '7.0'
+          cust003-CMMS.txt_IEM:
+            Acronym: IEM
+            CompleteName: Inborn Errors of Metabolism
+            Date: 2016-04-25
+            FileName: cust003-CMMS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '7.0'
+          cust003-CMMS.txt_MIT:
+            Acronym: MIT
+            CompleteName: Mitochondrial nuclear
+            Date: 2016-04-25
+            FileName: cust003-CMMS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '7.0'
+          cust003-mtDNA.txt_mtDNA:
+            Acronym: mtDNA
+            CompleteName: Mitochondrial DNA
+            Date: 2016-04-25
+            FileName: cust003-mtDNA.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '8.0'
+          cust004-IBMFS.txt_IBMFS:
+            Acronym: IBMFS
+            CompleteName: Inherited Bone Marrow Failure Syndromes
+            Date: 2016-02-03
+            FileName: cust004-IBMFS.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '9.1'
+          cust004-PID.txt_PID:
+            Acronym: PID
+            CompleteName: Primary Immune Deficiency
+            Date: 2016-02-02
+            FileName: cust004-PID.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '8.0'
+          cust004-PID.txt_PIDCAD:
+            Acronym: PIDCAD
+            CompleteName: PID Candidates
+            Date: 2016-02-02
+            FileName: cust004-PID.txt
+            GenomeBuild: 'GRCh37.p13																											'
+            Version: '8.0'
+        Path: /mnt/hds/proj/bioinfo/develop/references_4.0/cust000-Clinical_master_list.txt
+    lastLogFilePath: tests/fixtures/mip4/cust000/15026-miptest/analysis/mip_log/2016-10-13/mip.pl_2016-10-13T11:45:26.log
+    logFileDir: tests/fixtures/mip4/cust000/15026-miptest/analysis/mip_log
+  ADM980A10-miptest:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    Father: '0'
+    File:
+      ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane1:
+        CramFile: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane1_sorted.cram
+        ReadDirectionFile:
+          ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane1_1:
+            Date: 2015-04-07
+            Flow-cell: HF5CGADXX
+            Lane: '1'
+            OriginalFileName: 1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1.fastq.gz
+            OriginalFileNameNoEnding: 1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1
+            ReadDirection: 1
+            RunBarcode: 150407_HF5CGADXX_1_GTACGCAA
+            SampleBarcode: GTACGCAA
+          ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane1_2:
+            Date: 2015-04-07
+            Flow-cell: HF5CGADXX
+            Lane: '1'
+            OriginalFileName: 1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2.fastq.gz
+            OriginalFileNameNoEnding: 1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2
+            ReadDirection: 2
+            RunBarcode: 150407_HF5CGADXX_1_GTACGCAA
+            SampleBarcode: GTACGCAA
+        SequenceLength: '101'
+        SequenceRunType: Paired-end
+      ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane2:
+        CramFile: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane2_sorted.cram
+        ReadDirectionFile:
+          ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane2_1:
+            Date: 2015-04-07
+            Flow-cell: HF5CGADXX
+            Lane: '2'
+            OriginalFileName: 2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1.fastq.gz
+            OriginalFileNameNoEnding: 2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1
+            ReadDirection: 1
+            RunBarcode: 150407_HF5CGADXX_2_GTACGCAA
+            SampleBarcode: GTACGCAA
+          ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane2_2:
+            Date: 2015-04-07
+            Flow-cell: HF5CGADXX
+            Lane: '2'
+            OriginalFileName: 2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2.fastq.gz
+            OriginalFileNameNoEnding: 2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2
+            ReadDirection: 2
+            RunBarcode: 150407_HF5CGADXX_2_GTACGCAA
+            SampleBarcode: GTACGCAA
+        SequenceLength: '101'
+        SequenceRunType: Paired-end
+    MostCompleteBAM:
+      Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/ADM980A10-miptest_lanes_12_sorted_md_brecal.bam
+    Mother: '0'
+    Phenotype: '1'
+    Program:
+      BamStats:
+        ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane1:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa
+          OutFile: ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane1_sorted.stats
+        ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane2:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa
+          OutFile: ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane2_sorted.stats
+      Bwa:
+        ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane1:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/info/
+          OutFile: BwaMem_ADM980A10-miptest.0.stderr.txt
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane1_sorted.cram
+        ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane2:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/info/
+          OutFile: BwaMem_ADM980A10-miptest.1.stderr.txt
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/ADM980A10-miptest.150407_HF5CGADXX_GTACGCAA.lane2_sorted.cram
+      CalculateHsMetrics:
+        ADM980A10-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport
+          OutFile: ADM980A10-miptest_lanes_12_sorted_md_brecal_CalculateHsMetrics
+      Chanjo:
+        ADM980A10-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport
+          OutFile: ADM980A10-miptest_lanes_12_sorted_md_brecal_chanjoSexCheck.log
+      ChanjoSexCheck:
+        ADM980A10-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport
+          OutFile: ADM980A10-miptest_lanes_12_sorted_md_brecal.sexcheck
+      CollectMultipleMetrics:
+        ADM980A10-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport
+          OutFile: ADM980A10-miptest_lanes_12_sorted_md_brecal.alignment_summary_metrics
+      FastQC:
+        1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/fastqc/1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1_fastqc
+          OutFile: fastqc_data.txt
+        1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/fastqc/1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2_fastqc
+          OutFile: fastqc_data.txt
+        2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/fastqc/2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1_fastqc
+          OutFile: fastqc_data.txt
+        2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/fastqc/2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2_fastqc
+          OutFile: fastqc_data.txt
+      MarkDuplicates:
+        ADM980A10-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa
+          OutFile: ADM980A10-miptest_lanes_12_sorted_md_metric
+          ProcessedBy: PicardToolsMarkduplicates
+      SambambaDepth:
+        ADM980A10-miptest_lanes_12:
+          Bed:
+            Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport/ADM980A10-miptest_lanes_12_sorted_md_brecal_coverage.bed
+      VariantEval_All:
+        ADM980A10-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/gatkvariantevalall
+          OutFile: ADM980A10-miptest_lanes_12_sorted_md_brecal_gvcf_vrecal_comb_BOTH.vcf.varianteval
+      VariantEval_Exome:
+        ADM980A10-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A10-miptest/bwa/gatkvariantevalexome
+          OutFile: ADM980A10-miptest_lanes_12_sorted_md_brecal_gvcf_vrecal_comb_BOTH_exome.vcf.varianteval
+    Sequence_type:
+      - wes
+    Sex: 2
+  ADM980A9-miptest:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    Father: ADM994A2-miptest
+    File:
+      ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane1:
+        CramFile: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane1_sorted.cram
+        ReadDirectionFile:
+          ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane1_1:
+            Date: 2015-04-07
+            Flow-cell: HF3FNADXX
+            Lane: '1'
+            OriginalFileName: 1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1.fastq.gz
+            OriginalFileNameNoEnding: 1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1
+            ReadDirection: 1
+            RunBarcode: 150407_HF3FNADXX_1_AGCCATGC
+            SampleBarcode: AGCCATGC
+          ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane1_2:
+            Date: 2015-04-07
+            Flow-cell: HF3FNADXX
+            Lane: '1'
+            OriginalFileName: 1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2.fastq.gz
+            OriginalFileNameNoEnding: 1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2
+            ReadDirection: 2
+            RunBarcode: 150407_HF3FNADXX_1_AGCCATGC
+            SampleBarcode: AGCCATGC
+        SequenceLength: '101'
+        SequenceRunType: Paired-end
+      ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane2:
+        CramFile: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane2_sorted.cram
+        ReadDirectionFile:
+          ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane2_1:
+            Date: 2015-04-07
+            Flow-cell: HF3FNADXX
+            Lane: '2'
+            OriginalFileName: 2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1.fastq.gz
+            OriginalFileNameNoEnding: 2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1
+            ReadDirection: 1
+            RunBarcode: 150407_HF3FNADXX_2_AGCCATGC
+            SampleBarcode: AGCCATGC
+          ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane2_2:
+            Date: 2015-04-07
+            Flow-cell: HF3FNADXX
+            Lane: '2'
+            OriginalFileName: 2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2.fastq.gz
+            OriginalFileNameNoEnding: 2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2
+            ReadDirection: 2
+            RunBarcode: 150407_HF3FNADXX_2_AGCCATGC
+            SampleBarcode: AGCCATGC
+        SequenceLength: '101'
+        SequenceRunType: Paired-end
+    MostCompleteBAM:
+      Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/ADM980A9-miptest_lanes_12_sorted_md_brecal.bam
+    Mother: ADM980A10-miptest
+    Phenotype: '2'
+    Program:
+      BamStats:
+        ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane1:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa
+          OutFile: ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane1_sorted.stats
+        ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane2:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa
+          OutFile: ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane2_sorted.stats
+      Bwa:
+        ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane1:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/info/
+          OutFile: BwaMem_ADM980A9-miptest.0.stderr.txt
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane1_sorted.cram
+        ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane2:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/info/
+          OutFile: BwaMem_ADM980A9-miptest.1.stderr.txt
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/ADM980A9-miptest.150407_HF3FNADXX_AGCCATGC.lane2_sorted.cram
+      CalculateHsMetrics:
+        ADM980A9-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport
+          OutFile: ADM980A9-miptest_lanes_12_sorted_md_brecal_CalculateHsMetrics
+      Chanjo:
+        ADM980A9-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport
+          OutFile: ADM980A9-miptest_lanes_12_sorted_md_brecal_chanjoSexCheck.log
+      ChanjoSexCheck:
+        ADM980A9-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport
+          OutFile: ADM980A9-miptest_lanes_12_sorted_md_brecal.sexcheck
+      CollectMultipleMetrics:
+        ADM980A9-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport
+          OutFile: ADM980A9-miptest_lanes_12_sorted_md_brecal.alignment_summary_metrics
+      FastQC:
+        1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/fastqc/1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1_fastqc
+          OutFile: fastqc_data.txt
+        1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/fastqc/1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2_fastqc
+          OutFile: fastqc_data.txt
+        2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/fastqc/2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1_fastqc
+          OutFile: fastqc_data.txt
+        2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/fastqc/2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2_fastqc
+          OutFile: fastqc_data.txt
+      MarkDuplicates:
+        ADM980A9-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa
+          OutFile: ADM980A9-miptest_lanes_12_sorted_md_metric
+          ProcessedBy: PicardToolsMarkduplicates
+      SambambaDepth:
+        ADM980A9-miptest_lanes_12:
+          Bed:
+            Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport/ADM980A9-miptest_lanes_12_sorted_md_brecal_coverage.bed
+      VariantEval_All:
+        ADM980A9-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/gatkvariantevalall
+          OutFile: ADM980A9-miptest_lanes_12_sorted_md_brecal_gvcf_vrecal_comb_BOTH.vcf.varianteval
+      VariantEval_Exome:
+        ADM980A9-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM980A9-miptest/bwa/gatkvariantevalexome
+          OutFile: ADM980A9-miptest_lanes_12_sorted_md_brecal_gvcf_vrecal_comb_BOTH_exome.vcf.varianteval
+    Sequence_type:
+      - wes
+    Sex: 1
+  ADM994A2-miptest:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    Father: '0'
+    File:
+      ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane1:
+        CramFile: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane1_sorted.cram
+        ReadDirectionFile:
+          ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane1_1:
+            Date: 2015-04-13
+            Flow-cell: H2Y5VBCXX
+            Lane: '1'
+            OriginalFileName: 1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1.fastq.gz
+            OriginalFileNameNoEnding: 1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1
+            ReadDirection: 1
+            RunBarcode: 150413_H2Y5VBCXX_1_CCTAATCC
+            SampleBarcode: CCTAATCC
+          ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane1_2:
+            Date: 2015-04-13
+            Flow-cell: H2Y5VBCXX
+            Lane: '1'
+            OriginalFileName: 1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2.fastq.gz
+            OriginalFileNameNoEnding: 1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2
+            ReadDirection: 2
+            RunBarcode: 150413_H2Y5VBCXX_1_CCTAATCC
+            SampleBarcode: CCTAATCC
+        SequenceLength: '101'
+        SequenceRunType: Paired-end
+      ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane2:
+        CramFile: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane2_sorted.cram
+        ReadDirectionFile:
+          ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane2_1:
+            Date: 2015-04-13
+            Flow-cell: H2Y5VBCXX
+            Lane: '2'
+            OriginalFileName: 2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1.fastq.gz
+            OriginalFileNameNoEnding: 2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1
+            ReadDirection: 1
+            RunBarcode: 150413_H2Y5VBCXX_2_CCTAATCC
+            SampleBarcode: CCTAATCC
+          ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane2_2:
+            Date: 2015-04-13
+            Flow-cell: H2Y5VBCXX
+            Lane: '2'
+            OriginalFileName: 2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2.fastq.gz
+            OriginalFileNameNoEnding: 2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2
+            ReadDirection: 2
+            RunBarcode: 150413_H2Y5VBCXX_2_CCTAATCC
+            SampleBarcode: CCTAATCC
+        SequenceLength: '101'
+        SequenceRunType: Paired-end
+    MostCompleteBAM:
+      Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/ADM994A2-miptest_lanes_12_sorted_md_brecal.bam
+    Mother: '0'
+    Phenotype: '1'
+    Program:
+      BamStats:
+        ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane1:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa
+          OutFile: ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane1_sorted.stats
+        ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane2:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa
+          OutFile: ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane2_sorted.stats
+      Bwa:
+        ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane1:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/info/
+          OutFile: BwaMem_ADM994A2-miptest.0.stderr.txt
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane1_sorted.cram
+        ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane2:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/info/
+          OutFile: BwaMem_ADM994A2-miptest.1.stderr.txt
+          Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/ADM994A2-miptest.150413_H2Y5VBCXX_CCTAATCC.lane2_sorted.cram
+      CalculateHsMetrics:
+        ADM994A2-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport
+          OutFile: ADM994A2-miptest_lanes_12_sorted_md_brecal_CalculateHsMetrics
+      Chanjo:
+        ADM994A2-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport
+          OutFile: ADM994A2-miptest_lanes_12_sorted_md_brecal_chanjoSexCheck.log
+      ChanjoSexCheck:
+        ADM994A2-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport
+          OutFile: ADM994A2-miptest_lanes_12_sorted_md_brecal.sexcheck
+      CollectMultipleMetrics:
+        ADM994A2-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport
+          OutFile: ADM994A2-miptest_lanes_12_sorted_md_brecal.alignment_summary_metrics
+      FastQC:
+        1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/fastqc/1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1_fastqc
+          OutFile: fastqc_data.txt
+        1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/fastqc/1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2_fastqc
+          OutFile: fastqc_data.txt
+        2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/fastqc/2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1_fastqc
+          OutFile: fastqc_data.txt
+        2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2.fastq.gz:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/fastqc/2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2_fastqc
+          OutFile: fastqc_data.txt
+      MarkDuplicates:
+        ADM994A2-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa
+          OutFile: ADM994A2-miptest_lanes_12_sorted_md_metric
+          ProcessedBy: PicardToolsMarkduplicates
+      SambambaDepth:
+        ADM994A2-miptest_lanes_12:
+          Bed:
+            Path: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport/ADM994A2-miptest_lanes_12_sorted_md_brecal_coverage.bed
+      VariantEval_All:
+        ADM994A2-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/gatkvariantevalall
+          OutFile: ADM994A2-miptest_lanes_12_sorted_md_brecal_gvcf_vrecal_comb_BOTH.vcf.varianteval
+      VariantEval_Exome:
+        ADM994A2-miptest_lanes_12:
+          OutDirectory: tests/fixtures/mip4/cust000/15026-miptest/analysis/ADM994A2-miptest/bwa/gatkvariantevalexome
+          OutFile: ADM994A2-miptest_lanes_12_sorted_md_brecal_gvcf_vrecal_comb_BOTH_exome.vcf.varianteval
+    Sequence_type:
+      - wes
+    Sex: 1
+

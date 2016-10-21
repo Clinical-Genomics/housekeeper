@@ -1,0 +1,122 @@
+---
+- category: config
+  source: config
+  key: writeConfigFile
+  archive_type: result
+
+- category: sampleinfo
+  source: config
+  key: sampleInfoFile
+  archive_type: result
+
+- category: pedigree
+  source: family
+  key: PedigreeFile|Path
+  archive_type: data
+
+- category: qcpedigree
+  source: family
+  key: PedigreeFileAnalysis|Path
+
+- category: bcf-raw
+  source: family
+  key: BCFFile|Path
+  archive_type: result
+
+- category: bcf-raw-index
+  source: family
+  key: BCFFile|Path
+  suffix: .csi
+  archive_type: result
+
+- category: vcf-clinical-bin
+  source: family
+  key: VCFBinaryFile|Clinical|Path
+  archive_type: result
+
+- category: vcf-clinical-bin-index
+  source: family
+  key: VCFBinaryFile|Clinical|Path
+  suffix: .tbi
+  archive_type: result
+
+- category: vcf-research-bin
+  source: family
+  key: VCFBinaryFile|Research|Path
+  archive_type: result
+
+- category: vcf-research-bin-index
+  source: family
+  key: VCFBinaryFile|Research|Path
+  suffix: .tbi
+  archive_type: result
+
+- category: log
+  source: family
+  key: lastLogFilePath
+  archive_type: result
+
+- category: meta
+  source: config
+  key: outDataDir
+  suffix: /meta.yaml
+  archive_type: meta
+
+- category: bcf-raw-sv
+  source: family
+  key: SVBCFFile|Path
+  archive_type: result
+  required: no
+
+- category: vcf-clinical-sv-bin
+  source: family
+  key: SVVCFBinaryFile|Clinical|Path
+  archive_type: result
+
+- category: vcf-clinical-sv-bin-index
+  source: family
+  key: SVVCFBinaryFile|Clinical|Path
+  suffix: .tbi
+  archive_type: result
+
+- category: vcf-research-sv-bin
+  source: family
+  key: SVVCFBinaryFile|Research|Path
+  archive_type: result
+
+- category: vcf-research-sv-bin-index
+  source: family
+  key: SVVCFBinaryFile|Research|Path
+  suffix: .tbi
+  archive_type: result
+
+- category: coverage
+  source: samples
+  key: Program|SambambaDepth|0|Bed|Path
+  sample: yes
+
+- category: bam
+  source: samples
+  key: MostCompleteBAM|Path
+  sample: yes
+
+- category: bai
+  source: samples
+  key: MostCompleteBAM|Path
+  suffix: .bai
+  sample: yes
+
+- category: qc
+  source: family
+  key: Program|QCCollect|QCCollectMetricsFile|Path
+  archive_type: result
+  replace:
+    old_str: .yaml
+    new_str: .mod.yaml
+
+- category: cram
+  source: samples
+  key: File|*|CramFile
+  sample: yes
+  multiple: yes
+  archive_type: data

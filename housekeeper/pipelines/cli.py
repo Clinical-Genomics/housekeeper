@@ -11,14 +11,15 @@ from housekeeper.store.utils import get_rundir
 from housekeeper.cli.utils import run_orabort
 from housekeeper import exc
 from .mip import parse_mip
-from .mip2 import parse as parse_mip2
+from .mip2 import parse_mip2
+from .mip4 import parse_mip4
 from .miparchive import parse as parse_miparchive
 from .general import commit_analysis, check_existing
 from .mip.scout import prepare_scout
 
 log = logging.getLogger(__name__)
 
-LOADERS = {'mip': parse_mip, 'mip2': parse_mip2,
+LOADERS = {'mip': parse_mip, 'mip2': parse_mip2, 'mip4': parse_mip4,
            'miparchive': parse_miparchive}
 
 

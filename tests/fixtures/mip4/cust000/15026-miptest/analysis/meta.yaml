@@ -1,0 +1,8 @@
+analyzed_at: 2016-10-10 10:17:49
+name: CMMS-15026-miptest
+pipeline: mip
+pipeline_version: v4.0.0
+samples:
+  ADM980A10-miptest: ADM980A10-miptest
+  ADM980A9-miptest: ADM980A9-miptest
+  ADM994A2-miptest: ADM994A2-miptest
