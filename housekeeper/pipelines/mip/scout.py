@@ -104,14 +104,14 @@ def build_config(run_obj):
         'vcf': vcf.path,
         'institute': customer,
         'family': family,
-        'sv_vcf': vcf_sv.path,
+        'vcf_sv': vcf_sv.path,
         'samples': samples,
         'default_panels': default_panels,
         'rank_model_version': rank_model,
         'analysis_date': si_root[family]['AnalysisDate'],
         'human_genome_build': genome_build,
-        'research_vcf': vcf_research.path,
-        'research_sv_vcf': vcf_research_sv.path,
+        'vcf_research': vcf_research.path,
+        'vcf_research_sv': vcf_research_sv.path,
         'gene_list': {
             'path': gene_list,
             'panels': gene_panels
