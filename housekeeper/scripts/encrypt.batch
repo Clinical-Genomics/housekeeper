@@ -11,7 +11,7 @@
 set -e
 set -o pipefail
 shopt -s expand_aliases
-source /mnt/hds/proj/bioinfo/git/kenny/housekeeper/scripts/aliases
+source ~/.bashrc
 
 #############
 # FUNCTIONS #
