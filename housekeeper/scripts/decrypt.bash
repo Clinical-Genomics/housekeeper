@@ -18,8 +18,8 @@ RUN=${RUN%.*}
 read -s -p "Passphrase: " PASSPHRASE
 
 if [[ ${#@} -eq 2 ]]; then
-    echo "gpg --cipher-algo aes256 --passphrase-file <(gpg --cipher-algo aes256 --passphrase ******** --batch --decrypt ${RUNDIR}/${RUN}.key.gpg) --batch --decrypt ${RUNDIR}/${RUN}.gpg | tar xz - -C ${REMOTE}"
-    gpg --cipher-algo aes256 --passphrase-file <(gpg --cipher-algo aes256 --passphrase "$PASSPHRASE" --batch --decrypt ${RUNDIR}/${RUN}.key.gpg) --batch --decrypt ${RUNDIR}/${RUN}.gpg | tar xz - -C ${REMOTE}
+    echo "gpg --cipher-algo aes256 --passphrase-file <(gpg --cipher-algo aes256 --passphrase ******** --batch --decrypt ${RUNDIR}/${RUN}.key.gpg) --batch --decrypt ${RUNDIR}/${RUN}.gpg | tar xzf - -C ${REMOTE}"
+    gpg --cipher-algo aes256 --passphrase-file <(gpg --cipher-algo aes256 --passphrase "$PASSPHRASE" --batch --decrypt ${RUNDIR}/${RUN}.key.gpg) --batch --decrypt ${RUNDIR}/${RUN}.gpg | tar xzf - -C ${REMOTE}
 elif [[ ${#@} -eq 3 ]]; then
     echo "gpg --cipher-algo aes256 --passphrase-file <(gpg --cipher-algo aes256 --passphrase ******** --batch --decrypt ${RUNDIR}/${RUN}.key.gpg) --batch --decrypt ${RUNDIR}/${RUN}.gpg | ssh $REMOTE \"tar xz - -C ${REMOTE_DIR}\""
     gpg --cipher-algo aes256 --passphrase-file <(gpg --cipher-algo aes256 --passphrase "$PASSPHRASE" --batch --decrypt ${RUNDIR}/${RUN}.key.gpg) --batch --decrypt ${RUNDIR}/${RUN}.gpg  | ssh $REMOTE "cd ${REMOTE_DIR} && tar xzf -"
