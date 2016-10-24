@@ -113,9 +113,10 @@ def clean(context, force, date, case_name):
 @click.option('-l', '--limit', default=20)
 @click.option('-o', '--offset', default=0)
 @click.option('-s', '--since', help='consider runs since date')
+@click.option('--older', is_flag=True)
 @click.option('-c', '--category', default='bcf-raw')
 @click.pass_context
-def ls(context, limit, offset, since, category):
+def ls(context, limit, offset, since, older, category):
     """List files from recently added runs."""
     api.manager(context.obj['database'])
     if category == 'samples':
@@ -125,10 +126,17 @@ def ls(context, limit, offset, since, category):
     else:
         query = api.assets(category=category).join(Asset.run)
 
-    query = query.order_by(AnalysisRun.analyzed_at.desc())
+    if older:
+        query = query.order_by(AnalysisRun.analyzed_at)
+    else:
+        query = query.order_by(AnalysisRun.analyzed_at.desc())
+
     if since:
         date_obj = build_date(since) if since else None
-        query = query.filter(AnalysisRun.analyzed_at >= date_obj)
+        if older:
+            query = query.filter(AnalysisRun.analyzed_at <= date_obj)
+        else:
+            query = query.filter(AnalysisRun.analyzed_at >= date_obj)
     else:
         query = query.offset(offset).limit(limit)
 
