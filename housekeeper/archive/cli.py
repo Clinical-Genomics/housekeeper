@@ -32,5 +32,5 @@ def archive(context, date, force, case_name):
             context.abort()
 
     if force or click.confirm("are you sure you want to archive the run?"):
-        archive_run(run_obj)
+        archive_run(run_obj, force=force)
         manager.commit()

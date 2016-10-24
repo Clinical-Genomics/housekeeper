@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 import logging
 import subprocess
+import os
 
 log = logging.getLogger(__name__)
 
 
-def launch(command):
+
+def launch(command, envs=None):
     """ Launch a command
 
     Args:
@@ -13,6 +15,9 @@ def launch(command):
 
     Returns (str): stdout
     """
+
+    if envs:
+        os.environ.update(envs)
 
     try:
         command_line = command.split(' ')
