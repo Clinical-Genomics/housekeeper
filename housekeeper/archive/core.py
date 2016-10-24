@@ -10,12 +10,13 @@
 from datetime import datetime
 import logging
 
+from .utils import on_pdc, send_to_pdc
 from housekeeper.store import api
 
 log = logging.getLogger(__name__)
 
 
-def archive_run(run_obj):
+def archive_run(run_obj, force):
     """Archive a run to PDC."""
     assert run_obj.compiled_at, "run not compiled yet"
     # fetch the archive assets
@@ -23,8 +24,10 @@ def archive_run(run_obj):
     # do PDC magic....
     # remove the archive assets
     for archive_type, asset in assets:
-        log.debug("deleting: %s", asset.path)
-        api.delete_asset(asset)
+        if not on_pdc(asset.path) or force:
+            send_to_pdc(asset.path)
+        #log.debug("deleting: %s", asset.path)
+        #api.delete_asset(asset)
     run_obj.compiled_at = None
     # mark the case as archived
     run_obj.archived_at = datetime.now()
@@ -35,5 +38,6 @@ def get_archiveassets(run_id):
     for archive_type in ("data", "result"):
         category = "archive-{}".format(archive_type)
         query = api.assets(run_id=run_id, category=category)
-        asset = query.first()
-        yield archive_type, asset
+        assets = query.all()
+        for asset in assets:
+            yield archive_type, asset

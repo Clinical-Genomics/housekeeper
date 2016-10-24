@@ -152,3 +152,13 @@ def add_asset(run_obj, asset_path, category, archive_type=None, sample=None):
                       archive_type=archive_type)
     new_asset.sample = sample
     return new_asset
+
+
+def sha1(asset_path):
+    """Retrieves the sha1sum from an asset"""
+    abs_path = path(asset_path).abspath()
+    query = Asset.query
+    checksum = query.filter(Asset.original_path == abs_path).first().checksum
+
+    return checksum
+
