@@ -167,7 +167,7 @@ def ls(context, limit, offset, since, older, category):
 
 
 @click.command()
-@click.argument('-y', '--yes', is_flag=True)
+@click.option('-y', '--yes', is_flag=True)
 @click.option('-o', '--only-db', is_flag=True)
 @click.argument('new_root', type=click.Path(exists=True))
 @click.pass_context
