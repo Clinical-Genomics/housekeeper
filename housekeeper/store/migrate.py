@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 def migrate_root(manager, old_root, new_root, only_db=False):
     """Migrate root of analysis assets."""
-    new_root = Path(new_root).normpath()
+    new_root = Path(new_root).abspath().normpath()
     log.debug("ensure parent of new root exists: %s", new_root.parent)
     new_root.parent.makedirs_p()
     if new_root.exists():
@@ -31,6 +31,6 @@ def replace_paths(old_root, new_root):
     all_assets = api.assets()
     for asset in all_assets:
         new_path = asset.path.replace(old_root, new_root)
-        log.dedug("replacing path: %s -> %s", asset.path, new_path)
+        log.debug("replacing path: %s -> %s", asset.path, new_path)
         assert Path(new_path).exists(), "can't find asset: {}".format(new_path)
         asset.path = new_path
