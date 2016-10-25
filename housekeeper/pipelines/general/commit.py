@@ -17,7 +17,7 @@ def check_existing(name, run_obj):
     return old_run
 
 
-def analysis(manager, case, run):
+def analysis(manager, root_path, case, run):
     """Store an analysis run with files to the backend."""
     log.debug("check if case is already added: %s", case.name)
     old_case = api.case(case.name)
@@ -26,7 +26,7 @@ def analysis(manager, case, run):
     else:
         new_case = case
 
-    run_root = get_rundir(new_case.name, run)
+    run_root = get_rundir(root_path, new_case.name, run)
     if run_root.isdir():
         raise AnalysisConflictError("'{}' analysis run output exists"
                                     .format(run_root))
@@ -49,6 +49,6 @@ def analysis(manager, case, run):
     except Exception as error:
         log.warn("linking error: %s -> %s", asset.original_path, asset.path)
         log.debug('cleaning up database')
-        api.delete(run)
+        api.delete(root_path, run)
         manager.commit()
         raise error

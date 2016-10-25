@@ -31,10 +31,10 @@ def compile(context, date, force, encrypt, case_name):
             manager.commit()
 
     if force or click.confirm('Are you sure?'):
-        compile_run(run_obj)
+        compile_run(context.obj['root'], run_obj)
         manager.commit()
         if encrypt:
-            encrypt_run(run_obj)
+            encrypt_run(context.obj['root'], run_obj)
         manager.commit()
 
 
@@ -49,5 +49,5 @@ def restore(context, archive_type, tar_archive):
     if run_obj is None:
         log.error('no matching analysis run found')
         context.abort()
-    restore_run(run_obj, tar_archive, archive_type)
+    restore_run(context.obj['root'], run_obj, tar_archive, archive_type)
     manager.commit()

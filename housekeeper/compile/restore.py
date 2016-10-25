@@ -11,14 +11,14 @@ from .tar import untar_files
 from .core import checksum
 
 
-def restore_run(run_obj, tar_path, archive_type):
+def restore_run(root_path, run_obj, tar_path, archive_type):
     """Restore files from a tar archive."""
     # confirm the checksum
     sha1 = getattr(run_obj, "{}_checksum".format(archive_type))
     assert checksum(tar_path) == sha1
 
     # unpack the files
-    run_dir = get_rundir(run_obj.case.name, run_obj)
+    run_dir = get_rundir(root_path, run_obj.case.name, run_obj)
     untar_files(run_dir, tar_path)
 
     # update the "local" status of all files blindly
