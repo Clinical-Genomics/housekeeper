@@ -169,7 +169,7 @@ def ls(context, limit, offset, since, older, category):
 @click.command()
 @click.option('-y', '--yes', is_flag=True)
 @click.option('-o', '--only-db', is_flag=True)
-@click.argument('new_root', type=click.Path(exists=True))
+@click.argument('new_root', type=click.Path())
 @click.pass_context
 def migrate(context, yes, only_db, new_root):
     """Migrate all assets from one root dir to another."""

@@ -11,6 +11,10 @@ log = logging.getLogger(__name__)
 def migrate_root(manager, old_root, new_root, only_db=False):
     """Migrate root of analysis assets."""
     new_root = Path(new_root).normpath()
+    log.debug("ensure parent of new root exists: %s", new_root.parent)
+    new_root.parent.makedirs_p()
+    if new_root.exists():
+        raise ValueError("new root can't exist")
     if not only_db:
         move_root(old_root, new_root)
     replace_paths(old_root, new_root)
