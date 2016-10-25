@@ -2,14 +2,14 @@
 import logging
 
 import click
-from path import path
+from path import Path
 
-from housekeeper.store import api, Metadata
+from housekeeper.store import api
 
 log = logging.getLogger(__name__)
 
 
-def setup_db(root_path, db_uri, reset=False):
+def setup_db(db_uri, reset=False):
     """Setup database with tables and store config.
 
     Args:
@@ -23,10 +23,6 @@ def setup_db(root_path, db_uri, reset=False):
         db.drop_all()
     db.create_all()
 
-    log.debug('add metadata about the system')
-    meta = Metadata(root=root_path)
-    db.add_commit(meta)
-
 
 @click.command()
 @click.option('--db-only', is_flag=True)
@@ -35,14 +31,14 @@ def setup_db(root_path, db_uri, reset=False):
 @click.pass_context
 def init(context, db_only, reset, root):
     """Setup the housekeeper."""
-    root_path = path(root).abspath()
+    root_path = Path(root).abspath()
     if not db_only:
         if root_path.exists():
             log.error("root path already exists: %s", root_path)
             context.abort()
         else:
             log.info("create root folder to store analyses: %s", root)
-            path(root).makedirs_p()
+            root_path.makedirs_p()
     uri = context.obj.get('database')
     db_uri = uri or "sqlite:///{}".format(root_path.joinpath('store.sqlite3'))
-    setup_db(root_path, db_uri=db_uri, reset=reset)
+    setup_db(db_uri, reset=reset)

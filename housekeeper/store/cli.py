@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
+import os
 import logging
 
 import click
@@ -44,25 +45,26 @@ def get(context, case, sample, infer_case, category, all_runs):
     output = ' '.join(paths)
     click.echo(output)
 
+
 @click.command()
 @click.argument('asset_path')
-@click.option('-s', '--short', is_flag=True, default=False, help='Print only the filename in the sha1sum file')
-@click.option('-d', '--dash', is_flag=True, default=False, help='Print a dash instead of the filename')
+@click.option('-s', '--short', is_flag=True, default=False,
+              help='Print only the filename in the sha1sum file')
+@click.option('-d', '--dash', is_flag=True, default=False,
+              help='Print a dash instead of the filename')
 @click.pass_context
 def getsha1(context, asset_path, short, dash):
     """Ask Housekeeper for the sha1sum of a file."""
     api.manager(context.obj['database'])
-
-
     checksum = api.sha1(asset_path)
     checksum_of = asset_path
     if short:
         checksum_of = os.path.basename(asset_path)
-
     if dash:
         checksum_of = '-'
 
-    click.echo("  ".join((checksum, checksum_of))) # for some reason we need two spaces
+    # for some reason we need two spaces
+    click.echo("  ".join((checksum, checksum_of)))
 
 
 @click.command()
@@ -88,10 +90,11 @@ def delete(context, date, yes, case_name):
     """Delete an analysis run and files."""
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
-    run_root = get_rundir(case_name, run_obj)
+    root_path = context.obj['root']
+    run_root = get_rundir(root_path, case_name, run_obj)
     click.echo("you are about to delete: {}".format(run_root))
     if yes or click.confirm('Are you sure?'):
-        api.delete(run_obj)
+        api.delete(root_path, run_obj)
         manager.commit()
 
 
@@ -105,7 +108,7 @@ def clean(context, force, date, case_name):
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
     if force or click.confirm('Are you sure?'):
-        api.clean_up(run_obj, force=force)
+        api.clean_up(context.obj['root'], run_obj, force=force)
         manager.commit()
 
 

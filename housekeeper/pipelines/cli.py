@@ -57,14 +57,14 @@ def add(context, force, yes, replace, references, pipeline, config):
         message = "identical run detected: {}".format(case_name)
         if force or replace:
             log.warn(message)
-            api.delete(old_run)
+            api.delete(context.obj['root'], old_run)
             manager.commit()
         else:
             log.error(message)
             context.abort()
 
     try:
-        commit_analysis(manager, **records)
+        commit_analysis(manager, context.obj['root'], **records)
         click.echo("added new analysis: {}".format(case_name))
         sample_ids = ', '.join(sample.name for sample in records['run'].samples)
         click.echo("including samples: {}".format(sample_ids))
@@ -94,7 +94,8 @@ def extend(context, no_link, date, category, sample, archive_type, case_name,
     new_asset = api.add_asset(run_obj, asset_path, category, archive_type,
                               sample=sample_obj)
 
-    run_root = get_rundir(run_obj.case.name, run_obj)
+    root_path = context.obj['root']
+    run_root = get_rundir(root_path, run_obj.case.name, run_obj)
     filename = new_asset.basename()
     if no_link:
         new_path = asset_path

@@ -3,12 +3,12 @@ from functools import partial
 
 from alchy import Manager
 from click.testing import CliRunner
-from path import path
+from path import Path
 import pytest
 import yaml
 
 from housekeeper.cli import root
-from housekeeper.store import api, Model, Metadata
+from housekeeper.store import api, Model
 from housekeeper.pipelines.mip.parse import prepare_inputs
 
 
@@ -33,7 +33,7 @@ def pedigree():
 
 @pytest.yield_fixture(scope='function')
 def mip_output():
-    mip_out = path('tests/fixtures/mip')
+    mip_out = Path('tests/fixtures/mip')
     yield mip_out
     mod_qcmetrics = mip_out.joinpath("cust003/16074/analysis/genomes/16074/"
                                      "16074_qcmetrics.mod.yaml")
@@ -54,15 +54,13 @@ def manager():
 
 @pytest.yield_fixture(scope='function')
 def setup_tmp(tmpdir):
-    tmp_path = path(tmpdir)
-    tmp_path.joinpath('analyses').makedirs_p()
+    tmp_path = Path(tmpdir).joinpath('analyses')
+    tmp_path.makedirs_p()
     db_path = tmp_path.joinpath('store.sqlite3')
     uri = "sqlite:///{}".format(db_path)
     manager = api.manager(uri)
     manager.create_all()
-    meta = Metadata(root=tmp_path)
-    manager.add_commit(meta)
-    data = dict(uri=uri, path=str(db_path), manager=manager)
+    data = dict(uri=uri, root=tmp_path, path=str(db_path), manager=manager)
     yield data
     manager.drop_all()
 

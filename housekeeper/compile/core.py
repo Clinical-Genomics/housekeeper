@@ -6,7 +6,7 @@ import hashlib
 import logging
 import itertools
 
-from path import path
+from path import Path
 
 from housekeeper.store import api
 from housekeeper.store.utils import get_rundir
@@ -18,9 +18,9 @@ ArchiveGroup = namedtuple('ArchiveGroup', ['id', 'out', 'checksum'])
 log = logging.getLogger(__name__)
 
 
-def compile_run(run_obj):
+def compile_run(root_path, run_obj):
     """High level compile function for a run."""
-    groups = compress_run(run_obj)
+    groups = compress_run(root_path, run_obj)
     for group in groups:
         log.info("compressed %s archive: %s", group.id, group.out)
         category = "archive-{}".format(group.id)
@@ -31,13 +31,13 @@ def compile_run(run_obj):
     run_obj.compiled_at = datetime.now()
 
 
-def compress_run(run_obj):
+def compress_run(root_path, run_obj):
     """Archive a run into data+results archives."""
-    run_dir = path(get_rundir(run_obj.case.name, run=run_obj))
+    run_dir = Path(get_rundir(root_path, run_obj.case.name, run=run_obj))
     for group, paths in group_assets(run_obj.assets):
         run_date = run_obj.analyzed_at.date()
         group_out = run_dir.joinpath("{}.{}.tar.gz".format(run_date, group))
-        filenames = [path(full_path).basename() for full_path in paths]
+        filenames = [Path(full_path).basename() for full_path in paths]
         tar_files(group_out, root_dir=run_dir, filenames=filenames)
         sha1 = checksum(group_out)
         yield ArchiveGroup(id=group, out=group_out, checksum=sha1)
@@ -47,13 +47,14 @@ def encrypt_run(run_obj):
     """ Encrypts an input file and places the encrypted archive
     and key in the run dir.
     """
-    run_dir = path(get_rundir(run_obj.case.name, run=run_obj))
+    run_dir = Path(get_rundir(run_obj.case.name, run=run_obj))
     groups = ('data', 'result')
     archives = []
     for group in groups:
-        archive_group = api.assets(run_id=run_obj.id, category='archive-{}'.format(group)).first()
-        if archive_group:
-            archives.append(archive_group)
+        category = "archive-{}".format(group)
+        archive_grp = api.assets(run_id=run_obj.id, category=category.first())
+        if archive_grp:
+            archives.append(archive_grp)
 
 
     encrypt_script = pkg_resources.resource_filename('housekeeper', 'scripts/encrypt.batch')

@@ -28,18 +28,6 @@ class JsonModel(alchy.ModelBase):
 Model = alchy.make_declarative_base(Base=JsonModel)
 
 
-class Metadata(Model):
-    """Store information about the system."""
-
-    id = Column(types.Integer, primary_key=True)
-    created_at = Column(types.DateTime, default=datetime.now)
-    root = Column(types.String(128), nullable=False)
-
-    @property
-    def root_path(self):
-        return path(self.root)
-
-
 class Case(Model):
     """Store a permanent reference to a case."""
 

@@ -90,13 +90,13 @@ def runs(case_name=None, run_date=None, since=None):
     return run_query
 
 
-def delete(run_obj):
+def delete(root_path, run_obj):
     """Delete an analysis run along with related files on the system.
 
     Args:
         run_obj (AnalysisRun): the analysis run to delete
     """
-    run_dir = get_rundir(run_obj.case.name, run_obj)
+    run_dir = get_rundir(root_path, run_obj.case.name, run_obj)
     delete_dir(run_dir)
 
     if len(run_obj.case.runs) == 1:
@@ -112,7 +112,7 @@ def delete_asset(asset_obj):
     asset_obj.delete()
 
 
-def clean_up(run_obj, force=False):
+def clean_up(root_path, run_obj, force=False):
     """Clean up files for an analysis."""
     # check if run is ready
     if not force and not all([run_obj.archived_at, run_obj.delivered_at]):
@@ -125,7 +125,7 @@ def clean_up(run_obj, force=False):
             else:
                 asset.is_local = False
 
-        run_dir = get_rundir(run_obj.case.name, run_obj)
+        run_dir = get_rundir(root_path, run_obj.case.name, run_obj)
         log.info("removing rundir: %s", run_dir)
         delete_dir(run_dir)
         run_obj.cleanedup_at = datetime.datetime.now()
@@ -161,4 +161,3 @@ def sha1(asset_path):
     checksum = query.filter(Asset.original_path == abs_path).first().checksum
 
     return checksum
-
