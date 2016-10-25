@@ -4,8 +4,11 @@ import os
 import logging
 
 import click
+from path import Path
+import yaml
 
 from housekeeper.cli.utils import run_orabort
+from .migrate import migrate_root
 from .utils import get_rundir
 from . import api, Asset, AnalysisRun, Sample
 
@@ -161,6 +164,26 @@ def ls(context, limit, offset, since, older, category):
                 output.append(asset.path)
                 cases.add(asset.run.case_id)
     click.echo(" ".join(output))
+
+
+@click.command()
+@click.argument('-y', '--yes', is_flag=True)
+@click.option('-o', '--only-db', is_flag=True)
+@click.argument('new_root', type=click.Path(exists=True))
+@click.pass_context
+def migrate(context, yes, only_db, new_root):
+    """Migrate all assets from one root dir to another."""
+    manager = api.manager(context.obj['database'])
+    migrate_root(manager, context.obj['root'], new_root, only_db=only_db)
+
+    if 'config' in context.obj:
+        config_path = Path(context.obj['config'])
+        if yes or click.confirm("update config file?"):
+            # update the root in the config
+            with config_path.open('w') as out_handle:
+                dump = yaml.dump(context.obj, default_flow_style=False,
+                                 allow_unicode=True)
+                out_handle.write(dump.decode('utf-8'))
 
 
 def build_date(date_str):

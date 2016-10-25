@@ -58,6 +58,7 @@ def build_cli(title, Model):
         if os.path.exists(config):
             with codecs.open(config) as conf_handle:
                 context.obj = yaml.load(conf_handle)
+                context.obj['config'] = config
         else:
             context.obj = {}
 

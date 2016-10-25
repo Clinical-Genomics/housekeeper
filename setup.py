@@ -120,6 +120,7 @@ setup(
             'clean = housekeeper.store.cli:clean',
             'restore = housekeeper.compile.cli:restore',
             'ls = housekeeper.store.cli:ls',
+            'migrate = housekeeper.store.cli:migrate',
         ],
     },
 
