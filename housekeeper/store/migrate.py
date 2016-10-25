@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
+import click
 from path import Path
 
 from housekeeper.store import api
@@ -29,8 +30,12 @@ def move_root(old_root, new_root):
 def replace_paths(old_root, new_root):
     """Replace root paths for assets."""
     all_assets = api.assets()
-    for asset in all_assets:
-        new_path = asset.path.replace(old_root, new_root)
-        log.debug("replacing path: %s -> %s", asset.path, new_path)
-        assert Path(new_path).exists(), "can't find asset: {}".format(new_path)
-        asset.path = new_path
+
+    with click.progressbar(all_assets,
+                           label='updating asset paths',
+                           length=all_assets.count()) as bar:
+        for asset in bar:
+            new_path = asset.path.replace(old_root, new_root)
+            log.debug("replacing path: %s -> %s", asset.path, new_path)
+            assert Path(new_path).exists(), "can't find asset: {}".format(new_path)
+            asset.path = new_path
