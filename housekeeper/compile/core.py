@@ -43,11 +43,11 @@ def compress_run(root_path, run_obj):
         yield ArchiveGroup(id=group, out=group_out, checksum=sha1)
 
 
-def encrypt_run(run_obj):
+def encrypt_run(root_path, run_obj):
     """ Encrypts an input file and places the encrypted archive
     and key in the run dir.
     """
-    run_dir = Path(get_rundir(run_obj.case.name, run=run_obj))
+    run_dir = Path(get_rundir(root_path, run_obj.case.name, run=run_obj))
     groups = ('data', 'result')
     archives = []
     for group in groups:
