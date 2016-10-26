@@ -53,17 +53,23 @@ def get(context, case, sample, infer_case, category, all_runs):
 @click.option('-b', '--before', help='list runs before a date')
 @click.option('-a', '--after', help='list runs after a date')
 @click.option('--archived', is_flag=True, help='list only archived runs')
+@click.option('-r', '--root', is_flag=True, help='show root path of runs')
 @click.option('-l', '--limit', default=20)
 @click.pass_context
-def runs(context, before, after, archived, limit):
+def runs(context, before, after, archived, limit, root):
     """List runs loaded in the database."""
     api.manager(context.obj['database'])
+    root_path = context.obj['root']
     before_date = build_date(before) if before else None
     after_date = build_date(after) if after else None
     run_q = api.runs(before=before_date, after=after_date, archived=archived)
     for run_obj in run_q.limit(limit):
-        click.echo("{} - {}".format(run_obj.case.name,
-                                    run_obj.analyzed_at.date()))
+        if root:
+            run_root = get_rundir(root_path, run_obj.case.name, run_obj)
+            click.echo(run_root)
+        else:
+            click.echo("{} - {}".format(run_obj.case.name,
+                                        run_obj.analyzed_at.date()))
 
 
 @click.command()
