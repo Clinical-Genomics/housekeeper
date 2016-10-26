@@ -52,7 +52,8 @@ def get(context, case, sample, infer_case, category, all_runs):
 @click.command()
 @click.option('-b', '--before', help='list runs before a date')
 @click.option('-a', '--after', help='list runs after a date')
-@click.option('--archived', is_flag=True, help='list only archived runs')
+@click.option('--archived/--no-archived', is_flag=True,
+              help='list archived/not archived runs')
 @click.option('--compiled/--no-compiled', is_flag=True,
               help='list compiled/not compiled runs')
 @click.option('--cleaned/--no-cleaned', is_flag=True,

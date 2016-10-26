@@ -101,7 +101,10 @@ def runs(case_name=None, run_date=None, since=None, before=None, after=None,
                                      AnalysisRun.will_cleanup_at < today)
     else:
         if archived:
-            run_query = run_query.filter(AnalysisRun.archived_at != None)
+            if archived is True:
+                run_query = run_query.filter(AnalysisRun.archived_at != None)
+            else:
+                run_query = run_query.filter(AnalysisRun.archived_at == None)
         if compiled is not None:
             if compiled is True:
                 run_query = run_query.filter(AnalysisRun.compiled_at != None)
