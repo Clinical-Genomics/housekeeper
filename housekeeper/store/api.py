@@ -68,7 +68,7 @@ def cases(query_str=None):
 
 
 def runs(case_name=None, run_date=None, since=None, before=None, after=None,
-         archived=None):
+         archived=None, compiled=None, cleaned=None, to_clean=None):
     """Get runs for a case from the database.
 
     Args:
@@ -93,8 +93,25 @@ def runs(case_name=None, run_date=None, since=None, before=None, after=None,
     if before:
         order = AnalysisRun.analyzed_at
         run_query = run_query.filter(AnalysisRun.analyzed_at < before)
-    if archived:
-        run_query = run_query.filter(AnalysisRun.archived_at != None)
+
+    if to_clean:
+        today = datetime.datetime.today()
+        run_query = run_query.filter(AnalysisRun.archived_at != None,
+                                     AnalysisRun.cleanedup_at == None,
+                                     AnalysisRun.will_cleanup_at < today)
+    else:
+        if archived:
+            run_query = run_query.filter(AnalysisRun.archived_at != None)
+        if compiled is not None:
+            if compiled is True:
+                run_query = run_query.filter(AnalysisRun.compiled_at != None)
+            else:
+                run_query = run_query.filter(AnalysisRun.compiled_at == None)
+        if cleaned:
+            if cleaned is True:
+                run_query = run_query.filter(AnalysisRun.cleanedup_at != None)
+            else:
+                run_query = run_query.filter(AnalysisRun.cleanedup_at == None)
     if case_name:
         run_query = (run_query.join(AnalysisRun.case)
                               .filter(Case.name == case_name))
