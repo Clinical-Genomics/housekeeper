@@ -52,14 +52,18 @@ def encrypt_run(root_path, run_obj):
     archives = []
     for group in groups:
         category = "archive-{}".format(group)
-        archive_grp = api.assets(run_id=run_obj.id, category=category.first())
+        archive_grp = api.assets(run_id=run_obj.id, category=category).first()
         if archive_grp:
             archives.append(archive_grp)
 
 
     encrypt_script = pkg_resources.resource_filename('housekeeper', 'scripts/encrypt.batch')
     for asset in itertools.chain(archives):
+
+        # here we go: encrypt!
         stdout = launch('{} {} {}'.format(encrypt_script, asset.path, run_dir))
+
+        # the rest is administration
         archive_path = '{}.gpg'.format(asset.path)
         archive_key_path = '{}.key.gpg'.format(asset.path)
         log.info(archive_path)
