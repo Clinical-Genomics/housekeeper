@@ -67,7 +67,8 @@ def cases(query_str=None):
     return query
 
 
-def runs(case_name=None, run_date=None, since=None):
+def runs(case_name=None, run_date=None, since=None, before=None, after=None,
+         archived=None):
     """Get runs for a case from the database.
 
     Args:
@@ -81,13 +82,23 @@ def runs(case_name=None, run_date=None, since=None):
         next_day = run_date + delta
         condition = AnalysisRun.analyzed_at.between(run_date, next_day)
         return AnalysisRun.query.filter(condition)
-    run_query = AnalysisRun.query.order_by(AnalysisRun.analyzed_at.desc())
+
+    order = AnalysisRun.analyzed_at.desc()
+    run_query = AnalysisRun.query
+    if after:
+        since = after
     if since:
+        order = AnalysisRun.analyzed_at.desc()
         run_query = run_query.filter(AnalysisRun.analyzed_at > since)
+    if before:
+        order = AnalysisRun.analyzed_at
+        run_query = run_query.filter(AnalysisRun.analyzed_at < before)
+    if archived:
+        run_query = run_query.filter(AnalysisRun.archived_at != None)
     if case_name:
         run_query = (run_query.join(AnalysisRun.case)
                               .filter(Case.name == case_name))
-    return run_query
+    return run_query.order_by(order)
 
 
 def delete(root_path, run_obj):

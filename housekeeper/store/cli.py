@@ -50,6 +50,23 @@ def get(context, case, sample, infer_case, category, all_runs):
 
 
 @click.command()
+@click.option('-b', '--before', help='list runs before a date')
+@click.option('-a', '--after', help='list runs after a date')
+@click.option('--archived', is_flag=True, help='list only archived runs')
+@click.option('-l', '--limit', default=20)
+@click.pass_context
+def runs(context, before, after, archived, limit):
+    """List runs loaded in the database."""
+    api.manager(context.obj['database'])
+    before_date = build_date(before) if before else None
+    after_date = build_date(after) if after else None
+    run_q = api.runs(before=before_date, after=after_date, archived=archived)
+    for run_obj in run_q.limit(limit):
+        click.echo("{} - {}".format(run_obj.case.name,
+                                    run_obj.analyzed_at.date()))
+
+
+@click.command()
 @click.argument('asset_path')
 @click.option('-s', '--short', is_flag=True, default=False,
               help='Print only the filename in the sha1sum file')

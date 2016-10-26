@@ -30,7 +30,6 @@ def move_root(old_root, new_root):
 def replace_paths(old_root, new_root):
     """Replace root paths for assets."""
     all_assets = api.assets()
-
     with click.progressbar(all_assets,
                            label='updating asset paths',
                            length=all_assets.count()) as bar:

@@ -121,6 +121,7 @@ setup(
             'restore = housekeeper.compile.cli:restore',
             'ls = housekeeper.store.cli:ls',
             'migrate = housekeeper.store.cli:migrate',
+            'runs = housekeeper.store.cli:runs',
         ],
     },
 
