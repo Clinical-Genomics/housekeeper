@@ -62,7 +62,8 @@ def build_config(run_obj):
     vcf = api.assets(category='vcf-clinical', run_id=run_obj.id).one()
     vcf_sv = api.assets(category='vcf-clinical-sv', run_id=run_obj.id).first()
     vcf_research = api.assets(category='vcf-research', run_id=run_obj.id).one()
-    vcf_research_sv = api.assets(category='vcf-research-sv', run_id=run_obj.id).first()
+    vcf_research_sv = (api.assets(category='vcf-research-sv',
+                                  run_id=run_obj.id).first())
     sampleinfo = api.assets(category='sampleinfo', run_id=run_obj.id).one()
 
     pedigree_qc = api.assets(category='qcpedigree', run_id=run_obj.id).one()
@@ -90,18 +91,8 @@ def build_config(run_obj):
     genome_build = (si_root[family]['HumanGenomeBuild']['Source'] +
                     si_root[family]['HumanGenomeBuild']['Version'])
 
-    # gene panels
-    gene_list = si_root[family]['VCFParser']['SelectFile']['Path']
-    panels = si_root[family]['VCFParser']['SelectFile']['Database'].values()
-    gene_panels = [{
-        'id': panel['Acronym'].strip(),
-        'date': panel['Date'],
-        'version': panel['Version'].strip(),
-        'name': panel['CompleteName'].strip(),
-    } for panel in panels]
-
     data = {
-        'vcf': vcf.path,
+        'vcf_snv': vcf.path,
         'institute': customer,
         'family': family,
         'vcf_sv': vcf_sv.path,
@@ -110,12 +101,8 @@ def build_config(run_obj):
         'rank_model_version': rank_model,
         'analysis_date': si_root[family]['AnalysisDate'],
         'human_genome_build': genome_build,
-        'vcf_research': vcf_research.path,
+        'vcf_research_snv': vcf_research.path,
         'vcf_research_sv': vcf_research_sv.path,
-        'gene_list': {
-            'path': gene_list,
-            'panels': gene_panels
-        },
     }
     return data
 
@@ -123,8 +110,8 @@ def build_config(run_obj):
 def parse_sample(sample_data, bam_path):
     """Parse out sample information from QC pedigree block."""
     data = {
-        'id': sample_data['Individual ID'],
-        'name': sample_data['display_name'][0],
+        'sample_id': sample_data['Individual ID'],
+        'sample_name': sample_data['display_name'][0],
         'sex': SEX_MAP.get(sample_data['Sex'], 'unknown'),
         'phenotype': PHENOTYPE_MAP.get(sample_data['Phenotype'], 'unknown'),
         'analysis_type': sample_data['Sequencing_type'][0].lower(),
