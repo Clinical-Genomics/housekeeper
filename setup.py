@@ -122,6 +122,8 @@ setup(
             'ls = housekeeper.store.cli:ls',
             'migrate = housekeeper.store.cli:migrate',
             'runs = housekeeper.store.cli:runs',
+            'scout = housekeeper.pipelines.cli:scout',
+            'status = housekeeper.store.cli:status',
         ],
     },
 

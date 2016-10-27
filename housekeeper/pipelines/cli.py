@@ -14,6 +14,7 @@ from .mip import parse_mip
 from .mip2 import parse as parse_mip2
 from .miparchive import parse as parse_miparchive
 from .general import commit_analysis, check_existing
+from .mip.scout import prepare_scout
 
 log = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ LOADERS = {'mip': parse_mip, 'mip2': parse_mip2,
 @click.option('-r', '--references', type=click.File('r'))
 @click.option('-p', '--pipeline', type=click.Choice(LOADERS.keys()),
               default='mip')
-@click.option('-r', '--replace', is_flag='replace identical runs')
+@click.option('--replace', is_flag='replace identical runs')
 @click.argument('config', type=click.File('r'))
 @click.pass_context
 def add(context, force, yes, replace, references, pipeline, config):
@@ -107,4 +108,39 @@ def extend(context, no_link, date, category, sample, archive_type, case_name,
     new_asset.path = new_path
     run_obj.assets.append(new_asset)
     log.info("add asset: %s", new_asset.path)
+    manager.commit()
+
+
+@click.command()
+@click.option('-m', '--madeline-exe', type=click.Path(exists=True))
+@click.option('-d', '--date', help="date of the particular run")
+@click.option('-r', '--replace', is_flag=True)
+@click.argument('case_name')
+@click.pass_context
+def scout(context, madeline_exe, date, replace, case_name):
+    """Prepare a config and files for Scout."""
+    madeline_exe = madeline_exe or context.obj['madeline_exe']
+    manager = api.manager(context.obj['database'])
+    run_obj = run_orabort(context, case_name, date)
+    if not run_obj.pipeline_version.startswith('v3'):
+        log.error("unsupported pipeline version: %s", run_obj.pipeline_version)
+        context.abort()
+
+    existing_conf = (api.assets(category='scout-config', run_id=run_obj.id)
+                        .first())
+    if existing_conf:
+        if replace:
+            log.info("deleting existing scout config: %s", existing_conf.path)
+            api.delete_asset(existing_conf)
+            existing_mad = (api.assets(category='madeline', run_id=run_obj.id)
+                               .first())
+            if existing_mad:
+                log.info("deleting existing madeline: %s", existing_mad.path)
+                api.delete_asset(existing_mad)
+            manager.commit()
+        else:
+            log.error("scout config already generated")
+            context.abort()
+
+    prepare_scout(run_obj, madeline_exe)
     manager.commit()

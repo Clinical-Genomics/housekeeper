@@ -31,6 +31,8 @@ Model = alchy.make_declarative_base(Base=JsonModel)
 class Case(Model):
     """Store a permanent reference to a case."""
 
+    __bind_key__ = 'housekeeper'
+
     id = Column(types.Integer, primary_key=True)
     name = Column(types.String(128), unique=True)
     created_at = Column(types.DateTime, default=datetime.now)
@@ -47,6 +49,7 @@ class Case(Model):
 class AnalysisRun(Model):
     """Store information about a specific analysis run."""
 
+    __bind_key__ = 'housekeeper'
     __table_args__ = (UniqueConstraint('case_id', 'analyzed_at',
                                        name='_uc_analysis_analyzed_at'),)
 
@@ -95,6 +98,7 @@ class AnalysisRun(Model):
 class Sample(Model):
     """Sample record."""
 
+    __bind_key__ = 'housekeeper'
     __table_args__ = (UniqueConstraint('name', 'run_id',
                                        name='_uc_name_run_id'),)
 
@@ -108,6 +112,8 @@ class Sample(Model):
 
 class Asset(Model):
     """Asset/file belonging to an analysis."""
+
+    __bind_key__ = 'housekeeper'
 
     id = Column(types.Integer, primary_key=True)
     original_path = Column(types.Text)
@@ -128,6 +134,8 @@ class Asset(Model):
 class Archive(Model):
     """Backup belonging to an analysis."""
 
+    __bind_key__ = 'housekeeper'
+
     id = Column(types.Integer, primary_key=True)
     original_path = Column(types.Text)
     archived_at = Column(types.DateTime)
@@ -138,4 +146,3 @@ class Archive(Model):
 
     def basename(self):
         return path(self.original_path).basename()
-

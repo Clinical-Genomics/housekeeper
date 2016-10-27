@@ -2,3 +2,8 @@ alchy
 Click
 path.py
 pyyaml
+ped_parser
+sqlalchemy
+Flask
+Flask-Alchy
+Flask-Bootstrap
