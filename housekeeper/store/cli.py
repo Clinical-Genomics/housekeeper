@@ -60,11 +60,12 @@ def get(context, case, sample, infer_case, category, all_runs):
               help='list cleaned up/not cleaned up runs')
 @click.option('--to-clean', is_flag=True,
               help='list runs ready to be cleaned up')
-@click.option('-r', '--root', is_flag=True, help='show root path of runs')
+@click.option('-o', '--output', type=click.Choice(['root', 'sample', 'case']),
+              default='case')
 @click.option('-l', '--limit', default=20)
 @click.pass_context
 def runs(context, before, after, archived, compiled, cleaned, to_clean,
-         limit, root):
+         limit, output):
     """List runs loaded in the database."""
     api.manager(context.obj['database'])
     root_path = context.obj['root']
@@ -73,9 +74,12 @@ def runs(context, before, after, archived, compiled, cleaned, to_clean,
     run_q = api.runs(before=before_date, after=after_date, archived=archived,
                      compiled=compiled, cleaned=cleaned, to_clean=to_clean)
     for run_obj in run_q.limit(limit):
-        if root:
+        if output == 'root':
             run_root = get_rundir(root_path, run_obj.case.name, run_obj)
             click.echo(run_root)
+        elif output == 'sample':
+            for sample in run_obj.samples:
+                click.echo(sample.name)
         else:
             click.echo("{} - {}".format(run_obj.case.name,
                                         run_obj.analyzed_at.date()))
