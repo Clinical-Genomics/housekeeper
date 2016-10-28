@@ -77,14 +77,14 @@ def runs(case_name=None, run_date=None, since=None, before=None, after=None,
     Returns:
         Query: all runs for the case
     """
+    run_query = AnalysisRun.query
     if run_date:
         delta = datetime.timedelta(days=1)
         next_day = run_date + delta
         condition = AnalysisRun.analyzed_at.between(run_date, next_day)
-        return AnalysisRun.query.filter(condition)
+        run_query = run_query.filter(condition)
 
     order = AnalysisRun.analyzed_at.desc()
-    run_query = AnalysisRun.query
     if after:
         since = after
     if since:
