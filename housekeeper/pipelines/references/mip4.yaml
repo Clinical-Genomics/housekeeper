@@ -113,10 +113,3 @@
   replace:
     old_str: .yaml
     new_str: .mod.yaml
-
-- category: cram
-  source: samples
-  key: File|*|CramFile
-  sample: yes
-  multiple: yes
-  archive_type: data
