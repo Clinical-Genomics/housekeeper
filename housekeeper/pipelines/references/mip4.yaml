@@ -113,3 +113,14 @@
   replace:
     old_str: .yaml
     new_str: .mod.yaml
+
+- category: gbcf
+  source: family
+  key: GBCFFile|Path
+  archive_type: result
+
+- category: gbcf-index
+  source: family
+  key: GBCFFile|Path
+  archive_type: result
+  suffix: .csi
