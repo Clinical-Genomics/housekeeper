@@ -10,13 +10,13 @@ from housekeeper.store import Asset
 log = logging.getLogger(__name__)
 
 
-def build_analysis(segments, version=None):
+def build_analysis(segments, version=None, customer=None):
     """Prepare info for a MIP analysis."""
     fam_key = segments['config']['familyID']
     version = version if version else segments['family']['MIPVersion']
     analyzed_at = segments['family']['AnalysisDate']
     sample_ids = segments['config']['sampleIDs']
-    customer = segments['family']['InstanceTag'][0]
+    customer = customer or segments['family']['InstanceTag'][0]
     name = "{}-{}".format(customer, fam_key)
     log.debug("build new analysis record: %s", name)
     new_objs = general_analysis(name, 'mip', version, analyzed_at, sample_ids)

@@ -1,82 +1,87 @@
 ---
-15026-miptest:
-  15026-miptest:
-    Program:
-      Bcftools:
-        Version: 1.3.1+htslib-1.3.1
-      Freebayes:
-        Version: v1.0.2
-      GATK:
-        Version: 3.6
-      InbreedingFactor:
-        Sample_InbreedingFactor:
-          - ADM980A10-miptest:-0.008835
-          - ADM980A9-miptest:-0.1306
-          - ADM994A2-miptest:0.02027
-      Manta:
-        Version: 1.0.0
-      PicardTools:
-        Version: 2.5.0(2c370988aefe41f579920c8a6a678a201c5261c1_1466708365)
-      Plink2:
-        Version: v1.90p_64-bit_(25_Mar_2016)
-      PlinkGenderCheck:
-        - ADM980A10-miptest:PASS
-        - ADM980A9-miptest:PASS
-        - ADM994A2-miptest:PASS
-      QCCollect:
-        RegExpFile: /mnt/hds/proj/bioinfo/develop/references_4.0/qc_regExp_v1.12.yaml
-        Version: 1.0.2
-      RelationCheck:
-        Sample_RelationCheck:
-          - 1
-          - 0.758925
-          - 0.657724
-          - 0.758925
-          - 1
-          - 0.751074
-          - 0.657724
-          - 0.751074
-          - 1
-      SVCombineVariantCallSets:
-        VcfAnno: 0.1.0
-      SVVCFParser:
-        Version: 1.2.8
-      SVVariantEffectPredictor:
-        Assembly: GRCh37.p13
-        Cache: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/ensembl-tools-release-85/cache/homo_sapiens/85_GRCh37
-        Gencode: 19
-        GeneBuild: 2011-04
-        HGMDPublic: 20152
-        PolyPhen: 2.2.2
-        RegBuild: 13
-        Sift: 5.2.2
-        Version: v85
-      Sambamba:
-        Version: 0.6.3
-      Samtools:
-        Version: 1.3.1+htslib-1.3.1
-      SexCheck:
-        Sample_SexCheck:
-          - ADM980A10-miptest:2
-          - ADM980A9-miptest:1
-          - ADM994A2-miptest:1
-      SnpEff:
-        Version: SnpSift_4.2_(build_2015-12-05)
-      VCFParser:
-        Version: 1.2.8
-      VariantEffectPredictor:
-        Assembly: GRCh37.p13
-        Cache: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/ensembl-tools-release-85/cache/homo_sapiens/85_GRCh37
-        Gencode: 19
-        GeneBuild: 2011-04
-        HGMDPublic: 20152
-        PolyPhen: 2.2.2
-        RegBuild: 13
-        Sift: 5.2.2
-        Version: v85
-      Vcftools:
-        Version: 0.1.14
-      pedigreeCheck: {}
+Program:
+  Bcftools:
+    Version: 1.3.1+htslib-1.3.1
+  Freebayes:
+    Version: v1.0.2
+  GATK:
+    Version: 3.6
+  InbreedingFactor:
+    Sample_InbreedingFactor:
+      - ADM980A10-miptest:-0.188
+      - ADM980A9-miptest:0.06142
+      - ADM994A2-miptest:-0.204
+  Manta:
+    Version: 1.0.0
+  PicardTools:
+    Version: 2.5.0(2c370988aefe41f579920c8a6a678a201c5261c1_1466708365)
+  Plink2:
+    Version: v1.90p_64-bit_(25_Mar_2016)
+  PlinkGenderCheck:
+    - ADM980A10-miptest:PASS
+    - ADM980A9-miptest:PASS
+    - ADM994A2-miptest:PASS
+  QCCollect:
+    RegExpFile: /mnt/hds/proj/bioinfo/develop/references_4.0/qc_regExp_v1.13.yaml
+    Version: 2.0.0
+  RelationCheck:
+    Sample_RelationCheck:
+      - 1
+      - 0.773632
+      - 0.637145
+      - 0.773632
+      - 1
+      - 0.77355
+      - 0.637145
+      - 0.77355
+      - 1
+  SVCombineVariantCallSets:
+    VcfAnno: 0.1.0
+  SVVCFParser:
+    Version: 1.2.8
+  SVVariantEffectPredictor:
+    Assembly: GRCh37.p13
+    Cache: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/ensembl-tools-release-85/cache/homo_sapiens/85_GRCh37
+    Gencode: 19
+    GeneBuild: 2011-04
+    HGMDPublic: 20152
+    PolyPhen: 2.2.2
+    RegBuild: 13
+    Sift: 5.2.2
+    Version: v85
+  Sambamba:
+    Version: 0.6.3
+  Samtools:
+    Version: 1.3.1+htslib-1.3.1
+  SexCheck:
+    Sample_SexCheck:
+      - ADM980A10-miptest:2
+      - ADM980A9-miptest:1
+      - ADM994A2-miptest:1
+  SnpEff:
+    Version: SnpSift_4.2_(build_2015-12-05)
+  VCFParser:
+    Version: 1.2.8
+  VariantEffectPredictor:
+    Assembly: GRCh37.p13
+    Cache: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/ensembl-tools-release-85/cache/homo_sapiens/85_GRCh37
+    Gencode: 19
+    GeneBuild: 2011-04
+    HGMDPublic: 20152
+    PolyPhen: 2.2.2
+    RegBuild: 13
+    Sift: 5.2.2
+    Version: v85
+  VariantIntegrityFather:
+    CommonVariants: 77924
+    FractionofCommonVariants: 0.797
+  VariantIntegrityMendel:
+    FractionofErrors: 0.006
+    MendelianErrors: 528
+  Vcftools:
+    Version: 0.1.14
+  pedigreeCheck: {}
+sample:
   ADM980A10-miptest:
     1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1.fastq.gz:
       FastQC:
@@ -165,37 +170,37 @@
             BAIT_SET: Agilent_SureSelectCRE
             BAIT_TERRITORY: 93162776
             FOLD_80_BASE_PENALTY: 2.059115
-            FOLD_ENRICHMENT: 26.179378
+            FOLD_ENRICHMENT: 33.677082
             GC_DROPOUT: 3.212763
             GENOME_SIZE: 3137454505
             HET_SNP_Q: 19
-            HET_SNP_SENSITIVITY: 0.986036
-            HS_LIBRARY_SIZE: 563518241
-            HS_PENALTY_100X: 3.747072
-            HS_PENALTY_10X: 3.50532
-            HS_PENALTY_20X: 3.527459
-            HS_PENALTY_30X: 3.556976
-            HS_PENALTY_40X: 3.580591
-            HS_PENALTY_50X: 3.605386
+            HET_SNP_SENSITIVITY: 0.986042
+            HS_LIBRARY_SIZE: 470220861
+            HS_PENALTY_100X: 2.700463
+            HS_PENALTY_10X: 2.523045
+            HS_PENALTY_20X: 2.542191
+            HS_PENALTY_30X: 2.559209
+            HS_PENALTY_40X: 2.580482
+            HS_PENALTY_50X: 2.598352
             LIBRARY: ~
-            MEAN_BAIT_COVERAGE: 163.577326
+            MEAN_BAIT_COVERAGE: 151.878623
             MEAN_TARGET_COVERAGE: 199.734118
             MEDIAN_TARGET_COVERAGE: 178
-            NEAR_BAIT_BASES: 1302862333
-            OFF_BAIT_BASES: 3061663343
-            ON_BAIT_BASES: 15239317813
-            ON_BAIT_VS_SELECTED: 0.92124
+            NEAR_BAIT_BASES: 18337
+            OFF_BAIT_BASES: 0
+            ON_BAIT_BASES: 14149434172
+            ON_BAIT_VS_SELECTED: 0.999999
             ON_TARGET_BASES: 10805400661
             PCT_EXC_BASEQ: 0
-            PCT_EXC_DUPE: 0.068287
-            PCT_EXC_MAPQ: 0.018134
-            PCT_EXC_OFF_TARGET: 0.362391
+            PCT_EXC_DUPE: 0.071439
+            PCT_EXC_MAPQ: 0.013196
+            PCT_EXC_OFF_TARGET: 0.151703
             PCT_EXC_OVERLAP: 0
-            PCT_OFF_BAIT: 0.156177
+            PCT_OFF_BAIT: 0
             PCT_PF_READS: 1
-            PCT_PF_UQ_READS: 0.931744
-            PCT_PF_UQ_READS_ALIGNED: 0.999219
-            PCT_SELECTED_BASES: 0.843823
+            PCT_PF_UQ_READS: 0.928571
+            PCT_PF_UQ_READS_ALIGNED: 0.999425
+            PCT_SELECTED_BASES: 1
             PCT_TARGET_BASES_100X: 0.793499
             PCT_TARGET_BASES_10X: 0.988923
             PCT_TARGET_BASES_1X: 0.992987
@@ -204,17 +209,17 @@
             PCT_TARGET_BASES_30X: 0.974521
             PCT_TARGET_BASES_40X: 0.961385
             PCT_TARGET_BASES_50X: 0.943012
-            PCT_USABLE_BASES_ON_BAIT: 0.775177
-            PCT_USABLE_BASES_ON_TARGET: 0.549637
-            PF_BASES_ALIGNED: 19603843489
-            PF_READS: 194645062
-            PF_UNIQUE_READS: 181359281
-            PF_UQ_BASES_ALIGNED: 18265148464
-            PF_UQ_READS_ALIGNED: 181217642
+            PCT_USABLE_BASES_ON_BAIT: 0.998184
+            PCT_USABLE_BASES_ON_TARGET: 0.762276
+            PF_BASES_ALIGNED: 14149452509
+            PF_READS: 140348248
+            PF_UNIQUE_READS: 130323291
+            PF_UQ_BASES_ALIGNED: 13138626659
+            PF_UQ_READS_ALIGNED: 130248297
             READ_GROUP: ~
             SAMPLE: ~
             TARGET_TERRITORY: 54098923
-            TOTAL_READS: 194645062
+            TOTAL_READS: 140348248
             ZERO_CVG_TARGETS_PCT: 0.007808
       Chanjo:
         Version: 3.4.1
@@ -228,81 +233,105 @@
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.005555
+            PCT_CHIMERAS: 0.002594
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.999978
-            PCT_READS_ALIGNED_IN_PAIRS: 0.998566
-            PF_ALIGNED_BASES: 9816453204
-            PF_HQ_ALIGNED_BASES: 9611769541
-            PF_HQ_ALIGNED_Q20_BASES: 9524464326
-            PF_HQ_ALIGNED_READS: 95284012
-            PF_HQ_ERROR_RATE: 0.001479
+            PCT_PF_READS_ALIGNED: 0.999987
+            PCT_READS_ALIGNED_IN_PAIRS: 0.998764
+            PF_ALIGNED_BASES: 7096293868
+            PF_HQ_ALIGNED_BASES: 6990616794
+            PF_HQ_ALIGNED_Q20_BASES: 6930406521
+            PF_HQ_ALIGNED_READS: 69264115
+            PF_HQ_ERROR_RATE: 0.001332
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.000088
-            PF_MISMATCH_RATE: 0.001521
+            PF_INDEL_RATE: 0.000057
+            PF_MISMATCH_RATE: 0.001356
             PF_NOISE_READS: 0
-            PF_READS: 97327923
-            PF_READS_ALIGNED: 97325820
-            READS_ALIGNED_IN_PAIRS: 97186284
+            PF_READS: 70313924
+            PF_READS_ALIGNED: 70312990
+            READS_ALIGNED_IN_PAIRS: 70226075
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.338552
-            TOTAL_READS: 97327923
+            STRAND_BALANCE: 0.306514
+            TOTAL_READS: 70313924
           Pair:
             BAD_CYCLES: 0
             CATEGORY: PAIR
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.005588
+            PCT_CHIMERAS: 0.002578
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.999272
-            PCT_READS_ALIGNED_IN_PAIRS: 0.999272
-            PF_ALIGNED_BASES: 19603843489
-            PF_HQ_ALIGNED_BASES: 19193432716
-            PF_HQ_ALIGNED_Q20_BASES: 18817808770
-            PF_HQ_ALIGNED_READS: 190391904
-            PF_HQ_ERROR_RATE: 0.001989
+            PCT_PF_READS_ALIGNED: 0.999466
+            PCT_READS_ALIGNED_IN_PAIRS: 0.999372
+            PF_ALIGNED_BASES: 14149452509
+            PF_HQ_ALIGNED_BASES: 13938539690
+            PF_HQ_ALIGNED_Q20_BASES: 13686157041
+            PF_HQ_ALIGNED_READS: 138175304
+            PF_HQ_ERROR_RATE: 0.001778
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.000087
-            PF_MISMATCH_RATE: 0.00204
+            PF_INDEL_RATE: 0.000057
+            PF_MISMATCH_RATE: 0.001808
             PF_NOISE_READS: 0
-            PF_READS: 194645062
-            PF_READS_ALIGNED: 194503423
-            READS_ALIGNED_IN_PAIRS: 194361784
+            PF_READS: 140348248
+            PF_READS_ALIGNED: 140273254
+            READS_ALIGNED_IN_PAIRS: 140185094
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.499859
-            TOTAL_READS: 194645062
+            STRAND_BALANCE: 0.499539
+            TOTAL_READS: 140348248
           Second_of_pair:
             BAD_CYCLES: 0
             CATEGORY: SECOND_OF_PAIR
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.005621
+            PCT_CHIMERAS: 0.002561
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.998566
-            PCT_READS_ALIGNED_IN_PAIRS: 0.999978
-            PF_ALIGNED_BASES: 9787390285
-            PF_HQ_ALIGNED_BASES: 9581663175
-            PF_HQ_ALIGNED_Q20_BASES: 9293344444
-            PF_HQ_ALIGNED_READS: 95107892
-            PF_HQ_ERROR_RATE: 0.0025
+            PCT_PF_READS_ALIGNED: 0.998943
+            PCT_READS_ALIGNED_IN_PAIRS: 0.999982
+            PF_ALIGNED_BASES: 7053158641
+            PF_HQ_ALIGNED_BASES: 6947922896
+            PF_HQ_ALIGNED_Q20_BASES: 6755750520
+            PF_HQ_ALIGNED_READS: 68911189
+            PF_HQ_ERROR_RATE: 0.002226
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.000086
-            PF_MISMATCH_RATE: 0.002561
+            PF_INDEL_RATE: 0.000058
+            PF_MISMATCH_RATE: 0.002262
             PF_NOISE_READS: 0
-            PF_READS: 97317139
-            PF_READS_ALIGNED: 97177603
-            READS_ALIGNED_IN_PAIRS: 97175500
+            PF_READS: 70034324
+            PF_READS_ALIGNED: 69960264
+            READS_ALIGNED_IN_PAIRS: 69959019
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.661411
-            TOTAL_READS: 97317139
+            STRAND_BALANCE: 0.693538
+            TOTAL_READS: 70034324
+      CollectMultipleMetricsInsertSize:
+        Header:
+          Data:
+            LIBRARY: ~
+            MAX_INSERT_SIZE: 239235844
+            MEAN_INSERT_SIZE: 243.859636
+            MEDIAN_ABSOLUTE_DEVIATION: 51
+            MEDIAN_INSERT_SIZE: 227
+            MIN_INSERT_SIZE: 2
+            PAIR_ORIENTATION: FR
+            READ_GROUP: ~
+            READ_PAIRS: 64822431
+            SAMPLE: ~
+            STANDARD_DEVIATION: 84.017829
+            WIDTH_OF_10_PERCENT: 21
+            WIDTH_OF_20_PERCENT: 41
+            WIDTH_OF_30_PERCENT: 61
+            WIDTH_OF_40_PERCENT: 81
+            WIDTH_OF_50_PERCENT: 103
+            WIDTH_OF_60_PERCENT: 125
+            WIDTH_OF_70_PERCENT: 151
+            WIDTH_OF_80_PERCENT: 187
+            WIDTH_OF_90_PERCENT: 263
+            WIDTH_OF_99_PERCENT: 571
       GenderCheck: PASS
       MarkDuplicates:
-        Fraction_duplicates: 0.0682808909704939
+        Fraction_duplicates: 0.0682814589256805
       VariantEval_All:
         CompOverlap_header:
           CompOverlap_data_all:
@@ -311,12 +340,12 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            compRate: 85.27
-            concordantRate: 98.74
-            nConcordant: 1276867
-            nEvalVariants: 1516553
-            nVariantsAtComp: 1293101
-            novelSites: 223452
+            compRate: 85.43
+            concordantRate: 98.43
+            nConcordant: 85175
+            nEvalVariants: 101292
+            nVariantsAtComp: 86532
+            novelSites: 14760
           CompOverlap_data_known:
             CompOverlap: CompOverlap
             CompRod: dbsnp
@@ -324,10 +353,10 @@
             JexlExpression: none
             Novelty: known
             compRate: 100.00
-            concordantRate: 98.74
-            nConcordant: 1276867
-            nEvalVariants: 1293101
-            nVariantsAtComp: 1293101
+            concordantRate: 98.43
+            nConcordant: 85175
+            nEvalVariants: 86532
+            nVariantsAtComp: 86532
             novelSites: 0
           CompOverlap_data_novel:
             CompOverlap: CompOverlap
@@ -338,9 +367,9 @@
             compRate: 0.00
             concordantRate: 0.00
             nConcordant: 0
-            nEvalVariants: 223452
+            nEvalVariants: 14760
             nVariantsAtComp: 0
-            novelSites: 223452
+            novelSites: 14760
         CountVariants_header:
           CountVariants_data_all:
             CompRod: dbsnp
@@ -348,93 +377,93 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            hetHomRatio: 0.66
-            heterozygosity: 1.92e-04
-            heterozygosityPerBp: 5196.00
-            indelRate: 5.69e-05
-            indelRatePerBp: 17584.00
-            insertionDeletionRatio: 0.78
-            nCalledLoci: 2435114
-            nComplex: 9390
-            nDeletions: 94770
-            nHets: 603737
+            hetHomRatio: 1.66
+            heterozygosity: 2.02e-05
+            heterozygosityPerBp: 49621.00
+            indelRate: 4.07e-06
+            indelRatePerBp: 245997.00
+            insertionDeletionRatio: 0.76
+            nCalledLoci: 136350
+            nComplex: 1393
+            nDeletions: 6453
+            nHets: 63228
             nHomDerived: 0
-            nHomRef: 420925
-            nHomVar: 912816
-            nInsertions: 74266
-            nMNPs: 17898
+            nHomRef: 34666
+            nHomVar: 38064
+            nInsertions: 4908
+            nMNPs: 1675
             nMixed: 0
-            nNoCalls: 497636
+            nNoCalls: 392
             nProcessedLoci: 3137454505
-            nRefLoci: 918561
-            nSNPs: 1320229
-            nSingletons: 526142
+            nRefLoci: 35058
+            nSNPs: 86863
+            nSingletons: 54730
             nSymbolic: 0
-            nVariantLoci: 1516553
-            variantRate: 0.00048337
-            variantRatePerBp: 2068.00000000
+            nVariantLoci: 101292
+            variantRate: 0.00003228
+            variantRatePerBp: 30974.00000000
           CountVariants_data_known:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            hetHomRatio: 0.59
-            heterozygosity: 1.53e-04
-            heterozygosityPerBp: 6538.00
-            indelRate: 3.42e-05
-            indelRatePerBp: 29247.00
-            insertionDeletionRatio: 0.94
-            nCalledLoci: 1983919
-            nComplex: 4158
-            nDeletions: 53222
-            nHets: 479831
+            hetHomRatio: 1.45
+            heterozygosity: 1.63e-05
+            heterozygosityPerBp: 61201.00
+            indelRate: 2.54e-06
+            indelRatePerBp: 393213.00
+            insertionDeletionRatio: 0.92
+            nCalledLoci: 113453
+            nComplex: 810
+            nDeletions: 3729
+            nHets: 51264
             nHomDerived: 0
-            nHomRef: 295501
-            nHomVar: 813270
-            nInsertions: 49893
-            nMNPs: 1077
+            nHomRef: 26665
+            nHomVar: 35268
+            nInsertions: 3440
+            nMNPs: 87
             nMixed: 0
-            nNoCalls: 395317
+            nNoCalls: 256
             nProcessedLoci: 3137454505
-            nRefLoci: 690818
-            nSNPs: 1184751
-            nSingletons: 439286
+            nRefLoci: 26921
+            nSNPs: 78466
+            nSingletons: 46409
             nSymbolic: 0
-            nVariantLoci: 1293101
-            variantRate: 0.00041215
-            variantRatePerBp: 2426.00000000
+            nVariantLoci: 86532
+            variantRate: 0.00002758
+            variantRatePerBp: 36257.00000000
           CountVariants_data_novel:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            hetHomRatio: 1.24
-            heterozygosity: 3.95e-05
-            heterozygosityPerBp: 25321.00
-            indelRate: 2.27e-05
-            indelRatePerBp: 44094.00
-            insertionDeletionRatio: 0.59
-            nCalledLoci: 451195
-            nComplex: 5232
-            nDeletions: 41548
-            nHets: 123906
+            hetHomRatio: 4.28
+            heterozygosity: 3.81e-06
+            heterozygosityPerBp: 262241.00
+            indelRate: 1.52e-06
+            indelRatePerBp: 657058.00
+            insertionDeletionRatio: 0.54
+            nCalledLoci: 22897
+            nComplex: 583
+            nDeletions: 2724
+            nHets: 11964
             nHomDerived: 0
-            nHomRef: 125424
-            nHomVar: 99546
-            nInsertions: 24373
-            nMNPs: 16821
+            nHomRef: 8001
+            nHomVar: 2796
+            nInsertions: 1468
+            nMNPs: 1588
             nMixed: 0
-            nNoCalls: 102319
+            nNoCalls: 136
             nProcessedLoci: 3137454505
-            nRefLoci: 227743
-            nSNPs: 135478
-            nSingletons: 86856
+            nRefLoci: 8137
+            nSNPs: 8397
+            nSingletons: 8321
             nSymbolic: 0
-            nVariantLoci: 223452
-            variantRate: 0.00007122
-            variantRatePerBp: 14040.00000000
+            nVariantLoci: 14760
+            variantRate: 0.00000470
+            variantRatePerBp: 212564.00000000
         IndelSummary_header:
           IndelSummary_data_all:
             CompRod: dbsnp
@@ -442,93 +471,93 @@
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: all
-            SNP_het_to_hom_ratio: 0.65
-            SNP_to_indel_ratio: 7.40
-            SNP_to_indel_ratio_for_singletons: 6.69
+            SNP_het_to_hom_ratio: 1.61
+            SNP_to_indel_ratio: 6.81
+            SNP_to_indel_ratio_for_singletons: 6.31
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 47.77
-            indel_het_to_hom_ratio: 0.77
-            indel_novelty_rate: 39.88
-            insertion_to_deletion_ratio: 0.76
-            insertion_to_deletion_ratio_for_large_indels: 0.43
-            n_SNPs: 1320229
+            gold_standard_matching_rate: 53.57
+            indel_het_to_hom_ratio: 2.00
+            indel_novelty_rate: 37.44
+            insertion_to_deletion_ratio: 0.72
+            insertion_to_deletion_ratio_for_large_indels: 0.50
+            n_SNPs: 86863
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 101274
-            n_indels: 178426
-            n_indels_matching_gold_standard: 85238
-            n_insertions: 77152
-            n_large_deletions: 7323
-            n_large_insertions: 3115
+            n_deletions: 7421
+            n_indels: 12754
+            n_indels_matching_gold_standard: 6832
+            n_insertions: 5333
+            n_large_deletions: 402
+            n_large_insertions: 202
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 71153
-            n_singleton_SNPs: 518929
-            n_singleton_indels: 77595
+            n_novel_indels: 4775
+            n_singleton_SNPs: 53589
+            n_singleton_indels: 8498
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 7.53
-            ratio_of_1_and_2_to_3_bp_insertions: 7.59
+            ratio_of_1_and_2_to_3_bp_deletions: 8.85
+            ratio_of_1_and_2_to_3_bp_insertions: 9.02
           IndelSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: known
-            SNP_het_to_hom_ratio: 0.59
-            SNP_to_indel_ratio: 11.04
-            SNP_to_indel_ratio_for_singletons: 10.83
+            SNP_het_to_hom_ratio: 1.44
+            SNP_to_indel_ratio: 9.83
+            SNP_to_indel_ratio_for_singletons: 9.55
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 62.09
-            indel_het_to_hom_ratio: 0.61
+            gold_standard_matching_rate: 69.52
+            indel_het_to_hom_ratio: 1.55
             indel_novelty_rate: 0.00
-            insertion_to_deletion_ratio: 0.91
-            insertion_to_deletion_ratio_for_large_indels: 0.51
-            n_SNPs: 1184751
+            insertion_to_deletion_ratio: 0.86
+            insertion_to_deletion_ratio_for_large_indels: 0.60
+            n_SNPs: 78466
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 56042
-            n_indels: 107273
-            n_indels_matching_gold_standard: 66602
-            n_insertions: 51231
-            n_large_deletions: 2989
-            n_large_insertions: 1514
+            n_deletions: 4287
+            n_indels: 7979
+            n_indels_matching_gold_standard: 5547
+            n_insertions: 3692
+            n_large_deletions: 162
+            n_large_insertions: 97
             n_multiallelic_indel_sites: 0
             n_novel_indels: 0
-            n_singleton_SNPs: 438949
-            n_singleton_indels: 40545
+            n_singleton_SNPs: 46361
+            n_singleton_indels: 4855
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 9.62
-            ratio_of_1_and_2_to_3_bp_insertions: 8.00
+            ratio_of_1_and_2_to_3_bp_deletions: 10.21
+            ratio_of_1_and_2_to_3_bp_insertions: 9.40
           IndelSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: novel
-            SNP_het_to_hom_ratio: 1.44
-            SNP_to_indel_ratio: 1.90
-            SNP_to_indel_ratio_for_singletons: 2.16
+            SNP_het_to_hom_ratio: 6.18
+            SNP_to_indel_ratio: 1.76
+            SNP_to_indel_ratio_for_singletons: 1.98
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 26.19
-            indel_het_to_hom_ratio: 1.09
+            gold_standard_matching_rate: 26.91
+            indel_het_to_hom_ratio: 3.22
             indel_novelty_rate: 100.00
-            insertion_to_deletion_ratio: 0.57
-            insertion_to_deletion_ratio_for_large_indels: 0.37
-            n_SNPs: 135478
+            insertion_to_deletion_ratio: 0.52
+            insertion_to_deletion_ratio_for_large_indels: 0.44
+            n_SNPs: 8397
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 45232
-            n_indels: 71153
-            n_indels_matching_gold_standard: 18636
-            n_insertions: 25921
-            n_large_deletions: 4334
-            n_large_insertions: 1601
+            n_deletions: 3134
+            n_indels: 4775
+            n_indels_matching_gold_standard: 1285
+            n_insertions: 1641
+            n_large_deletions: 240
+            n_large_insertions: 105
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 71153
-            n_singleton_SNPs: 79980
-            n_singleton_indels: 37050
+            n_novel_indels: 4775
+            n_singleton_SNPs: 7228
+            n_singleton_indels: 3643
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 5.63
-            ratio_of_1_and_2_to_3_bp_insertions: 6.77
+            ratio_of_1_and_2_to_3_bp_deletions: 7.30
+            ratio_of_1_and_2_to_3_bp_insertions: 8.15
         MultiallelicSummary_header:
           MultiallelicSummary_data_all:
             CompRod: dbsnp
@@ -540,11 +569,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 178426
+            nIndels: 12754
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 1320229
+            nSNPs: 86863
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -561,11 +590,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 107273
+            nIndels: 7979
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 1184751
+            nSNPs: 78466
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -582,11 +611,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 71153
+            nIndels: 4775
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 135478
+            nSNPs: 8397
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -601,44 +630,44 @@
             Novelty: all
             TiTvRatioStandard: 1.84
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 902423
+            nTi: 60889
             nTiDerived: 0
-            nTiInComp: 6961677
-            nTv: 417806
+            nTiInComp: 6963726
+            nTv: 25974
             nTvDerived: 0
-            nTvInComp: 3783186
+            nTvInComp: 3793563
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.16
+            tiTvRatio: 2.34
           TiTvVariantEvaluator_data_known:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            TiTvRatioStandard: 2.16
+            TiTvRatioStandard: 2.37
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 815891
+            nTi: 55376
             nTiDerived: 0
-            nTiInComp: 1214251
-            nTv: 368860
+            nTiInComp: 72308
+            nTv: 23090
             nTvDerived: 0
-            nTvInComp: 562233
+            nTvInComp: 30456
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.21
+            tiTvRatio: 2.40
           TiTvVariantEvaluator_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            TiTvRatioStandard: 1.78
+            TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 86532
+            nTi: 5513
             nTiDerived: 0
-            nTiInComp: 5747426
-            nTv: 48946
+            nTiInComp: 6891418
+            nTv: 2884
             nTvDerived: 0
-            nTvInComp: 3220953
+            nTvInComp: 3763107
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 1.77
+            tiTvRatio: 1.91
         ValidationReport_header:
           ValidationReport_data_all:
             CompFiltered: 0
@@ -647,23 +676,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 690818
-            CompPolyEvalNoCall: 11813287
-            CompPolyEvalPoly: 1293101
+            CompPolyEvalMono: 26921
+            CompPolyEvalNoCall: 13819710
+            CompPolyEvalPoly: 86532
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 12504105
+            FN: 13846631
             FP: 0
             JexlExpression: none
             Novelty: all
             PPV: 100.00
             TN: 0
-            TP: 1293101
+            TP: 86532
             ValidationReport: ValidationReport
-            nComp: 13797206
+            nComp: 13933163
             nDifferentAlleleSites: 0
-            sensitivity: 9.37
+            sensitivity: 0.62
             specificity: 100.00
           ValidationReport_data_known:
             CompFiltered: 0
@@ -672,23 +701,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 690818
-            CompPolyEvalNoCall: 10493
-            CompPolyEvalPoly: 1293101
+            CompPolyEvalMono: 26921
+            CompPolyEvalNoCall: 746
+            CompPolyEvalPoly: 86532
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 701311
+            FN: 27667
             FP: 0
             JexlExpression: none
             Novelty: known
             PPV: 100.00
             TN: 0
-            TP: 1293101
+            TP: 86532
             ValidationReport: ValidationReport
-            nComp: 1994412
+            nComp: 114199
             nDifferentAlleleSites: 0
-            sensitivity: 64.84
+            sensitivity: 75.77
             specificity: 100.00
           ValidationReport_data_novel:
             CompFiltered: 0
@@ -698,12 +727,12 @@
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
             CompPolyEvalMono: 0
-            CompPolyEvalNoCall: 11802794
+            CompPolyEvalNoCall: 13818964
             CompPolyEvalPoly: 0
             CompRod: dbsnp
             EvalRod: eval
             FDR: NaN
-            FN: 11802794
+            FN: 13818964
             FP: 0
             JexlExpression: none
             Novelty: novel
@@ -711,7 +740,7 @@
             TN: 0
             TP: 0
             ValidationReport: ValidationReport
-            nComp: 11802794
+            nComp: 13818964
             nDifferentAlleleSites: 0
             sensitivity: 0.00
             specificity: 100.00
@@ -719,65 +748,65 @@
           VariantSummary_data_all:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 111320.0
-            IndelNoveltyRate: 39.84
+            IndelDPPerSample: 11552.0
+            IndelNoveltyRate: 37.43
             JexlExpression: none
             Novelty: all
-            SNPDPPerSample: 966963.0
-            SNPNoveltyRate: 10.26
-            SVNoveltyRate: 94.74
-            TiTvRatio: 2.16
-            TiTvRatioPerSample: 2.16
+            SNPDPPerSample: 85898.0
+            SNPNoveltyRate: 9.67
+            SVNoveltyRate: 100.00
+            TiTvRatio: 2.34
+            TiTvRatioPerSample: 2.34
             VariantSummary: VariantSummary
-            nIndels: 178293
-            nIndelsPerSample: 178293
+            nIndels: 12752
+            nIndelsPerSample: 12752
             nProcessedLoci: 3137454505
-            nSNPs: 1320229
-            nSNPsPerSample: 1320229
-            nSVs: 133
-            nSVsPerSample: 133
+            nSNPs: 86863
+            nSNPsPerSample: 86863
+            nSVs: 2
+            nSVsPerSample: 2
             nSamples: 1
           VariantSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 69957.0
+            IndelDPPerSample: 7612.0
             IndelNoveltyRate: 0.00
             JexlExpression: none
             Novelty: known
-            SNPDPPerSample: 889521.0
+            SNPDPPerSample: 77823.0
             SNPNoveltyRate: 0.00
-            SVNoveltyRate: 0.00
-            TiTvRatio: 2.21
-            TiTvRatioPerSample: 2.21
+            SVNoveltyRate: NA
+            TiTvRatio: 2.40
+            TiTvRatioPerSample: 2.40
             VariantSummary: VariantSummary
-            nIndels: 107266
-            nIndelsPerSample: 107266
+            nIndels: 7979
+            nIndelsPerSample: 7979
             nProcessedLoci: 3137454505
-            nSNPs: 1184751
-            nSNPsPerSample: 1184751
-            nSVs: 7
-            nSVsPerSample: 7
+            nSNPs: 78466
+            nSNPsPerSample: 78466
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 41363.0
+            IndelDPPerSample: 3940.0
             IndelNoveltyRate: 100.00
             JexlExpression: none
             Novelty: novel
-            SNPDPPerSample: 77442.0
+            SNPDPPerSample: 8075.0
             SNPNoveltyRate: 100.00
             SVNoveltyRate: 100.00
-            TiTvRatio: 1.77
-            TiTvRatioPerSample: 1.77
+            TiTvRatio: 1.91
+            TiTvRatioPerSample: 1.91
             VariantSummary: VariantSummary
-            nIndels: 71027
-            nIndelsPerSample: 71027
+            nIndels: 4773
+            nIndelsPerSample: 4773
             nProcessedLoci: 3137454505
-            nSNPs: 135478
-            nSNPsPerSample: 135478
-            nSVs: 126
-            nSVsPerSample: 126
+            nSNPs: 8397
+            nSNPsPerSample: 8397
+            nSVs: 2
+            nSVsPerSample: 2
             nSamples: 1
       VariantEval_Exome:
         CompOverlap_header:
@@ -787,12 +816,12 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            compRate: 48.34
-            concordantRate: 93.58
-            nConcordant: 9146
-            nEvalVariants: 20219
-            nVariantsAtComp: 9773
-            novelSites: 10446
+            compRate: 100.00
+            concordantRate: 100.00
+            nConcordant: 1
+            nEvalVariants: 1
+            nVariantsAtComp: 1
+            novelSites: 0
           CompOverlap_data_known:
             CompOverlap: CompOverlap
             CompRod: dbsnp
@@ -800,10 +829,10 @@
             JexlExpression: none
             Novelty: known
             compRate: 100.00
-            concordantRate: 93.58
-            nConcordant: 9146
-            nEvalVariants: 9773
-            nVariantsAtComp: 9773
+            concordantRate: 100.00
+            nConcordant: 1
+            nEvalVariants: 1
+            nVariantsAtComp: 1
             novelSites: 0
           CompOverlap_data_novel:
             CompOverlap: CompOverlap
@@ -814,9 +843,9 @@
             compRate: 0.00
             concordantRate: 0.00
             nConcordant: 0
-            nEvalVariants: 10446
+            nEvalVariants: 0
             nVariantsAtComp: 0
-            novelSites: 10446
+            novelSites: 0
         CountVariants_header:
           CountVariants_data_all:
             CompRod: dbsnp
@@ -824,93 +853,93 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            hetHomRatio: 3.51
-            heterozygosity: 5.01e-06
-            heterozygosityPerBp: 199431.00
-            indelRate: 1.35e-06
-            indelRatePerBp: 742592.00
-            insertionDeletionRatio: 0.54
-            nCalledLoci: 32716
-            nComplex: 628
-            nDeletions: 2332
-            nHets: 15732
+            hetHomRatio: 0.00
+            heterozygosity: 0.00e+00
+            heterozygosityPerBp: 0.00
+            indelRate: 3.19e-10
+            indelRatePerBp: 3137454505.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 2
+            nComplex: 0
+            nDeletions: 1
+            nHets: 0
             nHomDerived: 0
-            nHomRef: 11288
-            nHomVar: 4487
-            nInsertions: 1265
-            nMNPs: 1957
+            nHomRef: 1
+            nHomVar: 1
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 1209
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 12497
-            nSNPs: 14037
-            nSingletons: 12747
+            nRefLoci: 1
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 20219
-            variantRate: 0.00000644
-            variantRatePerBp: 155173.00000000
+            nVariantLoci: 1
+            variantRate: 0.00000000
+            variantRatePerBp: 3137454505.00000000
           CountVariants_data_known:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            hetHomRatio: 3.28
-            heterozygosity: 2.39e-06
-            heterozygosityPerBp: 419053.00
-            indelRate: 5.75e-07
-            indelRatePerBp: 1738201.00
-            insertionDeletionRatio: 0.72
-            nCalledLoci: 15946
-            nComplex: 270
-            nDeletions: 895
-            nHets: 7487
+            hetHomRatio: 0.00
+            heterozygosity: 0.00e+00
+            heterozygosityPerBp: 0.00
+            indelRate: 3.19e-10
+            indelRatePerBp: 3137454505.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 1
+            nComplex: 0
+            nDeletions: 1
+            nHets: 0
             nHomDerived: 0
-            nHomRef: 5766
-            nHomVar: 2286
-            nInsertions: 640
-            nMNPs: 75
+            nHomRef: 0
+            nHomVar: 1
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 407
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 6173
-            nSNPs: 7893
-            nSingletons: 6259
+            nRefLoci: 0
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 9773
-            variantRate: 0.00000311
-            variantRatePerBp: 321032.00000000
+            nVariantLoci: 1
+            variantRate: 0.00000000
+            variantRatePerBp: 3137454505.00000000
           CountVariants_data_novel:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            hetHomRatio: 3.75
-            heterozygosity: 2.63e-06
-            heterozygosityPerBp: 380528.00
-            indelRate: 7.71e-07
-            indelRatePerBp: 1296468.00
-            insertionDeletionRatio: 0.43
-            nCalledLoci: 16770
-            nComplex: 358
-            nDeletions: 1437
-            nHets: 8245
+            hetHomRatio: 0.00
+            heterozygosity: 0.00e+00
+            heterozygosityPerBp: 0.00
+            indelRate: 0.00e+00
+            indelRatePerBp: 0.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 1
+            nComplex: 0
+            nDeletions: 0
+            nHets: 0
             nHomDerived: 0
-            nHomRef: 5522
-            nHomVar: 2201
-            nInsertions: 625
-            nMNPs: 1882
+            nHomRef: 1
+            nHomVar: 0
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 802
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 6324
-            nSNPs: 6144
-            nSingletons: 6488
+            nRefLoci: 1
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 10446
-            variantRate: 0.00000333
-            variantRatePerBp: 300349.00000000
+            nVariantLoci: 0
+            variantRate: 0.00000000
+            variantRatePerBp: 0.00000000
         IndelSummary_header:
           IndelSummary_data_all:
             CompRod: dbsnp
@@ -918,93 +947,93 @@
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: all
-            SNP_het_to_hom_ratio: 4.34
-            SNP_to_indel_ratio: 3.32
-            SNP_to_indel_ratio_for_singletons: 3.82
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: 0.00
+            SNP_to_indel_ratio_for_singletons: NA
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 29.80
-            indel_het_to_hom_ratio: 2.41
-            indel_novelty_rate: 57.28
-            insertion_to_deletion_ratio: 0.55
-            insertion_to_deletion_ratio_for_large_indels: 0.25
-            n_SNPs: 14037
+            gold_standard_matching_rate: 100.00
+            indel_het_to_hom_ratio: 0.00
+            indel_novelty_rate: 0.00
+            insertion_to_deletion_ratio: 0.00
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 2728
-            n_indels: 4225
-            n_indels_matching_gold_standard: 1259
-            n_insertions: 1497
-            n_large_deletions: 371
-            n_large_insertions: 93
+            n_deletions: 1
+            n_indels: 1
+            n_indels_matching_gold_standard: 1
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 2420
-            n_singleton_SNPs: 11407
-            n_singleton_indels: 2985
+            n_novel_indels: 0
+            n_singleton_SNPs: 0
+            n_singleton_indels: 0
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 4.19
-            ratio_of_1_and_2_to_3_bp_insertions: 4.34
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
           IndelSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: known
-            SNP_het_to_hom_ratio: 3.73
-            SNP_to_indel_ratio: 4.37
-            SNP_to_indel_ratio_for_singletons: 5.07
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: 0.00
+            SNP_to_indel_ratio_for_singletons: NA
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 47.04
-            indel_het_to_hom_ratio: 2.13
+            gold_standard_matching_rate: 100.00
+            indel_het_to_hom_ratio: 0.00
             indel_novelty_rate: 0.00
-            insertion_to_deletion_ratio: 0.71
-            insertion_to_deletion_ratio_for_large_indels: 0.47
-            n_SNPs: 7893
+            insertion_to_deletion_ratio: 0.00
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 1057
-            n_indels: 1805
-            n_indels_matching_gold_standard: 849
-            n_insertions: 748
-            n_large_deletions: 68
-            n_large_insertions: 32
+            n_deletions: 1
+            n_indels: 1
+            n_indels_matching_gold_standard: 1
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
             n_novel_indels: 0
-            n_singleton_SNPs: 6226
-            n_singleton_indels: 1228
+            n_singleton_SNPs: 0
+            n_singleton_indels: 0
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 4.13
-            ratio_of_1_and_2_to_3_bp_insertions: 4.73
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
           IndelSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: novel
-            SNP_het_to_hom_ratio: 5.38
-            SNP_to_indel_ratio: 2.54
-            SNP_to_indel_ratio_for_singletons: 2.95
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: NA
+            SNP_to_indel_ratio_for_singletons: NA
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 16.94
-            indel_het_to_hom_ratio: 2.65
-            indel_novelty_rate: 100.00
-            insertion_to_deletion_ratio: 0.45
-            insertion_to_deletion_ratio_for_large_indels: 0.20
-            n_SNPs: 6144
+            gold_standard_matching_rate: NA
+            indel_het_to_hom_ratio: NA
+            indel_novelty_rate: NA
+            insertion_to_deletion_ratio: NA
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 1671
-            n_indels: 2420
-            n_indels_matching_gold_standard: 410
-            n_insertions: 749
-            n_large_deletions: 303
-            n_large_insertions: 61
+            n_deletions: 0
+            n_indels: 0
+            n_indels_matching_gold_standard: 0
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 2420
-            n_singleton_SNPs: 5181
-            n_singleton_indels: 1757
-            percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 4.23
-            ratio_of_1_and_2_to_3_bp_insertions: 3.99
+            n_novel_indels: 0
+            n_singleton_SNPs: 0
+            n_singleton_indels: 0
+            percent_of_sites_with_more_than_2_alleles: NA
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
         MultiallelicSummary_header:
           MultiallelicSummary_data_all:
             CompRod: dbsnp
@@ -1016,17 +1045,17 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 4225
+            nIndels: 1
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 14037
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
             variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiSnpRatio: NaN
           MultiallelicSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
@@ -1037,17 +1066,17 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 1805
+            nIndels: 1
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 7893
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
             variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiSnpRatio: NaN
           MultiallelicSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
@@ -1058,48 +1087,48 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 2420
+            nIndels: 0
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 6144
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
-            variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiIndelRatio: NaN
+            variantMultiSnpRatio: NaN
         TiTvVariantEvaluator_header:
           TiTvVariantEvaluator_data_all:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            TiTvRatioStandard: 1.84
+            TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 9481
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 6966173
-            nTv: 4556
+            nTiInComp: 6964146
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 3796169
+            nTvInComp: 3795520
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.08
+            tiTvRatio: 0.00
           TiTvVariantEvaluator_data_known:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            TiTvRatioStandard: 2.32
+            TiTvRatioStandard: 0.00
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 5497
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 9286
-            nTv: 2396
+            nTiInComp: 0
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 4009
+            nTvInComp: 0
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.29
+            tiTvRatio: 0.00
           TiTvVariantEvaluator_data_novel:
             CompRod: dbsnp
             EvalRod: eval
@@ -1107,14 +1136,14 @@
             Novelty: novel
             TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 3984
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 6956887
-            nTv: 2160
+            nTiInComp: 6964146
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 3792160
+            nTvInComp: 3795520
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 1.84
+            tiTvRatio: 0.00
         ValidationReport_header:
           ValidationReport_data_all:
             CompFiltered: 0
@@ -1123,23 +1152,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 6173
-            CompPolyEvalNoCall: 13927622
-            CompPolyEvalPoly: 9773
+            CompPolyEvalMono: 0
+            CompPolyEvalNoCall: 13941024
+            CompPolyEvalPoly: 1
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 13933795
+            FN: 13941024
             FP: 0
             JexlExpression: none
             Novelty: all
             PPV: 100.00
             TN: 0
-            TP: 9773
+            TP: 1
             ValidationReport: ValidationReport
-            nComp: 13943568
+            nComp: 13941025
             nDifferentAlleleSites: 0
-            sensitivity: 0.07
+            sensitivity: 0.00
             specificity: 100.00
           ValidationReport_data_known:
             CompFiltered: 0
@@ -1148,23 +1177,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 6173
-            CompPolyEvalNoCall: 201
-            CompPolyEvalPoly: 9773
+            CompPolyEvalMono: 0
+            CompPolyEvalNoCall: 0
+            CompPolyEvalPoly: 1
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 6374
+            FN: 0
             FP: 0
             JexlExpression: none
             Novelty: known
             PPV: 100.00
             TN: 0
-            TP: 9773
+            TP: 1
             ValidationReport: ValidationReport
-            nComp: 16147
+            nComp: 1
             nDifferentAlleleSites: 0
-            sensitivity: 60.53
+            sensitivity: 100.00
             specificity: 100.00
           ValidationReport_data_novel:
             CompFiltered: 0
@@ -1174,12 +1203,12 @@
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
             CompPolyEvalMono: 0
-            CompPolyEvalNoCall: 13927421
+            CompPolyEvalNoCall: 13941024
             CompPolyEvalPoly: 0
             CompRod: dbsnp
             EvalRod: eval
             FDR: NaN
-            FN: 13927421
+            FN: 13941024
             FP: 0
             JexlExpression: none
             Novelty: novel
@@ -1187,7 +1216,7 @@
             TN: 0
             TP: 0
             ValidationReport: ValidationReport
-            nComp: 13927421
+            nComp: 13941024
             nDifferentAlleleSites: 0
             sensitivity: 0.00
             specificity: 100.00
@@ -1195,65 +1224,65 @@
           VariantSummary_data_all:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 3453.0
-            IndelNoveltyRate: 57.07
+            IndelDPPerSample: 1.0
+            IndelNoveltyRate: 0.00
             JexlExpression: none
             Novelty: all
-            SNPDPPerSample: 12977.0
-            SNPNoveltyRate: 43.77
-            SVNoveltyRate: 88.89
-            TiTvRatio: 2.08
-            TiTvRatioPerSample: 2.08
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
+            SVNoveltyRate: NA
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 4198
-            nIndelsPerSample: 4198
+            nIndels: 1
+            nIndelsPerSample: 1
             nProcessedLoci: 3137454505
-            nSNPs: 14037
-            nSNPsPerSample: 14037
-            nSVs: 27
-            nSVsPerSample: 27
+            nSNPs: 0
+            nSNPsPerSample: 0
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 1585.0
+            IndelDPPerSample: 1.0
             IndelNoveltyRate: 0.00
             JexlExpression: none
             Novelty: known
-            SNPDPPerSample: 7607.0
-            SNPNoveltyRate: 0.00
-            SVNoveltyRate: 0.00
-            TiTvRatio: 2.29
-            TiTvRatioPerSample: 2.29
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
+            SVNoveltyRate: NA
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 1802
-            nIndelsPerSample: 1802
+            nIndels: 1
+            nIndelsPerSample: 1
             nProcessedLoci: 3137454505
-            nSNPs: 7893
-            nSNPsPerSample: 7893
-            nSVs: 3
-            nSVsPerSample: 3
+            nSNPs: 0
+            nSNPsPerSample: 0
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 1868.0
-            IndelNoveltyRate: 100.00
+            IndelDPPerSample: 0.0
+            IndelNoveltyRate: NA
             JexlExpression: none
             Novelty: novel
-            SNPDPPerSample: 5370.0
-            SNPNoveltyRate: 100.00
-            SVNoveltyRate: 100.00
-            TiTvRatio: 1.84
-            TiTvRatioPerSample: 1.84
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
+            SVNoveltyRate: NA
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 2396
-            nIndelsPerSample: 2396
+            nIndels: 0
+            nIndelsPerSample: 0
             nProcessedLoci: 3137454505
-            nSNPs: 6144
-            nSNPsPerSample: 6144
-            nSVs: 24
-            nSVsPerSample: 24
+            nSNPs: 0
+            nSNPsPerSample: 0
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
   ADM980A9-miptest:
     1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1.fastq.gz:
@@ -1343,37 +1372,37 @@
             BAIT_SET: Agilent_SureSelectCRE
             BAIT_TERRITORY: 93162776
             FOLD_80_BASE_PENALTY: 2.069319
-            FOLD_ENRICHMENT: 26.036241
+            FOLD_ENRICHMENT: 33.677077
             GC_DROPOUT: 4.043777
             GENOME_SIZE: 3137454505
             HET_SNP_Q: 19
-            HET_SNP_SENSITIVITY: 0.988433
-            HS_LIBRARY_SIZE: 473386620
-            HS_PENALTY_100X: 3.867579
-            HS_PENALTY_10X: 3.568496
-            HS_PENALTY_20X: 3.596535
-            HS_PENALTY_30X: 3.630805
-            HS_PENALTY_40X: 3.661959
-            HS_PENALTY_50X: 3.695606
+            HET_SNP_SENSITIVITY: 0.988435
+            HS_LIBRARY_SIZE: 391821847
+            HS_PENALTY_100X: 2.764337
+            HS_PENALTY_10X: 2.543888
+            HS_PENALTY_20X: 2.563929
+            HS_PENALTY_30X: 2.586197
+            HS_PENALTY_40X: 2.610691
+            HS_PENALTY_50X: 2.636076
             LIBRARY: ~
-            MEAN_BAIT_COVERAGE: 171.59659
+            MEAN_BAIT_COVERAGE: 158.980812
             MEAN_TARGET_COVERAGE: 204.862533
             MEDIAN_TARGET_COVERAGE: 181
-            NEAR_BAIT_BASES: 1450681807
-            OFF_BAIT_BASES: 3240869355
-            ON_BAIT_BASES: 15986414716
-            ON_BAIT_VS_SELECTED: 0.916805
+            NEAR_BAIT_BASES: 21298
+            OFF_BAIT_BASES: 0
+            ON_BAIT_BASES: 14811093818
+            ON_BAIT_VS_SELECTED: 0.999999
             ON_TARGET_BASES: 11082842402
             PCT_EXC_BASEQ: 0
-            PCT_EXC_DUPE: 0.084378
-            PCT_EXC_MAPQ: 0.017856
-            PCT_EXC_OFF_TARGET: 0.361793
+            PCT_EXC_DUPE: 0.088505
+            PCT_EXC_MAPQ: 0.012478
+            PCT_EXC_OFF_TARGET: 0.150737
             PCT_EXC_OVERLAP: 0
-            PCT_OFF_BAIT: 0.156731
+            PCT_OFF_BAIT: 0
             PCT_PF_READS: 1
-            PCT_PF_UQ_READS: 0.915663
-            PCT_PF_UQ_READS_ALIGNED: 0.999193
-            PCT_SELECTED_BASES: 0.843269
+            PCT_PF_UQ_READS: 0.911508
+            PCT_PF_UQ_READS_ALIGNED: 0.999431
+            PCT_SELECTED_BASES: 1
             PCT_TARGET_BASES_100X: 0.797503
             PCT_TARGET_BASES_10X: 0.990284
             PCT_TARGET_BASES_1X: 0.994237
@@ -1382,17 +1411,17 @@
             PCT_TARGET_BASES_30X: 0.976842
             PCT_TARGET_BASES_40X: 0.964782
             PCT_TARGET_BASES_50X: 0.94765
-            PCT_USABLE_BASES_ON_BAIT: 0.77089
-            PCT_USABLE_BASES_ON_TARGET: 0.534432
-            PF_BASES_ALIGNED: 20677965878
-            PF_READS: 205322822
-            PF_UNIQUE_READS: 188006577
-            PF_UQ_BASES_ALIGNED: 18933210244
-            PF_UQ_READS_ALIGNED: 187854936
+            PCT_USABLE_BASES_ON_BAIT: 0.998162
+            PCT_USABLE_BASES_ON_TARGET: 0.746905
+            PF_BASES_ALIGNED: 14811115116
+            PF_READS: 146914459
+            PF_UNIQUE_READS: 133913751
+            PF_UQ_BASES_ALIGNED: 13500250126
+            PF_UQ_READS_ALIGNED: 133837551
             READ_GROUP: ~
             SAMPLE: ~
             TARGET_TERRITORY: 54098923
-            TOTAL_READS: 205322822
+            TOTAL_READS: 146914459
             ZERO_CVG_TARGETS_PCT: 0.006358
       Chanjo:
         Version: 3.4.1
@@ -1406,81 +1435,105 @@
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.004248
+            PCT_CHIMERAS: 0.002018
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.999978
-            PCT_READS_ALIGNED_IN_PAIRS: 0.998545
-            PF_ALIGNED_BASES: 10354763964
-            PF_HQ_ALIGNED_BASES: 10140971007
-            PF_HQ_ALIGNED_Q20_BASES: 10051337996
-            PF_HQ_ALIGNED_READS: 100531717
-            PF_HQ_ERROR_RATE: 0.00138
+            PCT_PF_READS_ALIGNED: 0.999986
+            PCT_READS_ALIGNED_IN_PAIRS: 0.998783
+            PF_ALIGNED_BASES: 7422339434
+            PF_HQ_ALIGNED_BASES: 7316437610
+            PF_HQ_ALIGNED_Q20_BASES: 7255292720
+            PF_HQ_ALIGNED_READS: 72493379
+            PF_HQ_ERROR_RATE: 0.001228
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.000092
-            PF_MISMATCH_RATE: 0.001423
+            PF_INDEL_RATE: 0.000059
+            PF_MISMATCH_RATE: 0.001252
             PF_NOISE_READS: 0
-            PF_READS: 102667314
-            PF_READS_ALIGNED: 102665085
-            READS_ALIGNED_IN_PAIRS: 102515673
+            PF_READS: 73545725
+            PF_READS_ALIGNED: 73544730
+            READS_ALIGNED_IN_PAIRS: 73455245
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.365554
-            TOTAL_READS: 102667314
+            STRAND_BALANCE: 0.339205
+            TOTAL_READS: 73545725
           Pair:
             BAD_CYCLES: 0
             CATEGORY: PAIR
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.004266
+            PCT_CHIMERAS: 0.001982
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.999261
-            PCT_READS_ALIGNED_IN_PAIRS: 0.999261
-            PF_ALIGNED_BASES: 20677965878
-            PF_HQ_ALIGNED_BASES: 20249327982
-            PF_HQ_ALIGNED_Q20_BASES: 19858044857
-            PF_HQ_ALIGNED_READS: 200874698
-            PF_HQ_ERROR_RATE: 0.001913
+            PCT_PF_READS_ALIGNED: 0.999481
+            PCT_READS_ALIGNED_IN_PAIRS: 0.999382
+            PF_ALIGNED_BASES: 14811115116
+            PF_HQ_ALIGNED_BASES: 14599566067
+            PF_HQ_ALIGNED_Q20_BASES: 14342453776
+            PF_HQ_ALIGNED_READS: 144733116
+            PF_HQ_ERROR_RATE: 0.001687
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.00009
-            PF_MISMATCH_RATE: 0.001965
+            PF_INDEL_RATE: 0.000059
+            PF_MISMATCH_RATE: 0.001717
             PF_NOISE_READS: 0
-            PF_READS: 205322822
-            PF_READS_ALIGNED: 205171181
-            READS_ALIGNED_IN_PAIRS: 205019540
+            PF_READS: 146914459
+            PF_READS_ALIGNED: 146838259
+            READS_ALIGNED_IN_PAIRS: 146747506
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.499874
-            TOTAL_READS: 205322822
+            STRAND_BALANCE: 0.500119
+            TOTAL_READS: 146914459
           Second_of_pair:
             BAD_CYCLES: 0
             CATEGORY: SECOND_OF_PAIR
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.004283
+            PCT_CHIMERAS: 0.001945
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.998545
-            PCT_READS_ALIGNED_IN_PAIRS: 0.999978
-            PF_ALIGNED_BASES: 10323201914
-            PF_HQ_ALIGNED_BASES: 10108356975
-            PF_HQ_ALIGNED_Q20_BASES: 9806706861
-            PF_HQ_ALIGNED_READS: 100342981
-            PF_HQ_ERROR_RATE: 0.002448
+            PCT_PF_READS_ALIGNED: 0.998975
+            PCT_READS_ALIGNED_IN_PAIRS: 0.999983
+            PF_ALIGNED_BASES: 7388775682
+            PF_HQ_ALIGNED_BASES: 7283128457
+            PF_HQ_ALIGNED_Q20_BASES: 7087161056
+            PF_HQ_ALIGNED_READS: 72239737
+            PF_HQ_ERROR_RATE: 0.002149
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.000088
-            PF_MISMATCH_RATE: 0.00251
+            PF_INDEL_RATE: 0.000059
+            PF_MISMATCH_RATE: 0.002185
             PF_NOISE_READS: 0
-            PF_READS: 102655508
-            PF_READS_ALIGNED: 102506096
-            READS_ALIGNED_IN_PAIRS: 102503867
+            PF_READS: 73368734
+            PF_READS_ALIGNED: 73293529
+            READS_ALIGNED_IN_PAIRS: 73292261
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.634402
-            TOTAL_READS: 102655508
+            STRAND_BALANCE: 0.661585
+            TOTAL_READS: 73368734
+      CollectMultipleMetricsInsertSize:
+        Header:
+          Data:
+            LIBRARY: ~
+            MAX_INSERT_SIZE: 231352722
+            MEAN_INSERT_SIZE: 247.119235
+            MEDIAN_ABSOLUTE_DEVIATION: 52
+            MEDIAN_INSERT_SIZE: 229
+            MIN_INSERT_SIZE: 2
+            PAIR_ORIENTATION: FR
+            READ_GROUP: ~
+            READ_PAIRS: 66701111
+            SAMPLE: ~
+            STANDARD_DEVIATION: 86.857348
+            WIDTH_OF_10_PERCENT: 21
+            WIDTH_OF_20_PERCENT: 41
+            WIDTH_OF_30_PERCENT: 63
+            WIDTH_OF_40_PERCENT: 83
+            WIDTH_OF_50_PERCENT: 105
+            WIDTH_OF_60_PERCENT: 129
+            WIDTH_OF_70_PERCENT: 155
+            WIDTH_OF_80_PERCENT: 191
+            WIDTH_OF_90_PERCENT: 273
+            WIDTH_OF_99_PERCENT: 593
       GenderCheck: PASS
       MarkDuplicates:
-        Fraction_duplicates: 0.0843712616438296
+        Fraction_duplicates: 0.0843722105348175
       VariantEval_All:
         CompOverlap_header:
           CompOverlap_data_all:
@@ -1490,11 +1543,11 @@
             JexlExpression: none
             Novelty: all
             compRate: 85.22
-            concordantRate: 98.67
-            nConcordant: 1321803
-            nEvalVariants: 1571991
-            nVariantsAtComp: 1339611
-            novelSites: 232380
+            concordantRate: 98.39
+            nConcordant: 84601
+            nEvalVariants: 100895
+            nVariantsAtComp: 85986
+            novelSites: 14909
           CompOverlap_data_known:
             CompOverlap: CompOverlap
             CompRod: dbsnp
@@ -1502,10 +1555,10 @@
             JexlExpression: none
             Novelty: known
             compRate: 100.00
-            concordantRate: 98.67
-            nConcordant: 1321803
-            nEvalVariants: 1339611
-            nVariantsAtComp: 1339611
+            concordantRate: 98.39
+            nConcordant: 84601
+            nEvalVariants: 85986
+            nVariantsAtComp: 85986
             novelSites: 0
           CompOverlap_data_novel:
             CompOverlap: CompOverlap
@@ -1516,9 +1569,9 @@
             compRate: 0.00
             concordantRate: 0.00
             nConcordant: 0
-            nEvalVariants: 232380
+            nEvalVariants: 14909
             nVariantsAtComp: 0
-            novelSites: 232380
+            novelSites: 14909
         CountVariants_header:
           CountVariants_data_all:
             CompRod: dbsnp
@@ -1526,93 +1579,93 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            hetHomRatio: 0.69
-            heterozygosity: 2.05e-04
-            heterozygosityPerBp: 4881.00
-            indelRate: 6.15e-05
-            indelRatePerBp: 16261.00
-            insertionDeletionRatio: 0.79
-            nCalledLoci: 2435114
-            nComplex: 10266
-            nDeletions: 102077
-            nHets: 642696
+            hetHomRatio: 1.59
+            heterozygosity: 1.98e-05
+            heterozygosityPerBp: 50623.00
+            indelRate: 4.11e-06
+            indelRatePerBp: 243591.00
+            insertionDeletionRatio: 0.77
+            nCalledLoci: 136350
+            nComplex: 1451
+            nDeletions: 6457
+            nHets: 61976
             nHomDerived: 0
-            nHomRef: 382459
-            nHomVar: 929295
-            nInsertions: 80599
-            nMNPs: 18770
+            nHomRef: 35007
+            nHomVar: 38919
+            nInsertions: 4972
+            nMNPs: 1608
             nMixed: 0
-            nNoCalls: 480664
+            nNoCalls: 448
             nProcessedLoci: 3137454505
-            nRefLoci: 863123
-            nSNPs: 1360279
-            nSingletons: 555204
+            nRefLoci: 35455
+            nSNPs: 86407
+            nSingletons: 53437
             nSymbolic: 0
-            nVariantLoci: 1571991
-            variantRate: 0.00050104
-            variantRatePerBp: 1995.00000000
+            nVariantLoci: 100895
+            variantRate: 0.00003216
+            variantRatePerBp: 31096.00000000
           CountVariants_data_known:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            hetHomRatio: 0.62
-            heterozygosity: 1.63e-04
-            heterozygosityPerBp: 6132.00
-            indelRate: 3.70e-05
-            indelRatePerBp: 27000.00
-            insertionDeletionRatio: 0.94
-            nCalledLoci: 1982747
-            nComplex: 4562
-            nDeletions: 57602
-            nHets: 511612
+            hetHomRatio: 1.39
+            heterozygosity: 1.59e-05
+            heterozygosityPerBp: 62826.00
+            indelRate: 2.57e-06
+            indelRatePerBp: 388635.00
+            insertionDeletionRatio: 0.92
+            nCalledLoci: 113491
+            nComplex: 832
+            nDeletions: 3781
+            nHets: 49938
             nHomDerived: 0
-            nHomRef: 262636
-            nHomVar: 827999
-            nInsertions: 54036
-            nMNPs: 1121
+            nHomRef: 27210
+            nHomVar: 36048
+            nInsertions: 3460
+            nMNPs: 82
             nMixed: 0
-            nNoCalls: 380500
+            nNoCalls: 295
             nProcessedLoci: 3137454505
-            nRefLoci: 643136
-            nSNPs: 1222290
-            nSingletons: 465293
+            nRefLoci: 27505
+            nSNPs: 77831
+            nSingletons: 45073
             nSymbolic: 0
-            nVariantLoci: 1339611
-            variantRate: 0.00042697
-            variantRatePerBp: 2342.00000000
+            nVariantLoci: 85986
+            variantRate: 0.00002741
+            variantRatePerBp: 36487.00000000
           CountVariants_data_novel:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            hetHomRatio: 1.29
-            heterozygosity: 4.18e-05
-            heterozygosityPerBp: 23934.00
-            indelRate: 2.45e-05
-            indelRatePerBp: 40883.00
-            insertionDeletionRatio: 0.60
-            nCalledLoci: 452367
-            nComplex: 5704
-            nDeletions: 44475
-            nHets: 131084
+            hetHomRatio: 4.19
+            heterozygosity: 3.84e-06
+            heterozygosityPerBp: 260629.00
+            indelRate: 1.53e-06
+            indelRatePerBp: 652684.00
+            insertionDeletionRatio: 0.57
+            nCalledLoci: 22859
+            nComplex: 619
+            nDeletions: 2676
+            nHets: 12038
             nHomDerived: 0
-            nHomRef: 119823
-            nHomVar: 101296
-            nInsertions: 26563
-            nMNPs: 17649
+            nHomRef: 7797
+            nHomVar: 2871
+            nInsertions: 1512
+            nMNPs: 1526
             nMixed: 0
-            nNoCalls: 100164
+            nNoCalls: 153
             nProcessedLoci: 3137454505
-            nRefLoci: 219987
-            nSNPs: 137989
-            nSingletons: 89911
+            nRefLoci: 7950
+            nSNPs: 8576
+            nSingletons: 8364
             nSymbolic: 0
-            nVariantLoci: 232380
-            variantRate: 0.00007407
-            variantRatePerBp: 13501.00000000
+            nVariantLoci: 14909
+            variantRate: 0.00000475
+            variantRatePerBp: 210440.00000000
         IndelSummary_header:
           IndelSummary_data_all:
             CompRod: dbsnp
@@ -1620,93 +1673,93 @@
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: all
-            SNP_het_to_hom_ratio: 0.67
-            SNP_to_indel_ratio: 7.05
-            SNP_to_indel_ratio_for_singletons: 6.26
+            SNP_het_to_hom_ratio: 1.54
+            SNP_to_indel_ratio: 6.71
+            SNP_to_indel_ratio_for_singletons: 6.13
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 47.39
-            indel_het_to_hom_ratio: 0.83
-            indel_novelty_rate: 39.77
-            insertion_to_deletion_ratio: 0.77
-            insertion_to_deletion_ratio_for_large_indels: 0.44
-            n_SNPs: 1360279
+            gold_standard_matching_rate: 53.29
+            indel_het_to_hom_ratio: 1.97
+            indel_novelty_rate: 37.32
+            insertion_to_deletion_ratio: 0.72
+            insertion_to_deletion_ratio_for_large_indels: 0.42
+            n_SNPs: 86407
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 109256
-            n_indels: 192942
-            n_indels_matching_gold_standard: 91438
-            n_insertions: 83686
-            n_large_deletions: 7742
-            n_large_insertions: 3386
+            n_deletions: 7478
+            n_indels: 12880
+            n_indels_matching_gold_standard: 6864
+            n_insertions: 5402
+            n_large_deletions: 440
+            n_large_insertions: 184
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 76742
-            n_singleton_SNPs: 547471
-            n_singleton_indels: 87492
+            n_novel_indels: 4807
+            n_singleton_SNPs: 52366
+            n_singleton_indels: 8539
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 7.75
-            ratio_of_1_and_2_to_3_bp_insertions: 7.94
+            ratio_of_1_and_2_to_3_bp_deletions: 8.86
+            ratio_of_1_and_2_to_3_bp_insertions: 9.02
           IndelSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: known
-            SNP_het_to_hom_ratio: 0.61
-            SNP_to_indel_ratio: 10.52
-            SNP_to_indel_ratio_for_singletons: 10.04
+            SNP_het_to_hom_ratio: 1.37
+            SNP_to_indel_ratio: 9.64
+            SNP_to_indel_ratio_for_singletons: 9.26
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 61.59
-            indel_het_to_hom_ratio: 0.66
+            gold_standard_matching_rate: 69.37
+            indel_het_to_hom_ratio: 1.52
             indel_novelty_rate: 0.00
-            insertion_to_deletion_ratio: 0.91
-            insertion_to_deletion_ratio_for_large_indels: 0.54
-            n_SNPs: 1222290
+            insertion_to_deletion_ratio: 0.85
+            insertion_to_deletion_ratio_for_large_indels: 0.52
+            n_SNPs: 77831
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 60745
-            n_indels: 116200
-            n_indels_matching_gold_standard: 71567
-            n_insertions: 55455
-            n_large_deletions: 3182
-            n_large_insertions: 1715
+            n_deletions: 4362
+            n_indels: 8073
+            n_indels_matching_gold_standard: 5600
+            n_insertions: 3711
+            n_large_deletions: 181
+            n_large_insertions: 94
             n_multiallelic_indel_sites: 0
             n_novel_indels: 0
-            n_singleton_SNPs: 464966
-            n_singleton_indels: 46319
+            n_singleton_SNPs: 45030
+            n_singleton_indels: 4865
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 9.89
-            ratio_of_1_and_2_to_3_bp_insertions: 8.30
+            ratio_of_1_and_2_to_3_bp_deletions: 10.53
+            ratio_of_1_and_2_to_3_bp_insertions: 9.52
           IndelSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: novel
-            SNP_het_to_hom_ratio: 1.49
-            SNP_to_indel_ratio: 1.80
+            SNP_het_to_hom_ratio: 5.92
+            SNP_to_indel_ratio: 1.78
             SNP_to_indel_ratio_for_singletons: 2.00
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 25.89
-            indel_het_to_hom_ratio: 1.16
+            gold_standard_matching_rate: 26.29
+            indel_het_to_hom_ratio: 3.24
             indel_novelty_rate: 100.00
-            insertion_to_deletion_ratio: 0.58
-            insertion_to_deletion_ratio_for_large_indels: 0.37
-            n_SNPs: 137989
+            insertion_to_deletion_ratio: 0.54
+            insertion_to_deletion_ratio_for_large_indels: 0.35
+            n_SNPs: 8576
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 48511
-            n_indels: 76742
-            n_indels_matching_gold_standard: 19871
-            n_insertions: 28231
-            n_large_deletions: 4560
-            n_large_insertions: 1671
+            n_deletions: 3116
+            n_indels: 4807
+            n_indels_matching_gold_standard: 1264
+            n_insertions: 1691
+            n_large_deletions: 259
+            n_large_insertions: 90
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 76742
-            n_singleton_SNPs: 82505
-            n_singleton_indels: 41173
+            n_novel_indels: 4807
+            n_singleton_SNPs: 7336
+            n_singleton_indels: 3674
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 5.78
-            ratio_of_1_and_2_to_3_bp_insertions: 7.22
+            ratio_of_1_and_2_to_3_bp_deletions: 7.00
+            ratio_of_1_and_2_to_3_bp_insertions: 7.92
         MultiallelicSummary_header:
           MultiallelicSummary_data_all:
             CompRod: dbsnp
@@ -1718,11 +1771,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 192942
+            nIndels: 12880
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 1360279
+            nSNPs: 86407
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -1739,11 +1792,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 116200
+            nIndels: 8073
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 1222290
+            nSNPs: 77831
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -1760,11 +1813,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 76742
+            nIndels: 4807
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 137989
+            nSNPs: 8576
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -1779,44 +1832,44 @@
             Novelty: all
             TiTvRatioStandard: 1.84
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 930906
+            nTi: 60504
             nTiDerived: 0
-            nTiInComp: 6961493
-            nTv: 429373
+            nTiInComp: 6963683
+            nTv: 25903
             nTvDerived: 0
-            nTvInComp: 3783190
+            nTvInComp: 3793562
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.17
+            tiTvRatio: 2.34
           TiTvVariantEvaluator_data_known:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            TiTvRatioStandard: 2.16
+            TiTvRatioStandard: 2.37
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 841801
+            nTi: 54887
             nTiDerived: 0
-            nTiInComp: 1213797
-            nTv: 380489
+            nTiInComp: 72296
+            nTv: 22944
             nTvDerived: 0
-            nTvInComp: 562058
+            nTvInComp: 30497
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.21
+            tiTvRatio: 2.39
           TiTvVariantEvaluator_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            TiTvRatioStandard: 1.78
+            TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 89105
+            nTi: 5617
             nTiDerived: 0
-            nTiInComp: 5747696
-            nTv: 48884
+            nTiInComp: 6891387
+            nTv: 2959
             nTvDerived: 0
-            nTvInComp: 3221132
+            nTvInComp: 3763065
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 1.82
+            tiTvRatio: 1.90
         ValidationReport_header:
           ValidationReport_data_all:
             CompFiltered: 0
@@ -1825,23 +1878,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 643136
-            CompPolyEvalNoCall: 11814892
-            CompPolyEvalPoly: 1339611
+            CompPolyEvalMono: 27505
+            CompPolyEvalNoCall: 13819622
+            CompPolyEvalPoly: 85986
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 12458028
+            FN: 13847127
             FP: 0
             JexlExpression: none
             Novelty: all
             PPV: 100.00
             TN: 0
-            TP: 1339611
+            TP: 85986
             ValidationReport: ValidationReport
-            nComp: 13797639
+            nComp: 13933113
             nDifferentAlleleSites: 0
-            sensitivity: 9.71
+            sensitivity: 0.62
             specificity: 100.00
           ValidationReport_data_known:
             CompFiltered: 0
@@ -1850,23 +1903,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 643136
-            CompPolyEvalNoCall: 11506
-            CompPolyEvalPoly: 1339611
+            CompPolyEvalMono: 27505
+            CompPolyEvalNoCall: 691
+            CompPolyEvalPoly: 85986
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 654642
+            FN: 28196
             FP: 0
             JexlExpression: none
             Novelty: known
             PPV: 100.00
             TN: 0
-            TP: 1339611
+            TP: 85986
             ValidationReport: ValidationReport
-            nComp: 1994253
+            nComp: 114182
             nDifferentAlleleSites: 0
-            sensitivity: 67.17
+            sensitivity: 75.31
             specificity: 100.00
           ValidationReport_data_novel:
             CompFiltered: 0
@@ -1876,12 +1929,12 @@
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
             CompPolyEvalMono: 0
-            CompPolyEvalNoCall: 11803386
+            CompPolyEvalNoCall: 13818931
             CompPolyEvalPoly: 0
             CompRod: dbsnp
             EvalRod: eval
             FDR: NaN
-            FN: 11803386
+            FN: 13818931
             FP: 0
             JexlExpression: none
             Novelty: novel
@@ -1889,7 +1942,7 @@
             TN: 0
             TP: 0
             ValidationReport: ValidationReport
-            nComp: 11803386
+            nComp: 13818931
             nDifferentAlleleSites: 0
             sensitivity: 0.00
             specificity: 100.00
@@ -1897,65 +1950,65 @@
           VariantSummary_data_all:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 123756.0
-            IndelNoveltyRate: 39.73
+            IndelDPPerSample: 11620.0
+            IndelNoveltyRate: 37.31
             JexlExpression: none
             Novelty: all
-            SNPDPPerSample: 996732.0
-            SNPNoveltyRate: 10.14
-            SVNoveltyRate: 94.41
-            TiTvRatio: 2.17
-            TiTvRatioPerSample: 2.17
+            SNPDPPerSample: 85487.0
+            SNPNoveltyRate: 9.93
+            SVNoveltyRate: 100.00
+            TiTvRatio: 2.34
+            TiTvRatioPerSample: 2.34
             VariantSummary: VariantSummary
-            nIndels: 192799
-            nIndelsPerSample: 192799
+            nIndels: 12878
+            nIndelsPerSample: 12878
             nProcessedLoci: 3137454505
-            nSNPs: 1360279
-            nSNPsPerSample: 1360279
-            nSVs: 143
-            nSVsPerSample: 143
+            nSNPs: 86407
+            nSNPsPerSample: 86407
+            nSVs: 2
+            nSVsPerSample: 2
             nSamples: 1
           VariantSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 77494.0
+            IndelDPPerSample: 7696.0
             IndelNoveltyRate: 0.00
             JexlExpression: none
             Novelty: known
-            SNPDPPerSample: 915090.0
+            SNPDPPerSample: 77220.0
             SNPNoveltyRate: 0.00
-            SVNoveltyRate: 0.00
-            TiTvRatio: 2.21
-            TiTvRatioPerSample: 2.21
+            SVNoveltyRate: NA
+            TiTvRatio: 2.39
+            TiTvRatioPerSample: 2.39
             VariantSummary: VariantSummary
-            nIndels: 116192
-            nIndelsPerSample: 116192
+            nIndels: 8073
+            nIndelsPerSample: 8073
             nProcessedLoci: 3137454505
-            nSNPs: 1222290
-            nSNPsPerSample: 1222290
-            nSVs: 8
-            nSVsPerSample: 8
+            nSNPs: 77831
+            nSNPsPerSample: 77831
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 46262.0
+            IndelDPPerSample: 3924.0
             IndelNoveltyRate: 100.00
             JexlExpression: none
             Novelty: novel
-            SNPDPPerSample: 81642.0
+            SNPDPPerSample: 8267.0
             SNPNoveltyRate: 100.00
             SVNoveltyRate: 100.00
-            TiTvRatio: 1.82
-            TiTvRatioPerSample: 1.82
+            TiTvRatio: 1.90
+            TiTvRatioPerSample: 1.90
             VariantSummary: VariantSummary
-            nIndels: 76607
-            nIndelsPerSample: 76607
+            nIndels: 4805
+            nIndelsPerSample: 4805
             nProcessedLoci: 3137454505
-            nSNPs: 137989
-            nSNPsPerSample: 137989
-            nSVs: 135
-            nSVsPerSample: 135
+            nSNPs: 8576
+            nSNPsPerSample: 8576
+            nSVs: 2
+            nSVsPerSample: 2
             nSamples: 1
       VariantEval_Exome:
         CompOverlap_header:
@@ -1965,12 +2018,12 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            compRate: 48.34
-            concordantRate: 94.25
-            nConcordant: 9345
-            nEvalVariants: 20513
-            nVariantsAtComp: 9915
-            novelSites: 10598
+            compRate: 100.00
+            concordantRate: 100.00
+            nConcordant: 1
+            nEvalVariants: 1
+            nVariantsAtComp: 1
+            novelSites: 0
           CompOverlap_data_known:
             CompOverlap: CompOverlap
             CompRod: dbsnp
@@ -1978,10 +2031,10 @@
             JexlExpression: none
             Novelty: known
             compRate: 100.00
-            concordantRate: 94.25
-            nConcordant: 9345
-            nEvalVariants: 9915
-            nVariantsAtComp: 9915
+            concordantRate: 100.00
+            nConcordant: 1
+            nEvalVariants: 1
+            nVariantsAtComp: 1
             novelSites: 0
           CompOverlap_data_novel:
             CompOverlap: CompOverlap
@@ -1992,9 +2045,9 @@
             compRate: 0.00
             concordantRate: 0.00
             nConcordant: 0
-            nEvalVariants: 10598
+            nEvalVariants: 0
             nVariantsAtComp: 0
-            novelSites: 10598
+            novelSites: 0
         CountVariants_header:
           CountVariants_data_all:
             CompRod: dbsnp
@@ -2002,93 +2055,93 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            hetHomRatio: 3.54
-            heterozygosity: 5.10e-06
-            heterozygosityPerBp: 196189.00
-            indelRate: 1.34e-06
-            indelRatePerBp: 744884.00
-            insertionDeletionRatio: 0.57
-            nCalledLoci: 32716
-            nComplex: 616
-            nDeletions: 2290
-            nHets: 15992
+            hetHomRatio: 0.00
+            heterozygosity: 0.00e+00
+            heterozygosityPerBp: 0.00
+            indelRate: 3.19e-10
+            indelRatePerBp: 3137454505.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 2
+            nComplex: 0
+            nDeletions: 1
+            nHets: 0
             nHomDerived: 0
-            nHomRef: 11072
-            nHomVar: 4521
-            nInsertions: 1306
-            nMNPs: 2021
+            nHomRef: 1
+            nHomVar: 1
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 1131
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 12203
-            nSNPs: 14280
-            nSingletons: 12964
+            nRefLoci: 1
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 20513
-            variantRate: 0.00000654
-            variantRatePerBp: 152949.00000000
+            nVariantLoci: 1
+            variantRate: 0.00000000
+            variantRatePerBp: 3137454505.00000000
           CountVariants_data_known:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            hetHomRatio: 3.07
-            heterozygosity: 2.38e-06
-            heterozygosityPerBp: 419445.00
-            indelRate: 5.58e-07
-            indelRatePerBp: 1790784.00
-            insertionDeletionRatio: 0.75
-            nCalledLoci: 15979
-            nComplex: 253
-            nDeletions: 859
-            nHets: 7480
+            hetHomRatio: 0.00
+            heterozygosity: 0.00e+00
+            heterozygosityPerBp: 0.00
+            indelRate: 3.19e-10
+            indelRatePerBp: 3137454505.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 1
+            nComplex: 0
+            nDeletions: 1
+            nHets: 0
             nHomDerived: 0
-            nHomRef: 5681
-            nHomVar: 2435
-            nInsertions: 640
-            nMNPs: 82
+            nHomRef: 0
+            nHomVar: 1
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 383
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 6064
-            nSNPs: 8081
-            nSingletons: 6336
+            nRefLoci: 0
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 9915
-            variantRate: 0.00000316
-            variantRatePerBp: 316435.00000000
+            nVariantLoci: 1
+            variantRate: 0.00000000
+            variantRatePerBp: 3137454505.00000000
           CountVariants_data_novel:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            hetHomRatio: 4.08
-            heterozygosity: 2.71e-06
-            heterozygosityPerBp: 368591.00
-            indelRate: 7.84e-07
-            indelRatePerBp: 1275388.00
-            insertionDeletionRatio: 0.47
-            nCalledLoci: 16737
-            nComplex: 363
-            nDeletions: 1431
-            nHets: 8512
+            hetHomRatio: 0.00
+            heterozygosity: 0.00e+00
+            heterozygosityPerBp: 0.00
+            indelRate: 0.00e+00
+            indelRatePerBp: 0.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 1
+            nComplex: 0
+            nDeletions: 0
+            nHets: 0
             nHomDerived: 0
-            nHomRef: 5391
-            nHomVar: 2086
-            nInsertions: 666
-            nMNPs: 1939
+            nHomRef: 1
+            nHomVar: 0
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 748
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 6139
-            nSNPs: 6199
-            nSingletons: 6628
+            nRefLoci: 1
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 10598
-            variantRate: 0.00000338
-            variantRatePerBp: 296042.00000000
+            nVariantLoci: 0
+            variantRate: 0.00000000
+            variantRatePerBp: 0.00000000
         IndelSummary_header:
           IndelSummary_data_all:
             CompRod: dbsnp
@@ -2096,93 +2149,93 @@
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: all
-            SNP_het_to_hom_ratio: 4.20
-            SNP_to_indel_ratio: 3.39
-            SNP_to_indel_ratio_for_singletons: 3.81
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: 0.00
+            SNP_to_indel_ratio_for_singletons: NA
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 30.22
-            indel_het_to_hom_ratio: 2.56
-            indel_novelty_rate: 58.40
-            insertion_to_deletion_ratio: 0.58
-            insertion_to_deletion_ratio_for_large_indels: 0.26
-            n_SNPs: 14280
+            gold_standard_matching_rate: 100.00
+            indel_het_to_hom_ratio: 0.00
+            indel_novelty_rate: 0.00
+            insertion_to_deletion_ratio: 0.00
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 2674
-            n_indels: 4212
-            n_indels_matching_gold_standard: 1273
-            n_insertions: 1538
-            n_large_deletions: 323
-            n_large_insertions: 84
+            n_deletions: 1
+            n_indels: 1
+            n_indels_matching_gold_standard: 1
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 2460
-            n_singleton_SNPs: 11535
-            n_singleton_indels: 3028
+            n_novel_indels: 0
+            n_singleton_SNPs: 0
+            n_singleton_indels: 0
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 4.62
-            ratio_of_1_and_2_to_3_bp_insertions: 4.64
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
           IndelSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: known
-            SNP_het_to_hom_ratio: 3.50
-            SNP_to_indel_ratio: 4.61
-            SNP_to_indel_ratio_for_singletons: 5.50
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: 0.00
+            SNP_to_indel_ratio_for_singletons: NA
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 48.86
-            indel_het_to_hom_ratio: 1.88
+            gold_standard_matching_rate: 100.00
+            indel_het_to_hom_ratio: 0.00
             indel_novelty_rate: 0.00
-            insertion_to_deletion_ratio: 0.73
-            insertion_to_deletion_ratio_for_large_indels: 0.46
-            n_SNPs: 8081
+            insertion_to_deletion_ratio: 0.00
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 1011
-            n_indels: 1752
-            n_indels_matching_gold_standard: 856
-            n_insertions: 741
-            n_large_deletions: 65
-            n_large_insertions: 30
+            n_deletions: 1
+            n_indels: 1
+            n_indels_matching_gold_standard: 1
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
             n_novel_indels: 0
-            n_singleton_SNPs: 6287
-            n_singleton_indels: 1144
+            n_singleton_SNPs: 0
+            n_singleton_indels: 0
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 4.98
-            ratio_of_1_and_2_to_3_bp_insertions: 4.41
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
           IndelSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: novel
-            SNP_het_to_hom_ratio: 5.52
-            SNP_to_indel_ratio: 2.52
-            SNP_to_indel_ratio_for_singletons: 2.79
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: NA
+            SNP_to_indel_ratio_for_singletons: NA
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 16.95
-            indel_het_to_hom_ratio: 3.27
-            indel_novelty_rate: 100.00
-            insertion_to_deletion_ratio: 0.48
-            insertion_to_deletion_ratio_for_large_indels: 0.21
-            n_SNPs: 6199
+            gold_standard_matching_rate: NA
+            indel_het_to_hom_ratio: NA
+            indel_novelty_rate: NA
+            insertion_to_deletion_ratio: NA
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 1663
-            n_indels: 2460
-            n_indels_matching_gold_standard: 417
-            n_insertions: 797
-            n_large_deletions: 258
-            n_large_insertions: 54
+            n_deletions: 0
+            n_indels: 0
+            n_indels_matching_gold_standard: 0
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 2460
-            n_singleton_SNPs: 5248
-            n_singleton_indels: 1884
-            percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 4.39
-            ratio_of_1_and_2_to_3_bp_insertions: 4.88
+            n_novel_indels: 0
+            n_singleton_SNPs: 0
+            n_singleton_indels: 0
+            percent_of_sites_with_more_than_2_alleles: NA
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
         MultiallelicSummary_header:
           MultiallelicSummary_data_all:
             CompRod: dbsnp
@@ -2194,17 +2247,17 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 4212
+            nIndels: 1
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 14280
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
             variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiSnpRatio: NaN
           MultiallelicSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
@@ -2215,17 +2268,17 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 1752
+            nIndels: 1
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 8081
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
             variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiSnpRatio: NaN
           MultiallelicSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
@@ -2236,48 +2289,48 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 2460
+            nIndels: 0
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 6199
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
-            variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiIndelRatio: NaN
+            variantMultiSnpRatio: NaN
         TiTvVariantEvaluator_header:
           TiTvVariantEvaluator_data_all:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            TiTvRatioStandard: 1.84
+            TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 9654
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 6966140
-            nTv: 4626
+            nTiInComp: 6964146
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 3796180
+            nTvInComp: 3795520
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.09
+            tiTvRatio: 0.00
           TiTvVariantEvaluator_data_known:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            TiTvRatioStandard: 2.29
+            TiTvRatioStandard: 0.00
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 5601
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 9270
-            nTv: 2480
+            nTiInComp: 0
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 4043
+            nTvInComp: 0
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.26
+            tiTvRatio: 0.00
           TiTvVariantEvaluator_data_novel:
             CompRod: dbsnp
             EvalRod: eval
@@ -2285,14 +2338,14 @@
             Novelty: novel
             TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 4053
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 6956870
-            nTv: 2146
+            nTiInComp: 6964146
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 3792137
+            nTvInComp: 3795520
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 1.89
+            tiTvRatio: 0.00
         ValidationReport_header:
           ValidationReport_data_all:
             CompFiltered: 0
@@ -2301,23 +2354,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 6064
-            CompPolyEvalNoCall: 13927606
-            CompPolyEvalPoly: 9915
+            CompPolyEvalMono: 0
+            CompPolyEvalNoCall: 13941024
+            CompPolyEvalPoly: 1
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 13933670
+            FN: 13941024
             FP: 0
             JexlExpression: none
             Novelty: all
             PPV: 100.00
             TN: 0
-            TP: 9915
+            TP: 1
             ValidationReport: ValidationReport
-            nComp: 13943585
+            nComp: 13941025
             nDifferentAlleleSites: 0
-            sensitivity: 0.07
+            sensitivity: 0.00
             specificity: 100.00
           ValidationReport_data_known:
             CompFiltered: 0
@@ -2326,23 +2379,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 6064
-            CompPolyEvalNoCall: 205
-            CompPolyEvalPoly: 9915
+            CompPolyEvalMono: 0
+            CompPolyEvalNoCall: 0
+            CompPolyEvalPoly: 1
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 6269
+            FN: 0
             FP: 0
             JexlExpression: none
             Novelty: known
             PPV: 100.00
             TN: 0
-            TP: 9915
+            TP: 1
             ValidationReport: ValidationReport
-            nComp: 16184
+            nComp: 1
             nDifferentAlleleSites: 0
-            sensitivity: 61.26
+            sensitivity: 100.00
             specificity: 100.00
           ValidationReport_data_novel:
             CompFiltered: 0
@@ -2352,12 +2405,12 @@
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
             CompPolyEvalMono: 0
-            CompPolyEvalNoCall: 13927401
+            CompPolyEvalNoCall: 13941024
             CompPolyEvalPoly: 0
             CompRod: dbsnp
             EvalRod: eval
             FDR: NaN
-            FN: 13927401
+            FN: 13941024
             FP: 0
             JexlExpression: none
             Novelty: novel
@@ -2365,7 +2418,7 @@
             TN: 0
             TP: 0
             ValidationReport: ValidationReport
-            nComp: 13927401
+            nComp: 13941024
             nDifferentAlleleSites: 0
             sensitivity: 0.00
             specificity: 100.00
@@ -2373,65 +2426,65 @@
           VariantSummary_data_all:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 3405.0
-            IndelNoveltyRate: 58.25
+            IndelDPPerSample: 1.0
+            IndelNoveltyRate: 0.00
             JexlExpression: none
             Novelty: all
-            SNPDPPerSample: 13247.0
-            SNPNoveltyRate: 43.41
-            SVNoveltyRate: 100.00
-            TiTvRatio: 2.09
-            TiTvRatioPerSample: 2.09
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
+            SVNoveltyRate: NA
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 4196
-            nIndelsPerSample: 4196
+            nIndels: 1
+            nIndelsPerSample: 1
             nProcessedLoci: 3137454505
-            nSNPs: 14280
-            nSNPsPerSample: 14280
-            nSVs: 16
-            nSVsPerSample: 16
+            nSNPs: 0
+            nSNPsPerSample: 0
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 1512.0
+            IndelDPPerSample: 1.0
             IndelNoveltyRate: 0.00
             JexlExpression: none
             Novelty: known
-            SNPDPPerSample: 7760.0
-            SNPNoveltyRate: 0.00
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
             SVNoveltyRate: NA
-            TiTvRatio: 2.26
-            TiTvRatioPerSample: 2.26
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 1752
-            nIndelsPerSample: 1752
+            nIndels: 1
+            nIndelsPerSample: 1
             nProcessedLoci: 3137454505
-            nSNPs: 8081
-            nSNPsPerSample: 8081
+            nSNPs: 0
+            nSNPsPerSample: 0
             nSVs: 0
             nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 1893.0
-            IndelNoveltyRate: 100.00
+            IndelDPPerSample: 0.0
+            IndelNoveltyRate: NA
             JexlExpression: none
             Novelty: novel
-            SNPDPPerSample: 5487.0
-            SNPNoveltyRate: 100.00
-            SVNoveltyRate: 100.00
-            TiTvRatio: 1.89
-            TiTvRatioPerSample: 1.89
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
+            SVNoveltyRate: NA
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 2444
-            nIndelsPerSample: 2444
+            nIndels: 0
+            nIndelsPerSample: 0
             nProcessedLoci: 3137454505
-            nSNPs: 6199
-            nSNPsPerSample: 6199
-            nSVs: 16
-            nSVsPerSample: 16
+            nSNPs: 0
+            nSNPsPerSample: 0
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
   ADM994A2-miptest:
     1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1.fastq.gz:
@@ -2521,37 +2574,37 @@
             BAIT_SET: Agilent_SureSelectCRE
             BAIT_TERRITORY: 93162776
             FOLD_80_BASE_PENALTY: 2.103473
-            FOLD_ENRICHMENT: 25.673723
+            FOLD_ENRICHMENT: 33.677078
             GC_DROPOUT: 4.288103
             GENOME_SIZE: 3137454505
             HET_SNP_Q: 19
-            HET_SNP_SENSITIVITY: 0.987788
-            HS_LIBRARY_SIZE: 246012781
-            HS_PENALTY_100X: 4.437387
-            HS_PENALTY_10X: 3.717348
-            HS_PENALTY_20X: 3.777928
-            HS_PENALTY_30X: 3.850047
-            HS_PENALTY_40X: 3.916397
-            HS_PENALTY_50X: 3.994286
+            HET_SNP_SENSITIVITY: 0.987817
+            HS_LIBRARY_SIZE: 205010833
+            HS_PENALTY_100X: 3.125526
+            HS_PENALTY_10X: 2.609214
+            HS_PENALTY_20X: 2.654932
+            HS_PENALTY_30X: 2.703698
+            HS_PENALTY_40X: 2.752464
+            HS_PENALTY_50X: 2.808546
             LIBRARY: ~
-            MEAN_BAIT_COVERAGE: 156.281249
+            MEAN_BAIT_COVERAGE: 145.018886
             MEAN_TARGET_COVERAGE: 174.588281
             MEDIAN_TARGET_COVERAGE: 153
-            NEAR_BAIT_BASES: 1318604259
-            OFF_BAIT_BASES: 3220133398
-            ON_BAIT_BASES: 14559595035
-            ON_BAIT_VS_SELECTED: 0.916955
+            NEAR_BAIT_BASES: 19248
+            OFF_BAIT_BASES: 0
+            ON_BAIT_BASES: 13510361995
+            ON_BAIT_VS_SELECTED: 0.999999
             ON_TARGET_BASES: 9445037987
             PCT_EXC_BASEQ: 0
-            PCT_EXC_DUPE: 0.140513
-            PCT_EXC_MAPQ: 0.018876
-            PCT_EXC_OFF_TARGET: 0.346063
+            PCT_EXC_DUPE: 0.147527
+            PCT_EXC_MAPQ: 0.012472
+            PCT_EXC_OFF_TARGET: 0.140907
             PCT_EXC_OVERLAP: 0
-            PCT_OFF_BAIT: 0.168608
+            PCT_OFF_BAIT: 0
             PCT_PF_READS: 1
-            PCT_PF_UQ_READS: 0.859533
-            PCT_PF_UQ_READS_ALIGNED: 0.999562
-            PCT_SELECTED_BASES: 0.831392
+            PCT_PF_UQ_READS: 0.852486
+            PCT_PF_UQ_READS_ALIGNED: 0.999706
+            PCT_SELECTED_BASES: 1
             PCT_TARGET_BASES_100X: 0.730114
             PCT_TARGET_BASES_10X: 0.988986
             PCT_TARGET_BASES_1X: 0.993957
@@ -2560,17 +2613,17 @@
             PCT_TARGET_BASES_30X: 0.970075
             PCT_TARGET_BASES_40X: 0.951699
             PCT_TARGET_BASES_50X: 0.925862
-            PCT_USABLE_BASES_ON_BAIT: 0.760967
-            PCT_USABLE_BASES_ON_TARGET: 0.493651
-            PF_BASES_ALIGNED: 19098332692
-            PF_READS: 189435759
-            PF_UNIQUE_READS: 162826378
-            PF_UQ_BASES_ALIGNED: 16414762206
-            PF_UQ_READS_ALIGNED: 162755090
+            PCT_USABLE_BASES_ON_BAIT: 0.999087
+            PCT_USABLE_BASES_ON_TARGET: 0.698458
+            PF_BASES_ALIGNED: 13510381243
+            PF_READS: 133888213
+            PF_UNIQUE_READS: 114137858
+            PF_UQ_BASES_ALIGNED: 11517241860
+            PF_UQ_READS_ALIGNED: 114104317
             READ_GROUP: ~
             SAMPLE: ~
             TARGET_TERRITORY: 54098923
-            TOTAL_READS: 189435759
+            TOTAL_READS: 133888213
             ZERO_CVG_TARGETS_PCT: 0.00665
       Chanjo:
         Version: 3.4.1
@@ -2584,81 +2637,105 @@
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.002884
+            PCT_CHIMERAS: 0.001295
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.999981
-            PCT_READS_ALIGNED_IN_PAIRS: 0.999266
-            PF_ALIGNED_BASES: 9556235416
-            PF_HQ_ALIGNED_BASES: 9340914917
-            PF_HQ_ALIGNED_Q20_BASES: 9294805060
-            PF_HQ_ALIGNED_READS: 92572203
-            PF_HQ_ERROR_RATE: 0.001395
+            PCT_PF_READS_ALIGNED: 0.999989
+            PCT_READS_ALIGNED_IN_PAIRS: 0.999428
+            PF_ALIGNED_BASES: 6791313038
+            PF_HQ_ALIGNED_BASES: 6691284409
+            PF_HQ_ALIGNED_Q20_BASES: 6661809501
+            PF_HQ_ALIGNED_READS: 66276564
+            PF_HQ_ERROR_RATE: 0.001231
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.000092
-            PF_MISMATCH_RATE: 0.001444
+            PF_INDEL_RATE: 0.000057
+            PF_MISMATCH_RATE: 0.001255
             PF_NOISE_READS: 0
-            PF_READS: 94721280
-            PF_READS_ALIGNED: 94719479
-            READS_ALIGNED_IN_PAIRS: 94649992
+            PF_READS: 67269896
+            PF_READS_ALIGNED: 67269156
+            READS_ALIGNED_IN_PAIRS: 67230675
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.329708
-            TOTAL_READS: 94721280
+            STRAND_BALANCE: 0.293082
+            TOTAL_READS: 67269896
           Pair:
             BAD_CYCLES: 0
             CATEGORY: PAIR
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.002914
+            PCT_CHIMERAS: 0.001272
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.999624
-            PCT_READS_ALIGNED_IN_PAIRS: 0.999624
-            PF_ALIGNED_BASES: 19098332692
-            PF_HQ_ALIGNED_BASES: 18666626174
-            PF_HQ_ALIGNED_Q20_BASES: 18517372606
-            PF_HQ_ALIGNED_READS: 185048115
-            PF_HQ_ERROR_RATE: 0.001554
+            PCT_PF_READS_ALIGNED: 0.999749
+            PCT_READS_ALIGNED_IN_PAIRS: 0.999705
+            PF_ALIGNED_BASES: 13510381243
+            PF_HQ_ALIGNED_BASES: 13311160229
+            PF_HQ_ALIGNED_Q20_BASES: 13220293051
+            PF_HQ_ALIGNED_READS: 131875191
+            PF_HQ_ERROR_RATE: 0.001328
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.000091
-            PF_MISMATCH_RATE: 0.001609
+            PF_INDEL_RATE: 0.000058
+            PF_MISMATCH_RATE: 0.001355
             PF_NOISE_READS: 0
-            PF_READS: 189435759
-            PF_READS_ALIGNED: 189364471
-            READS_ALIGNED_IN_PAIRS: 189293183
+            PF_READS: 133888213
+            PF_READS_ALIGNED: 133854672
+            READS_ALIGNED_IN_PAIRS: 133815200
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.499902
-            TOTAL_READS: 189435759
+            STRAND_BALANCE: 0.498548
+            TOTAL_READS: 133888213
           Second_of_pair:
             BAD_CYCLES: 0
             CATEGORY: SECOND_OF_PAIR
             LIBRARY: ~
             MEAN_READ_LENGTH: 101
             PCT_ADAPTER: 0
-            PCT_CHIMERAS: 0.002944
+            PCT_CHIMERAS: 0.001248
             PCT_PF_READS: 1
-            PCT_PF_READS_ALIGNED: 0.999266
-            PCT_READS_ALIGNED_IN_PAIRS: 0.999981
-            PF_ALIGNED_BASES: 9542097276
-            PF_HQ_ALIGNED_BASES: 9325711257
-            PF_HQ_ALIGNED_Q20_BASES: 9222567546
-            PF_HQ_ALIGNED_READS: 92475912
-            PF_HQ_ERROR_RATE: 0.001713
+            PCT_PF_READS_ALIGNED: 0.999508
+            PCT_READS_ALIGNED_IN_PAIRS: 0.999985
+            PF_ALIGNED_BASES: 6719068205
+            PF_HQ_ALIGNED_BASES: 6619875820
+            PF_HQ_ALIGNED_Q20_BASES: 6558483550
+            PF_HQ_ALIGNED_READS: 65598627
+            PF_HQ_ERROR_RATE: 0.001426
             PF_HQ_MEDIAN_MISMATCHES: 0
-            PF_INDEL_RATE: 0.000089
-            PF_MISMATCH_RATE: 0.001774
+            PF_INDEL_RATE: 0.000058
+            PF_MISMATCH_RATE: 0.001457
             PF_NOISE_READS: 0
-            PF_READS: 94714479
-            PF_READS_ALIGNED: 94644992
-            READS_ALIGNED_IN_PAIRS: 94643191
+            PF_READS: 66618317
+            PF_READS_ALIGNED: 66585516
+            READS_ALIGNED_IN_PAIRS: 66584525
             READ_GROUP: ~
             SAMPLE: ~
-            STRAND_BALANCE: 0.67023
-            TOTAL_READS: 94714479
+            STRAND_BALANCE: 0.706123
+            TOTAL_READS: 66618317
+      CollectMultipleMetricsInsertSize:
+        Header:
+          Data:
+            LIBRARY: ~
+            MAX_INSERT_SIZE: 241323042
+            MEAN_INSERT_SIZE: 247.47559
+            MEDIAN_ABSOLUTE_DEVIATION: 53
+            MEDIAN_INSERT_SIZE: 227
+            MIN_INSERT_SIZE: 2
+            PAIR_ORIENTATION: FR
+            READ_GROUP: ~
+            READ_PAIRS: 56701708
+            SAMPLE: ~
+            STANDARD_DEVIATION: 89.368891
+            WIDTH_OF_10_PERCENT: 23
+            WIDTH_OF_20_PERCENT: 43
+            WIDTH_OF_30_PERCENT: 65
+            WIDTH_OF_40_PERCENT: 85
+            WIDTH_OF_50_PERCENT: 107
+            WIDTH_OF_60_PERCENT: 129
+            WIDTH_OF_70_PERCENT: 157
+            WIDTH_OF_80_PERCENT: 195
+            WIDTH_OF_90_PERCENT: 287
+            WIDTH_OF_99_PERCENT: 621
       GenderCheck: PASS
       MarkDuplicates:
-        Fraction_duplicates: 0.140470296444986
+        Fraction_duplicates: 0.140471857402006
       VariantEval_All:
         CompOverlap_header:
           CompOverlap_data_all:
@@ -2667,12 +2744,12 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            compRate: 85.04
-            concordantRate: 98.51
-            nConcordant: 1284500
-            nEvalVariants: 1533271
-            nVariantsAtComp: 1303936
-            novelSites: 229335
+            compRate: 85.44
+            concordantRate: 98.45
+            nConcordant: 85289
+            nEvalVariants: 101395
+            nVariantsAtComp: 86631
+            novelSites: 14764
           CompOverlap_data_known:
             CompOverlap: CompOverlap
             CompRod: dbsnp
@@ -2680,10 +2757,10 @@
             JexlExpression: none
             Novelty: known
             compRate: 100.00
-            concordantRate: 98.51
-            nConcordant: 1284500
-            nEvalVariants: 1303936
-            nVariantsAtComp: 1303936
+            concordantRate: 98.45
+            nConcordant: 85289
+            nEvalVariants: 86631
+            nVariantsAtComp: 86631
             novelSites: 0
           CompOverlap_data_novel:
             CompOverlap: CompOverlap
@@ -2694,9 +2771,9 @@
             compRate: 0.00
             concordantRate: 0.00
             nConcordant: 0
-            nEvalVariants: 229335
+            nEvalVariants: 14764
             nVariantsAtComp: 0
-            novelSites: 229335
+            novelSites: 14764
         CountVariants_header:
           CountVariants_data_all:
             CompRod: dbsnp
@@ -2704,93 +2781,93 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            hetHomRatio: 0.66
-            heterozygosity: 1.94e-04
-            heterozygosityPerBp: 5153.00
-            indelRate: 6.08e-05
-            indelRatePerBp: 16453.00
-            insertionDeletionRatio: 0.81
-            nCalledLoci: 2435114
-            nComplex: 10302
-            nDeletions: 99832
-            nHets: 608805
+            hetHomRatio: 1.63
+            heterozygosity: 2.00e-05
+            heterozygosityPerBp: 49881.00
+            indelRate: 4.12e-06
+            indelRatePerBp: 243006.00
+            insertionDeletionRatio: 0.76
+            nCalledLoci: 136350
+            nComplex: 1406
+            nDeletions: 6529
+            nHets: 62898
             nHomDerived: 0
-            nHomRef: 414272
-            nHomVar: 924466
-            nInsertions: 80555
-            nMNPs: 18021
+            nHomRef: 34468
+            nHomVar: 38497
+            nInsertions: 4976
+            nMNPs: 1623
             nMixed: 0
-            nNoCalls: 487571
+            nNoCalls: 487
             nProcessedLoci: 3137454505
-            nRefLoci: 901843
-            nSNPs: 1324561
-            nSingletons: 526780
+            nRefLoci: 34955
+            nSNPs: 86861
+            nSingletons: 54225
             nSymbolic: 0
-            nVariantLoci: 1533271
-            variantRate: 0.00048870
-            variantRatePerBp: 2046.00000000
+            nVariantLoci: 101395
+            variantRate: 0.00003232
+            variantRatePerBp: 30942.00000000
           CountVariants_data_known:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            hetHomRatio: 0.59
-            heterozygosity: 1.54e-04
-            heterozygosityPerBp: 6498.00
-            indelRate: 3.66e-05
-            indelRatePerBp: 27347.00
-            insertionDeletionRatio: 0.96
-            nCalledLoci: 1982886
-            nComplex: 4681
-            nDeletions: 56080
-            nHets: 482767
+            hetHomRatio: 1.43
+            heterozygosity: 1.63e-05
+            heterozygosityPerBp: 61469.00
+            indelRate: 2.58e-06
+            indelRatePerBp: 387675.00
+            insertionDeletionRatio: 0.94
+            nCalledLoci: 113422
+            nComplex: 802
+            nDeletions: 3766
+            nHets: 51041
             nHomDerived: 0
-            nHomRef: 290478
-            nHomVar: 821169
-            nInsertions: 53966
-            nMNPs: 1109
+            nHomRef: 26465
+            nHomVar: 35590
+            nInsertions: 3525
+            nMNPs: 85
             nMixed: 0
-            nNoCalls: 388472
+            nNoCalls: 326
             nProcessedLoci: 3137454505
-            nRefLoci: 678950
-            nSNPs: 1188100
-            nSingletons: 439471
+            nRefLoci: 26791
+            nSNPs: 78453
+            nSingletons: 46077
             nSymbolic: 0
-            nVariantLoci: 1303936
-            variantRate: 0.00041560
-            variantRatePerBp: 2406.00000000
+            nVariantLoci: 86631
+            variantRate: 0.00002761
+            variantRatePerBp: 36216.00000000
           CountVariants_data_novel:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            hetHomRatio: 1.22
-            heterozygosity: 4.02e-05
-            heterozygosityPerBp: 24892.00
-            indelRate: 2.42e-05
-            indelRatePerBp: 41302.00
-            insertionDeletionRatio: 0.61
-            nCalledLoci: 452228
-            nComplex: 5621
-            nDeletions: 43752
-            nHets: 126038
+            hetHomRatio: 4.08
+            heterozygosity: 3.78e-06
+            heterozygosityPerBp: 264607.00
+            indelRate: 1.54e-06
+            indelRatePerBp: 651194.00
+            insertionDeletionRatio: 0.53
+            nCalledLoci: 22928
+            nComplex: 604
+            nDeletions: 2763
+            nHets: 11857
             nHomDerived: 0
-            nHomRef: 123794
-            nHomVar: 103297
-            nInsertions: 26589
-            nMNPs: 16912
+            nHomRef: 8003
+            nHomVar: 2907
+            nInsertions: 1451
+            nMNPs: 1538
             nMixed: 0
-            nNoCalls: 99099
+            nNoCalls: 161
             nProcessedLoci: 3137454505
-            nRefLoci: 222893
-            nSNPs: 136461
-            nSingletons: 87309
+            nRefLoci: 8164
+            nSNPs: 8408
+            nSingletons: 8148
             nSymbolic: 0
-            nVariantLoci: 229335
-            variantRate: 0.00007310
-            variantRatePerBp: 13680.00000000
+            nVariantLoci: 14764
+            variantRate: 0.00000471
+            variantRatePerBp: 212507.00000000
         IndelSummary_header:
           IndelSummary_data_all:
             CompRod: dbsnp
@@ -2798,93 +2875,93 @@
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: all
-            SNP_het_to_hom_ratio: 0.65
-            SNP_to_indel_ratio: 6.95
-            SNP_to_indel_ratio_for_singletons: 6.33
+            SNP_het_to_hom_ratio: 1.58
+            SNP_to_indel_ratio: 6.73
+            SNP_to_indel_ratio_for_singletons: 6.13
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 46.54
-            indel_het_to_hom_ratio: 0.75
-            indel_novelty_rate: 39.84
-            insertion_to_deletion_ratio: 0.78
-            insertion_to_deletion_ratio_for_large_indels: 0.46
-            n_SNPs: 1324561
+            gold_standard_matching_rate: 53.62
+            indel_het_to_hom_ratio: 2.05
+            indel_novelty_rate: 37.32
+            insertion_to_deletion_ratio: 0.72
+            insertion_to_deletion_ratio_for_large_indels: 0.43
+            n_SNPs: 86861
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 106919
-            n_indels: 190689
-            n_indels_matching_gold_standard: 88748
-            n_insertions: 83770
-            n_large_deletions: 7828
-            n_large_insertions: 3637
+            n_deletions: 7487
+            n_indels: 12911
+            n_indels_matching_gold_standard: 6923
+            n_insertions: 5424
+            n_large_deletions: 414
+            n_large_insertions: 176
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 75962
-            n_singleton_SNPs: 519607
-            n_singleton_indels: 82025
+            n_novel_indels: 4818
+            n_singleton_SNPs: 53143
+            n_singleton_indels: 8673
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 7.75
-            ratio_of_1_and_2_to_3_bp_insertions: 7.99
+            ratio_of_1_and_2_to_3_bp_deletions: 9.04
+            ratio_of_1_and_2_to_3_bp_insertions: 8.97
           IndelSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: known
-            SNP_het_to_hom_ratio: 0.59
-            SNP_to_indel_ratio: 10.36
-            SNP_to_indel_ratio_for_singletons: 10.14
+            SNP_het_to_hom_ratio: 1.42
+            SNP_to_indel_ratio: 9.69
+            SNP_to_indel_ratio_for_singletons: 9.27
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 60.60
-            indel_het_to_hom_ratio: 0.61
+            gold_standard_matching_rate: 69.58
+            indel_het_to_hom_ratio: 1.59
             indel_novelty_rate: 0.00
-            insertion_to_deletion_ratio: 0.94
-            insertion_to_deletion_ratio_for_large_indels: 0.59
-            n_SNPs: 1188100
+            insertion_to_deletion_ratio: 0.88
+            insertion_to_deletion_ratio_for_large_indels: 0.52
+            n_SNPs: 78453
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 59222
-            n_indels: 114727
-            n_indels_matching_gold_standard: 69521
-            n_insertions: 55505
-            n_large_deletions: 3248
-            n_large_insertions: 1920
+            n_deletions: 4304
+            n_indels: 8093
+            n_indels_matching_gold_standard: 5631
+            n_insertions: 3789
+            n_large_deletions: 168
+            n_large_insertions: 88
             n_multiallelic_indel_sites: 0
             n_novel_indels: 0
-            n_singleton_SNPs: 439139
-            n_singleton_indels: 43296
+            n_singleton_SNPs: 46023
+            n_singleton_indels: 4964
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 9.95
-            ratio_of_1_and_2_to_3_bp_insertions: 8.39
+            ratio_of_1_and_2_to_3_bp_deletions: 10.38
+            ratio_of_1_and_2_to_3_bp_insertions: 9.65
           IndelSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: novel
-            SNP_het_to_hom_ratio: 1.44
-            SNP_to_indel_ratio: 1.80
-            SNP_to_indel_ratio_for_singletons: 2.08
+            SNP_het_to_hom_ratio: 5.53
+            SNP_to_indel_ratio: 1.75
+            SNP_to_indel_ratio_for_singletons: 1.92
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 25.31
-            indel_het_to_hom_ratio: 1.04
+            gold_standard_matching_rate: 26.82
+            indel_het_to_hom_ratio: 3.34
             indel_novelty_rate: 100.00
-            insertion_to_deletion_ratio: 0.59
-            insertion_to_deletion_ratio_for_large_indels: 0.37
-            n_SNPs: 136461
+            insertion_to_deletion_ratio: 0.51
+            insertion_to_deletion_ratio_for_large_indels: 0.36
+            n_SNPs: 8408
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 47697
-            n_indels: 75962
-            n_indels_matching_gold_standard: 19227
-            n_insertions: 28265
-            n_large_deletions: 4580
-            n_large_insertions: 1717
+            n_deletions: 3183
+            n_indels: 4818
+            n_indels_matching_gold_standard: 1292
+            n_insertions: 1635
+            n_large_deletions: 246
+            n_large_insertions: 88
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 75962
-            n_singleton_SNPs: 80468
-            n_singleton_indels: 38729
+            n_novel_indels: 4818
+            n_singleton_SNPs: 7120
+            n_singleton_indels: 3709
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 5.79
-            ratio_of_1_and_2_to_3_bp_insertions: 7.20
+            ratio_of_1_and_2_to_3_bp_deletions: 7.49
+            ratio_of_1_and_2_to_3_bp_insertions: 7.50
         MultiallelicSummary_header:
           MultiallelicSummary_data_all:
             CompRod: dbsnp
@@ -2896,11 +2973,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 190689
+            nIndels: 12911
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 1324561
+            nSNPs: 86861
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -2917,11 +2994,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 114727
+            nIndels: 8093
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 1188100
+            nSNPs: 78453
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -2938,11 +3015,11 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 75962
+            nIndels: 4818
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 136461
+            nSNPs: 8408
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
@@ -2957,44 +3034,44 @@
             Novelty: all
             TiTvRatioStandard: 1.84
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 905334
+            nTi: 60848
             nTiDerived: 0
-            nTiInComp: 6961836
-            nTv: 419227
+            nTiInComp: 6963717
+            nTv: 26013
             nTvDerived: 0
-            nTvInComp: 3783205
+            nTvInComp: 3793557
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.16
+            tiTvRatio: 2.34
           TiTvVariantEvaluator_data_known:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            TiTvRatioStandard: 2.16
+            TiTvRatioStandard: 2.37
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 817618
+            nTi: 55326
             nTiDerived: 0
-            nTiInComp: 1214040
-            nTv: 370482
+            nTiInComp: 72291
+            nTv: 23127
             nTvDerived: 0
-            nTvInComp: 561962
+            nTvInComp: 30452
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.21
+            tiTvRatio: 2.39
           TiTvVariantEvaluator_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            TiTvRatioStandard: 1.78
+            TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 87716
+            nTi: 5522
             nTiDerived: 0
-            nTiInComp: 5747796
-            nTv: 48745
+            nTiInComp: 6891426
+            nTv: 2886
             nTvDerived: 0
-            nTvInComp: 3221243
+            nTvInComp: 3763105
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 1.80
+            tiTvRatio: 1.91
         ValidationReport_header:
           ValidationReport_data_all:
             CompFiltered: 0
@@ -3003,23 +3080,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 678950
-            CompPolyEvalNoCall: 11815592
-            CompPolyEvalPoly: 1303936
+            CompPolyEvalMono: 26791
+            CompPolyEvalNoCall: 13819706
+            CompPolyEvalPoly: 86631
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 12494542
+            FN: 13846497
             FP: 0
             JexlExpression: none
             Novelty: all
             PPV: 100.00
             TN: 0
-            TP: 1303936
+            TP: 86631
             ValidationReport: ValidationReport
-            nComp: 13798478
+            nComp: 13933128
             nDifferentAlleleSites: 0
-            sensitivity: 9.45
+            sensitivity: 0.62
             specificity: 100.00
           ValidationReport_data_known:
             CompFiltered: 0
@@ -3028,23 +3105,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 678950
-            CompPolyEvalNoCall: 11833
-            CompPolyEvalPoly: 1303936
+            CompPolyEvalMono: 26791
+            CompPolyEvalNoCall: 688
+            CompPolyEvalPoly: 86631
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 690783
+            FN: 27479
             FP: 0
             JexlExpression: none
             Novelty: known
             PPV: 100.00
             TN: 0
-            TP: 1303936
+            TP: 86631
             ValidationReport: ValidationReport
-            nComp: 1994719
+            nComp: 114110
             nDifferentAlleleSites: 0
-            sensitivity: 65.37
+            sensitivity: 75.92
             specificity: 100.00
           ValidationReport_data_novel:
             CompFiltered: 0
@@ -3054,12 +3131,12 @@
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
             CompPolyEvalMono: 0
-            CompPolyEvalNoCall: 11803759
+            CompPolyEvalNoCall: 13819018
             CompPolyEvalPoly: 0
             CompRod: dbsnp
             EvalRod: eval
             FDR: NaN
-            FN: 11803759
+            FN: 13819018
             FP: 0
             JexlExpression: none
             Novelty: novel
@@ -3067,7 +3144,7 @@
             TN: 0
             TP: 0
             ValidationReport: ValidationReport
-            nComp: 11803759
+            nComp: 13819018
             nDifferentAlleleSites: 0
             sensitivity: 0.00
             specificity: 100.00
@@ -3075,65 +3152,65 @@
           VariantSummary_data_all:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 116737.0
-            IndelNoveltyRate: 39.80
+            IndelDPPerSample: 11695.0
+            IndelNoveltyRate: 37.30
             JexlExpression: none
             Novelty: all
-            SNPDPPerSample: 973700.0
-            SNPNoveltyRate: 10.30
-            SVNoveltyRate: 90.71
-            TiTvRatio: 2.16
-            TiTvRatioPerSample: 2.16
+            SNPDPPerSample: 85941.0
+            SNPNoveltyRate: 9.68
+            SVNoveltyRate: 100.00
+            TiTvRatio: 2.34
+            TiTvRatioPerSample: 2.34
             VariantSummary: VariantSummary
-            nIndels: 190549
-            nIndelsPerSample: 190549
+            nIndels: 12908
+            nIndelsPerSample: 12908
             nProcessedLoci: 3137454505
-            nSNPs: 1324561
-            nSNPsPerSample: 1324561
-            nSVs: 140
-            nSVsPerSample: 140
+            nSNPs: 86861
+            nSNPsPerSample: 86861
+            nSVs: 3
+            nSVsPerSample: 3
             nSamples: 1
           VariantSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 72977.0
+            IndelDPPerSample: 7718.0
             IndelNoveltyRate: 0.00
             JexlExpression: none
             Novelty: known
-            SNPDPPerSample: 893329.0
+            SNPDPPerSample: 77839.0
             SNPNoveltyRate: 0.00
-            SVNoveltyRate: 0.00
-            TiTvRatio: 2.21
-            TiTvRatioPerSample: 2.21
+            SVNoveltyRate: NA
+            TiTvRatio: 2.39
+            TiTvRatioPerSample: 2.39
             VariantSummary: VariantSummary
-            nIndels: 114714
-            nIndelsPerSample: 114714
+            nIndels: 8093
+            nIndelsPerSample: 8093
             nProcessedLoci: 3137454505
-            nSNPs: 1188100
-            nSNPsPerSample: 1188100
-            nSVs: 13
-            nSVsPerSample: 13
+            nSNPs: 78453
+            nSNPsPerSample: 78453
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 43760.0
+            IndelDPPerSample: 3977.0
             IndelNoveltyRate: 100.00
             JexlExpression: none
             Novelty: novel
-            SNPDPPerSample: 80371.0
+            SNPDPPerSample: 8102.0
             SNPNoveltyRate: 100.00
             SVNoveltyRate: 100.00
-            TiTvRatio: 1.80
-            TiTvRatioPerSample: 1.80
+            TiTvRatio: 1.91
+            TiTvRatioPerSample: 1.91
             VariantSummary: VariantSummary
-            nIndels: 75835
-            nIndelsPerSample: 75835
+            nIndels: 4815
+            nIndelsPerSample: 4815
             nProcessedLoci: 3137454505
-            nSNPs: 136461
-            nSNPsPerSample: 136461
-            nSVs: 127
-            nSVsPerSample: 127
+            nSNPs: 8408
+            nSNPsPerSample: 8408
+            nSVs: 3
+            nSVsPerSample: 3
             nSamples: 1
       VariantEval_Exome:
         CompOverlap_header:
@@ -3143,12 +3220,12 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            compRate: 49.29
-            concordantRate: 94.53
-            nConcordant: 9377
-            nEvalVariants: 20127
-            nVariantsAtComp: 9920
-            novelSites: 10207
+            compRate: 50.00
+            concordantRate: 100.00
+            nConcordant: 1
+            nEvalVariants: 2
+            nVariantsAtComp: 1
+            novelSites: 1
           CompOverlap_data_known:
             CompOverlap: CompOverlap
             CompRod: dbsnp
@@ -3156,10 +3233,10 @@
             JexlExpression: none
             Novelty: known
             compRate: 100.00
-            concordantRate: 94.53
-            nConcordant: 9377
-            nEvalVariants: 9920
-            nVariantsAtComp: 9920
+            concordantRate: 100.00
+            nConcordant: 1
+            nEvalVariants: 1
+            nVariantsAtComp: 1
             novelSites: 0
           CompOverlap_data_novel:
             CompOverlap: CompOverlap
@@ -3170,9 +3247,9 @@
             compRate: 0.00
             concordantRate: 0.00
             nConcordant: 0
-            nEvalVariants: 10207
+            nEvalVariants: 1
             nVariantsAtComp: 0
-            novelSites: 10207
+            novelSites: 1
         CountVariants_header:
           CountVariants_data_all:
             CompRod: dbsnp
@@ -3180,93 +3257,93 @@
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            hetHomRatio: 3.35
-            heterozygosity: 4.94e-06
-            heterozygosityPerBp: 202442.00
-            indelRate: 1.31e-06
-            indelRatePerBp: 763370.00
-            insertionDeletionRatio: 0.55
-            nCalledLoci: 32716
-            nComplex: 587
-            nDeletions: 2269
-            nHets: 15498
+            hetHomRatio: 1.00
+            heterozygosity: 3.19e-10
+            heterozygosityPerBp: 3137454505.00
+            indelRate: 6.37e-10
+            indelRatePerBp: 1568727252.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 2
+            nComplex: 0
+            nDeletions: 2
+            nHets: 1
             nHomDerived: 0
-            nHomRef: 11461
-            nHomVar: 4629
-            nInsertions: 1254
-            nMNPs: 1943
+            nHomRef: 0
+            nHomVar: 1
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 1128
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 12589
-            nSNPs: 14074
-            nSingletons: 12633
+            nRefLoci: 0
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 20127
-            variantRate: 0.00000642
-            variantRatePerBp: 155882.00000000
+            nVariantLoci: 2
+            variantRate: 0.00000000
+            variantRatePerBp: 1568727252.00000000
           CountVariants_data_known:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            hetHomRatio: 3.12
-            heterozygosity: 2.39e-06
-            heterozygosityPerBp: 417770.00
-            indelRate: 5.34e-07
-            indelRatePerBp: 1871989.00
-            insertionDeletionRatio: 0.77
-            nCalledLoci: 15954
-            nComplex: 211
-            nDeletions: 827
-            nHets: 7510
+            hetHomRatio: 0.00
+            heterozygosity: 0.00e+00
+            heterozygosityPerBp: 0.00
+            indelRate: 3.19e-10
+            indelRatePerBp: 3137454505.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 1
+            nComplex: 0
+            nDeletions: 1
+            nHets: 0
             nHomDerived: 0
-            nHomRef: 5658
-            nHomVar: 2410
-            nInsertions: 638
-            nMNPs: 98
+            nHomRef: 0
+            nHomVar: 1
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 376
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 6034
-            nSNPs: 8146
-            nSingletons: 6414
+            nRefLoci: 0
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 9920
-            variantRate: 0.00000316
-            variantRatePerBp: 316275.00000000
+            nVariantLoci: 1
+            variantRate: 0.00000000
+            variantRatePerBp: 3137454505.00000000
           CountVariants_data_novel:
             CompRod: dbsnp
             CountVariants: CountVariants
             EvalRod: eval
             JexlExpression: none
             Novelty: novel
-            hetHomRatio: 3.60
-            heterozygosity: 2.55e-06
-            heterozygosityPerBp: 392770.00
-            indelRate: 7.76e-07
-            indelRatePerBp: 1289011.00
-            insertionDeletionRatio: 0.43
-            nCalledLoci: 16762
-            nComplex: 376
-            nDeletions: 1442
-            nHets: 7988
+            hetHomRatio: 1.00
+            heterozygosity: 3.19e-10
+            heterozygosityPerBp: 3137454505.00
+            indelRate: 3.19e-10
+            indelRatePerBp: 3137454505.00
+            insertionDeletionRatio: 0.00
+            nCalledLoci: 1
+            nComplex: 0
+            nDeletions: 1
+            nHets: 1
             nHomDerived: 0
-            nHomRef: 5803
-            nHomVar: 2219
-            nInsertions: 616
-            nMNPs: 1845
+            nHomRef: 0
+            nHomVar: 0
+            nInsertions: 0
+            nMNPs: 0
             nMixed: 0
-            nNoCalls: 752
+            nNoCalls: 0
             nProcessedLoci: 3137454505
-            nRefLoci: 6555
-            nSNPs: 5928
-            nSingletons: 6219
+            nRefLoci: 0
+            nSNPs: 0
+            nSingletons: 0
             nSymbolic: 0
-            nVariantLoci: 10207
-            variantRate: 0.00000325
-            variantRatePerBp: 307382.00000000
+            nVariantLoci: 1
+            variantRate: 0.00000000
+            variantRatePerBp: 3137454505.00000000
         IndelSummary_header:
           IndelSummary_data_all:
             CompRod: dbsnp
@@ -3274,93 +3351,93 @@
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: all
-            SNP_het_to_hom_ratio: 4.10
-            SNP_to_indel_ratio: 3.42
-            SNP_to_indel_ratio_for_singletons: 3.95
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: 0.00
+            SNP_to_indel_ratio_for_singletons: 0.00
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 30.61
-            indel_het_to_hom_ratio: 2.30
-            indel_novelty_rate: 59.22
-            insertion_to_deletion_ratio: 0.56
-            insertion_to_deletion_ratio_for_large_indels: 0.29
-            n_SNPs: 14074
+            gold_standard_matching_rate: 100.00
+            indel_het_to_hom_ratio: 1.00
+            indel_novelty_rate: 50.00
+            insertion_to_deletion_ratio: 0.00
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 2636
-            n_indels: 4110
-            n_indels_matching_gold_standard: 1258
-            n_insertions: 1474
-            n_large_deletions: 326
-            n_large_insertions: 96
+            n_deletions: 2
+            n_indels: 2
+            n_indels_matching_gold_standard: 2
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 2434
-            n_singleton_SNPs: 11317
-            n_singleton_indels: 2865
+            n_novel_indels: 1
+            n_singleton_SNPs: 0
+            n_singleton_indels: 1
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 4.26
-            ratio_of_1_and_2_to_3_bp_insertions: 4.35
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
           IndelSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: known
-            SNP_het_to_hom_ratio: 3.56
-            SNP_to_indel_ratio: 4.86
-            SNP_to_indel_ratio_for_singletons: 5.80
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: 0.00
+            SNP_to_indel_ratio_for_singletons: NA
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 48.63
-            indel_het_to_hom_ratio: 1.89
+            gold_standard_matching_rate: 100.00
+            indel_het_to_hom_ratio: 0.00
             indel_novelty_rate: 0.00
-            insertion_to_deletion_ratio: 0.77
-            insertion_to_deletion_ratio_for_large_indels: 0.44
-            n_SNPs: 8146
+            insertion_to_deletion_ratio: 0.00
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 949
-            n_indels: 1676
-            n_indels_matching_gold_standard: 815
-            n_insertions: 727
-            n_large_deletions: 71
-            n_large_insertions: 31
+            n_deletions: 1
+            n_indels: 1
+            n_indels_matching_gold_standard: 1
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
             n_novel_indels: 0
-            n_singleton_SNPs: 6359
-            n_singleton_indels: 1096
+            n_singleton_SNPs: 0
+            n_singleton_indels: 0
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 5.01
-            ratio_of_1_and_2_to_3_bp_insertions: 4.63
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
           IndelSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
             IndelSummary: IndelSummary
             JexlExpression: none
             Novelty: novel
-            SNP_het_to_hom_ratio: 5.11
-            SNP_to_indel_ratio: 2.44
-            SNP_to_indel_ratio_for_singletons: 2.80
+            SNP_het_to_hom_ratio: NA
+            SNP_to_indel_ratio: 0.00
+            SNP_to_indel_ratio_for_singletons: 0.00
             frameshift_rate_for_coding_indels: NA
-            gold_standard_matching_rate: 18.20
-            indel_het_to_hom_ratio: 2.66
+            gold_standard_matching_rate: 100.00
+            indel_het_to_hom_ratio: NA
             indel_novelty_rate: 100.00
-            insertion_to_deletion_ratio: 0.44
-            insertion_to_deletion_ratio_for_large_indels: 0.25
-            n_SNPs: 5928
+            insertion_to_deletion_ratio: 0.00
+            insertion_to_deletion_ratio_for_large_indels: NA
+            n_SNPs: 0
             n_coding_indels_frameshifting: 0
             n_coding_indels_in_frame: 0
-            n_deletions: 1687
-            n_indels: 2434
-            n_indels_matching_gold_standard: 443
-            n_insertions: 747
-            n_large_deletions: 255
-            n_large_insertions: 65
+            n_deletions: 1
+            n_indels: 1
+            n_indels_matching_gold_standard: 1
+            n_insertions: 0
+            n_large_deletions: 0
+            n_large_insertions: 0
             n_multiallelic_indel_sites: 0
-            n_novel_indels: 2434
-            n_singleton_SNPs: 4958
-            n_singleton_indels: 1769
+            n_novel_indels: 1
+            n_singleton_SNPs: 0
+            n_singleton_indels: 1
             percent_of_sites_with_more_than_2_alleles: 0.00
-            ratio_of_1_and_2_to_3_bp_deletions: 3.87
-            ratio_of_1_and_2_to_3_bp_insertions: 4.09
+            ratio_of_1_and_2_to_3_bp_deletions: NA
+            ratio_of_1_and_2_to_3_bp_insertions: NA
         MultiallelicSummary_header:
           MultiallelicSummary_data_all:
             CompRod: dbsnp
@@ -3372,17 +3449,17 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 4110
+            nIndels: 2
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 14074
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
             variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiSnpRatio: NaN
           MultiallelicSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
@@ -3393,17 +3470,17 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 1676
+            nIndels: 1
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 8146
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
             variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiSnpRatio: NaN
           MultiallelicSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
@@ -3414,48 +3491,48 @@
             TiTvRatio: NaN
             knownSNPsComplete: 0
             knownSNPsPartial: 0
-            nIndels: 2434
+            nIndels: 1
             nMultiIndels: 0
             nMultiSNPs: 0
             nProcessedLoci: 3137454505
-            nSNPs: 5928
+            nSNPs: 0
             nTi: 0
             nTv: 0
             processedMultiIndelRatio: 0.00000
             processedMultiSnpRatio: 0.00000
             variantMultiIndelRatio: 0.000
-            variantMultiSnpRatio: 0.000
+            variantMultiSnpRatio: NaN
         TiTvVariantEvaluator_header:
           TiTvVariantEvaluator_data_all:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: all
-            TiTvRatioStandard: 1.84
+            TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 9481
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 6966189
-            nTv: 4593
+            nTiInComp: 6964146
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 3796187
+            nTvInComp: 3795520
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.06
+            tiTvRatio: 0.00
           TiTvVariantEvaluator_data_known:
             CompRod: dbsnp
             EvalRod: eval
             JexlExpression: none
             Novelty: known
-            TiTvRatioStandard: 2.31
+            TiTvRatioStandard: 0.00
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 5595
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 9314
-            nTv: 2551
+            nTiInComp: 0
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 4035
+            nTvInComp: 0
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 2.19
+            tiTvRatio: 0.00
           TiTvVariantEvaluator_data_novel:
             CompRod: dbsnp
             EvalRod: eval
@@ -3463,14 +3540,14 @@
             Novelty: novel
             TiTvRatioStandard: 1.83
             TiTvVariantEvaluator: TiTvVariantEvaluator
-            nTi: 3886
+            nTi: 0
             nTiDerived: 0
-            nTiInComp: 6956875
-            nTv: 2042
+            nTiInComp: 6964146
+            nTv: 0
             nTvDerived: 0
-            nTvInComp: 3792152
+            nTvInComp: 3795520
             tiTvDerivedRatio: 0.00
-            tiTvRatio: 1.90
+            tiTvRatio: 0.00
         ValidationReport_header:
           ValidationReport_data_all:
             CompFiltered: 0
@@ -3479,23 +3556,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 6034
-            CompPolyEvalNoCall: 13927688
-            CompPolyEvalPoly: 9920
+            CompPolyEvalMono: 0
+            CompPolyEvalNoCall: 13941024
+            CompPolyEvalPoly: 1
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 13933722
+            FN: 13941024
             FP: 0
             JexlExpression: none
             Novelty: all
             PPV: 100.00
             TN: 0
-            TP: 9920
+            TP: 1
             ValidationReport: ValidationReport
-            nComp: 13943642
+            nComp: 13941025
             nDifferentAlleleSites: 0
-            sensitivity: 0.07
+            sensitivity: 0.00
             specificity: 100.00
           ValidationReport_data_known:
             CompFiltered: 0
@@ -3504,23 +3581,23 @@
             CompMonoEvalNoCall: 0
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
-            CompPolyEvalMono: 6034
-            CompPolyEvalNoCall: 272
-            CompPolyEvalPoly: 9920
+            CompPolyEvalMono: 0
+            CompPolyEvalNoCall: 0
+            CompPolyEvalPoly: 1
             CompRod: dbsnp
             EvalRod: eval
             FDR: 0.00
-            FN: 6306
+            FN: 0
             FP: 0
             JexlExpression: none
             Novelty: known
             PPV: 100.00
             TN: 0
-            TP: 9920
+            TP: 1
             ValidationReport: ValidationReport
-            nComp: 16226
+            nComp: 1
             nDifferentAlleleSites: 0
-            sensitivity: 61.14
+            sensitivity: 100.00
             specificity: 100.00
           ValidationReport_data_novel:
             CompFiltered: 0
@@ -3530,12 +3607,12 @@
             CompMonoEvalPoly: 0
             CompPolyEvalFiltered: 0
             CompPolyEvalMono: 0
-            CompPolyEvalNoCall: 13927416
+            CompPolyEvalNoCall: 13941024
             CompPolyEvalPoly: 0
             CompRod: dbsnp
             EvalRod: eval
             FDR: NaN
-            FN: 13927416
+            FN: 13941024
             FP: 0
             JexlExpression: none
             Novelty: novel
@@ -3543,7 +3620,7 @@
             TN: 0
             TP: 0
             ValidationReport: ValidationReport
-            nComp: 13927416
+            nComp: 13941024
             nDifferentAlleleSites: 0
             sensitivity: 0.00
             specificity: 100.00
@@ -3551,64 +3628,64 @@
           VariantSummary_data_all:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 3266.0
-            IndelNoveltyRate: 58.92
+            IndelDPPerSample: 2.0
+            IndelNoveltyRate: 50.00
             JexlExpression: none
             Novelty: all
-            SNPDPPerSample: 13023.0
-            SNPNoveltyRate: 42.12
-            SVNoveltyRate: 100.00
-            TiTvRatio: 2.06
-            TiTvRatioPerSample: 2.06
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
+            SVNoveltyRate: NA
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 4080
-            nIndelsPerSample: 4080
+            nIndels: 2
+            nIndelsPerSample: 2
             nProcessedLoci: 3137454505
-            nSNPs: 14074
-            nSNPsPerSample: 14074
-            nSVs: 30
-            nSVsPerSample: 30
+            nSNPs: 0
+            nSNPsPerSample: 0
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_known:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 1410.0
+            IndelDPPerSample: 1.0
             IndelNoveltyRate: 0.00
             JexlExpression: none
             Novelty: known
-            SNPDPPerSample: 7833.0
-            SNPNoveltyRate: 0.00
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
             SVNoveltyRate: NA
-            TiTvRatio: 2.19
-            TiTvRatioPerSample: 2.19
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 1676
-            nIndelsPerSample: 1676
+            nIndels: 1
+            nIndelsPerSample: 1
             nProcessedLoci: 3137454505
-            nSNPs: 8146
-            nSNPsPerSample: 8146
+            nSNPs: 0
+            nSNPsPerSample: 0
             nSVs: 0
             nSVsPerSample: 0
             nSamples: 1
           VariantSummary_data_novel:
             CompRod: dbsnp
             EvalRod: eval
-            IndelDPPerSample: 1856.0
+            IndelDPPerSample: 1.0
             IndelNoveltyRate: 100.00
             JexlExpression: none
             Novelty: novel
-            SNPDPPerSample: 5190.0
-            SNPNoveltyRate: 100.00
-            SVNoveltyRate: 100.00
-            TiTvRatio: 1.90
-            TiTvRatioPerSample: 1.90
+            SNPDPPerSample: 0.0
+            SNPNoveltyRate: NA
+            SVNoveltyRate: NA
+            TiTvRatio: 0.00
+            TiTvRatioPerSample: 0.00
             VariantSummary: VariantSummary
-            nIndels: 2404
-            nIndelsPerSample: 2404
+            nIndels: 1
+            nIndelsPerSample: 1
             nProcessedLoci: 3137454505
-            nSNPs: 5928
-            nSNPsPerSample: 5928
-            nSVs: 30
-            nSVsPerSample: 30
+            nSNPs: 0
+            nSNPsPerSample: 0
+            nSVs: 0
+            nSVsPerSample: 0
             nSamples: 1
 

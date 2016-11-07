@@ -19,7 +19,7 @@ def prepare_run(segments, force=False):
     outdata_dir = segments['config']['outDataDir']
     qcped_path = segments['family']['PedigreeFileAnalysis']['Path']
     fam_key = segments['config']['familyID']
-    customer = segments['family']['InstanceTag'][0]
+    customer = segments['pedigree']['customer']
     case_name = "{}-{}".format(customer, fam_key)
     meta_output = build_meta(case_name, segments['family'], qcped_path)
     write_meta(meta_output, outdata_dir)

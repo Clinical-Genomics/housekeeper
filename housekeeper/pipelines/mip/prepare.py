@@ -68,7 +68,7 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids,
     log.debug("parse QC metrics YAML: %s", qcmetrics_path)
     with open(qcmetrics_path, 'r') as stream:
         qc_data = yaml.load(stream)
-        qc_rootkey = qc_data.keys()[0]
+        qc_rootkey = 'sample' if 'sample' in qc_data else qc_data.keys()[0]
 
     for sample_id, mapped_data in qc_samples.items():
         qc_data[qc_rootkey][sample_id]['MappedReads'] = mapped_data.get('mapped')
