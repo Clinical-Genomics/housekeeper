@@ -32,12 +32,13 @@ class SampleRunLink(Model):
 
     """Link between UniqueSample and AnalysisRun."""
 
-    __table_args__ = (UniqueConstraint('sample_id', 'run_id',
-                                       name='_sample_run_uc'),)
+    __table_args__ = (
+        UniqueConstraint('sample_id', 'run_id', name='_sample_run_uc'),
+    )
 
     id = Column(types.Integer, primary_key=True)
-    sample_id = Column(ForeignKey('sample.id'))
-    run_id = Column(ForeignKey('analysis_run.id'))
+    sample_id = Column(ForeignKey('sample.id'), nullable=False)
+    run_id = Column(ForeignKey('analysis_run.id'), nullable=False)
 
 
 class Sample(Model):
@@ -51,18 +52,23 @@ class Sample(Model):
 
     created_at = Column(types.DateTime, default=datetime.now)
 
-    received_at = Column(types.DateTime, nullable=False)
+    received_at = Column(types.DateTime)
     sequenced_at = Column(types.DateTime)
     confirmed_at = Column(types.DateTime)
 
     assets = orm.relationship('Asset', backref='sample')
+    runs = orm.relationship('AnalysisRun', secondary='sample_run_link',
+                            back_populates='samples')
 
 
 class Case(Model):
+
     """Store a permanent reference to a case."""
 
     id = Column(types.Integer, primary_key=True)
-    name = Column(types.String(128), unique=True)
+    name = Column(types.String(128), unique=True, nullable=False)
+    customer = Column(types.String(32), nullable=False)
+    family_id = Column(types.String(128), nullable=False)
     created_at = Column(types.DateTime, default=datetime.now)
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
@@ -75,15 +81,19 @@ class Case(Model):
 
 
 class AnalysisRun(Model):
+
     """Store information about a specific analysis run."""
 
-    __table_args__ = (UniqueConstraint('case_id', 'analyzed_at',
-                                       name='_uc_analysis_analyzed_at'),)
+    __table_args__ = (
+        UniqueConstraint('case_id', 'analyzed_at', name='_uc_case_analyzed'),
+    )
 
     id = Column(types.Integer, primary_key=True)
     created_at = Column(types.DateTime, default=datetime.now)
     pipeline = Column(types.Enum(*PIPELINES))
     pipeline_version = Column(types.String(32))
+    # keep track of a date if the cases is requested to be rerun
+    requested_at = Column(types.DateTime)
     analyzed_at = Column(types.DateTime)
     compiled_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
@@ -96,8 +106,8 @@ class AnalysisRun(Model):
     case_id = Column(ForeignKey('case.id'), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='run')
     archives = orm.relationship('Archive', cascade='all,delete', backref='run')
-    samples = orm.relationship('Sample', secondary='SampleRunLink',
-                               cascade='all,delete', backref='runs')
+    samples = orm.relationship('Sample', secondary='sample_run_link',
+                               back_populates='runs')
 
     @property
     def cleanup_in(self):
@@ -108,7 +118,7 @@ class AnalysisRun(Model):
     @property
     def sample_map(self):
         """Return dict of samples."""
-        return {sample.name: sample for sample in self.samples}
+        return {sample.lims_id: sample for sample in self.samples}
 
     @property
     def analysis_date(self):
@@ -126,6 +136,7 @@ class AnalysisRun(Model):
 
 
 class Asset(Model):
+
     """Asset/file belonging to an analysis."""
 
     id = Column(types.Integer, primary_key=True)
@@ -144,6 +155,7 @@ class Asset(Model):
 
 
 class Archive(Model):
+
     """Backup belonging to an analysis."""
 
     id = Column(types.Integer, primary_key=True)

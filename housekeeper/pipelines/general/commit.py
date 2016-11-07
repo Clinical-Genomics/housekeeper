@@ -30,7 +30,18 @@ def analysis(manager, root_path, case, run):
     if run_root.isdir():
         raise AnalysisConflictError("'{}' analysis run output exists"
                                     .format(run_root))
-    run_root.makedirs_p()
+
+    for sample in run.samples:
+        existing_sample = api.sample(sample.lims_id)
+        if existing_sample:
+            log.debug("found existing sample - using that: %s", sample.lims_id)
+            run.samples.remove(sample)
+            run.samples.append(existing_sample)
+            for asset in run.assets:
+                if asset.sample and asset.sample == sample:
+                    asset.sample = existing_sample
+            # lift the new sample skeleton from the session
+            manager.expunge(sample)
 
     for asset in run.assets:
         filename = asset.basename()
@@ -42,6 +53,8 @@ def analysis(manager, root_path, case, run):
     new_case.runs.append(run)
     manager.add_commit(new_case)
 
+    # perform linking to the new structure
+    run_root.makedirs_p()
     try:
         for asset in run.assets:
             log.debug("link asset: %s -> %s", asset.original_path, asset.path)

@@ -53,9 +53,9 @@ def samples():
     return sample_query
 
 
-def sample(name):
+def sample(lims_id):
     """Get sample from the database."""
-    sample_obj = Sample.query.filter_by(name=name).first()
+    sample_obj = Sample.query.filter_by(lims_id=lims_id).first()
     return sample_obj
 
 

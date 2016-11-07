@@ -68,7 +68,8 @@ def add(context, force, yes, replace, references, pipeline, config):
     try:
         commit_analysis(manager, context.obj['root'], **records)
         click.echo("added new analysis: {}".format(case_name))
-        sample_ids = ', '.join(sample.name for sample in records['run'].samples)
+        sample_ids = ', '.join(sample.lims_id for sample in
+                               records['run'].samples)
         click.echo("including samples: {}".format(sample_ids))
     except exc.AnalysisConflictError:
         click.echo("analysis output not removed: {}".format(case_name))
