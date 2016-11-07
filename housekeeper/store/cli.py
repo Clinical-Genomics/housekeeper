@@ -13,6 +13,8 @@ from .utils import get_rundir
 from . import api, Asset, AnalysisRun, Sample
 
 STATUSES = ['analyzed', 'compiled', 'delivered', 'archived', 'cleanedup']
+SAMPLE_STATUSES = ['received', 'sequenced', 'confirmed']
+
 log = logging.getLogger(__name__)
 
 
@@ -224,16 +226,23 @@ def migrate(context, yes, only_db, new_root):
 
 
 @click.command()
+@click.option('-s', '--sample-status', type=click.Choice(SAMPLE_STATUSES))
+@click.option('-r', '--run-status', type=click.Choice(STATUSES))
 @click.option('-d', '--date', help="date of a particular run")
-@click.argument('case_name')
-@click.argument('status_type', type=click.Choice(STATUSES))
+@click.argument('identifier')
 @click.pass_context
-def status(context, date, case_name, status_type):
-    """Clean up files for an analysis."""
+def status(context, date, sample_status, run_status, identifier):
+    """Mark dates for resources."""
     manager = api.manager(context.obj['database'])
-    run_obj = run_orabort(context, case_name, date)
+    if sample_status:
+        model_obj = api.sample(identifier)
+        status_type = sample_status
+    elif run_status:
+        model_obj = run_orabort(context, identifier, date)
+        status_type = run_status
+
     status_field = "{}_at".format(status_type)
-    setattr(run_obj, status_field, datetime.datetime.now())
+    setattr(model_obj, status_field, datetime.datetime.now())
     manager.commit()
 
 

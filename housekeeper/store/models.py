@@ -28,6 +28,36 @@ class JsonModel(alchy.ModelBase):
 Model = alchy.make_declarative_base(Base=JsonModel)
 
 
+class SampleRunLink(Model):
+
+    """Link between UniqueSample and AnalysisRun."""
+
+    __table_args__ = (UniqueConstraint('sample_id', 'run_id',
+                                       name='_sample_run_uc'),)
+
+    id = Column(types.Integer, primary_key=True)
+    sample_id = Column(ForeignKey('sample.id'))
+    run_id = Column(ForeignKey('analysis_run.id'))
+
+
+class Sample(Model):
+
+    """Store unique reference to a sample."""
+
+    id = Column(types.Integer, primary_key=True)
+    lims_id = Column(types.String(32), nullable=False, unique=True)
+    customer = Column(types.String(32), nullable=False)
+    family_id = Column(types.String(128), nullable=False)
+
+    created_at = Column(types.DateTime, default=datetime.now)
+
+    received_at = Column(types.DateTime, nullable=False)
+    sequenced_at = Column(types.DateTime)
+    confirmed_at = Column(types.DateTime)
+
+    assets = orm.relationship('Asset', backref='sample')
+
+
 class Case(Model):
     """Store a permanent reference to a case."""
 
@@ -60,11 +90,14 @@ class AnalysisRun(Model):
     archived_at = Column(types.DateTime)
     cleanedup_at = Column(types.DateTime)
     will_cleanup_at = Column(types.DateTime)
+    # store dates when added to various downstream apps
+    added_dates = Column(types.Text)
 
-    case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
+    case_id = Column(ForeignKey('case.id'), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='run')
     archives = orm.relationship('Archive', cascade='all,delete', backref='run')
-    samples = orm.relationship('Sample', cascade='all,delete', backref='run')
+    samples = orm.relationship('Sample', secondary='SampleRunLink',
+                               cascade='all,delete', backref='runs')
 
     @property
     def cleanup_in(self):
@@ -92,20 +125,6 @@ class AnalysisRun(Model):
         return analysis_dict
 
 
-class Sample(Model):
-    """Sample record."""
-
-    __table_args__ = (UniqueConstraint('name', 'run_id',
-                                       name='_uc_name_run_id'),)
-
-    id = Column(types.Integer, primary_key=True)
-    name = Column(types.String(32))
-
-    run_id = Column(types.Integer, ForeignKey('analysis_run.id'),
-                    nullable=False)
-    assets = orm.relationship('Asset', backref='sample')
-
-
 class Asset(Model):
     """Asset/file belonging to an analysis."""
 
@@ -117,9 +136,8 @@ class Asset(Model):
     is_local = Column(types.Boolean, default=True)
     checksum = Column(types.String(128))
 
-    run_id = Column(types.Integer, ForeignKey('analysis_run.id'),
-                    nullable=False)
-    sample_id = Column(types.Integer, ForeignKey('sample.id'))
+    run_id = Column(ForeignKey('analysis_run.id'), nullable=False)
+    sample_id = Column(ForeignKey('sample.id'))
 
     def basename(self):
         return path(self.original_path).basename()
@@ -133,8 +151,7 @@ class Archive(Model):
     archived_at = Column(types.DateTime)
     archive_type = Column(types.Enum(*ARCHIVE_TYPES))
 
-    run_id = Column(ForeignKey('analysis_run.id'),
-                    nullable=False)
+    run_id = Column(ForeignKey('analysis_run.id'), nullable=False)
 
     def basename(self):
         return path(self.original_path).basename()

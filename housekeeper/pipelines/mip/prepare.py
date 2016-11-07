@@ -89,9 +89,9 @@ def total_mapped(stream):
     total = 0
     mapped = 0
     for row in data:
-        total += float(row.get('raw total sequences',
-                               row['raw_total_sequences']))
-        mapped += float(row.get('reads mapped', row['reads_mapped']))
+        total += float(row.get('raw total sequences') or
+                       row['raw_total_sequences'])
+        mapped += float(row.get('reads mapped') or row['reads_mapped'])
     return {'mapped': mapped, 'total': total, 'percentage': mapped / total}
 
 
