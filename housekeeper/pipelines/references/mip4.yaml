@@ -18,17 +18,6 @@
   source: family
   key: PedigreeFileAnalysis|Path
 
-- category: bcf-raw
-  source: family
-  key: BCFFile|Path
-  archive_type: result
-
-- category: bcf-raw-index
-  source: family
-  key: BCFFile|Path
-  suffix: .csi
-  archive_type: result
-
 - category: vcf-clinical-bin
   source: family
   key: VCFBinaryFile|Clinical|Path
