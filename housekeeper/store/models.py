@@ -108,9 +108,8 @@ class AnalysisRun(Model):
     # store dates when added to various downstream apps
     added_dates = Column(types.Text)
 
-    case_id = Column(ForeignKey('case.id'), nullable=False)
+    case_id = Column(ForeignKey(Case.id), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='run')
-    archives = orm.relationship('Archive', cascade='all,delete', backref='run')
     samples = orm.relationship('Sample', secondary='sample_run_link',
                                back_populates='runs')
 
@@ -152,7 +151,7 @@ class Asset(Model):
     is_local = Column(types.Boolean, default=True)
     checksum = Column(types.String(128))
 
-    run_id = Column(ForeignKey('analysis_run.id'), nullable=False)
+    run_id = Column(ForeignKey(AnalysisRun.id), nullable=False)
     sample_id = Column(ForeignKey('sample.id'))
 
     def basename(self):
