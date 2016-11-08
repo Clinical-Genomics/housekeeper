@@ -250,8 +250,9 @@ def status(context, date, sample_status, run_status, identifier):
 @click.option('-l', '--limit', default=20)
 @click.option('-o', '--offset', default=0)
 @click.option('-c', '--case')
+@click.option('-mr', '--missing-recieved', is_flag=True)
 @click.pass_context
-def samples(context, limit, offset, case):
+def samples(context, limit, offset, case, missing_recieved):
     """Display information about samples."""
     api.manager(context.obj['database'])
     query = api.samples()
@@ -260,6 +261,8 @@ def samples(context, limit, offset, case):
         query = (query.join(Sample.runs)
                       .join(AnalysisRun.case)
                       .filter(Case.name == case))
+    if missing_recieved:
+        query = query.filter(Sample.received_at == None)
 
     for sample in query.offset(offset).limit(limit):
         click.echo(sample.lims_id)
