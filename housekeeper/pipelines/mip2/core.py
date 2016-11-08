@@ -9,7 +9,7 @@ from .prepare import prepare_run
 log = logging.getLogger(__name__)
 
 
-def parse(config_data, reference_data, force=False):
+def parse_mip2(config_data, reference_data, force=False):
     """Parse MIP analysis output."""
     # 1. parse segments of input data
     segments = prepare_inputs(config_data)

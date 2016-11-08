@@ -14,6 +14,7 @@ log = logging.getLogger(__name__)
 def build_assets(new_references, force=False):
     """Build assets from references."""
     for ref_data in new_references:
+        log.debug("working on: %s", ref_data['reference']['category'])
         if not path(ref_data['path']).exists():
             is_required = ref_data['reference'].get('required', True)
             if force or not is_required:

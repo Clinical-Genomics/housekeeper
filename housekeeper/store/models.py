@@ -28,11 +28,52 @@ class JsonModel(alchy.ModelBase):
 Model = alchy.make_declarative_base(Base=JsonModel)
 
 
+class SampleRunLink(Model):
+
+    """Link between UniqueSample and AnalysisRun."""
+
+    __table_args__ = (
+        UniqueConstraint('sample_id', 'run_id', name='_sample_run_uc'),
+    )
+
+    id = Column(types.Integer, primary_key=True)
+    sample_id = Column(ForeignKey('sample.id'), nullable=False)
+    run_id = Column(ForeignKey('analysis_run.id'), nullable=False)
+
+
+class Sample(Model):
+
+    """Store unique reference to a sample."""
+
+    id = Column(types.Integer, primary_key=True)
+    lims_id = Column(types.String(32), nullable=False, unique=True)
+    customer = Column(types.String(32), nullable=False)
+    family_id = Column(types.String(128), nullable=False)
+
+    created_at = Column(types.DateTime, default=datetime.now)
+
+    received_at = Column(types.DateTime)
+    sequenced_at = Column(types.DateTime)
+    confirmed_at = Column(types.DateTime)
+
+    assets = orm.relationship('Asset', backref='sample')
+    runs = orm.relationship('AnalysisRun', secondary='sample_run_link',
+                            back_populates='samples')
+
+    @property
+    def case_id(self):
+        """Unique case id."""
+        return '-'.join([self.customer, self.family_id])
+
+
 class Case(Model):
+
     """Store a permanent reference to a case."""
 
     id = Column(types.Integer, primary_key=True)
-    name = Column(types.String(128), unique=True)
+    name = Column(types.String(128), unique=True, nullable=False)
+    customer = Column(types.String(32), nullable=False)
+    family_id = Column(types.String(128), nullable=False)
     created_at = Column(types.DateTime, default=datetime.now)
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
@@ -45,26 +86,32 @@ class Case(Model):
 
 
 class AnalysisRun(Model):
+
     """Store information about a specific analysis run."""
 
-    __table_args__ = (UniqueConstraint('case_id', 'analyzed_at',
-                                       name='_uc_analysis_analyzed_at'),)
+    __table_args__ = (
+        UniqueConstraint('case_id', 'analyzed_at', name='_uc_case_analyzed'),
+    )
 
     id = Column(types.Integer, primary_key=True)
     created_at = Column(types.DateTime, default=datetime.now)
     pipeline = Column(types.Enum(*PIPELINES))
     pipeline_version = Column(types.String(32))
+    # keep track of a date if the cases is requested to be rerun
+    requested_at = Column(types.DateTime)
     analyzed_at = Column(types.DateTime)
     compiled_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
     archived_at = Column(types.DateTime)
     cleanedup_at = Column(types.DateTime)
     will_cleanup_at = Column(types.DateTime)
+    # store dates when added to various downstream apps
+    added_dates = Column(types.Text)
 
-    case_id = Column(types.Integer, ForeignKey('case.id'), nullable=False)
+    case_id = Column(ForeignKey(Case.id), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='run')
-    archives = orm.relationship('Archive', cascade='all,delete', backref='run')
-    samples = orm.relationship('Sample', cascade='all,delete', backref='run')
+    samples = orm.relationship('Sample', secondary='sample_run_link',
+                               back_populates='runs')
 
     @property
     def cleanup_in(self):
@@ -75,7 +122,7 @@ class AnalysisRun(Model):
     @property
     def sample_map(self):
         """Return dict of samples."""
-        return {sample.name: sample for sample in self.samples}
+        return {sample.lims_id: sample for sample in self.samples}
 
     @property
     def analysis_date(self):
@@ -92,21 +139,8 @@ class AnalysisRun(Model):
         return analysis_dict
 
 
-class Sample(Model):
-    """Sample record."""
-
-    __table_args__ = (UniqueConstraint('name', 'run_id',
-                                       name='_uc_name_run_id'),)
-
-    id = Column(types.Integer, primary_key=True)
-    name = Column(types.String(32))
-
-    run_id = Column(types.Integer, ForeignKey('analysis_run.id'),
-                    nullable=False)
-    assets = orm.relationship('Asset', backref='sample')
-
-
 class Asset(Model):
+
     """Asset/file belonging to an analysis."""
 
     id = Column(types.Integer, primary_key=True)
@@ -117,24 +151,8 @@ class Asset(Model):
     is_local = Column(types.Boolean, default=True)
     checksum = Column(types.String(128))
 
-    run_id = Column(types.Integer, ForeignKey('analysis_run.id'),
-                    nullable=False)
-    sample_id = Column(types.Integer, ForeignKey('sample.id'))
-
-    def basename(self):
-        return path(self.original_path).basename()
-
-
-class Archive(Model):
-    """Backup belonging to an analysis."""
-
-    id = Column(types.Integer, primary_key=True)
-    original_path = Column(types.Text)
-    archived_at = Column(types.DateTime)
-    archive_type = Column(types.Enum(*ARCHIVE_TYPES))
-
-    run_id = Column(ForeignKey('analysis_run.id'),
-                    nullable=False)
+    run_id = Column(ForeignKey(AnalysisRun.id), nullable=False)
+    sample_id = Column(ForeignKey('sample.id'))
 
     def basename(self):
         return path(self.original_path).basename()

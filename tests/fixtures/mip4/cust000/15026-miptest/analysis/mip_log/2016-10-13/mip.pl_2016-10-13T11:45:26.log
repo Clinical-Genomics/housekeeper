@@ -1,0 +1,524 @@
+[INFO] 2016/10/13 11:45:26 MIPLogger - Read pedigree file: /mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/15026-miptest/15026-miptest_pedigree.txt
+[INFO] 2016/10/13 11:45:26 MIPLogger - Wrote: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/qc_pedigree.yaml
+[INFO] 2016/10/13 11:45:26 MIPLogger - Read Yaml file: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_qc_sampleInfo.yaml
+[INFO] 2016/10/13 11:45:26 MIPLogger - Found trio: Child = ADM980A9-miptest, Father = ADM994A2-miptest, Mother = ADM980A10-miptest
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: bedtools installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: sambamba installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: gzip installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: vcftools installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: plink2 installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: fastqc installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: freebayes installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: bcftools installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: bwa installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: samtools installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: vt installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: configManta.py installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: sed installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: bgzip installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - ProgramCheck: tabix installed
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set MIP to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set clusterConstantPath to: /mnt/hds/proj/bioinfo/develop/henrikS
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set analysisConstantPath to: analysis
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set familyID to: 15026-miptest
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set outDataDir to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set logFile to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/mip_log/2016-10-13/mip.pl_2016-10-13T11:45:26.log
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set projectID to: prod001
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set emailType to: F
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set maximumCores to: 16
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set configFile to: /mnt/hds/proj/bioinfo/develop/henrikS/config/CMMS_Rasta_Config.v1.6.yaml
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set platForm to: ILLUMINA
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set outScriptDir to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set writeConfigFile to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_config.yaml
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pedigreeFile to: /mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/15026-miptest/15026-miptest_pedigree.txt
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sourceEnvironmentCommand to: source activate mip4.0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set instanceTag to: CMMS
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sampleIDs to: ADM980A10-miptest,ADM980A9-miptest,ADM994A2-miptest
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set analysisType to: ADM994A2-miptest=wes,ADM980A10-miptest=wes,ADM980A9-miptest=wes
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set inFilesDir to: /mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/ADM994A2-miptest/fastq=ADM994A2-miptest,/mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/ADM980A9-miptest/fastq=ADM980A9-miptest,/mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/ADM980A10-miptest/fastq=ADM980A10-miptest
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sampleInfoFile to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_qc_sampleInfo.yaml
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set researchEthicalApproval to: notApproved
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set inScriptDir to: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/bin
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set referencesDir to: /mnt/hds/proj/bioinfo/develop/references_4.0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set dryRunAll to: 2
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set nodeRamMemory to: 128
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set slurmQualityofService to: low
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set tempDirectory to: /scratch/$SLURM_JOB_ID
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set genomicSet to: noUserInfo
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set reduceIO to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set replaceIUPAC to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set printProgramMode to: 2
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSplitFastqFiles to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGZipFastq to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pFastQC to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pMadeline to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pMosaikBuild to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set mosaikBuildMedianFragLength to: 375
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pMosaikAlign to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pBwaMem to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set bwaMemHLA to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set bwaMemCram to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set bwaMembamStats to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set bwaSambambaSortMemoryLimit to: 32G
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pBwaAln to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pBwaSampe to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set bwaBuildReference to: notSetYet
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set alignerOutDir to: notSetYet
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pPicardToolsMergeRapidReads to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pBAMCalibrationBlock to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pPicardToolsMergeSamFiles to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pPicardToolsMarkduplicates to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSambambaMarkduplicates to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKRealigner to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKReAlignerINDELKnownSite to: 1000G_phase1.indels.b37.vcf,Mills_and_1000G_gold_standard.indels.b37.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKBaseRecalibration to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKBaseReCalibrationCovariate to: ReadGroupCovariate,ContextCovariate,CycleCovariate,QualityScoreCovariate
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKBaseReCalibrationKnownSite to: dbsnp_138.b37.vcf,1000G_phase1.indels.b37.vcf,Mills_and_1000G_gold_standard.indels.b37.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKBaseReCalibrationOverClippedRead to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKBaseReCalibrationDisableIndelQual to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKBaseReCalibrationStaticQuantizedQuals to: 10,20,30,40
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pChanjoSexCheck to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSambambaDepth to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sambambaDepthCutOffs to: 10,20,30,50,100
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sambambaDepthBed to: CCDS.current.bed
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sambambaDepthBaseQuality to: 10
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sambambaDepthMappingQuality to: 10
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sambambaDepthNoDuplicates to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set sambambaDepthNoFailedQualityControl to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGenomeCoverageBED to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GenomeCoverageBEDMaxCoverage to: 30
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pPicardToolsCollectMultipleMetrics to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pPicardToolsCalculateHSMetrics to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pRCovPlots to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pCNVnator to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pDelly to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pManta to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pFindTranslocations to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSVCombineVariantCallSets to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVTDecompose to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svBcfToolsViewFilter to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVCFAnno to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVCFAnnoLua to: vcfanno_custom.v1.0.lua
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVCFAnnoConfig to: vcfanno_config.v1.0.toml
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVCFAnnotationHeaderLinesFile to: vcfanno_headerLines.v1.0.txt
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svGenmodFilter to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svGenmodFilter1000G to: ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svGenmodFilterThreshold to: 0.10
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svCombineVariantCallSetsBCFFile to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSVVariantEffectPredictor to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVepFeatures to: hgvs,symbol,numbers,sift,polyphen,humdiv,domains,protein,ccds,uniprot,biotype,regulatory,tsl,canonical,per_gene,appris
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVepPlugins to: UpDownDistance,LoFtool,LoF
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSVVCFParser to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVcfParserVepTranscripts to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVcfParserRangeFeatureFile to: cust000-Research.txt
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVcfParserRangeFeatureAnnotationColumns to: 3,4,5,6,7,8
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVcfParserSelectFile to: cust000-Clinical_master_list.txt
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVcfParserSelectFileMatchingColumn to: 3
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svVcfParserSelectFeatureAnnotationColumns to: 3,10,11,14,16,17,18,19,20,21
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSVRankVariants to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svGenmodModelsFamilyType to: cmms
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svWholeGene to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svGenmodModelsReducedPenetranceFile to: cust003-CMMS-red-pen.txt.csv
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svRankModelFile to: svrank_model_cmms_v1.0.ini
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set svRankVariantBinaryFile to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSamToolsMpileUp to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pFreebayes to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKHaploTypeCaller to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKHaploTypeCallerAnnotation to: BaseQualityRankSumTest,ChromosomeCounts,Coverage,DepthPerAlleleBySample,FisherStrand,MappingQualityRankSumTest,QualByDepth,RMSMappingQuality,ReadPosRankSumTest,StrandOddsRatio
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKHaploTypeCallerSNPKnownSet to: dbsnp_138.b37.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKHaploTypeCallerSoftClippedBases to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKHaploTypeCallerPcrIndelModel to: None
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set picardToolsPath to: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/bin
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKGenoTypeGVCFs to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKGenoTypeGVCFsRefGVCF to: Merged_reference_infiles.gvcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKGenoTypeGVCFsAllSites to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKVariantRecalibration to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationTrainingSetHapMap to: hapmap_3.3.b37.sites.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationTrainingSetDbSNP to: dbsnp_138.b37.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationTrainingSet1000GSNP to: 1000G_phase1.snps.high_confidence.b37.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationTrainingSet1000GOmni to: 1000G_omni2.5.b37.sites.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationTrainingSetMills to: Mills_and_1000G_gold_standard.indels.b37.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationSnvTSFilterLevel to: 99.9
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationIndelTSFilterLevel to: 99.9
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationDPAnnotation to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationSnvMaxGaussians to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationIndelMaxGaussians to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationexcludeNonVariantsFile to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantReCalibrationBCFFile to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKCalculateGenotypePosteriorsSupportSet to: 1000G_phase3_v4_20130502.sites.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKCombineVariantCallSets to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKCombineVariantsPrioritizeCaller to: gatk,samtools,freebayes
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKCombineVariantCallSetsBCFFile to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pVariantAnnotationBlock to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pPrepareForVariantAnnotationBlock to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pVT to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set VTDecompose to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set VTNormalize to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set VTmissingAltAllele to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set VTgenmodFilter to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set VTgenmodFilter1000G to: ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set VTgenmodFilterMaxAf to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set VTgenmodFilterThreshold to: 0.10
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKPhaseByTransmission to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKReadBackedPhasing to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKVariantEvalAll to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pGATKVariantEvalExome to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantEvalDbSNP to: dbsnp_138.b37.excluding_sites_after_129.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKVariantEvalGold to: Mills_and_1000G_gold_standard.indels.b37.vcf
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKDownSampleToCoverage to: 1000
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKDisableAutoIndexAndFileLock to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set GATKBundleDownLoadVersion to: 2.8
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pVariantEffectPredictor to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vepDirectoryPath to: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/ensembl-tools-release-85/scripts/variant_effect_predictor
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vepDirectoryCache to: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/ensembl-tools-release-85/cache
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vepReference to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vepFeatures to: hgvs,symbol,numbers,sift,polyphen,humdiv,domains,protein,ccds,uniprot,biotype,regulatory,tsl,canonical,appris
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vepPlugins to: UpDownDistance,LoFtool,LoF
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pVCFParser to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vcfParserVepTranscripts to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vcfParserRangeFeatureFile to: cust000-Research.txt
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vcfParserRangeFeatureAnnotationColumns to: 3,4,5,6,7,8
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vcfParserSelectFile to: cust000-Clinical_master_list.txt
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vcfParserSelectFileMatchingColumn to: 3
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set vcfParserSelectFeatureAnnotationColumns to: 3,10,11,14,16,17,18,19,20,21
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set VcfParserOutputFileCount to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pAnnovar to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set annovarPath to: /mnt/hds/proj/bioinfo/develop/henrikS/modules/annovar
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set annovarGenomeBuildVersion to: hg19
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set annovarMAFThreshold to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSnpEff to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set snpEffPath to: /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/bin
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set snpEffAnn to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set snpEffGenomeBuildVersion to: GRCh37.75
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set snpSiftAnnotationFiles to: genbank_haplogroup_2015_August.vcf.gz=MTAF,clinvar_GRCh37_20160831.vcf.gz=CLNSIG,CLNACC,CLNREVSTAT,anon-SRG_joincalled.snp.recalibrated.filtered.chr22.exac_tags.vep.vcf.gz=AF,AC_Hom,AC_Het,AC_Hemi,dbsnp_138.b37.excluding_sites_after_129.vcf.gz=CAF,ExAC.r0.3.sites.vep.vcf.gz=AF,MAX_AF,loqusdb.2016-09-26.vcf.gz=Obs
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set snpSiftAnnotationOutInfoKey to: ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz=1000G,anon-SRG_joincalled.snp.recalibrated.filtered.chr22.exac_tags.vep.vcf.gz=SWEREF,dbsnp_138.b37.excluding_sites_after_129.vcf.gz=Dbsnp129L,ExAC.r0.3.sites.vep.vcf.gz=EXAC
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set snpSiftDbNSFPFile to: dbNSFP2.9.txt.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set snpSiftDbNSFPAnnotations to: GERP++_RS,GERP++_NR,phyloP46way_primate,phyloP100way_vertebrate,phastCons46way_primate,phastCons100way_vertebrate
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set javaUseLargePages to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set genomeAnalysisToolKitPath to: /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/GenomeAnalysisTK-3.6
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSampleCheck to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pEvaluation to: 0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pRankVariants to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set genmodModelsFamilyType to: cmms
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set genmodcaddFiles to: whole_genome_SNVs.v1.3_ge10.tsv.gz,1000G_phase3.v1.3.tsv.gz,ExAC_r0.3.v1.3.tsv.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set spidexFile to: spidex_public_noncommercial_v1_0.tab.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set wholeGene to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set genmodModelsReducedPenetranceFile to: cust003-CMMS-red-pen.txt.csv
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set rankModelFile to: rank_model_cmms_v1.18.ini
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set rankVariantBinaryFile to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pQCCollect to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set QCCollectSampleInfoFile to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_qc_sampleInfo.yaml
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set QCCollectRegExpFile to: qc_regExp_v1.12.yaml
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pMultiQC to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pRemoveRedundantFiles to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pAnalysisRunStatus to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set pSacct to: 1
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set humanGenomeReference to: Homo_sapiens.GRCh37.d5.fasta
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set exomeTargetBed to: Agilent_SureSelectCRE.V1.GRCh37_targets.bed=ADM980A9-miptest,ADM994A2-miptest,ADM980A10-miptest
+[INFO] 2016/10/13 11:45:26 MIPLogger - Set alignerOutDir to: bwa
+[INFO] 2016/10/13 11:45:26 MIPLogger - Wrote: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_config.yaml
+[INFO] 2016/10/13 11:45:26 MIPLogger - mip.pl -clusterConstantPath /mnt/hds/proj/bioinfo/develop/henrikS -analysisConstantPath analysis -familyID 15026-miptest -outDataDir /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis -logFile /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/mip_log/2016-10-13/mip.pl_2016-10-13T11:45:26.log -projectID prod001 -emailType F -maximumCores 16 -configFile /mnt/hds/proj/bioinfo/develop/henrikS/config/CMMS_Rasta_Config.v1.6.yaml -platForm ILLUMINA -outScriptDir /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts -writeConfigFile /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_config.yaml -pedigreeFile /mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/15026-miptest/15026-miptest_pedigree.txt -sourceEnvironmentCommand source activate mip4.0 -instanceTag CMMS -sampleIDs ADM980A10-miptest,ADM980A9-miptest,ADM994A2-miptest -analysisType ADM994A2-miptest=wes -analysisType ADM980A10-miptest=wes -analysisType ADM980A9-miptest=wes -inFilesDir /mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/ADM994A2-miptest/fastq=ADM994A2-miptest -inFilesDir /mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/ADM980A9-miptest/fastq=ADM980A9-miptest -inFilesDir /mnt/hds/proj/bioinfo/develop/cust000/15026-miptest/exomes/ADM980A10-miptest/fastq=ADM980A10-miptest -sampleInfoFile /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_qc_sampleInfo.yaml -researchEthicalApproval notApproved -inScriptDir /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/bin -referencesDir /mnt/hds/proj/bioinfo/develop/references_4.0 -dryRunAll 2 -nodeRamMemory 128 -slurmQualityofService low -tempDirectory /scratch/$SLURM_JOB_ID -genomicSet noUserInfo -reduceIO 1 -replaceIUPAC 0 -printProgramMode 2 -pSplitFastqFiles 0 -pGZipFastq 1 -pFastQC 1 -pMadeline 0 -pMosaikBuild 0 -mosaikBuildMedianFragLength 375 -pMosaikAlign 0 -pBwaMem 1 -bwaMemHLA 1 -bwaMemCram 1 -bwaMembamStats 1 -bwaSambambaSortMemoryLimit 32G -pBwaAln 0 -pBwaSampe 0 -alignerOutDir bwa -pPicardToolsMergeRapidReads 0 -pPicardToolsMergeSamFiles 1 -pPicardToolsMarkduplicates 1 -pSambambaMarkduplicates 0 -pGATKRealigner 0 -GATKReAlignerINDELKnownSite 1000G_phase1.indels.b37.vcf,Mills_and_1000G_gold_standard.indels.b37.vcf -pGATKBaseRecalibration 1 -GATKBaseReCalibrationCovariate ReadGroupCovariate,ContextCovariate,CycleCovariate,QualityScoreCovariate -GATKBaseReCalibrationKnownSite dbsnp_138.b37.vcf,1000G_phase1.indels.b37.vcf,Mills_and_1000G_gold_standard.indels.b37.vcf -GATKBaseReCalibrationOverClippedRead 1 -GATKBaseReCalibrationDisableIndelQual 1 -GATKBaseReCalibrationStaticQuantizedQuals 10,20,30,40 -pChanjoSexCheck 1 -pSambambaDepth 1 -sambambaDepthCutOffs 10,20,30,50,100 -sambambaDepthBed CCDS.current.bed -sambambaDepthBaseQuality 10 -sambambaDepthMappingQuality 10 -sambambaDepthNoDuplicates 1 -sambambaDepthNoFailedQualityControl 1 -pGenomeCoverageBED 0 -GenomeCoverageBEDMaxCoverage 30 -pPicardToolsCollectMultipleMetrics 1 -pPicardToolsCalculateHSMetrics 1 -pRCovPlots 0 -pCNVnator 0 -pDelly 0 -pManta 1 -pFindTranslocations 0 -pSVCombineVariantCallSets 1 -svVTDecompose 1 -svBcfToolsViewFilter 1 -svVCFAnno 1 -svVCFAnnoLua vcfanno_custom.v1.0.lua -svVCFAnnoConfig vcfanno_config.v1.0.toml -svVCFAnnotationHeaderLinesFile vcfanno_headerLines.v1.0.txt -svGenmodFilter 1 -svGenmodFilter1000G ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz -svGenmodFilterThreshold 0.10 -svCombineVariantCallSetsBCFFile 1 -pSVVariantEffectPredictor 1 -svVepFeatures hgvs,symbol,numbers,sift,polyphen,humdiv,domains,protein,ccds,uniprot,biotype,regulatory,tsl,canonical,per_gene,appris -svVepPlugins UpDownDistance,LoFtool,LoF -pSVVCFParser 1 -svVcfParserVepTranscripts 1 -svVcfParserRangeFeatureFile cust000-Research.txt -svVcfParserRangeFeatureAnnotationColumns 3,4,5,6,7,8 -svVcfParserSelectFile cust000-Clinical_master_list.txt -svVcfParserSelectFileMatchingColumn 3 -svVcfParserSelectFeatureAnnotationColumns 3,10,11,14,16,17,18,19,20,21 -pSVRankVariants 1 -svGenmodModelsFamilyType cmms -svWholeGene 0 -svGenmodModelsReducedPenetranceFile cust003-CMMS-red-pen.txt.csv -svRankModelFile svrank_model_cmms_v1.0.ini -svRankVariantBinaryFile 1 -pSamToolsMpileUp 1 -pFreebayes 1 -pGATKHaploTypeCaller 1 -GATKHaploTypeCallerAnnotation BaseQualityRankSumTest,ChromosomeCounts,Coverage,DepthPerAlleleBySample,FisherStrand,MappingQualityRankSumTest,QualByDepth,RMSMappingQuality,ReadPosRankSumTest,StrandOddsRatio -GATKHaploTypeCallerSNPKnownSet dbsnp_138.b37.vcf -GATKHaploTypeCallerSoftClippedBases 1 -GATKHaploTypeCallerPcrIndelModel None -picardToolsPath /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/bin -pGATKGenoTypeGVCFs 1 -GATKGenoTypeGVCFsRefGVCF Merged_reference_infiles.gvcf -GATKGenoTypeGVCFsAllSites 0 -pGATKVariantRecalibration 1 -GATKVariantReCalibrationTrainingSetHapMap hapmap_3.3.b37.sites.vcf -GATKVariantReCalibrationTrainingSetDbSNP dbsnp_138.b37.vcf -GATKVariantReCalibrationTrainingSet1000GSNP 1000G_phase1.snps.high_confidence.b37.vcf -GATKVariantReCalibrationTrainingSet1000GOmni 1000G_omni2.5.b37.sites.vcf -GATKVariantReCalibrationTrainingSetMills Mills_and_1000G_gold_standard.indels.b37.vcf -GATKVariantReCalibrationSnvTSFilterLevel 99.9 -GATKVariantReCalibrationIndelTSFilterLevel 99.9 -GATKVariantReCalibrationDPAnnotation 1 -GATKVariantReCalibrationSnvMaxGaussians 0 -GATKVariantReCalibrationIndelMaxGaussians 1 -GATKVariantReCalibrationexcludeNonVariantsFile 0 -GATKVariantReCalibrationBCFFile 0 -GATKCalculateGenotypePosteriorsSupportSet 1000G_phase3_v4_20130502.sites.vcf -pGATKCombineVariantCallSets 1 -GATKCombineVariantsPrioritizeCaller gatk,samtools,freebayes -GATKCombineVariantCallSetsBCFFile 1 -pPrepareForVariantAnnotationBlock 1 -pVT 1 -VTDecompose 1 -VTNormalize 1 -VTmissingAltAllele 1 -VTgenmodFilter 1 -VTgenmodFilter1000G ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz -VTgenmodFilterMaxAf 1 -VTgenmodFilterThreshold 0.10 -pGATKPhaseByTransmission 0 -pGATKReadBackedPhasing 0 -pGATKVariantEvalAll 1 -pGATKVariantEvalExome 1 -GATKVariantEvalDbSNP dbsnp_138.b37.excluding_sites_after_129.vcf -GATKVariantEvalGold Mills_and_1000G_gold_standard.indels.b37.vcf -GATKDownSampleToCoverage 1000 -GATKDisableAutoIndexAndFileLock 0 -GATKBundleDownLoadVersion 2.8 -pVariantEffectPredictor 1 -vepDirectoryPath /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/ensembl-tools-release-85/scripts/variant_effect_predictor -vepDirectoryCache /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/ensembl-tools-release-85/cache -vepReference 0 -vepFeatures hgvs,symbol,numbers,sift,polyphen,humdiv,domains,protein,ccds,uniprot,biotype,regulatory,tsl,canonical,appris -vepPlugins UpDownDistance,LoFtool,LoF -pVCFParser 1 -vcfParserVepTranscripts 1 -vcfParserRangeFeatureFile cust000-Research.txt -vcfParserRangeFeatureAnnotationColumns 3,4,5,6,7,8 -vcfParserSelectFile cust000-Clinical_master_list.txt -vcfParserSelectFileMatchingColumn 3 -vcfParserSelectFeatureAnnotationColumns 3,10,11,14,16,17,18,19,20,21 -VcfParserOutputFileCount 2 -pAnnovar 0 -annovarPath /mnt/hds/proj/bioinfo/develop/henrikS/modules/annovar -annovarGenomeBuildVersion hg19 -annovarMAFThreshold 0 -pSnpEff 1 -snpEffPath /mnt/hds/proj/bioinfo/components/maintainance/miniconda/envs/mip4.0/bin -snpEffAnn 1 -snpEffGenomeBuildVersion GRCh37.75 -snpSiftAnnotationFiles genbank_haplogroup_2015_August.vcf.gz=MTAF -snpSiftAnnotationFiles clinvar_GRCh37_20160831.vcf.gz=CLNSIG,CLNACC,CLNREVSTAT -snpSiftAnnotationFiles anon-SRG_joincalled.snp.recalibrated.filtered.chr22.exac_tags.vep.vcf.gz=AF,AC_Hom,AC_Het,AC_Hemi -snpSiftAnnotationFiles dbsnp_138.b37.excluding_sites_after_129.vcf.gz=CAF -snpSiftAnnotationFiles ExAC.r0.3.sites.vep.vcf.gz=AF,MAX_AF -snpSiftAnnotationFiles loqusdb.2016-09-26.vcf.gz=Obs -snpSiftAnnotationOutInfoKey ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz=1000G -snpSiftAnnotationOutInfoKey anon-SRG_joincalled.snp.recalibrated.filtered.chr22.exac_tags.vep.vcf.gz=SWEREF -snpSiftAnnotationOutInfoKey dbsnp_138.b37.excluding_sites_after_129.vcf.gz=Dbsnp129L -snpSiftAnnotationOutInfoKey ExAC.r0.3.sites.vep.vcf.gz=EXAC -snpSiftDbNSFPFile dbNSFP2.9.txt.gz -snpSiftDbNSFPAnnotations GERP++_RS,GERP++_NR,phyloP46way_primate,phyloP100way_vertebrate,phastCons46way_primate,phastCons100way_vertebrate -javaUseLargePages 1 -genomeAnalysisToolKitPath /mnt/hds/proj/bioinfo/MIP_ANALYSIS/modules/GenomeAnalysisTK-3.6 -pSampleCheck 1 -pEvaluation 0 -pRankVariants 1 -genmodModelsFamilyType cmms -genmodcaddFiles whole_genome_SNVs.v1.3_ge10.tsv.gz,1000G_phase3.v1.3.tsv.gz,ExAC_r0.3.v1.3.tsv.gz -spidexFile spidex_public_noncommercial_v1_0.tab.gz -wholeGene 1 -genmodModelsReducedPenetranceFile cust003-CMMS-red-pen.txt.csv -rankModelFile rank_model_cmms_v1.18.ini -rankVariantBinaryFile 1 -pQCCollect 1 -QCCollectSampleInfoFile /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_qc_sampleInfo.yaml -QCCollectRegExpFile qc_regExp_v1.12.yaml -pMultiQC 1 -pRemoveRedundantFiles 1 -pAnalysisRunStatus 1 -pSacct 1 -humanGenomeReference Homo_sapiens.GRCh37.d5.fasta -exomeTargetBed Agilent_SureSelectCRE.V1.GRCh37_targets.bed=ADM980A9-miptest,ADM994A2-miptest,ADM980A10-miptest 
+[INFO] 2016/10/13 11:45:26 MIPLogger - MIP Version: v4.0.0
+[INFO] 2016/10/13 11:45:26 MIPLogger - Script parameters and info from mip.pl are saved in file: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/mip_log/2016-10-13/mip.pl_2016-10-13T11:45:26.log
+[INFO] 2016/10/13 11:45:26 MIPLogger - Reads from Platform
+[INFO] 2016/10/13 11:45:26 MIPLogger - Sample ID: ADM980A10-miptest
+[INFO] 2016/10/13 11:45:26 MIPLogger - 	Inputfiles:
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		1_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_1.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		2_150407_HF5CGADXX_ADM980A10-miptest_GTACGCAA_2.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - Sample ID: ADM980A9-miptest
+[INFO] 2016/10/13 11:45:26 MIPLogger - 	Inputfiles:
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		1_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_1.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		2_150407_HF3FNADXX_ADM980A9-miptest_AGCCATGC_2.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - Sample ID: ADM994A2-miptest
+[INFO] 2016/10/13 11:45:26 MIPLogger - 	Inputfiles:
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		1_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_1.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - 		2_150413_H2Y5VBCXX_ADM994A2-miptest_CCTAATCC_2.fastq.gz
+[INFO] 2016/10/13 11:45:26 MIPLogger - Wrote: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/15026-miptest.fam
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/dbsnp_138.b37.vcf vt:normalize - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/dbsnp_138.b37.vcf vt:decompose - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/hapmap_3.3.b37.sites.vcf vt:normalize - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/hapmap_3.3.b37.sites.vcf vt:decompose - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/1000G_omni2.5.b37.sites.vcf vt:normalize - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/1000G_omni2.5.b37.sites.vcf vt:decompose - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/1000G_phase1.snps.high_confidence.b37.vcf vt:decompose - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/1000G_phase1.snps.high_confidence.b37.vcf vt:normalize - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz vt:maxAF - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz vt:normalize - PASS
+[INFO] 2016/10/13 11:45:27 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/ALL.wgs.phase3_shapeit2_mvncall_integrated_v5b.20130502.sites.vcf.gz vt:decompose - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/dbsnp_138.b37.excluding_sites_after_129.vcf vt:normalize - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/dbsnp_138.b37.excluding_sites_after_129.vcf vt:decompose - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/genbank_haplogroup_2015_August.vcf.gz vt:normalize - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/genbank_haplogroup_2015_August.vcf.gz vt:decompose - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/clinvar_GRCh37_20160831.vcf.gz vt:normalize - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/clinvar_GRCh37_20160831.vcf.gz vt:decompose - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/anon-SRG_joincalled.snp.recalibrated.filtered.chr22.exac_tags.vep.vcf.gz vt:normalize - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/anon-SRG_joincalled.snp.recalibrated.filtered.chr22.exac_tags.vep.vcf.gz vt:decompose - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/dbsnp_138.b37.excluding_sites_after_129.vcf.gz vt:normalize - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/dbsnp_138.b37.excluding_sites_after_129.vcf.gz vt:decompose - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/ExAC.r0.3.sites.vep.vcf.gz vt:calulateAF - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/ExAC.r0.3.sites.vep.vcf.gz vt:maxAF - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/ExAC.r0.3.sites.vep.vcf.gz vt:decompose - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/ExAC.r0.3.sites.vep.vcf.gz vt:normalize - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/loqusdb.2016-09-26.vcf.gz vt:normalize - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - ReferenceCheck: /mnt/hds/proj/bioinfo/develop/references_4.0/loqusdb.2016-09-26.vcf.gz vt:decompose - PASS
+[INFO] 2016/10/13 11:45:28 MIPLogger - [FastQC]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for FastQC and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/fastqc/dry_run_FastQC_ADM980A10-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script FastQC data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/fastqc
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for FastQC and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/fastqc/dry_run_FastQC_ADM980A9-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script FastQC data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/fastqc
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for FastQC and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/fastqc/dry_run_FastQC_ADM994A2-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script FastQC data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/fastqc
+[INFO] 2016/10/13 11:45:28 MIPLogger - [BWAMem]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BwaMem and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/dry_run_BwaMem_ADM980A10-miptest.14.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BwaMem data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BwaMem and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/dry_run_BwaMem_ADM980A10-miptest.15.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BwaMem data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BwaMem and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/dry_run_BwaMem_ADM980A9-miptest.14.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BwaMem data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BwaMem and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/dry_run_BwaMem_ADM980A9-miptest.15.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BwaMem data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BwaMem and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/dry_run_BwaMem_ADM994A2-miptest.14.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BwaMem data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BwaMem and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/dry_run_BwaMem_ADM994A2-miptest.15.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BwaMem data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - [BAMCalibrationBlock]
+[INFO] 2016/10/13 11:45:28 MIPLogger - 	[PicardTool MergeSamFiles]
+[INFO] 2016/10/13 11:45:28 MIPLogger - 	[PicardTools Markduplicates]
+[INFO] 2016/10/13 11:45:28 MIPLogger - 	[GATK BaseRecalibrator/PrintReads]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BAMCalibrationBlock and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/dry_run_BAMCalibrationBlock_ADM980A10-miptest.4.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BAMCalibrationBlock data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BAMCalibrationBlock and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/dry_run_BAMCalibrationBlock_ADM980A9-miptest.4.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BAMCalibrationBlock data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for BAMCalibrationBlock and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/dry_run_BAMCalibrationBlock_ADM994A2-miptest.4.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script BAMCalibrationBlock data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - [ChanjoSexCheck]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for ChanjoSexCheck and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/coveragereport/dry_run_ChanjoSexCheck_ADM980A10-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script ChanjoSexCheck data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for ChanjoSexCheck and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/coveragereport/dry_run_ChanjoSexCheck_ADM980A9-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script ChanjoSexCheck data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for ChanjoSexCheck and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/coveragereport/dry_run_ChanjoSexCheck_ADM994A2-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script ChanjoSexCheck data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - [SambambaDepth]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for SambambaDepth and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/coveragereport/dry_run_SambambaDepth_ADM980A10-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script SambambaDepth data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for SambambaDepth and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/coveragereport/dry_run_SambambaDepth_ADM980A9-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script SambambaDepth data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for SambambaDepth and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/coveragereport/dry_run_SambambaDepth_ADM994A2-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script SambambaDepth data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - [PicardToolsCollectMultipleMetrics]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for PicardToolsCollectMultipleMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/coveragereport/dry_run_PicardToolsCollectMultipleMetrics_ADM980A10-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script PicardToolsCollectMultipleMetrics data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for PicardToolsCollectMultipleMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/coveragereport/dry_run_PicardToolsCollectMultipleMetrics_ADM980A9-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script PicardToolsCollectMultipleMetrics data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for PicardToolsCollectMultipleMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/coveragereport/dry_run_PicardToolsCollectMultipleMetrics_ADM994A2-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script PicardToolsCollectMultipleMetrics data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - [PicardToolsCalculateHSMetrics]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for PicardToolsCalculateHSMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/coveragereport/dry_run_PicardToolsCalculateHSMetrics_ADM980A10-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script PicardToolsCalculateHSMetrics data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for PicardToolsCalculateHSMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/coveragereport/dry_run_PicardToolsCalculateHSMetrics_ADM980A9-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script PicardToolsCalculateHSMetrics data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for PicardToolsCalculateHSMetrics and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/coveragereport/dry_run_PicardToolsCalculateHSMetrics_ADM994A2-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script PicardToolsCalculateHSMetrics data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa/coveragereport
+[INFO] 2016/10/13 11:45:28 MIPLogger - [Manta]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for Manta and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/manta/dry_run_Manta_15026-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script Manta data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/manta
+[INFO] 2016/10/13 11:45:28 MIPLogger - [SVCombineVariantCallSets]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for SVCombineVariantCallSets and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/dry_run_SVCombineVariantCallSets_15026-miptest_SV.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script SVCombineVariantCallSets data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - [SVVariantEffectPredictor]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for SVVariantEffectPredictor and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/dry_run_SVVariantEffectPredictor_15026-miptest_SV.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script SVVariantEffectPredictor data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - [SVVCFParser]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for SVVCFParser and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/dry_run_SVVCFParser_15026-miptest_SV.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script SVVCFParser data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - [SVRankVariants]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for SVRankVariants and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/dry_run_SVRankVariants_15026-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script SVRankVariants data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa
+[INFO] 2016/10/13 11:45:28 MIPLogger - [SamTools MpileUp]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for SamToolsMpileUp and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/samtools/dry_run_SamToolsMpileUp_15026-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script SamToolsMpileUp data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/samtools
+[INFO] 2016/10/13 11:45:28 MIPLogger - [Freebayes]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for Freebayes and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/freebayes/dry_run_Freebayes_15026-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script Freebayes data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/freebayes
+[INFO] 2016/10/13 11:45:28 MIPLogger - [GATK HaplotypeCaller]
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for GATKHaploTypeCaller and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/gatk/dry_run_GATKHaploTypeCaller_ADM980A10-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script GATKHaploTypeCaller data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:28 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:28 MIPLogger - Creating sbatch script for GATKHaploTypeCaller and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/gatk/dry_run_GATKHaploTypeCaller_ADM980A9-miptest.7.sh
+[INFO] 2016/10/13 11:45:28 MIPLogger - Sbatch script GATKHaploTypeCaller data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKHaploTypeCaller and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/gatk/dry_run_GATKHaploTypeCaller_ADM994A2-miptest.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKHaploTypeCaller data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - [GATK GenoTypeGVCFs]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.181.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.182.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.183.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.184.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.185.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.186.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.187.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.188.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.189.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.190.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.191.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.192.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.193.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.194.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.195.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.196.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.197.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.198.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.199.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.200.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.201.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.202.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.203.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.204.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKGenoTypeGVCFs and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKGenoTypeGVCFs_15026-miptest_BOTH.205.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKGenoTypeGVCFs data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - [GATK VariantRecalibrator/ApplyRecalibration]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKVariantRecalibration and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/gatk/dry_run_GATKVariantRecalibration_15026-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKVariantRecalibration data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/gatk
+[INFO] 2016/10/13 11:45:29 MIPLogger - [GATKCombineVariantCallSets]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKCombineVariantCallSets and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/dry_run_GATKCombineVariantCallSets_15026-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKCombineVariantCallSets data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa
+[INFO] 2016/10/13 11:45:29 MIPLogger - [SampleCheck]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for SampleCheck and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/samplecheck/dry_run_SampleCheck_15026-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script SampleCheck data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa/samplecheck
+[INFO] 2016/10/13 11:45:29 MIPLogger - [GATK VariantEval All]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKVariantEvalAll and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/gatkvariantevalall/dry_run_GATKVariantEvalAll_ADM980A10-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKVariantEvalAll data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa/gatkvariantevalall
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKVariantEvalAll and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/gatkvariantevalall/dry_run_GATKVariantEvalAll_ADM980A9-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKVariantEvalAll data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa/gatkvariantevalall
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKVariantEvalAll and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/gatkvariantevalall/dry_run_GATKVariantEvalAll_ADM994A2-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKVariantEvalAll data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa/gatkvariantevalall
+[INFO] 2016/10/13 11:45:29 MIPLogger - [VariantAnnotationBlock]
+[INFO] 2016/10/13 11:45:29 MIPLogger - 	[PrepareForVariantAnnotationBlock]
+[INFO] 2016/10/13 11:45:29 MIPLogger - 	[VT]
+[INFO] 2016/10/13 11:45:29 MIPLogger - 	[VariantEffectPredictor]
+[INFO] 2016/10/13 11:45:29 MIPLogger - 	[VCFParser]
+[INFO] 2016/10/13 11:45:29 MIPLogger - 	[SnpEff]
+[INFO] 2016/10/13 11:45:29 MIPLogger - 	[RankVariants]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for VariantAnnotationBlock and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/dry_run_VariantAnnotationBlock_15026-miptest.4.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script VariantAnnotationBlock data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa
+[INFO] 2016/10/13 11:45:29 MIPLogger - [GATK VariantEval Exome]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKVariantEvalExome and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A10-miptest/bwa/gatkvariantevalexome/dry_run_GATKVariantEvalExome_ADM980A10-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKVariantEvalExome data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A10-miptest/bwa/gatkvariantevalexome
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKVariantEvalExome and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM980A9-miptest/bwa/gatkvariantevalexome/dry_run_GATKVariantEvalExome_ADM980A9-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKVariantEvalExome data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM980A9-miptest/bwa/gatkvariantevalexome
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for GATKVariantEvalExome and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/ADM994A2-miptest/bwa/gatkvariantevalexome/dry_run_GATKVariantEvalExome_ADM994A2-miptest_BOTH.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script GATKVariantEvalExome data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/ADM994A2-miptest/bwa/gatkvariantevalexome
+[INFO] 2016/10/13 11:45:29 MIPLogger - [QCCollect]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for QCCollect and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/qccollect/dry_run_QCCollect_15026-miptest.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script QCCollect data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/qccollect
+[INFO] 2016/10/13 11:45:29 MIPLogger - [MultiQC]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for MultiQC and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/multiqc/dry_run_MultiQC_15026-miptest.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script MultiQC data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/multiqc
+[INFO] 2016/10/13 11:45:29 MIPLogger - [Removal of redundant files]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for RemoveRedundantFiles and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/bwa/dry_run_RemoveRedundantFiles_15026-miptest.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script RemoveRedundantFiles data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/bwa
+[INFO] 2016/10/13 11:45:29 MIPLogger - [AnalysisRunStatus]
+[INFO] 2016/10/13 11:45:29 MIPLogger - Dry Run:
+[INFO] 2016/10/13 11:45:29 MIPLogger - Creating sbatch script for AnalysisRunStatus and writing script file(s) to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/scripts/15026-miptest/analysisrunstatus/dry_run_AnalysisRunStatus_15026-miptest.7.sh
+[INFO] 2016/10/13 11:45:29 MIPLogger - Sbatch script AnalysisRunStatus data files will be written to: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest/analysisrunstatus
+[INFO] 2016/10/13 11:45:29 MIPLogger - Wrote: /mnt/hds/proj/bioinfo/develop/henrikS/15026-miptest/analysis/15026-miptest_qc_sampleInfo.yaml

@@ -47,15 +47,17 @@ def case(name):
     return case_obj
 
 
-def samples():
+def samples(query_str=None):
     """Get samples from the database."""
-    sample_query = Sample.query
-    return sample_query
+    query = Sample.query.order_by(Sample.created_at.desc())
+    if query_str:
+        query = query.filter(Sample.lims_id.like("%{}%".format(query_str)))
+    return query
 
 
-def sample(name):
+def sample(lims_id):
     """Get sample from the database."""
-    sample_obj = Sample.query.filter_by(name=name).first()
+    sample_obj = Sample.query.filter_by(lims_id=lims_id).first()
     return sample_obj
 
 

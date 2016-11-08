@@ -45,11 +45,12 @@ def validate(family):
         raise UnsupportedVersionError(version)
 
 
-def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids):
+def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids,
+                     multiqc_samtools=MULTIQC_SAMTOOLS):
     # multiqc outputs
     qc_samples = {}
     for sample_id in sample_ids:
-        multiqc_path = path(outdata_dir).joinpath(sample_id, MULTIQC_SAMTOOLS)
+        multiqc_path = path(outdata_dir).joinpath(sample_id, multiqc_samtools)
         if multiqc_path.exists():
             log.debug("calculate total mapped reads for: %s", sample_id)
             with open(multiqc_path, 'r') as stream:
@@ -67,7 +68,7 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids):
     log.debug("parse QC metrics YAML: %s", qcmetrics_path)
     with open(qcmetrics_path, 'r') as stream:
         qc_data = yaml.load(stream)
-        qc_rootkey = qc_data.keys()[0]
+        qc_rootkey = 'sample' if 'sample' in qc_data else qc_data.keys()[0]
 
     for sample_id, mapped_data in qc_samples.items():
         qc_data[qc_rootkey][sample_id]['MappedReads'] = mapped_data.get('mapped')
@@ -88,8 +89,9 @@ def total_mapped(stream):
     total = 0
     mapped = 0
     for row in data:
-        total += float(row['raw total sequences'])
-        mapped += float(row['reads mapped'])
+        total += float(row.get('raw total sequences') or
+                       row['raw_total_sequences'])
+        mapped += float(row.get('reads mapped') or row['reads_mapped'])
     return {'mapped': mapped, 'total': total, 'percentage': mapped / total}
 
 
@@ -102,5 +104,5 @@ def get_duplicates(outdata_dir, sample_id):
             content = stream.read()
         dups = float(re.search('Fraction Duplicates: (.*)', content).groups()[0])
     else:
-        raise Exception('no picard tools file!')
+        raise IOError('no picard tools file!')
     return dups

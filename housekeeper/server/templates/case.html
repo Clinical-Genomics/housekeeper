@@ -21,6 +21,20 @@
             {{ components.postpone_btn(case.name, run) }}
           </div>
         </div>
+        <ul class="list-group">
+          <li class="list-group-item">
+            <ul class="list-inline">
+              <li>Included samples:</li>
+              {% for sample in run.samples %}
+                <li>
+                  <a href="{{ url_for('samples', query_str=sample.lims_id) }}">
+                    {{ sample.lims_id }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+        </ul>
         <div class="table-responsive">
           {{ asset_table(run) }}
         </div>
@@ -49,7 +63,7 @@
             {% endif %}
           </td>
           <td>{{ asset.basename() }}</td>
-          <td>{{ asset.sample.name if asset.sample_id }}</td>
+          <td>{{ asset.sample.lims_id if asset.sample_id }}</td>
         </tr>
       {% endfor %}
     </tbody>

@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from .core import parse
+from .core import parse_mip2

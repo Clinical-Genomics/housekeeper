@@ -1,0 +1,33 @@
+default_gene_panels:
+  - IEM
+  - EP
+family: '15026-miptest'
+customer: 'cust000'
+samples:
+  - analysis_type: wes
+    sample_id: ADM980A9-miptest
+    capture_kit: Agilent_SureSelectCRE.V1
+    father: ADM994A2-miptest
+    mother: ADM980A10-miptest
+    sample_name: ADM980A9-miptest
+    phenotype: affected
+    sex: male
+    expected_coverage: 150
+  - analysis_type: wes
+    sample_id: ADM994A2-miptest
+    capture_kit: Agilent_SureSelectCRE.V1
+    father: '0'
+    mother: '0'
+    sample_name: ADM994A2-miptest
+    phenotype: unaffected
+    sex: male
+    expected_coverage: 150
+  - analysis_type: wes
+    sample_id: ADM980A10-miptest
+    capture_kit: Agilent_SureSelectCRE.V1
+    father: '0'
+    mother: '0'
+    sample_name: ADM980A10-miptest
+    phenotype: unaffected
+    sex: female
+    expected_coverage: 150

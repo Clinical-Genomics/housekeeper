@@ -25,6 +25,7 @@
         <th>Case</th>
         <th>Pipeline</th>
         <th>Version</th>
+        <th>Requested at</th>
         <th>Analyzed at</th>
         <th>Delivered at</th>
         <th>Compiled at</th>
@@ -53,6 +54,7 @@
     </td>
     <td>{{ run.pipeline }}</td>
     <td>{{ run.pipeline_version }}</td>
+    <td>{{ run.requested_at.date() if run.requested_at }}</td>
     <td>{{ run.analyzed_at.date() }}</td>
     <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
     <td>{{ run.compiled_at.date() if run.compiled_at }}</td>

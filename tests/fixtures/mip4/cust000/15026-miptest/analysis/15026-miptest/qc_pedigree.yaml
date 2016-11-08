@@ -1,0 +1,51 @@
+---
+15026-miptest:
+  ADM980A10-miptest:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    Clinical_db:
+      - EP
+      - IEM
+    FamilyID: 15026-miptest
+    Father: '0'
+    Mother: '0'
+    Phenotype: '1'
+    SampleID: ADM980A10-miptest
+    Sequence_type:
+      - wes
+    Sex: '2'
+    display_name:
+      - ADM980A10-miptest
+  ADM980A9-miptest:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    Clinical_db:
+      - EP
+      - IEM
+    FamilyID: 15026-miptest
+    Father: ADM994A2-miptest
+    Mother: ADM980A10-miptest
+    Phenotype: '2'
+    SampleID: ADM980A9-miptest
+    Sequence_type:
+      - wes
+    Sex: '1'
+    display_name:
+      - ADM980A9-miptest
+  ADM994A2-miptest:
+    Capture_kit:
+      - Agilent_SureSelectCRE.V1
+    Clinical_db:
+      - EP
+      - IEM
+    FamilyID: 15026-miptest
+    Father: '0'
+    Mother: '0'
+    Phenotype: '1'
+    SampleID: ADM994A2-miptest
+    Sequence_type:
+      - wes
+    Sex: '1'
+    display_name:
+      - ADM994A2-miptest
+
