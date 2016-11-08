@@ -10,7 +10,7 @@ import yaml
 from housekeeper.cli.utils import run_orabort
 from .migrate import migrate_root
 from .utils import get_rundir
-from . import api, Asset, AnalysisRun, Sample
+from . import api, Asset, AnalysisRun, Sample, Case
 
 STATUSES = ['analyzed', 'compiled', 'delivered', 'archived', 'cleanedup']
 SAMPLE_STATUSES = ['received', 'sequenced', 'confirmed']
@@ -191,7 +191,7 @@ def ls(context, limit, offset, since, older, category):
 
     if category == 'samples':
         # we only consider unqiue samples
-        output = set(sample.name for sample in query)
+        output = (sample.lims_id for sample in query)
     elif category == 'cases':
         output = set(run.case.name for run in query)
     else:
@@ -244,6 +244,25 @@ def status(context, date, sample_status, run_status, identifier):
     status_field = "{}_at".format(status_type)
     setattr(model_obj, status_field, datetime.datetime.now())
     manager.commit()
+
+
+@click.command()
+@click.option('-l', '--limit', default=20)
+@click.option('-o', '--offset', default=0)
+@click.option('-c', '--case')
+@click.pass_context
+def samples(context, limit, offset, case):
+    """Display information about samples."""
+    api.manager(context.obj['database'])
+    query = api.samples()
+
+    if case:
+        query = (query.join(Sample.runs)
+                      .join(AnalysisRun.case)
+                      .filter(Case.name == case))
+
+    for sample in query.offset(offset).limit(limit):
+        click.echo(sample.lims_id)
 
 
 def build_date(date_str):

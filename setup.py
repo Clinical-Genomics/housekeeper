@@ -124,6 +124,7 @@ setup(
             'runs = housekeeper.store.cli:runs',
             'scout = housekeeper.pipelines.cli:scout',
             'status = housekeeper.store.cli:status',
+            'samples = housekeeper.store.cli:samples',
         ],
     },
 
