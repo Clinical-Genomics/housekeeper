@@ -60,6 +60,11 @@ class Sample(Model):
     runs = orm.relationship('AnalysisRun', secondary='sample_run_link',
                             back_populates='samples')
 
+    @property
+    def case_id(self):
+        """Unique case id."""
+        return '-'.join([self.customer, self.family_id])
+
 
 class Case(Model):
 

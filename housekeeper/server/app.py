@@ -36,7 +36,7 @@ def cases():
     page = int(request.args.get('page', '1'))
     qargs = {
         'query_str': request.args.get('query_str'),
-        'per_page': 20,
+        'per_page': 30,
     }
     cases_q = api.cases(query_str=qargs['query_str'])
     cases_page = cases_q.paginate(page, per_page=qargs['per_page'])
@@ -61,3 +61,16 @@ def case_postpone(case_name):
     api.postpone(run_obj)
     db.commit()
     return redirect(request.referrer)
+
+
+@app.route('/samples')
+def samples():
+    """Overview all loaded samples."""
+    page = int(request.args.get('page', '1'))
+    qargs = {
+        'query_str': request.args.get('query_str'),
+        'per_page': 30,
+    }
+    samples_q = api.samples(query_str=qargs['query_str'])
+    samples_page = samples_q.paginate(page, per_page=qargs['per_page'])
+    return render_template('samples.html', samples=samples_page, qargs=qargs)
