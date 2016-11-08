@@ -6,7 +6,7 @@ from housekeeper.pipelines.general import add
 
 def test_analysis():
     # GIVEN information on a new analysis
-    name = 'analysis_1'
+    name = 'customer_1-analysis_1'
     pipeline = 'mip'
     version = 'v3.0.0'
     analyzed_at = datetime.now()
@@ -20,4 +20,4 @@ def test_analysis():
     assert new_case.name == name
     assert new_run.pipeline == 'mip'
     assert len(new_run.samples) == 1
-    assert new_run.samples[0].name == samples[0]
+    assert new_run.samples[0].lims_id == samples[0]
