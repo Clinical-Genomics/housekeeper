@@ -157,18 +157,3 @@ class Asset(Model):
 
     def basename(self):
         return path(self.original_path).basename()
-
-
-class Archive(Model):
-
-    """Backup belonging to an analysis."""
-
-    id = Column(types.Integer, primary_key=True)
-    original_path = Column(types.Text)
-    archived_at = Column(types.DateTime)
-    archive_type = Column(types.Enum(*ARCHIVE_TYPES))
-
-    run_id = Column(ForeignKey('analysis_run.id'), nullable=False)
-
-    def basename(self):
-        return path(self.original_path).basename()
