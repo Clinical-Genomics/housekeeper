@@ -246,6 +246,7 @@ def status(context, date, run_date, sample_status, run_status, identifier):
     status_field = "{}_at".format(status_type)
     status_date = parse_date(date) if date else datetime.datetime.now()
     setattr(model_obj, status_field, status_date)
+    log.info("updating %s -> %s", status_field, status_date)
     manager.commit()
 
 
@@ -253,9 +254,9 @@ def status(context, date, run_date, sample_status, run_status, identifier):
 @click.option('-l', '--limit', default=20)
 @click.option('-o', '--offset', default=0)
 @click.option('-c', '--case')
-@click.option('-mr', '--missing-recieved', is_flag=True)
+@click.option('-mr', '--missing-received', is_flag=True)
 @click.pass_context
-def samples(context, limit, offset, case, missing_recieved):
+def samples(context, limit, offset, case, missing_received):
     """Display information about samples."""
     api.manager(context.obj['database'])
     query = api.samples()
@@ -264,7 +265,7 @@ def samples(context, limit, offset, case, missing_recieved):
         query = (query.join(Sample.runs)
                       .join(AnalysisRun.case)
                       .filter(Case.name == case))
-    if missing_recieved:
+    if missing_received:
         query = query.filter(Sample.received_at == None)
 
     for sample in query.offset(offset).limit(limit):
