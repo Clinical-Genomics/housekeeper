@@ -4,6 +4,7 @@ import os
 import logging
 
 import click
+from dateutil.parser import parse as parse_date
 from path import Path
 import yaml
 
@@ -228,21 +229,23 @@ def migrate(context, yes, only_db, new_root):
 @click.command()
 @click.option('-s', '--sample-status', type=click.Choice(SAMPLE_STATUSES))
 @click.option('-r', '--run-status', type=click.Choice(STATUSES))
-@click.option('-d', '--date', help="date of a particular run")
+@click.option('-d', '--date', help="custom date (or now)")
+@click.option('-rd', '--run-date', help="date of a particular run")
 @click.argument('identifier')
 @click.pass_context
-def status(context, date, sample_status, run_status, identifier):
+def status(context, date, run_date, sample_status, run_status, identifier):
     """Mark dates for resources."""
     manager = api.manager(context.obj['database'])
     if sample_status:
         model_obj = api.sample(identifier)
         status_type = sample_status
     elif run_status:
-        model_obj = run_orabort(context, identifier, date)
+        model_obj = run_orabort(context, identifier, run_date)
         status_type = run_status
 
     status_field = "{}_at".format(status_type)
-    setattr(model_obj, status_field, datetime.datetime.now())
+    status_date = parse_date(date) if date else datetime.datetime.now()
+    setattr(model_obj, status_field, status_date)
     manager.commit()
 
 
