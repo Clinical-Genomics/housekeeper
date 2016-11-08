@@ -26,7 +26,11 @@
             <ul class="list-inline">
               <li>Included samples:</li>
               {% for sample in run.samples %}
-                <li>{{ sample.lims_id }}</li>
+                <li>
+                  <a href="{{ url_for('samples', query_str=sample.lims_id) }}">
+                    {{ sample.lims_id }}
+                  </a>
+                </li>
               {% endfor %}
             </ul>
           </li>
