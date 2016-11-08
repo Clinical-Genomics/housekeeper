@@ -26,8 +26,9 @@ db = Alchy(app, Model=Model)
 
 @app.route('/')
 def index():
-    """Just redirect for now."""
-    return redirect(url_for('cases'))
+    """Show dashboard."""
+    to_analyzed = api.to_analyzed(db.session)
+    return render_template('index.html', to_analyzed=to_analyzed)
 
 
 @app.route('/cases')

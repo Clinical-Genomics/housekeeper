@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div id="received2analyzed"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+
+    <script type="text/javascript" charset="utf-8" async defer>
+        $(function() {
+            $("#received2analyzed").highcharts({
+                chart: {
+                    type: "spline",
+                    zoomType: "x"
+                },
+                title: {
+                    text: "Samples: from received to analyzed"
+                },
+                yAxis: {
+                    title: {
+                        text: "Days"
+                    }
+                },
+                plotOptions: {
+                    spline: {
+                        marker: {
+                            enabled: true
+                        },
+                        tooltip: {
+                            headerFormat: '<b>{point.key}</b><br>',
+                            pointFormat: '{point.y} days'
+                        }
+                    }
+                },
+                series: [{
+                    color: 'rgba(223, 83, 83, .5)',
+                    data: {{ to_analyzed|tojson|safe }}
+                }]
+            })
+        })
+    </script>
+{% endblock %}
