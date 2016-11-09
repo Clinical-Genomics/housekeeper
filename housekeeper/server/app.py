@@ -3,20 +3,15 @@
 import logging
 import os
 
-from flask import (abort, Flask, render_template, request, redirect, url_for,
-                   jsonify, session, flash)
+from flask import abort, Flask, render_template, request, redirect
 from flask_alchy import Alchy
 from flask_bootstrap import Bootstrap
-from flask_dance.contrib.google import make_google_blueprint
-from flask_dance.consumer import oauth_authorized
-from flask_dance.consumer.backend.sqla import SQLAlchemyBackend
-from flask_login import (current_user, LoginManager, login_user, logout_user,
-                         login_required)
+from flask_login import current_user, login_required
 from werkzeug.contrib.fixers import ProxyFix
 
 from housekeeper.store import Model, api
-from housekeeper.store.models import User, OAuth
-from .admin import UserAdmin
+from housekeeper.store.models import User
+from .admin import UserManagement
 
 
 log = logging.getLogger(__name__)
@@ -27,6 +22,8 @@ app.wsgi_app = ProxyFix(app.wsgi_app)
 # configuration
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'thisIsNotSecret!'
 SQLALCHEMY_DATABASE_URI = os.environ['SQLALCHEMY_DATABASE_URI']
+app.config['GOOGLE_OAUTH_CLIENT_ID'] = os.environ['GOOGLE_OAUTH_CLIENT_ID']
+app.config['GOOGLE_OAUTH_CLIENT_SECRET'] = os.environ['GOOGLE_OAUTH_CLIENT_SECRET']
 USER_DATABASE_PATH = os.environ['USER_DATABASE_PATH']
 if 'mysql' in SQLALCHEMY_DATABASE_URI:  # pragma: no cover
     SQLALCHEMY_POOL_RECYCLE = 3600
@@ -34,85 +31,9 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 TEMPLATES_AUTO_RELOAD = True
 app.config.from_object(__name__)
 
-# authentication
-login_bp = make_google_blueprint(client_id=os.environ['GOOGLE_ID'],
-                                 client_secret=os.environ['GOOGLE_SECRET'],
-                                 scope=['profile', 'email'])
-app.register_blueprint(login_bp, url_prefix='/login')
-
 # database setup
 db = Alchy(Model=Model)
-user_admin = UserAdmin()
-
-# setup login manager
-login_manager = LoginManager()
-login_manager.login_view = 'login'
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
-
-
-# setup SQLAlchemy login backend
-login_bp.backend = SQLAlchemyBackend(OAuth, db.session, user=current_user)
-
-
-@oauth_authorized.connect_via(login_bp)
-def google_loggedin(login_bp, token):
-    """Create/login local user on successful OAuth login."""
-    if not token:
-        flash("Failed to log in with {}".format(login_bp.name), 'danger')
-        return redirect(url_for('index'))
-
-    # figure out who the user is
-    resp = login_bp.session.get('/oauth2/v1/userinfo?alt=json')
-
-    if resp.ok:
-        userinfo = resp.json()
-
-        # check if the user is whitelisted
-        email = userinfo['email']
-        if not user_admin.confirm(email):
-            flash("email not whitelisted: {}".format(email), 'danger')
-            return redirect(url_for('index'))
-
-        user = User.query.filter_by(google_id=userinfo['id']).first()
-        if user:
-            user.name = userinfo['name']
-            user.avatar = userinfo['picture']
-        else:
-            user = User(google_id=userinfo['id'], name=userinfo['name'],
-                        avatar=userinfo['picture'])
-            db.add(user)
-
-        db.commit()
-        login_user(user)
-        flash('Successfully signed in with Google', 'success')
-    else:
-        message = "Failed to fetch user info from {}".format(login_bp.name)
-        flash(message, 'danger')
-
-    next_url = session.pop('next_url', None)
-    return redirect(next_url or url_for('index'))
-
-
-@app.route('/login')
-def login():
-    """Redirect to the Google login page."""
-    # store potential next param URL in the session
-    if 'next' in request.args:
-        session['next_url'] = request.args.get('next')
-
-    return redirect(url_for('google.login'))
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    flash('You have logged out', 'info')
-    return redirect(url_for('index'))
+user = UserManagement(db, User)
 
 
 @app.route('/')
@@ -178,5 +99,4 @@ def samples():
 # hookup extensions to app
 Bootstrap(app)
 db.init_app(app)
-login_manager.init_app(app)
-user_admin.init_app(app)
+user.init_app(app)

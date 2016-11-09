@@ -4,7 +4,6 @@ import json
 
 import alchy
 from path import path
-from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
 from flask_login import UserMixin
 from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 
@@ -166,8 +165,3 @@ class User(Model, UserMixin):
     email = Column(types.String(128), unique=True)
     name = Column(types.String(128))
     avatar = Column(types.Text)
-
-
-class OAuth(Model, OAuthConsumerMixin):
-    user_id = Column(ForeignKey(User.id))
-    user = orm.relationship(User)
