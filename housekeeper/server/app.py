@@ -12,6 +12,7 @@ from flask_dance.consumer import oauth_authorized
 from flask_dance.consumer.backend.sqla import SQLAlchemyBackend
 from flask_login import (current_user, LoginManager, login_user, logout_user,
                          login_required)
+from werkzeug.contrib.fixers import ProxyFix
 
 from housekeeper.store import Model, api
 from housekeeper.store.models import User, OAuth
@@ -21,6 +22,7 @@ from .admin import UserAdmin
 log = logging.getLogger(__name__)
 
 app = Flask(__name__)
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
 # configuration
 SECRET_KEY = os.environ.get('SECRET_KEY') or 'thisIsNotSecret!'
