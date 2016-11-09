@@ -1,46 +1,44 @@
 {% extends "base.html" %}
 {% import "components.html" as components %}
 
-{% block content %}
-  <div class="container">
-    <div class="page-header">
-        <h1>{{ case.name }} <small>cleaned up in: {{ case.current.cleanup_in }} days</small></h1>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="table-responsive">
-        {{ components.runs_table(case=case) }}
-      </div>
-    </div>
-
-    {% for run in case.runs %}
-      <div class="panel {% if run.archived_at %}panel-warning{% else %}panel-default{% endif %}">
-        <div class="panel-heading">
-          <strong>{{ run.analyzed_at.date() }}</strong>
-          <div class="pull-right">
-            {{ components.postpone_btn(case.name, run) }}
-          </div>
-        </div>
-        <ul class="list-group">
-          <li class="list-group-item">
-            <ul class="list-inline">
-              <li>Included samples:</li>
-              {% for sample in run.samples %}
-                <li>
-                  <a href="{{ url_for('samples', query_str=sample.lims_id) }}">
-                    {{ sample.lims_id }}
-                  </a>
-                </li>
-              {% endfor %}
-            </ul>
-          </li>
-        </ul>
-        <div class="table-responsive">
-          {{ asset_table(run) }}
-        </div>
-      </div>
-    {% endfor %}
+{% block main_content %}
+  <div class="page-header">
+      <h1>{{ case.name }} <small>cleaned up in: {{ case.current.cleanup_in }} days</small></h1>
   </div>
+
+  <div class="panel panel-default">
+    <div class="table-responsive">
+      {{ components.runs_table(case=case) }}
+    </div>
+  </div>
+
+  {% for run in case.runs %}
+    <div class="panel {% if run.archived_at %}panel-warning{% else %}panel-default{% endif %}">
+      <div class="panel-heading">
+        <strong>{{ run.analyzed_at.date() }}</strong>
+        <div class="pull-right">
+          {{ components.postpone_btn(case.name, run) }}
+        </div>
+      </div>
+      <ul class="list-group">
+        <li class="list-group-item">
+          <ul class="list-inline">
+            <li>Included samples:</li>
+            {% for sample in run.samples %}
+              <li>
+                <a href="{{ url_for('samples', query_str=sample.lims_id) }}">
+                  {{ sample.lims_id }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </li>
+      </ul>
+      <div class="table-responsive">
+        {{ asset_table(run) }}
+      </div>
+    </div>
+  {% endfor %}
 {% endblock %}
 
 {% macro asset_table(run) %}

@@ -4,6 +4,8 @@ import json
 
 import alchy
 from path import path
+from flask_dance.consumer.backend.sqla import OAuthConsumerMixin
+from flask_login import UserMixin
 from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 
 from housekeeper.constants import PIPELINES, ARCHIVE_TYPES
@@ -156,3 +158,16 @@ class Asset(Model):
 
     def basename(self):
         return path(self.original_path).basename()
+
+
+class User(Model, UserMixin):
+    id = Column(types.Integer, primary_key=True)
+    google_id = Column(types.String(128), unique=True)
+    email = Column(types.String(128), unique=True)
+    name = Column(types.String(128))
+    avatar = Column(types.Text)
+
+
+class OAuth(Model, OAuthConsumerMixin):
+    user_id = Column(ForeignKey(User.id))
+    user = orm.relationship(User)

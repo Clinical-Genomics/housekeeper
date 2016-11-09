@@ -1,42 +1,40 @@
 {% extends "base.html" %}
 {% import "components.html" as components %}
 
-{% block content %}
-  <div class="container">
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <form action="{{ url_for('samples') }}">
-          <div class="row">
-            <div class="col-xs-10">
-              <input class="form-control" type="text" name="query_str" value="{{ qargs.query_str if qargs.query_str }}">
-            </div>
-            <div class="col-xs-2">
-              <button class="btn btn-primary form-control">Search</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <div class="panel panel-default">
-      <div class="table-responsive">
-        {{ samples_table(samples.items) }}
-      </div>
-      <div class="panel-footer">
+{% block main_content %}
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <form action="{{ url_for('samples') }}">
         <div class="row">
-          <div class="col-xs-4">
-            {% if samples.has_prev %}
-              <a href="{{ url_for('samples', page=samples.prev_num, **qargs) }}">Previous</a>
-            {% endif %}
+          <div class="col-xs-10">
+            <input class="form-control" type="text" name="query_str" value="{{ qargs.query_str if qargs.query_str }}">
           </div>
-          <div class="col-xs-4 text-center">
-            Page {{ samples.page }} <small class="text-muted">({{ samples.total }} samples)</small>
+          <div class="col-xs-2">
+            <button class="btn btn-primary form-control">Search</button>
           </div>
-          <div class="col-xs-4 text-right">
-            {% if samples.has_next %}
-              <a href="{{ url_for('samples', page=samples.next_num, **qargs) }}">Next</a>
-            {% endif %}
-          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="panel panel-default">
+    <div class="table-responsive">
+      {{ samples_table(samples.items) }}
+    </div>
+    <div class="panel-footer">
+      <div class="row">
+        <div class="col-xs-4">
+          {% if samples.has_prev %}
+            <a href="{{ url_for('samples', page=samples.prev_num, **qargs) }}">Previous</a>
+          {% endif %}
+        </div>
+        <div class="col-xs-4 text-center">
+          Page {{ samples.page }} <small class="text-muted">({{ samples.total }} samples)</small>
+        </div>
+        <div class="col-xs-4 text-right">
+          {% if samples.has_next %}
+            <a href="{{ url_for('samples', page=samples.next_num, **qargs) }}">Next</a>
+          {% endif %}
         </div>
       </div>
     </div>
