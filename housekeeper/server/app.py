@@ -46,7 +46,7 @@ user_admin = UserAdmin()
 
 # setup login manager
 login_manager = LoginManager()
-login_manager.login_view = 'google.login'
+login_manager.login_view = 'login'
 
 
 @login_manager.user_loader
@@ -93,7 +93,18 @@ def google_loggedin(login_bp, token):
         message = "Failed to fetch user info from {}".format(login_bp.name)
         flash(message, 'danger')
 
-    return redirect(url_for('index'))
+    next_url = session.pop('next_url', None)
+    return redirect(next_url or url_for('index'))
+
+
+@app.route('/login')
+def login():
+    """Redirect to the Google login page."""
+    # store potential next param URL in the session
+    if 'next' in request.args:
+        session['next_url'] = request.args.get('next')
+
+    return redirect(url_for('google.login'))
 
 
 @app.route('/logout')
