@@ -11,3 +11,4 @@ python-dateutil
 Flask-Dance[sqla]
 Flask-Login
 sqlalchemy-utils
+blinker
