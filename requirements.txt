@@ -8,6 +8,6 @@ Flask
 Flask-Alchy
 Flask-Bootstrap
 python-dateutil
-Flask-Dance
+Flask-Dance[sqla]
 Flask-Login
 sqlalchemy-utils
