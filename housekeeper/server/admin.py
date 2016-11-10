@@ -1,13 +1,39 @@
 # -*- coding: utf-8 -*-
+from flask import current_app
 from flask_dance.contrib.google import make_google_blueprint
 from flask_dance.consumer import oauth_authorized
 from flask import flash, redirect, request, session, url_for
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import (LoginManager, login_user, login_required, logout_user,
+                         AnonymousUserMixin, UserMixin)
 from path import Path
+from sqlalchemy import Column, types
 import yaml
 
 
+class AnonymousUser(AnonymousUserMixin):
+
+    def __init__(self):
+        self.name = 'Paul T. Anderson'
+        self.email = 'pt@anderson.com'
+
+    @property
+    def is_authenticated(self):
+        if current_app.config.get('LOGIN_DISABLED'):
+            return True
+        else:
+            return False
+
+
+class UserManagementMixin(UserMixin):
+    id = Column(types.Integer, primary_key=True)
+    google_id = Column(types.String(128), unique=True)
+    email = Column(types.String(128), unique=True)
+    name = Column(types.String(128))
+    avatar = Column(types.Text)
+
+
 class UserManagement(object):
+
     """Provide usermanagement for a Flask app.
 
     ENV variables:
@@ -15,6 +41,7 @@ class UserManagement(object):
     GOOGLE_OAUTH_CLIENT_SECRET
     USER_DATABASE_PATH
     """
+
     def __init__(self, manager, User):
         super(UserManagement, self).__init__()
         self.User = User
@@ -56,6 +83,7 @@ class UserManagement(object):
         # setup login manager
         self.login_manager = LoginManager()
         self.login_manager.login_view = 'login'
+        self.login_manager.anonymous_user = AnonymousUser
 
         @self.login_manager.user_loader
         def load_user(user_id):
