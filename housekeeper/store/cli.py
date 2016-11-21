@@ -67,16 +67,18 @@ def get(context, case, sample, infer_case, category, all_runs):
 @click.option('-o', '--output', type=click.Choice(['root', 'sample', 'case']),
               default='case')
 @click.option('-l', '--limit', default=20)
+@click.argument('case_id', required=False)
 @click.pass_context
 def runs(context, before, after, archived, compiled, cleaned, to_clean,
-         limit, output):
+         limit, output, case_id):
     """List runs loaded in the database."""
     api.manager(context.obj['database'])
     root_path = context.obj['root']
     before_date = build_date(before) if before else None
     after_date = build_date(after) if after else None
-    run_q = api.runs(before=before_date, after=after_date, archived=archived,
-                     compiled=compiled, cleaned=cleaned, to_clean=to_clean)
+    run_q = api.runs(case_name=case_id, before=before_date, after=after_date,
+                     archived=archived, compiled=compiled, cleaned=cleaned,
+                     to_clean=to_clean)
     for run_obj in run_q.limit(limit):
         if output == 'root':
             run_root = get_rundir(root_path, run_obj.case.name, run_obj)
@@ -238,6 +240,9 @@ def status(context, date, run_date, sample_status, run_status, identifier):
     manager = api.manager(context.obj['database'])
     if sample_status:
         model_obj = api.sample(identifier)
+        if model_obj is None:
+            click.echo("can't find sample")
+            context.abort()
         status_type = sample_status
     elif run_status:
         model_obj = run_orabort(context, identifier, run_date)

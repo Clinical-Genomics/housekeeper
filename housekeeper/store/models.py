@@ -165,3 +165,7 @@ class User(Model, UserMixin):
     email = Column(types.String(128), unique=True)
     name = Column(types.String(128))
     avatar = Column(types.Text)
+
+    def first_name(self):
+        """First part of name."""
+        return self.name.split(' ')[0]
