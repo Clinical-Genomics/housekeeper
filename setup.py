@@ -125,6 +125,7 @@ setup(
             'scout = housekeeper.pipelines.cli:scout',
             'status = housekeeper.store.cli:status',
             'samples = housekeeper.store.cli:samples',
+            'add-sample = housekeeper.store.cli:add_sample',
         ],
     },
 

@@ -20,11 +20,13 @@ log = logging.getLogger(__name__)
 
 
 @click.command()
-@click.option('-c', '--case')
-@click.option('-s', '--sample')
-@click.option('-i', '--infer-case', is_flag=True)
-@click.option('-t', '--category')
-@click.option('-a', '--all', 'all_runs', is_flag=True, default=False)
+@click.option('-c', '--case', help='filter by case')
+@click.option('-s', '--sample', help='filter by sample')
+@click.option('-i', '--infer-case', is_flag=True,
+              help='filter by related case for a sample')
+@click.option('-t', '--category', help='filter by asset category')
+@click.option('-a', '--all', 'all_runs', is_flag=True, default=False,
+              help='get assets from ALL case runs, not only latest')
 @click.pass_context
 def get(context, case, sample, infer_case, category, all_runs):
     """Ask Housekeeper for a file."""
@@ -65,7 +67,7 @@ def get(context, case, sample, infer_case, category, all_runs):
 @click.option('--to-clean', is_flag=True,
               help='list runs ready to be cleaned up')
 @click.option('-o', '--output', type=click.Choice(['root', 'sample', 'case']),
-              default='case')
+              default='case', help='what to output to console')
 @click.option('-l', '--limit', default=20)
 @click.argument('case_id', required=False)
 @click.pass_context
@@ -116,7 +118,7 @@ def getsha1(context, asset_path, short, dash):
 
 
 @click.command()
-@click.option('-d', '--days', default=30)
+@click.option('-d', '--days', default=30, help='days to postpone clean up')
 @click.argument('case_name')
 @click.pass_context
 def postpone(context, days, case_name):
@@ -130,7 +132,7 @@ def postpone(context, days, case_name):
 
 
 @click.command()
-@click.option('-y', '--yes', is_flag=True, help="skip confirmation")
+@click.option('-y', '--yes', is_flag=True, help="skip manual confirmation")
 @click.option('-d', '--date', help="date of the particular run")
 @click.argument('case_name')
 @click.pass_context
@@ -147,7 +149,8 @@ def delete(context, date, yes, case_name):
 
 
 @click.command()
-@click.option('-f', '--force', is_flag=True)
+@click.option('-f', '--force', is_flag=True,
+              help='auto confirm and override sanity checks')
 @click.option('-d', '--date', help="date of the particular run")
 @click.argument('case_name')
 @click.pass_context
@@ -161,11 +164,12 @@ def clean(context, force, date, case_name):
 
 
 @click.command()
-@click.option('-l', '--limit', default=20)
-@click.option('-o', '--offset', default=0)
+@click.option('-l', '--limit', default=20, help='limit number of results')
+@click.option('-o', '--offset', default=0, help='skip initial results')
 @click.option('-s', '--since', help='consider runs since date')
-@click.option('--older', is_flag=True)
-@click.option('-c', '--category', default='bcf-raw')
+@click.option('--older', is_flag=True, help='reverse order of results')
+@click.option('-c', '--category', default='bcf-raw',
+              help='category of asset to return')
 @click.pass_context
 def ls(context, limit, offset, since, older, category):
     """List files from recently added runs."""
@@ -212,8 +216,8 @@ def ls(context, limit, offset, since, older, category):
 
 
 @click.command()
-@click.option('-y', '--yes', is_flag=True)
-@click.option('-o', '--only-db', is_flag=True)
+@click.option('-y', '--yes', is_flag=True, help="answer 'yes' to confirmations")
+@click.option('-o', '--only-db', is_flag=True, help='skip migrating assets')
 @click.argument('new_root', type=click.Path())
 @click.pass_context
 def migrate(context, yes, only_db, new_root):
@@ -232,10 +236,12 @@ def migrate(context, yes, only_db, new_root):
 
 
 @click.command()
-@click.option('-s', '--sample-status', type=click.Choice(SAMPLE_STATUSES))
-@click.option('-r', '--run-status', type=click.Choice(STATUSES))
-@click.option('-d', '--date', help="custom date (or now)")
-@click.option('-rd', '--run-date', help="date of a particular run")
+@click.option('-s', '--sample-status', type=click.Choice(SAMPLE_STATUSES),
+              help='update sample status date')
+@click.option('-r', '--run-status', type=click.Choice(STATUSES),
+              help='update run status date')
+@click.option('-d', '--date', help='custom date (or now)')
+@click.option('-rd', '--run-date', help='date of a particular run')
 @click.argument('identifier')
 @click.pass_context
 def status(context, date, run_date, sample_status, run_status, identifier):
@@ -259,10 +265,11 @@ def status(context, date, run_date, sample_status, run_status, identifier):
 
 
 @click.command()
-@click.option('-l', '--limit', default=20)
-@click.option('-o', '--offset', default=0)
-@click.option('-c', '--case')
-@click.option('-mr', '--missing-received', is_flag=True)
+@click.option('-l', '--limit', default=20, help='limit number of results')
+@click.option('-o', '--offset', default=0, help='skip initial results')
+@click.option('-c', '--case', help='return samples related to a case')
+@click.option('-mr', '--missing-received', is_flag=True,
+              help='only return samples missing received date')
 @click.pass_context
 def samples(context, limit, offset, case, missing_received):
     """Display information about samples."""
@@ -278,6 +285,26 @@ def samples(context, limit, offset, case, missing_received):
 
     for sample in query.offset(offset).limit(limit):
         click.echo(sample.lims_id)
+
+
+@click.command('add-sample')
+@click.option('-d', '--date', help='date received for sample')
+@click.argument('customer')
+@click.argument('family_id')
+@click.argument('lims_id')
+@click.pass_context
+def add_sample(context, date, lims_id):
+    """Add a new sample to the database."""
+    manager = api.manager(context.obj['database'])
+    existing_sample = Sample.query.filter_by(lims_id=lims_id).first()
+    if existing_sample:
+        log.error("sample already exists: %s", lims_id)
+        context.abort()
+    new_sample = Sample(lims_id=lims_id, customer=customer, family_id=family_id)
+    if date:
+        new_sample.received_at = parse_date(date)
+    manager.add_commit(new_sample)
+    log.info("added new sample: %s", lims_id)
 
 
 def build_date(date_str):
