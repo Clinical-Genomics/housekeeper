@@ -112,10 +112,12 @@ class UserManagement(object):
                 if user:
                     user.name = userinfo['name']
                     user.avatar = userinfo['picture']
+                    user.email = email
                 else:
                     user = this.User(google_id=userinfo['id'],
                                      name=userinfo['name'],
-                                     avatar=userinfo['picture'])
+                                     avatar=userinfo['picture'],
+                                     email=email)
                     this.manager.add(user)
 
                 this.manager.commit()

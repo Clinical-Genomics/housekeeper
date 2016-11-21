@@ -78,8 +78,11 @@ def runs(context, before, after, archived, compiled, cleaned, to_clean,
     after_date = build_date(after) if after else None
     run_q = api.runs(case_name=case_id, before=before_date, after=after_date,
                      archived=archived, compiled=compiled, cleaned=cleaned,
-                     to_clean=to_clean)
-    for run_obj in run_q.limit(limit):
+                     to_clean=to_clean).limit(limit)
+    if run_q.first() is None:
+        log.error("no runs found")
+        context.abort()
+    for run_obj in run_q:
         if output == 'root':
             run_root = get_rundir(root_path, run_obj.case.name, run_obj)
             click.echo(run_root)
