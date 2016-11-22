@@ -27,7 +27,7 @@ def assets(case_name=None, sample=None, category=None, run_id=None):
         query = (query.join(Asset.run, AnalysisRun.case)
                       .filter(Case.name == case_name))
     if sample:
-        query = query.join(Asset.sample).filter(Sample.name == sample)
+        query = query.join(Asset.sample).filter(Sample.lims_id == sample)
     if category:
         query = query.filter(Asset.category == category)
     return query
