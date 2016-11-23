@@ -275,10 +275,9 @@ def status(context, date, now, run_date, sample_status, run_status, identifier):
 @click.option('-l', '--limit', default=20, help='limit number of results')
 @click.option('-o', '--offset', default=0, help='skip initial results')
 @click.option('-c', '--case', help='return samples related to a case')
-@click.option('-mr', '--missing-received', is_flag=True,
-              help='only return samples missing received date')
+@click.option('-m', '--missing', type=click.Choice(SAMPLE_STATUSES))
 @click.pass_context
-def samples(context, limit, offset, case, missing_received):
+def samples(context, limit, offset, case, missing):
     """Display information about samples."""
     api.manager(context.obj['database'])
     query = api.samples()
@@ -287,8 +286,12 @@ def samples(context, limit, offset, case, missing_received):
         query = (query.join(Sample.runs)
                       .join(AnalysisRun.case)
                       .filter(Case.name == case))
-    if missing_received:
+    if missing == 'received':
         query = query.filter(Sample.received_at == None)
+    elif missing == 'sequenced':
+        query = query.filter(Sample.sequenced_at == None)
+    elif missing == 'confirmed':
+        query = query.filter(Sample.confirmed_at == None)
 
     for sample in query.offset(offset).limit(limit):
         click.echo(sample.lims_id)
