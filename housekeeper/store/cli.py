@@ -240,11 +240,12 @@ def migrate(context, yes, only_db, new_root):
               help='update sample status date')
 @click.option('-r', '--run-status', type=click.Choice(STATUSES),
               help='update run status date')
-@click.option('-d', '--date', help='custom date (or now)')
+@click.option('-d', '--date', help='custom date')
+@click.option('-n', '--now', help='set date to "now"')
 @click.option('-rd', '--run-date', help='date of a particular run')
 @click.argument('identifier')
 @click.pass_context
-def status(context, date, run_date, sample_status, run_status, identifier):
+def status(context, date, now, run_date, sample_status, run_status, identifier):
     """Mark dates for resources."""
     manager = api.manager(context.obj['database'])
     if sample_status:
@@ -258,7 +259,13 @@ def status(context, date, run_date, sample_status, run_status, identifier):
         status_type = run_status
 
     status_field = "{}_at".format(status_type)
-    status_date = parse_date(date) if date else datetime.datetime.now()
+    if date:
+        status_date = parse_date(date)
+    elif now:
+        status_date = datetime.datetime.now()
+    else:
+        click.echo("provide either a custom date or '--now'")
+        context.abort()
     setattr(model_obj, status_field, status_date)
     log.info("updating %s -> %s", status_field, status_date)
     manager.commit()
