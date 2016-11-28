@@ -36,7 +36,7 @@ def get(context, case, sample, infer_case, category, all_runs):
         if sample_obj is None:
             log.warn('sorry, sample not found')
             context.abort()
-        case = sample_obj.run.case.name
+        case = sample_obj.case_id
         sample = None
     if not all_runs and case:
         # get assets only from latest run
