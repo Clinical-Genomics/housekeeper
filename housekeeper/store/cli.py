@@ -303,7 +303,7 @@ def samples(context, limit, offset, case, missing):
 @click.argument('family_id')
 @click.argument('lims_id')
 @click.pass_context
-def add_sample(context, date, lims_id):
+def add_sample(context, date, customer, family_id, lims_id):
     """Add a new sample to the database."""
     manager = api.manager(context.obj['database'])
     existing_sample = Sample.query.filter_by(lims_id=lims_id).first()
