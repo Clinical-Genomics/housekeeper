@@ -2,9 +2,9 @@
 {% import "components.html" as components %}
 
 {% block main_content %}
-  <div class="panel panel-default">
-    <div class="panel-body">
-      <form action="{{ url_for('cases') }}">
+  <form action="{{ url_for('cases') }}">
+    <div class="panel panel-default">
+      <div class="panel-body">
         <div class="row">
           <div class="col-xs-10">
             <input class="form-control" type="text" name="query_str" value="{{ qargs.query_str if qargs.query_str }}">
@@ -13,9 +13,17 @@
             <button class="btn btn-primary form-control">Search</button>
           </div>
         </div>
-      </form>
+      </div>
+      <div class="panel-footer">
+        <select class="form-control" name="status_to">
+          <option>Cases to...</option>
+          {% for status in ['analyze', 'deliver', 'archive', 'cleanup'] %}
+            <option value="{{ status }}" {% if status == qargs.status_to %}selected{% endif %}>Cases to {{ status }}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
-  </div>
+  </form>
 
   <div class="panel panel-default">
     <div class="table-responsive">

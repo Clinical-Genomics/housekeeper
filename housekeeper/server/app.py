@@ -56,8 +56,10 @@ def cases():
     qargs = {
         'query_str': request.args.get('query_str'),
         'per_page': 30,
+        'status_to': request.args.get('status_to'),
     }
-    cases_q = api.cases(query_str=qargs['query_str'])
+    cases_q = api.cases(query_str=qargs['query_str'],
+                        status_to=qargs['status_to'])
     cases_page = cases_q.paginate(page, per_page=qargs['per_page'])
     return render_template('cases.html', cases=cases_page, qargs=qargs)
 
@@ -89,11 +91,13 @@ def case_postpone(case_name):
 def samples():
     """Overview all loaded samples."""
     page = int(request.args.get('page', '1'))
+    status_to = request.args.get('status_to')
     qargs = {
         'query_str': request.args.get('query_str'),
         'per_page': 30,
+        'status_to': status_to
     }
-    samples_q = api.samples(query_str=qargs['query_str'])
+    samples_q = api.samples(query_str=qargs['query_str'], status_to=status_to)
     samples_page = samples_q.paginate(page, per_page=qargs['per_page'])
     return render_template('samples.html', samples=samples_page, qargs=qargs)
 

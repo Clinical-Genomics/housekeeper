@@ -47,11 +47,18 @@ def case(name):
     return case_obj
 
 
-def samples(query_str=None):
+def samples(query_str=None, status_to=None):
     """Get samples from the database."""
     query = Sample.query.order_by(Sample.created_at.desc())
     if query_str:
         query = query.filter(Sample.lims_id.like("%{}%".format(query_str)))
+
+    if status_to == 'sequence':
+        query = query.filter(Sample.received_at != None,
+                             Sample.sequenced_at == None)
+    elif status_to == 'confirm':
+        query = query.filter(Sample.confirmed_at == None)
+
     return query
 
 
@@ -61,9 +68,24 @@ def sample(lims_id):
     return sample_obj
 
 
-def cases(query_str=None):
+def cases(query_str=None, status_to=None):
     """Get multiple cases from the database."""
     query = Case.query.order_by(Case.created_at.desc())
+
+    if status_to == 'analyze':
+        query = (query.outerjoin(Case.runs)
+                      .filter(AnalysisRun.analyzed_at == None))
+    elif status_to == 'deliver':
+        query = (query.join(Case.runs)
+                      .filter(AnalysisRun.delivered_at == None))
+    elif status_to == 'archive':
+        query = (query.join(Case.runs)
+                      .filter(AnalysisRun.archived_at == None))
+    elif status_to == 'cleanup':
+        today = datetime.datetime.today()
+        query = (query.join(Case.runs)
+                      .filter(AnalysisRun.will_cleanup_at < today))
+
     if query_str:
         query = query.filter(Case.name.like("%{}%".format(query_str)))
     return query
