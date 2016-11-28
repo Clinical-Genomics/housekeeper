@@ -316,6 +316,16 @@ def add_sample(context, date, lims_id):
     manager.add_commit(new_sample)
     log.info("added new sample: %s", lims_id)
 
+    # also add an empty case if it doesn't already exist
+    if api.case(new_sample.case_id) is None:
+        new_case = Case(name=new_sample.case_id,
+                        customer=new_sample.customer,
+                        family_id=new_sample.family_id)
+        manager.add_commit(new_case)
+        log.info("added new case: %s", new_case.name)
+    else:
+        log.debug("case already exists: %s", new_sample.case_id)
+
 
 def build_date(date_str):
     """Parse date out of string."""
