@@ -83,7 +83,10 @@ class Case(Model):
     @property
     def current(self):
         """Return the current (active) run."""
-        return self.runs[0]
+        if self.runs:
+            return self.runs[0]
+        else:
+            return None
 
 
 class AnalysisRun(Model):
