@@ -47,7 +47,7 @@ def case(name):
     return case_obj
 
 
-def samples(query_str=None, status_to=None):
+def samples(query_str=None, status_to=None, customer=None, family_id=None):
     """Get samples from the database."""
     query = Sample.query.order_by(Sample.created_at.desc())
     if query_str:
@@ -58,6 +58,11 @@ def samples(query_str=None, status_to=None):
                              Sample.sequenced_at == None)
     elif status_to == 'confirm':
         query = query.filter(Sample.confirmed_at == None)
+
+    if customer:
+        query = query.filter_by(customer=customer)
+    if family_id:
+        query = query.filter_by(family_id=family_id)
 
     return query
 

@@ -15,6 +15,8 @@ from . import api, Asset, AnalysisRun, Sample, Case
 
 STATUSES = ['analyzed', 'compiled', 'delivered', 'archived', 'cleanedup']
 SAMPLE_STATUSES = ['received', 'sequenced', 'confirmed']
+CASE_STATUS_MAP = {'analyzed': 'analyze', 'delivered': 'deliver',
+                   'archived': 'archive'}
 
 log = logging.getLogger(__name__)
 
@@ -269,6 +271,27 @@ def status(context, date, now, run_date, sample_status, run_status, identifier):
     setattr(model_obj, status_field, status_date)
     log.info("updating %s -> %s", status_field, status_date)
     manager.commit()
+
+
+@click.command()
+@click.option('-l', '--limit', default=20, help='limit number of results')
+@click.option('-o', '--offset', default=0, help='skip initial results')
+@click.option('-m', '--missing', type=click.Choice(CASE_STATUS_MAP.keys()))
+@click.option('-r', '--ready', is_flag=True, help='check if samples are sequenced')
+@click.pass_context
+def cases(context, limit, offset, missing, ready):
+    """Display information about cases."""
+    api.manager(context.obj['database'])
+    query = api.cases(status_to=CASE_STATUS_MAP[missing] if missing else None)
+    for case in query.offset(offset).limit(limit):
+        if ready:
+            case_samples = api.samples(customer=case.customer,
+                                       family_id=case.family_id)
+            if ((case_samples.first() is None) or
+                    (not all(sample.sequenced_at for sample in case_samples))):
+                log.debug("skipping case, samples not sequenced")
+                continue
+        click.echo(case.name)
 
 
 @click.command()
