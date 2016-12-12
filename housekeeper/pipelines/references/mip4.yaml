@@ -11,7 +11,7 @@
 
 - category: pedigree
   source: family
-  key: pedigree_file_minimal|path
+  key: pedigree_minimal|path
   archive_type: data
 
 - category: pedigree-yaml
