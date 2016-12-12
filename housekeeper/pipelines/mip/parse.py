@@ -73,7 +73,7 @@ def parse_tree(tree, keys):
     for index, key in enumerate(keys):
         if key.isdigit():
             if isinstance(tree, dict):
-                tree = tree.values()[int(key)]
+                tree = list(tree.values())[int(key)]
             else:
                 tree = tree[int(key)]
         elif key == '*':
