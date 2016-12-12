@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from housekeeper.pipelines.mip.build import build_analysis
+from housekeeper.pipelines.general.add import analysis as general_analysis
 from housekeeper.pipelines.mip.parse import parse_references
 from housekeeper.pipelines.mip.core import build_assets, link_asset
 from .parse import prepare_inputs
@@ -17,12 +17,23 @@ def parse_mip4(config_data, reference_data, force=False):
     # 2. post-process the output a bit
     prepare_run(segments, force=force)
     # 3. build the records
-    customer = segments['pedigree']['customer']
-    new_objs = build_analysis(segments, customer=customer)
+    new_objs = build_analysis(segments)
     # 4. parse references
     new_refs = parse_references(reference_data, segments=segments)
     # 5. build assets from references + link to new records
     new_assets = build_assets(new_refs)
     for new_asset, sample in new_assets:
         link_asset(new_objs['run'], new_asset, sample=sample)
+    return new_objs
+
+
+def build_analysis(segments):
+    """Prepare info for a MIP analysis."""
+    version = segments['family']['mip_version']
+    analyzed_at = segments['family']['analysis_date']
+    sample_ids = segments['config']['sample_ids']
+    customer = segments['pedigree']['customer']
+    name = "{}-{}".format(customer, segments['config']['family_id'])
+    log.debug("build new analysis record: %s", name)
+    new_objs = general_analysis(name, 'mip', version, analyzed_at, sample_ids)
     return new_objs

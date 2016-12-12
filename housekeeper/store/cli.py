@@ -13,7 +13,7 @@ from .migrate import migrate_root
 from .utils import get_rundir
 from . import api, Asset, AnalysisRun, Sample, Case
 
-STATUSES = ['analyzed', 'compiled', 'delivered', 'archived', 'cleanedup']
+RUN_STATUSES = ['analyzed', 'compiled', 'delivered', 'archived', 'cleanedup']
 SAMPLE_STATUSES = ['received', 'sequenced', 'confirmed']
 CASE_STATUS_MAP = {'analyzed': 'analyze', 'delivered': 'deliver',
                    'archived': 'archive'}
@@ -68,7 +68,7 @@ def get(context, case, sample, infer_case, category, all_runs):
               help='list cleaned up/not cleaned up runs')
 @click.option('--to-clean', is_flag=True,
               help='list runs ready to be cleaned up')
-@click.option('-o', '--output', type=click.Choice(['root', 'sample', 'case']),
+@click.option('-o', '--output', type=click.Choice(['root', '', 'sample', 'case']),
               default='case', help='what to output to console')
 @click.option('-l', '--limit', default=20)
 @click.argument('case_id', required=False)
@@ -78,8 +78,8 @@ def runs(context, before, after, archived, compiled, cleaned, to_clean,
     """List runs loaded in the database."""
     api.manager(context.obj['database'])
     root_path = context.obj['root']
-    before_date = build_date(before) if before else None
-    after_date = build_date(after) if after else None
+    before_date = parse_date(before) if before else None
+    after_date = parse_date(after) if after else None
     run_q = api.runs(case_name=case_id, before=before_date, after=after_date,
                      archived=archived, compiled=compiled, cleaned=cleaned,
                      to_clean=to_clean).limit(limit)
@@ -240,16 +240,26 @@ def migrate(context, yes, only_db, new_root):
 @click.command()
 @click.option('-s', '--sample-status', type=click.Choice(SAMPLE_STATUSES),
               help='update sample status date')
-@click.option('-r', '--run-status', type=click.Choice(STATUSES),
+@click.option('-r', '--run-status', type=click.Choice(RUN_STATUSES),
               help='update run status date')
+@click.option('-c', '--custom-status', help='custom run status')
 @click.option('-d', '--date', help='custom date')
 @click.option('-n', '--now', help='set date to "now"')
 @click.option('-rd', '--run-date', help='date of a particular run')
 @click.argument('identifier')
 @click.pass_context
-def status(context, date, now, run_date, sample_status, run_status, identifier):
+def status(context, date, now, run_date, sample_status, run_status,
+           custom_status, identifier):
     """Mark dates for resources."""
     manager = api.manager(context.obj['database'])
+
+    if date:
+        status_date = parse_date(date)
+    elif now:
+        status_date = datetime.datetime.now()
+    else:
+        status_date = None
+
     if sample_status:
         model_obj = api.sample(identifier)
         if model_obj is None:
@@ -260,17 +270,27 @@ def status(context, date, now, run_date, sample_status, run_status, identifier):
         model_obj = run_orabort(context, identifier, run_date)
         status_type = run_status
 
-    status_field = "{}_at".format(status_type)
-    if date:
-        status_date = parse_date(date)
-    elif now:
-        status_date = datetime.datetime.now()
+    if custom_status:
+        if status_date is None:
+            current_date = model_obj.custom_date(custom_status)
+        else:
+            model_obj.set_custom_date(custom_status, status_date)
+            status_field = custom_status
     else:
-        click.echo("provide either a custom date or '--now'")
-        context.abort()
-    setattr(model_obj, status_field, status_date)
-    log.info("updating %s -> %s", status_field, status_date)
-    manager.commit()
+        status_field = "{}_at".format(status_type)
+        if current_date is None:
+            current_date = getattr(model_obj, status_field)
+        else:
+            setattr(model_obj, status_field, status_date)
+
+    if status_date is None:
+        if current_date is None:
+            context.abort()
+        else:
+            click.echo(current_date)
+    else:
+        log.info("updating %s -> %s", status_field, status_date)
+        manager.commit()
 
 
 @click.command()

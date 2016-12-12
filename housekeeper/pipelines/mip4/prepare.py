@@ -2,13 +2,14 @@
 from __future__ import division
 import logging
 
+from path import Path
+import yaml
+
 from housekeeper.exc import AnalysisNotFinishedError, UnsupportedVersionError
-from housekeeper.pipelines.mip.meta import build_meta, write_meta
-from housekeeper.pipelines.mip.prepare import modify_qcmetrics
+from housekeeper.pipelines.mip.meta import write_meta
+from .meta import build_meta
 
 log = logging.getLogger(__name__)
-
-MULTIQC_SAMTOOLS = 'multiqc/multiqc_data/multiqc_samtools_stats.txt'
 
 
 def prepare_run(segments, force=False):
@@ -16,27 +17,48 @@ def prepare_run(segments, force=False):
     if not force:
         validate(segments['family'])
 
-    outdata_dir = segments['config']['outDataDir']
-    qcped_path = segments['family']['PedigreeFileAnalysis']['Path']
-    fam_key = segments['config']['familyID']
+    outdata_dir = segments['config']['outdata_dir']
+    fam_key = segments['config']['family_id']
     customer = segments['pedigree']['customer']
     case_name = "{}-{}".format(customer, fam_key)
-    meta_output = build_meta(case_name, segments['family'], qcped_path)
+    meta_output = build_meta(case_name, segments)
     write_meta(meta_output, outdata_dir)
-
-    qcmetrics_path = (segments['family']['Program']['QCCollect']
-                              ['QCCollectMetricsFile']['Path'])
-    sample_ids = segments['config']['sampleIDs']
-    modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids,
-                     multiqc_samtools=MULTIQC_SAMTOOLS)
+    qcmetrics_path = (segments['family']['program']['qccollect']
+                              ['qccollect_metrics_file']['path'])
+    modify_qcmetrics(outdata_dir, qcmetrics_path)
 
 
 def validate(family):
     """Validate analysis."""
-    run_status = family['AnalysisRunStatus']
-    if run_status != 'Finished':
+    run_status = family['analysisrunstatus']
+    if run_status != 'finished':
         raise AnalysisNotFinishedError(run_status)
 
-    version = family['MIPVersion']
+    version = family['mip_version']
     if not version.startswith('v4'):
         raise UnsupportedVersionError(version)
+
+
+def modify_qcmetrics(outdata_dir, qcmetrics_path):
+    """Summarize some stats on sample level."""
+    with open(qcmetrics_path, 'r') as in_handle:
+        qc_data = yaml.load(in_handle)
+
+    for sample_id, values in qc_data['sample'].items():
+        # extract data dicts
+        datas = [data for level_id, data in values.items() if
+                 level_id[-6:-1] == '.lane']
+        reads, mapped = 0, 0
+        for data in datas:
+            reads += data['bamstats']['raw_total_sequences']
+            mapped += data['bamstats']['reads_mapped']
+
+        values['reads'] = reads
+        values['reads_mapped'] = mapped
+        values['reads_mapped_rate'] = mapped / reads
+
+    new_qcmetrics = Path(qcmetrics_path.replace('.yaml', '.mod.yaml'))
+    log.info("create updated qc metrics: %s", new_qcmetrics)
+    with new_qcmetrics.open('w') as out_handle:
+        dump = yaml.dump(qc_data, default_flow_style=False, allow_unicode=True)
+        out_handle.write(dump.decode('utf-8'))

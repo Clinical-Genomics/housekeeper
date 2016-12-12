@@ -16,7 +16,7 @@
       </div>
       <div class="panel-footer">
         <select class="form-control" name="status_to">
-          <option>Samples to...</option>
+          <option value="">Samples to...</option>
           {% for status in ['sequence', 'confirm'] %}
             <option value="{{ status }}" {% if status == qargs.status_to %}selected{% endif %}>Samples to {{ status }}</option>
           {% endfor %}

@@ -112,6 +112,17 @@ class AnalysisRun(Model):
     # store dates when added to various downstream apps
     added_dates = Column(types.Text)
 
+    def custom_date(self, status_type):
+        """Fetch a custom date from the JSON dump."""
+        data = json.loads(self.added_dates)
+        return data.get(status_type)
+
+    def set_custom_date(self, status_type, new_date):
+        """Set a custom date for the run."""
+        data = json.loads(self.added_dates)
+        data[status_type] = new_date
+        self.added_dates = json.dumps(data)
+
     case_id = Column(ForeignKey(Case.id), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='run')
     samples = orm.relationship('Sample', secondary='sample_run_link',

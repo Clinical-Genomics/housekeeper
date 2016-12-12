@@ -1,103 +1,97 @@
 ---
 - category: config
   source: config
-  key: writeConfigFile
+  key: outconfig_file
   archive_type: result
 
 - category: sampleinfo
   source: config
-  key: sampleInfoFile
+  key: qccollect_sampleinfo_file
   archive_type: result
 
 - category: pedigree
   source: family
-  key: PedigreeFile|Path
+  key: pedigree_file_minimal|path
   archive_type: data
 
-- category: qcpedigree
+- category: pedigree-yaml
   source: family
-  key: PedigreeFileAnalysis|Path
+  key: pedigree_file|path
 
 - category: vcf-clinical-bin
   source: family
-  key: VCFBinaryFile|Clinical|Path
+  key: vcf_binary_file|clinical|path
   archive_type: result
 
 - category: vcf-clinical-bin-index
   source: family
-  key: VCFBinaryFile|Clinical|Path
+  key: vcf_binary_file|clinical|path
   suffix: .tbi
   archive_type: result
 
 - category: vcf-research-bin
   source: family
-  key: VCFBinaryFile|Research|Path
+  key: vcf_binary_file|research|path
   archive_type: result
 
 - category: vcf-research-bin-index
   source: family
-  key: VCFBinaryFile|Research|Path
+  key: vcf_binary_file|research|path
   suffix: .tbi
   archive_type: result
 
 - category: log
   source: family
-  key: lastLogFilePath
+  key: last_log_file_path
   archive_type: result
 
 - category: meta
   source: config
-  key: outDataDir
+  key: outdata_dir
   suffix: /meta.yaml
   archive_type: meta
 
-- category: bcf-raw-sv
-  source: family
-  key: SVBCFFile|Path
-  archive_type: result
-  required: no
-
 - category: vcf-clinical-sv-bin
   source: family
-  key: SVVCFBinaryFile|Clinical|Path
+  key: sv_vcf_binary_file|clinical|path
   archive_type: result
 
 - category: vcf-clinical-sv-bin-index
   source: family
-  key: SVVCFBinaryFile|Clinical|Path
+  key: sv_vcf_binary_file|clinical|path
   suffix: .tbi
   archive_type: result
 
 - category: vcf-research-sv-bin
   source: family
-  key: SVVCFBinaryFile|Research|Path
+  key: sv_vcf_binary_file|research|path
   archive_type: result
 
 - category: vcf-research-sv-bin-index
   source: family
-  key: SVVCFBinaryFile|Research|Path
+  key: sv_vcf_binary_file|research|path
   suffix: .tbi
   archive_type: result
 
 - category: coverage
   source: samples
-  key: Program|SambambaDepth|0|Bed|Path
+  key: program|sambamba_depth|0|bed|path
   sample: yes
 
 - category: bam
   source: samples
-  key: MostCompleteBAM|Path
+  key: most_complete_bam|path
   sample: yes
 
 - category: bai
   source: samples
-  key: MostCompleteBAM|Path
+  key: most_complete_bam|path
   suffix: .bai
   sample: yes
 
 - category: qc
   source: family
-  key: Program|QCCollect|QCCollectMetricsFile|Path
+  key: program|qccollect|qccollect_metrics_file|path
   archive_type: result
   replace:
     old_str: .yaml
@@ -105,11 +99,11 @@
 
 - category: gbcf
   source: family
-  key: GBCFFile|Path
+  key: gbcf_file|path
   archive_type: result
 
 - category: gbcf-index
   source: family
-  key: GBCFFile|Path
+  key: gbcf_file|path
   archive_type: result
   suffix: .csi

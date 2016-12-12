@@ -1,0 +1,4 @@
+#family_id	sample_id	father	mother	sex	phenotype
+118	118-1-2A	118-2-1U	118-2-2U	2	2
+118	118-2-1U	0	0	1	1
+118	118-2-2U	0	0	2	1

@@ -1,4 +1,0 @@
-#FamilyID	SampleID	Father	Mother	Sex	Phenotype	Capture_kit	Clinical_db	display_name	Sequence_type
-15026-miptest	ADM980A9-miptest	ADM994A2-miptest	ADM980A10-miptest	1	2	Agilent_SureSelectCRE.V1	EP;IEM	ADM980A9-miptest	wes
-15026-miptest	ADM994A2-miptest	0	0	1	1	Agilent_SureSelectCRE.V1	EP;IEM	ADM994A2-miptest	wes
-15026-miptest	ADM980A10-miptest	0	0	2	1	Agilent_SureSelectCRE.V1	EP;IEM	ADM980A10-miptest	wes
