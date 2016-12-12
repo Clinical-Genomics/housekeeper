@@ -1,21 +1,27 @@
 # -*- coding: utf-8 -*-
 
 
-class AnalysisConflictError(Exception):
+class HousekeeperError(Exception):
+
+    def __init__(self, message=None):
+        self.message = message
+
+
+class AnalysisConflictError(HousekeeperError):
     pass
 
 
-class MissingFileError(Exception):
+class MissingFileError(HousekeeperError):
     pass
 
 
-class AnalysisNotFinishedError(Exception):
+class AnalysisNotFinishedError(HousekeeperError):
     pass
 
 
-class UnsupportedVersionError(Exception):
+class UnsupportedVersionError(HousekeeperError):
     pass
 
 
-class MalformattedPedigreeError(Exception):
+class MalformattedPedigreeError(HousekeeperError):
     pass
