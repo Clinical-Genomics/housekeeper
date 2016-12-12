@@ -1,7 +1,7 @@
 ---
 - category: config
   source: config
-  key: outconfig_file
+  key: config_file_analysis
   archive_type: result
 
 - category: sampleinfo
