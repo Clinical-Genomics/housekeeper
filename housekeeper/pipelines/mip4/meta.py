@@ -21,4 +21,4 @@ def build_meta(case_name, segments):
         'analyzed_at': segments['family']['analysis_date'],
         'samples': sample_map,
     }
-    return yaml.dump(metadata, default_flow_style=False)
+    return yaml.safe_dump(metadata, default_flow_style=False)
