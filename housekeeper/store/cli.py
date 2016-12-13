@@ -253,6 +253,7 @@ def status(context, date, now, run_date, sample_status, run_status,
     """Mark dates for resources."""
     manager = api.manager(context.obj['database'])
 
+    # determine which date to set: custom or now!
     if date:
         status_date = parse_date(date)
     elif now:
@@ -261,26 +262,34 @@ def status(context, date, now, run_date, sample_status, run_status,
         status_date = None
 
     if sample_status:
+        # update a date for a sample
         model_obj = api.sample(identifier)
         if model_obj is None:
             click.echo("can't find sample")
             context.abort()
+        # types are predefined; no need to check!
         status_type = sample_status
     elif run_status:
+        # update a date for an analysis run
         model_obj = run_orabort(context, identifier, run_date)
+        # types are predefined as well
         status_type = run_status
 
     if custom_status:
         if status_date is None:
+            # show a custom date for an analysis run
             current_date = model_obj.custom_date(custom_status)
         else:
+            # update a custom date for a run
             model_obj.set_custom_date(custom_status, status_date)
             status_field = custom_status
     else:
         status_field = "{}_at".format(status_type)
-        if current_date is None:
+        if status_date is None:
+            # show a predfined date for a model
             current_date = getattr(model_obj, status_field)
         else:
+            # update a predefined date on a model
             setattr(model_obj, status_field, status_date)
 
     if status_date is None:
