@@ -9,14 +9,14 @@ from path import Path
 import yaml
 
 from housekeeper.cli.utils import run_orabort
+from housekeeper.constants import EXTRA_STATUSES
 from .migrate import migrate_root
 from .utils import get_rundir
 from . import api, Asset, AnalysisRun, Sample, Case
 
 RUN_STATUSES = ['analyzed', 'compiled', 'delivered', 'archived', 'cleanedup']
 SAMPLE_STATUSES = ['received', 'sequenced', 'confirmed']
-CASE_STATUS_MAP = {'analyzed': 'analyze', 'delivered': 'deliver',
-                   'archived': 'archive'}
+CASE_STATUSES = RUN_STATUSES + EXTRA_STATUSES
 
 log = logging.getLogger(__name__)
 
@@ -242,14 +242,15 @@ def migrate(context, yes, only_db, new_root):
               help='update sample status date')
 @click.option('-r', '--run-status', type=click.Choice(RUN_STATUSES),
               help='update run status date')
-@click.option('-c', '--custom-status', help='custom run status')
+@click.option('-c', '--extra-status', type=click.Choice(EXTRA_STATUSES),
+              help='custom run status')
 @click.option('-d', '--date', help='custom date')
 @click.option('-n', '--now', help='set date to "now"')
 @click.option('-rd', '--run-date', help='date of a particular run')
 @click.argument('identifier')
 @click.pass_context
 def status(context, date, now, run_date, sample_status, run_status,
-           custom_status, identifier):
+           extra_status, identifier):
     """Mark dates for resources."""
     manager = api.manager(context.obj['database'])
 
@@ -275,13 +276,14 @@ def status(context, date, now, run_date, sample_status, run_status,
         # types are predefined as well
         status_type = run_status
 
-    if custom_status:
+    if extra_status:
+        extra_date_key = "{}_date".format(extra_status)
         if status_date is None:
             # show a custom date for an analysis run
-            current_date = model_obj.custom_date(custom_status)
+            current_date = getattr(model_obj.extra, extra_date_key)
         else:
             # update a custom date for a run
-            model_obj.set_custom_date(custom_status, status_date)
+            setattr(model_obj.extra, extra_date_key, status_date)
             status_field = custom_status
     else:
         status_field = "{}_at".format(status_type)
@@ -305,13 +307,13 @@ def status(context, date, now, run_date, sample_status, run_status,
 @click.command()
 @click.option('-l', '--limit', default=20, help='limit number of results')
 @click.option('-o', '--offset', default=0, help='skip initial results')
-@click.option('-m', '--missing', type=click.Choice(CASE_STATUS_MAP.keys()))
+@click.option('-m', '--missing', type=click.Choice(CASE_STATUSES))
 @click.option('-r', '--ready', is_flag=True, help='check if samples are sequenced')
 @click.pass_context
 def cases(context, limit, offset, missing, ready):
     """Display information about cases."""
     api.manager(context.obj['database'])
-    query = api.cases(status_to=CASE_STATUS_MAP[missing] if missing else None)
+    query = api.cases(missing=missing)
     for case in query.offset(offset).limit(limit):
         if ready:
             case_samples = api.samples(customer=case.customer,

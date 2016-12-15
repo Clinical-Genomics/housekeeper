@@ -5,7 +5,8 @@ import logging
 from alchy import Manager
 from path import path
 
-from .models import AnalysisRun, Asset, Case, Model, Sample
+from housekeeper.constants import EXTRA_STATUSES
+from .models import AnalysisRun, Asset, Case, Model, Sample, ExtraRunData
 from .utils import get_rundir
 
 log = logging.getLogger(__name__)
@@ -73,23 +74,28 @@ def sample(lims_id):
     return sample_obj
 
 
-def cases(query_str=None, status_to=None):
+def cases(query_str=None, missing=None):
     """Get multiple cases from the database."""
     query = Case.query.order_by(Case.created_at.desc())
 
-    if status_to == 'analyze':
+    if missing == 'analyzed':
         query = (query.outerjoin(Case.runs)
                       .filter(AnalysisRun.analyzed_at == None))
-    elif status_to == 'deliver':
+    elif missing == 'delivered':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.delivered_at == None))
-    elif status_to == 'archive':
+    elif missing == 'archived':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.archived_at == None))
-    elif status_to == 'cleanup':
+    elif missing == 'cleanedup':
         today = datetime.datetime.today()
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.will_cleanup_at < today))
+    elif missing in EXTRA_STATUSES:
+        date_field = getattr(ExtraRunData, "{}_date".format(missing))
+        query = (query.join(Case.runs, AnalysisRun.extra)
+                      .filter(AnalysisRun.analyzed_at != None,
+                              date_field == None))
 
     if query_str:
         query = query.filter(Case.name.like("%{}%".format(query_str)))

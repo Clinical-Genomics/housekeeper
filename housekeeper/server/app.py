@@ -56,10 +56,10 @@ def cases():
     qargs = {
         'query_str': request.args.get('query_str'),
         'per_page': 30,
-        'status_to': request.args.get('status_to'),
+        'missing': request.args.get('missing'),
     }
     cases_q = api.cases(query_str=qargs['query_str'],
-                        status_to=qargs['status_to'])
+                        missing=qargs['missing'])
     cases_page = cases_q.paginate(page, per_page=qargs['per_page'])
     return render_template('cases.html', cases=cases_page, qargs=qargs)
 

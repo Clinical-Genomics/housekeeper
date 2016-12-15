@@ -15,10 +15,10 @@
         </div>
       </div>
       <div class="panel-footer">
-        <select class="form-control" name="status_to">
-          <option value="">Cases to...</option>
-          {% for status in ['analyze', 'deliver', 'archive', 'cleanup'] %}
-            <option value="{{ status }}" {% if status == qargs.status_to %}selected{% endif %}>Cases to {{ status }}</option>
+        <select class="form-control" name="missing">
+          <option value="">Cases missing...</option>
+          {% for status in ['analyzed', 'delivered', 'archived', 'cleanedup'] %}
+            <option value="{{ status }}" {% if status == qargs.missing %}selected{% endif %}>Cases to {{ status }}</option>
           {% endfor %}
         </select>
       </div>

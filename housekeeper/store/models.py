@@ -109,24 +109,13 @@ class AnalysisRun(Model):
     archived_at = Column(types.DateTime)
     cleanedup_at = Column(types.DateTime)
     will_cleanup_at = Column(types.DateTime)
-    # store dates when added to various downstream apps
-    added_dates = Column(types.Text)
-
-    def custom_date(self, status_type):
-        """Fetch a custom date from the JSON dump."""
-        data = json.loads(self.added_dates)
-        return data.get(status_type)
-
-    def set_custom_date(self, status_type, new_date):
-        """Set a custom date for the run."""
-        data = json.loads(self.added_dates)
-        data[status_type] = new_date
-        self.added_dates = json.dumps(data)
 
     case_id = Column(ForeignKey(Case.id), nullable=False)
     assets = orm.relationship('Asset', cascade='all,delete', backref='run')
     samples = orm.relationship('Sample', secondary='sample_run_link',
                                back_populates='runs')
+    extra = orm.relationship('ExtraRunData', backref='run',
+                             cascade='all,delete', uselist=False)
 
     @property
     def cleanup_in(self):
@@ -183,3 +172,19 @@ class User(Model, UserMixin):
     def first_name(self):
         """First part of name."""
         return self.name.split(' ')[0]
+
+
+class ExtraRunData(Model):
+
+    """Store custom extra fields related to a run."""
+
+    id = Column(types.Integer, primary_key=True)
+    run_id = Column(ForeignKey('analysis_run.id'), nullable=False, unique=True)
+
+    # custom dates
+    coverage_date = Column(types.DateTime)
+    frequency_date = Column(types.DateTime)
+    genotype_date = Column(types.DateTime)
+    visualizer_date = Column(types.DateTime)
+    rawdata_date = Column(types.DateTime)
+    qc_date = Column(types.DateTime)
