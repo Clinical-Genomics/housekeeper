@@ -61,3 +61,10 @@ output/*/index.html
 # Docs
 docs/_build
 _book/
+
+# Secrets
+alembic.ini
+
+# Module
+*.mod.yaml
+meta.yaml
