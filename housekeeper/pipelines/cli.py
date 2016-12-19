@@ -28,7 +28,7 @@ LOADERS = {'mip': parse_mip, 'mip2': parse_mip2, 'mip4': parse_mip4,
 @click.option('-f', '--force', is_flag=True, help='skip ALL validations')
 @click.option('-r', '--references', type=click.File('r'))
 @click.option('-p', '--pipeline', type=click.Choice(LOADERS.keys()),
-              default='mip')
+              default='mip4')
 @click.option('--replace', is_flag='replace identical runs')
 @click.argument('config', type=click.File('r'))
 @click.pass_context
