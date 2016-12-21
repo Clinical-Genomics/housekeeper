@@ -69,7 +69,8 @@ def add(context, force, yes, replace, references, pipeline, config):
             context.abort()
 
     try:
-        commit_analysis(manager, context.obj['root'], **records)
+        commit_analysis(manager, context.obj['root'], records['case'],
+                        records['run'])
         click.echo("added new analysis: {}".format(case_name))
         sample_ids = ', '.join(sample.lims_id for sample in
                                records['run'].samples)
