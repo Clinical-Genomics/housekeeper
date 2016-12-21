@@ -19,8 +19,8 @@ def build_analysis(segments, version=None, customer=None):
     customer = customer or segments['family']['InstanceTag'][0]
     name = "{}-{}".format(customer, fam_key)
     log.debug("build new analysis record: %s", name)
-    new_objs = general_analysis(name, 'mip', version, analyzed_at, sample_ids)
-    return new_objs
+    new_run = general_analysis('mip', version, analyzed_at)
+    return {'case': name, 'run': new_run, 'samples': sample_ids}
 
 
 def build_asset(asset_path, reference):

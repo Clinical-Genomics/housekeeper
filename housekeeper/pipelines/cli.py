@@ -10,6 +10,7 @@ from housekeeper.store import api
 from housekeeper.store.utils import get_rundir
 from housekeeper.cli.utils import run_orabort
 from housekeeper import exc
+from housekeeper.pipelines.mip.core import link_asset
 from .mip import parse_mip
 from .mip2 import parse_mip2
 from .mip4 import parse_mip4
@@ -42,7 +43,7 @@ def add(context, force, yes, replace, references, pipeline, config):
     reference_data = yaml.load(references)
     loader = LOADERS[pipeline]
     try:
-        records = loader(config_data, reference_data, force=force)
+        data = loader(config_data, reference_data, force=force)
     except exc.MalformattedPedigreeError as error:
         log.error("bad PED formatting: %s", error.message)
         context.abort()
@@ -53,6 +54,8 @@ def add(context, force, yes, replace, references, pipeline, config):
         new_or_old = 'old' if pipeline == 'mip' else 'new'
         log.error("pipeline too %s: %s", new_or_old, error.message)
         context.abort()
+
+    records = link_records(data)
     case_name = records['case'].name
     old_run = check_existing(case_name, records['run'])
     if old_run:
@@ -73,6 +76,22 @@ def add(context, force, yes, replace, references, pipeline, config):
         click.echo("including samples: {}".format(sample_ids))
     except exc.AnalysisConflictError:
         click.echo("analysis output not removed: {}".format(case_name))
+
+
+def link_records(data):
+    """Fetch existing information."""
+    case_obj = api.case(data['case'])
+    if case_obj is None:
+        raise ValueError("case not found: {}".format(data['case']))
+    for sample_id in data['samples']:
+        sample_obj = api.sample(sample_id)
+        if sample_obj is None:
+            raise ValueError("sample not found: {}".format(sample_id))
+        data['run'].samples.append(sample_obj)
+
+    for new_asset, sample_id in data['assets']:
+        link_asset(data['run'], new_asset, sample=sample_id)
+    return {'case': case_obj, 'run': data['run']}
 
 
 @click.command()

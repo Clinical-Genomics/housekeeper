@@ -40,11 +40,14 @@ def parse_mip(config_data, reference_data, force=False):
     # 2. post-process the output a bit
     prepare_run(segments, force=force)
     # 3. build the records
-    new_objs = build_analysis(segments)
+    new_data = build_analysis(segments)
     # 4. parse references
     new_refs = parse_references(reference_data, segments)
     # 5. build assets from references + link to new records
     new_assets = build_assets(new_refs, force=force)
-    for new_asset, sample in new_assets:
-        link_asset(new_objs['run'], new_asset, sample=sample)
-    return new_objs
+    return {
+        'case': new_data['case'],
+        'samples': new_data['samples'],
+        'run': new_data['run'],
+        'assets': new_assets,
+    }
