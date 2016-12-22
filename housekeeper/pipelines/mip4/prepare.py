@@ -19,7 +19,7 @@ def prepare_run(segments, force=False):
 
     outdata_dir = segments['config']['outdata_dir']
     fam_key = segments['config']['family_id']
-    customer = segments['pedigree']['customer']
+    customer = segments['pedigree']['owner']
     case_name = "{}-{}".format(customer, fam_key)
     meta_output = build_meta(case_name, segments)
     write_meta(meta_output, outdata_dir)

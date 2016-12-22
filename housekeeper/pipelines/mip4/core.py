@@ -35,7 +35,7 @@ def build_analysis(segments):
     version = segments['family']['mip_version']
     analyzed_at = segments['family']['analysis_date']
     sample_ids = segments['config']['sample_ids']
-    customer = segments['pedigree']['customer']
+    customer = segments['pedigree']['owner']
     name = "{}-{}".format(customer, segments['config']['family_id'])
     log.debug("build new analysis record: %s", name)
     new_run = general_analysis('mip', version, analyzed_at)
