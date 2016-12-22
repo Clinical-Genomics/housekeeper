@@ -3,7 +3,7 @@ import logging
 
 from path import path
 
-from housekeeper.store import AnalysisRun, api
+from housekeeper.store import AnalysisRun, api, ExtraRunData
 from housekeeper.store.utils import get_rundir
 from housekeeper.exc import AnalysisConflictError
 
@@ -31,6 +31,7 @@ def analysis(manager, root_path, case_obj, new_run):
         asset.path = new_path
 
     log.debug("commit new analysis to database")
+    new_run.extra = ExtraRunData()
     case_obj.runs.append(new_run)
     manager.add_commit(case_obj)
 

@@ -10,6 +10,7 @@ import yaml
 
 from housekeeper.cli.utils import run_orabort
 from housekeeper.constants import EXTRA_STATUSES
+from housekeeper.store.models import ExtraRunData
 from .migrate import migrate_root
 from .utils import get_rundir
 from . import api, Asset, AnalysisRun, Sample, Case
@@ -277,6 +278,10 @@ def status(context, date, now, run_date, sample_status, run_status,
         status_type = run_status
 
     if extra_status:
+        if model_obj.extra is None:
+            log.info("adding extra data record")
+            model_obj.extra = ExtraRunData()
+            manager.commit()
         extra_date_key = "{}_date".format(extra_status)
         if status_date is None:
             # show a custom date for an analysis run
