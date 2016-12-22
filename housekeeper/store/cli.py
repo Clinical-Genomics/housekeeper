@@ -245,7 +245,7 @@ def migrate(context, yes, only_db, new_root):
 @click.option('-c', '--extra-status', type=click.Choice(EXTRA_STATUSES),
               help='custom run status')
 @click.option('-d', '--date', help='custom date')
-@click.option('-n', '--now', help='set date to "now"')
+@click.option('-n', '--now', is_flag=True, help='set date to "now"')
 @click.option('-rd', '--run-date', help='date of a particular run')
 @click.argument('identifier')
 @click.pass_context
@@ -270,7 +270,7 @@ def status(context, date, now, run_date, sample_status, run_status,
             context.abort()
         # types are predefined; no need to check!
         status_type = sample_status
-    elif run_status:
+    else:
         # update a date for an analysis run
         model_obj = run_orabort(context, identifier, run_date)
         # types are predefined as well
@@ -284,7 +284,7 @@ def status(context, date, now, run_date, sample_status, run_status,
         else:
             # update a custom date for a run
             setattr(model_obj.extra, extra_date_key, status_date)
-            status_field = custom_status
+            status_field = extra_status
     else:
         status_field = "{}_at".format(status_type)
         if status_date is None:
