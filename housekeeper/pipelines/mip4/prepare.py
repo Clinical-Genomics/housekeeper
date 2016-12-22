@@ -60,5 +60,4 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path):
     new_qcmetrics = Path(qcmetrics_path.replace('.yaml', '.mod.yaml'))
     log.info("create updated qc metrics: %s", new_qcmetrics)
     with new_qcmetrics.open('w') as out_handle:
-        raw_dump = yaml.safe_dump(qc_data, default_flow_style=False)
-        out_handle.write(raw_dump)
+        yaml.safe_dump(qc_data, stream=out_handle, default_flow_style=False)
