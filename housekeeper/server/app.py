@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """Flask app module."""
+from __future__ import division
 import logging
 import os
 
@@ -9,7 +10,7 @@ from flask_bootstrap import Bootstrap
 from flask_login import current_user, login_required
 from werkzeug.contrib.fixers import ProxyFix
 
-from housekeeper.store import Model, api
+from housekeeper.store import Model, api, Sample, Case, AnalysisRun
 from housekeeper.store.models import User
 from .admin import UserManagement
 
@@ -45,7 +46,23 @@ def index():
         return render_template('index.html')
 
     to_analyzed = api.to_analyzed(db.session)
-    return render_template('dashboard.html', to_analyzed=to_analyzed)
+    all_samples = Sample.query
+    samples_count = all_samples.count()
+    sequenced_count = all_samples.filter(Sample.sequenced_at != None).count()
+    all_cases = Case.query
+    cases_count = all_cases.count()
+    analyzed_cases = (all_cases.join(Case.runs)
+                               .filter(AnalysisRun.analyzed_at != None)
+                               .count())
+    data = {
+        'samples': all_samples.count(),
+        'sequenced': sequenced_count,
+        'sequenced_percent': (sequenced_count / samples_count) * 100,
+        'cases': cases_count,
+        'analyzed_percent': (analyzed_cases / cases_count) * 100,
+    }
+    return render_template('dashboard.html', to_analyzed=to_analyzed,
+                           data=data)
 
 
 @app.route('/cases')

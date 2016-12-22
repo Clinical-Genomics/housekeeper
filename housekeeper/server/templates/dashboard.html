@@ -3,6 +3,14 @@
 {% block main_content %}
   {{ super() }}
 
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        {{ basic_stats_row() }}
+      </div>
+    </div>
+  </div>
+
   <div class="row">
     <div class="col-md-12">
       <div class="panel panel-default">
@@ -13,6 +21,34 @@
     </div>
   </div>
 {% endblock %}
+
+{% macro basic_stats_row() %}
+  <div class="col-md-2 col-sm-4 col-xs-6 stats-count">
+    <span class="count-top"><i class="glyphicon glyphicon-user"></i> Total Samples</span>
+    <div class="count">{{ data.samples }}</div>
+  </div>
+
+  <div class="col-md-2 col-sm-4 col-xs-6 stats-count">
+    <span class="count-top">
+      <i class="glyphicon glyphicon-ok"></i> Sequenced Samples
+    </span>
+    <div class="count">{{ data.sequenced_percent|int }}%</div>
+  </div>
+
+  <div class="col-md-2 col-sm-4 col-xs-6 stats-count">
+    <span class="count-top">
+      <i class="glyphicon glyphicon-tasks"></i> Total Cases
+    </span>
+    <div class="count">{{ data.cases }}</div>
+  </div>
+
+  <div class="col-md-2 col-sm-4 col-xs-6 stats-count">
+    <span class="count-top">
+      <i class="glyphicon glyphicon-ok"></i> Analyzed Cases
+    </span>
+    <div class="count">{{ data.analyzed_percent|int }}%</div>
+  </div>
+{% endmacro %}
 
 {% block scripts %}
     {{ super() }}
