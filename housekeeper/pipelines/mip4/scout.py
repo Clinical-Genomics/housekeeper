@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Build Scout config from MIP output."""
 import logging
+from functools import partial
 
 from path import Path
 import yaml
@@ -59,17 +60,15 @@ def build_madeline(pedigree, run_root, madeline_exe):
 def build_config(run_obj):
     """Build a Scout config from a MIP run."""
     customer, family = run_obj.case.name.split('-', 1)
-    vcf = api.assets(category='vcf-clinical-bin', run_id=run_obj.id).one()
-    vcf_sv = api.assets(category='vcf-clinical-sv-bin',
-                        run_id=run_obj.id).first()
-    vcf_research = api.assets(category='vcf-research-bin',
-                              run_id=run_obj.id).one()
-    vcf_research_sv = (api.assets(category='vcf-research-sv-bin',
-                                  run_id=run_obj.id).first())
-    sampleinfo = api.assets(category='sampleinfo', run_id=run_obj.id).one()
+    run_asset = partial(api.assets, run_id=run_obj.id)
+    vcf = run_asset(category='vcf-clinical-bin').one()
+    vcf_sv = run_asset(category='vcf-clinical-sv-bin').one()
+    vcf_research = run_asset(category='vcf-research-bin').one()
+    vcf_research_sv = run_asset(category='vcf-research-sv-bin').one()
+    sampleinfo = run_asset(category='sampleinfo').one()
 
     # start from pedigree YAML and add additional information
-    pedigree_yaml = api.assets(category='pedigree-yaml', run_id=run_obj.id).one()
+    pedigree_yaml = run_asset(category='pedigree-yaml').one()
     with open(pedigree_yaml.path, 'r') as in_handle:
         data = yaml.load(in_handle)
 
@@ -89,8 +88,7 @@ def build_config(run_obj):
 
     for ped_sample in data['samples']:
         lims_id = ped_sample['sample_id']
-        bam_file = api.assets(category='bam', run_id=run_obj.id,
-                              sample=lims_id).one()
+        bam_file = run_asset(category='bam', sample=lims_id).one()
         ped_sample['bam_path'] = bam_file.path
 
     return data
