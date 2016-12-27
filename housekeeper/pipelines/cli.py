@@ -16,7 +16,7 @@ from .mip2 import parse_mip2
 from .mip4 import parse_mip4
 from .miparchive import parse as parse_miparchive
 from .general import commit_analysis, check_existing
-from .mip.scout import prepare_scout
+from .mip4.scout import prepare_scout
 
 log = logging.getLogger(__name__)
 
@@ -144,7 +144,7 @@ def scout(context, madeline_exe, date, replace, case_name):
     madeline_exe = madeline_exe or context.obj['madeline_exe']
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
-    if not run_obj.pipeline_version.startswith('v3'):
+    if not run_obj.pipeline_version.startswith('v4'):
         log.error("unsupported pipeline version: %s", run_obj.pipeline_version)
         context.abort()
 

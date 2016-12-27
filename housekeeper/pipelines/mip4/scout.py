@@ -59,65 +59,38 @@ def build_madeline(pedigree, run_root, madeline_exe):
 def build_config(run_obj):
     """Build a Scout config from a MIP run."""
     customer, family = run_obj.case.name.split('-', 1)
-    vcf = api.assets(category='vcf-clinical', run_id=run_obj.id).one()
-    vcf_sv = api.assets(category='vcf-clinical-sv', run_id=run_obj.id).first()
-    vcf_research = api.assets(category='vcf-research', run_id=run_obj.id).one()
-    vcf_research_sv = (api.assets(category='vcf-research-sv',
+    vcf = api.assets(category='vcf-clinical-bin', run_id=run_obj.id).one()
+    vcf_sv = api.assets(category='vcf-clinical-sv-bin',
+                        run_id=run_obj.id).first()
+    vcf_research = api.assets(category='vcf-research-bin',
+                              run_id=run_obj.id).one()
+    vcf_research_sv = (api.assets(category='vcf-research-sv-bin',
                                   run_id=run_obj.id).first())
     sampleinfo = api.assets(category='sampleinfo', run_id=run_obj.id).one()
 
-    pedigree_qc = api.assets(category='qcpedigree', run_id=run_obj.id).one()
-    with open(pedigree_qc.path, 'r') as in_handle:
-        content = yaml.load(in_handle)
-        qc_samples = content[family]
-    bams = api.assets(category='bam', run_id=run_obj.id)
-    samples = []
-    for bam in bams:
-        sample_data = parse_sample(qc_samples[bam.sample.name], bam.path)
-        samples.append(sample_data)
-
-    default_panels = set()
-    for sample in qc_samples.values():
-        for panel in sample['Clinical_db']:
-            default_panels.add(panel)
-    default_panels = list(default_panels)
+    # start from pedigree YAML and add additional information
+    pedigree_yaml = api.assets(category='pedigree-yaml', run_id=run_obj.id).one()
+    with open(pedigree_yaml.path, 'r') as in_handle:
+        data = yaml.load(in_handle)
 
     with open(sampleinfo.path, 'r') as in_handle:
         si_data = yaml.load(in_handle)
-        si_root = si_data[family]
+    rank_model = si_data['program']['rankvariant']['rank_model']['version']
+    genome_build = (si_data['human_genome_build']['source'] +
+                    si_data['human_genome_build']['version'])
 
-    rank_model = (si_root[family]['Program']['RankVariants']['RankModel']
-                         ['Version'])
-    genome_build = (si_root[family]['HumanGenomeBuild']['Source'] +
-                    si_root[family]['HumanGenomeBuild']['Version'])
+    data['vcf_snv'] = vcf.path
+    data['vcf_sv'] = vcf_sv.path
+    data['rank_model_version'] = rank_model
+    data['analysis_date'] = run_obj.analyzed_at
+    data['human_genome_build'] = genome_build
+    data['vcf_snv_research'] = vcf_research.path
+    data['vcf_sv_research'] = vcf_research_sv.path
 
-    data = {
-        'vcf_snv': vcf.path,
-        'institute': customer,
-        'family': family,
-        'vcf_sv': vcf_sv.path,
-        'samples': samples,
-        'default_panels': default_panels,
-        'rank_model_version': rank_model,
-        'analysis_date': si_root[family]['AnalysisDate'],
-        'human_genome_build': genome_build,
-        'vcf_research_snv': vcf_research.path,
-        'vcf_research_sv': vcf_research_sv.path,
-    }
-    return data
+    for ped_sample in data['samples'].values():
+        lims_id = ped_sample['sample_id']
+        bam_file = api.assets(category='bam', run_id=run_obj.id,
+                              sample=lims_id).one()
+        ped_sample['bam_path'] = bam_file.path
 
-
-def parse_sample(sample_data, bam_path):
-    """Parse out sample information from QC pedigree block."""
-    data = {
-        'sample_id': sample_data['Individual ID'],
-        'sample_name': sample_data['display_name'][0],
-        'sex': SEX_MAP.get(sample_data['Sex'], 'unknown'),
-        'phenotype': PHENOTYPE_MAP.get(sample_data['Phenotype'], 'unknown'),
-        'analysis_type': sample_data['Sequencing_type'][0].lower(),
-        'capture_kit': sample_data.get('Capture_kit', [None])[0],
-        'bam_path': bam_path,
-        'father': sample_data.get('Paternal ID'),
-        'mother': sample_data.get('Maternal ID'),
-    }
     return data
