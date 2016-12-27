@@ -87,7 +87,7 @@ def build_config(run_obj):
     data['vcf_snv_research'] = vcf_research.path
     data['vcf_sv_research'] = vcf_research_sv.path
 
-    for ped_sample in data['samples'].values():
+    for ped_sample in data['samples']:
         lims_id = ped_sample['sample_id']
         bam_file = api.assets(category='bam', run_id=run_obj.id,
                               sample=lims_id).one()
