@@ -80,7 +80,7 @@ def build_config(run_obj):
 
     data['vcf_snv'] = vcf.path
     data['vcf_sv'] = vcf_sv.path
-    data['rank_model_version'] = rank_model
+    data['rank_model_version'] = float(rank_model)
     data['analysis_date'] = run_obj.analyzed_at
     data['human_genome_build'] = genome_build
     data['vcf_snv_research'] = vcf_research.path
@@ -90,5 +90,9 @@ def build_config(run_obj):
         lims_id = ped_sample['sample_id']
         bam_file = run_asset(category='bam', sample=lims_id).one()
         ped_sample['bam_path'] = bam_file.path
+        if ped_sample['mother'] == 0:
+            del ped_sample['mother']
+        if ped_sample['father'] == 0:
+            del ped_sample['father']
 
     return data
