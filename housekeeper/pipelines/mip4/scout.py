@@ -15,9 +15,9 @@ PHENOTYPE_MAP = {'1': 'unaffected', '2': 'affected'}
 log = logging.getLogger(__name__)
 
 
-def prepare_scout(run_obj, madeline_exe):
+def prepare_scout(run_obj, root_path, madeline_exe):
     """Prepare files for Scout upload."""
-    run_root = get_rundir(run_obj.case.name, run_obj)
+    run_root = Path(get_rundir(root_path, run_obj.case.name, run=run_obj))
     config_data = build_config(run_obj)
 
     pedigree = api.assets(category='pedigree', run_id=run_obj.id).one()

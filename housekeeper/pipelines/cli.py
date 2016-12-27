@@ -143,6 +143,7 @@ def scout(context, madeline_exe, date, replace, case_name):
     """Prepare a config and files for Scout."""
     madeline_exe = madeline_exe or context.obj['madeline_exe']
     manager = api.manager(context.obj['database'])
+    root_path = context.obj['root']
     run_obj = run_orabort(context, case_name, date)
     if not run_obj.pipeline_version.startswith('v4'):
         log.error("unsupported pipeline version: %s", run_obj.pipeline_version)
@@ -164,5 +165,5 @@ def scout(context, madeline_exe, date, replace, case_name):
             log.error("scout config already generated")
             context.abort()
 
-    prepare_scout(run_obj, madeline_exe)
+    prepare_scout(run_obj, root_path, madeline_exe)
     manager.commit()
