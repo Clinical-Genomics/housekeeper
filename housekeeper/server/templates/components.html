@@ -19,32 +19,34 @@
 {% endmacro %}
 
 {% macro runs_table(case=None, cases=None) %}
-  <table class="table table-bordered table-hover">
-    <thead>
-      <tr>
-        <th>Case</th>
-        <th>Pipeline</th>
-        <th>Version</th>
-        <th>Requested at</th>
-        <th>Analyzed at</th>
-        <th>Delivered at</th>
-        <th>Compiled at</th>
-        <th>Archived at</th>
-        <th>Cleaned up at</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% if case %}
-        {% for run in case.runs %}
-          {{ run_row(case, run) }}
-        {% endfor %}
-      {% elif cases %}
-        {% for case in cases %}
-          {{ run_row(case, case.current) }}
-        {% endfor %}
-      {% endif %}
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <th>Case</th>
+          <th>Pipeline</th>
+          <th>Version</th>
+          <th>Requested at</th>
+          <th>Analyzed at</th>
+          <th>Delivered at</th>
+          <th>Compiled at</th>
+          <th>Archived at</th>
+          <th>Cleaned up at</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if case %}
+          {% for run in case.runs %}
+            {{ run_row(case, run) }}
+          {% endfor %}
+        {% elif cases %}
+          {% for case in cases %}
+            {{ run_row(case, case.current) }}
+          {% endfor %}
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
 {% endmacro %}
 
 {% macro run_row(case, run) %}

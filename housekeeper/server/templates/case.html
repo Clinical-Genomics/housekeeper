@@ -3,14 +3,16 @@
 
 {% block main_content %}
   <div class="page-header">
-      <h1>{{ case.name }} <small>cleaned up in: {{ case.current.cleanup_in }} days</small></h1>
+    <h1>{{ case.name }}</h1>
   </div>
 
-  <div class="panel panel-default">
-    <div class="table-responsive">
+  {% if case.current %}
+    <div class="panel panel-default">
       {{ components.runs_table(case=case) }}
     </div>
-  </div>
+  {% else %}
+    <i>No runs completed yet</i>
+  {% endif %}
 
   {% for run in case.runs %}
     <div class="panel {% if run.archived_at %}panel-warning{% else %}panel-default{% endif %}">

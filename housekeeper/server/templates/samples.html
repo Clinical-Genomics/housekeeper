@@ -70,7 +70,14 @@
             </a>
           </td>
           <td>{{ sample.received_at.date() if sample.received_at }}</td>
-          <td>{{ sample.sequenced_at.date() if sample.sequenced_at }}</td>
+          <td>
+            {% if sample.sequenced_at %}
+              {{ sample.sequenced_at.date() }}
+              <span class="badge pull-right">
+                {{ (sample.sequenced_at - sample.received_at).days }} days
+              </span>
+            {% endif %}
+          </td>
           <td>{{ sample.confirmed_at.date() if sample.confirmed_at }}</td>
         </tr>
       {% endfor %}

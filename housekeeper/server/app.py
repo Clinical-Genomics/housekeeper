@@ -8,6 +8,7 @@ from flask import abort, Flask, render_template, request, redirect
 from flask_alchy import Alchy
 from flask_bootstrap import Bootstrap
 from flask_login import current_user, login_required
+import sqlalchemy as sqa
 from werkzeug.contrib.fixers import ProxyFix
 
 from housekeeper.store import Model, api, Sample, Case, AnalysisRun
@@ -45,10 +46,15 @@ def index():
     if not current_user.is_authenticated:
         return render_template('index.html')
 
+    to_sequenced = api.to_sequenced(db.session)
     to_analyzed = api.to_analyzed(db.session)
     all_samples = Sample.query
     samples_count = all_samples.count()
     sequenced_count = all_samples.filter(Sample.sequenced_at != None).count()
+    day_difference = sqa.func.TIMESTAMPDIFF(sqa.text('DAY'),
+                                            Sample.received_at,
+                                            Sample.sequenced_at)
+    until_sequenced = db.query(sqa.func.avg(day_difference).label('average'))
     all_cases = Case.query
     cases_count = all_cases.count()
     analyzed_cases = (all_cases.join(Case.runs)
@@ -60,9 +66,10 @@ def index():
         'sequenced_percent': (sequenced_count / samples_count) * 100,
         'cases': cases_count,
         'analyzed_percent': (analyzed_cases / cases_count) * 100,
+        'until_sequenced': until_sequenced.first().average,
     }
     return render_template('dashboard.html', to_analyzed=to_analyzed,
-                           data=data)
+                           data=data, to_sequenced=to_sequenced)
 
 
 @app.route('/cases')

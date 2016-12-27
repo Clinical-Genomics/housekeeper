@@ -11,13 +11,9 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div id="received2analyzed"></div>
-        </div>
-      </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div id="received2analyzed"></div>
     </div>
   </div>
 {% endblock %}
@@ -37,6 +33,13 @@
 
   <div class="col-md-2 col-sm-4 col-xs-6 stats-count">
     <span class="count-top">
+      <i class="glyphicon glyphicon-time"></i> Until Sequenced (avg)
+    </span>
+    <div class="count">{{ data.until_sequenced|int }} d</div>
+  </div>
+
+  <div class="col-md-2 col-sm-4 col-xs-6 stats-count">
+    <span class="count-top">
       <i class="glyphicon glyphicon-tasks"></i> Total Cases
     </span>
     <div class="count">{{ data.cases }}</div>
@@ -51,42 +54,53 @@
 {% endmacro %}
 
 {% block scripts %}
-    {{ super() }}
+  {{ super() }}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="http://code.highcharts.com/highcharts.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="http://code.highcharts.com/highcharts.js"></script>
 
-    <script type="text/javascript" charset="utf-8" async defer>
-        $(function() {
-            $("#received2analyzed").highcharts({
-                chart: {
-                  type: "spline",
-                  zoomType: "x"
-                },
-                title: {
-                  text: "Samples: from received to analyzed"
-                },
-                yAxis: {
-                  title: {
-                    text: "Days"
-                  }
-                },
-                plotOptions: {
-                    spline: {
-                        marker: {
-                            enabled: true
-                        },
-                        tooltip: {
-                            headerFormat: '<b>{point.key}</b><br>',
-                            pointFormat: '{point.y} days'
-                        }
-                    }
-                },
-                series: [{
-                    color: 'rgba(223, 83, 83, .5)',
-                    data: {{ to_analyzed|tojson|safe }}
-                }]
-            })
-        })
-    </script>
+  <script type="text/javascript" charset="utf-8" async defer>
+    $(function() {
+      $("#received2analyzed").highcharts({
+        chart: {
+          type: "spline",
+          zoomType: "x"
+        },
+        title: {
+          text: "Samples: lead times"
+        },
+        yAxis: {
+          title: {
+            text: "Days"
+          }
+        },
+        plotOptions: {
+          spline: {
+            marker: {
+              enabled: true
+            },
+            tooltip: {
+              headerFormat: '<b>{point.key}</b><br>',
+              pointFormat: '{point.y} days'
+            }
+          }
+        },
+        legend: {
+          layout: 'vertical',
+          align: 'right',
+          verticalAlign: 'middle',
+          borderWidth: 0
+        },
+        series: [{
+          name: 'Until analyzed',
+          color: 'rgba(103, 58, 183, .5)',
+          data: {{ to_analyzed|tojson|safe }}
+        }, {
+          name: 'Until sequenced',
+          color: 'rgba(233, 30, 99, .5)',
+          data: {{ to_sequenced|tojson|safe }}
+        }]
+      })
+    })
+  </script>
 {% endblock %}

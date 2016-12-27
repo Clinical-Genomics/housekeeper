@@ -4,6 +4,7 @@ import logging
 
 from alchy import Manager
 from path import path
+import sqlalchemy as sqa
 
 from housekeeper.constants import EXTRA_STATUSES
 from .models import AnalysisRun, Asset, Case, Model, Sample, ExtraRunData
@@ -229,7 +230,7 @@ def sha1(asset_path):
     return checksum
 
 
-def to_analyzed(session):
+def to_analyzed(session, limit=50):
     """Calculate times it takes to analyze a sample."""
     date_2016 = datetime.datetime(2016, 1, 1)
     query = (session.query(Sample.lims_id, Sample.received_at,
@@ -238,9 +239,22 @@ def to_analyzed(session):
                     .filter(Sample.received_at != None,
                             Sample.received_at > date_2016,
                             AnalysisRun.analyzed_at > date_2016)
-                    .order_by(Sample.received_at))
+                    .order_by(Sample.received_at)
+                    .limit(limit))
     diffs = [{
         'name': item[0],
         'y': (item[2] - item[1]).days
     } for item in query]
+    return diffs
+
+
+def to_sequenced(session, limit=50):
+    """Calculate time it takes to sequence samples."""
+    day_diff = sqa.func.TIMESTAMPDIFF(sqa.text('DAY'), Sample.received_at,
+                                      Sample.sequenced_at)
+    query = (session.query(Sample.lims_id.label('name'),
+                           day_diff.label('y'))
+                    .order_by(Sample.received_at)
+                    .limit(limit))
+    diffs = [{'name': sample.name, 'y': sample.y} for sample in query]
     return diffs
