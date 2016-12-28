@@ -19,7 +19,7 @@ log = logging.getLogger(__name__)
 @click.argument('case_name')
 @click.pass_context
 def compile(context, date, force, encrypt, case_name):
-    """Delete an analysis and files."""
+    """Compile assets into archives."""
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
     if run_obj.compiled_at:

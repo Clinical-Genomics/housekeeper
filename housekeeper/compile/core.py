@@ -22,7 +22,7 @@ def compile_run(root_path, run_obj):
     """High level compile function for a run."""
     groups = compress_run(root_path, run_obj)
     for group in groups:
-        log.info("compressed %s archive: %s", group.id, group.out)
+        log.info("compress %s archive: %s", group.id, group.out)
         category = "archive-{}".format(group.id)
         new_asset = api.add_asset(run_obj, group.out, category)
         new_asset.path = group.out
