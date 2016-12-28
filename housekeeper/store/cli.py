@@ -369,7 +369,8 @@ def add_sample(context, date, customer, family_id, lims_id):
     if existing_sample:
         log.error("sample already exists: %s", lims_id)
         context.abort()
-    new_sample = Sample(lims_id=lims_id, customer=customer, family_id=family_id)
+    new_sample = Sample(lims_id=lims_id, customer=customer,
+                        family_id=family_id)
     if date:
         new_sample.received_at = parse_date(date)
     manager.add_commit(new_sample)
@@ -384,6 +385,23 @@ def add_sample(context, date, customer, family_id, lims_id):
         log.info("added new case: %s", new_case.name)
     else:
         log.debug("case already exists: %s", new_sample.case_id)
+
+
+@click.command('add-case')
+@click.argument('customer')
+@click.argument('family_id')
+@click.pass_context
+def add_case(context, customer, family_id):
+    """Add a case to the database."""
+    manager = api.manager(context.obj['database'])
+    case_id = "-".join([customer, family_id])
+    existing_case = Case.query.filter_by(name=case_id).first()
+    if existing_case:
+        log.error("case already exists")
+        context.abort()
+    new_case = Case(name=case_id, customer=customer, family_id=family_id)
+    manager.add_commit(new_case)
+    log.info("added new case: %s", case_id)
 
 
 def build_date(date_str):

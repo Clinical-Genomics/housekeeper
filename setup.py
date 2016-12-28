@@ -127,6 +127,7 @@ setup(
             'samples = housekeeper.store.cli:samples',
             'cases = housekeeper.store.cli:cases',
             'add-sample = housekeeper.store.cli:add_sample',
+            'add-case = housekeeper.store.cli:add_case',
             'export = housekeeper.export:export',
         ],
     },
