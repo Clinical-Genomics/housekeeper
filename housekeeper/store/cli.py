@@ -41,6 +41,7 @@ def get(context, case, sample, infer_case, category, all_runs):
             context.abort()
         case = sample_obj.case_id
         sample = None
+
     if not all_runs and case:
         # get assets only from latest run
         latest_run = api.runs(case_name=case).first()
@@ -51,11 +52,15 @@ def get(context, case, sample, infer_case, category, all_runs):
     else:
         # get assets from all runs
         run_id = None
-    assets = api.assets(case_name=case, sample=sample, category=category,
-                        run_id=run_id)
-    paths = [asset.path for asset in assets]
-    output = ' '.join(paths)
-    click.echo(output)
+
+    asset_query = api.assets(case_name=case, sample=sample, category=category,
+                             run_id=run_id)
+    if asset_query.count() == 0:
+        log.error("no matching assets found")
+        context.abort()
+    else:
+        for asset in asset_query:
+            click.echo(asset.path)
 
 
 @click.command()
