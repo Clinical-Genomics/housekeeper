@@ -139,12 +139,19 @@ def postpone(context, days, case_name):
                .format(run_obj.will_cleanup_at))
 
 
-@click.command()
+@click.group()
+@click.pass_context
+def delete(context):
+    """Delete things from the database."""
+    pass
+
+
+@delete.command('analysis')
 @click.option('-y', '--yes', is_flag=True, help="skip manual confirmation")
 @click.option('-d', '--date', help="date of the particular run")
 @click.argument('case_name')
 @click.pass_context
-def delete(context, date, yes, case_name):
+def delete_analysis(context, date, yes, case_name):
     """Delete an analysis run and files."""
     manager = api.manager(context.obj['database'])
     run_obj = run_orabort(context, case_name, date)
@@ -153,6 +160,47 @@ def delete(context, date, yes, case_name):
     click.echo("you are about to delete: {}".format(run_root))
     if yes or click.confirm('Are you sure?'):
         api.delete(root_path, run_obj)
+        manager.commit()
+
+
+@delete.command('sample')
+@click.option('-y', '--yes', is_flag=True, help='skip confirmation')
+@click.argument('sample_id')
+@click.pass_context
+def delete_sample(context, yes, sample_id):
+    """Delete a sample from the database."""
+    manager = api.manager(context.obj['database'])
+    sample_obj = api.sample(sample_id)
+    if sample_obj is None:
+        log.error("sample not found: {}".format(sample_id))
+        context.abort()
+    click.echo("you are about to delete sample: {}".format(sample_obj.id))
+    if yes or click.confirm('Are you sure?'):
+        sample_obj.delete()
+        manager.commit()
+
+
+@delete.command('case')
+@click.option('-y', '--yes', is_flag=True, help='skip confirmation')
+@click.option('--samples/--no-samples', default=True, is_flag=True,
+              help='also delete samples')
+@click.argument('case_name')
+@click.pass_context
+def delete_case(context, yes, samples, case_name):
+    """Delete a case from the database."""
+    manager = api.manager(context.obj['database'])
+    case_obj = api.case(case_name)
+    if case_obj is None:
+        log.error("case not found: {}".format(case_name))
+        context.abort()
+    if samples:
+        related_samples = api.samples(customer=case_obj.customer,
+                                      family_id=case_obj.family_id)
+        for sample_obj in related_samples:
+            context.invoke(delete_sample, yes=yes, sample_id=sample_obj.lims_id)
+    click.echo("you are about to delete case: {}".format(case_obj.id))
+    if yes or click.confirm('Are you sure?'):
+        case_obj.delete()
         manager.commit()
 
 
