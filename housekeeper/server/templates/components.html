@@ -23,16 +23,16 @@
     <table class="table table-bordered table-hover">
       <thead>
         <tr>
-          <th>Case</th>
-          <th>Pipeline</th>
-          <th>Version</th>
-          <th>Requested at</th>
-          <th>Analyzed at</th>
-          <th>Delivered at</th>
-          <th>Uploads</th>
-          <th>Compiled at</th>
-          <th>Archived at</th>
-          <th>Cleaned up at</th>
+          <th class="col-xs-2">Case</th>
+          <th class="col-xs-1">Pipeline</th>
+          <th class="col-xs-1">Version</th>
+          <th class="col-xs-1">Requested</th>
+          <th class="col-xs-1">Analyzed</th>
+          <th class="col-xs-1">Delivered</th>
+          <th class="col-xs-2">Uploads</th>
+          <th class="col-xs-1">Compiled</th>
+          <th class="col-xs-1">Archived</th>
+          <th class="col-xs-1">Cleaned up</th>
         </tr>
       </thead>
       <tbody>
@@ -81,7 +81,7 @@
         {% endif %}
       </td>
     {% else %}
-      <td colspan="9">
+      <td colspan="10">
         <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
       </td>
     {% endif %}
