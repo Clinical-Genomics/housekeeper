@@ -11,6 +11,7 @@ from flask_login import current_user, login_required
 import sqlalchemy as sqa
 from werkzeug.contrib.fixers import ProxyFix
 
+from housekeeper.constants import EXTRA_STATUSES
 from housekeeper.store import Model, api, Sample, Case, AnalysisRun
 from housekeeper.store.models import User
 from .admin import UserManagement
@@ -38,6 +39,8 @@ app.config.from_object(__name__)
 # database setup
 db = Alchy(Model=Model)
 user = UserManagement(db, User)
+
+app.jinja_env.globals['EXTRA_STATUSES'] = EXTRA_STATUSES
 
 
 @app.route('/')

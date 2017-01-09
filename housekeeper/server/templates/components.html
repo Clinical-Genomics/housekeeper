@@ -29,6 +29,7 @@
           <th>Requested at</th>
           <th>Analyzed at</th>
           <th>Delivered at</th>
+          <th>Uploads</th>
           <th>Compiled at</th>
           <th>Archived at</th>
           <th>Cleaned up at</th>
@@ -60,6 +61,16 @@
       <td>{{ run.requested_at.date() if run.requested_at }}</td>
       <td>{{ run.analyzed_at.date() }}</td>
       <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
+      <td>
+        {% for column in EXTRA_STATUSES %}
+          {% set column_key = "%s_date"|format(column) %}
+          {% if run.extra[column_key] %}
+            <span class="label label-success">{{ column }}</span>
+          {% else %}
+            <span class="label label-default">{{ column }}</span>
+          {% endif %}
+        {% endfor %}
+      </td>
       <td>{{ run.compiled_at.date() if run.compiled_at }}</td>
       <td>{{ run.archived_at.date() if run.archived_at }}</td>
       <td>
