@@ -50,8 +50,11 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path):
                  level_id[-6:-1] == '.lane']
         reads, mapped = 0, 0
         for data in datas:
-            reads += data['bamstats']['raw_total_sequences']
-            mapped += data['bamstats']['reads_mapped']
+            if 'bamstats' in data:
+                reads += data['bamstats']['raw_total_sequences']
+                mapped += data['bamstats']['reads_mapped']
+            else:
+                log.warn("bamstats missing for lane, skipping")
 
         values['reads'] = reads
         values['reads_mapped'] = mapped
