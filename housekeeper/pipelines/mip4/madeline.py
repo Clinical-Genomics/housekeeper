@@ -16,10 +16,10 @@ class MadelineIncompatibleError(Exception):
     pass
 
 
-def run(ped_stream, exe):
+def run(ped_stream, sample_map, exe):
     """Run Madeline and capture the output."""
     ped = FamilyParser(ped_stream, family_type='alt', cmms_check=False)
-    external_individuals = external_ped(ped.individuals)
+    external_individuals = external_ped(ped.individuals, sample_map)
     family_id = ped.families.keys()[0]
     ped.families[family_id].individuals = external_individuals
 
@@ -52,23 +52,14 @@ def run(ped_stream, exe):
     return svg_content
 
 
-def map_sample_ids(ped_individuals):
-    """Map between internal and external sample ids."""
-    id_mapping = {ind_id: (ind.extra_info.get('display_name') or ind_id)
-                  for ind_id, ind in ped_individuals.items()}
-    return id_mapping
-
-
-def external_ped(ped_individuals):
+def external_ped(ped_individuals, sample_map):
     """Convert and fill out 'ped' with external ids."""
-    id_mapping = map_sample_ids(ped_individuals)
-
     external_individuals = {}
     for individual_id, individual in ped_individuals.items():
-        external_id = id_mapping.get(individual_id)
+        external_id = sample_map.get(individual_id)
         individual.individual_id = external_id
-        individual.mother = id_mapping.get(individual.mother, '0')
-        individual.father = id_mapping.get(individual.father, '0')
+        individual.mother = sample_map.get(individual.mother, '0')
+        individual.father = sample_map.get(individual.father, '0')
         # all individuals in the pedigree have been sequenced
         individual.consultand = 'Yes'
         external_individuals[external_id] = individual

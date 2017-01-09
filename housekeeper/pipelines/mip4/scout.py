@@ -22,7 +22,14 @@ def prepare_scout(run_obj, root_path, madeline_exe):
     config_data = build_config(run_obj)
 
     pedigree = api.assets(category='pedigree', run_id=run_obj.id).one()
-    madeline_path = build_madeline(pedigree.path, run_root, madeline_exe)
+    # extract external sample ids
+    ped_yaml = api.assets(category='pedigree-yaml', run_id=run_obj.id).one()
+    with Path(ped_yaml.path).open() as in_handle:
+        ped_data = yaml.load(in_handle)
+    sample_map = {sample['sample_id']: sample['sample_name']
+                  for sample in ped_data['samples']}
+    madeline_path = build_madeline(pedigree.path, run_root, madeline_exe,
+                                   sample_map)
     if madeline_path:
         mad_asset = api.add_asset(run_obj, madeline_path, 'madeline')
         mad_asset.path = str(madeline_path)
@@ -42,11 +49,11 @@ def prepare_scout(run_obj, root_path, madeline_exe):
     run_obj.assets.append(scout_asset)
 
 
-def build_madeline(pedigree, run_root, madeline_exe):
+def build_madeline(pedigree, run_root, madeline_exe, sample_map):
     """Build and add madeline file to the database."""
     try:
         with open(pedigree, 'r') as in_handle:
-            svg_content = madeline.run(in_handle, exe=madeline_exe)
+            svg_content = madeline.run(in_handle, sample_map, exe=madeline_exe)
         madeline_path = Path(run_root).joinpath('madeline.xml')
         with open(madeline_path, 'w') as out_handle:
             out_handle.write(svg_content)
