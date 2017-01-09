@@ -174,7 +174,8 @@ def delete_sample(context, yes, sample_id):
     if sample_obj is None:
         log.error("sample not found: {}".format(sample_id))
         context.abort()
-    click.echo("you are about to delete sample: {}".format(sample_obj.id))
+    click.echo("you are about to delete sample: {} - {}"
+               .format(sample_obj.lims_id, sample_obj.id))
     if yes or click.confirm('Are you sure?'):
         sample_obj.delete()
         manager.commit()
@@ -198,7 +199,8 @@ def delete_case(context, yes, samples, case_name):
                                       family_id=case_obj.family_id)
         for sample_obj in related_samples:
             context.invoke(delete_sample, yes=yes, sample_id=sample_obj.lims_id)
-    click.echo("you are about to delete case: {}".format(case_obj.id))
+    click.echo("you are about to delete case: {} - {}"
+               .format(case_obj.name, case_obj.id))
     if yes or click.confirm('Are you sure?'):
         case_obj.delete()
         manager.commit()
