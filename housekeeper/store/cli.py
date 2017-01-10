@@ -42,7 +42,7 @@ def get(context, case, sample, infer_case, category, all_runs):
         case = sample_obj.case_id
         sample = None
 
-    if not all_runs and case:
+    if not all_runs and (case or sample):
         # get assets only from latest run
         latest_run = api.runs(case_name=case).first()
         if latest_run is None:
