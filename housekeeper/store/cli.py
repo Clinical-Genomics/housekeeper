@@ -34,13 +34,14 @@ log = logging.getLogger(__name__)
 def get(context, case, sample, infer_case, category, all_runs):
     """Ask Housekeeper for a file."""
     api.manager(context.obj['database'])
-    if infer_case:
+    if sample and case is None:
         sample_obj = api.sample(sample)
         if sample_obj is None:
             log.warn('sorry, sample not found')
             context.abort()
         case = sample_obj.case_id
-        sample = None
+        if infer_case:
+            sample = None
 
     if not all_runs and (case or sample):
         # get assets only from latest run
