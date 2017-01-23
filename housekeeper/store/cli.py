@@ -420,6 +420,9 @@ def sample(context, prioritize, sample_name):
     """Show or update a sample."""
     manager = api.manager(context.obj['database'])
     sample_obj = api.sample(sample_name)
+    if sample_obj is None:
+        log.error("no sample found with that name: %s", sample_name)
+        context.abort()
     if prioritize:
         sample_obj.priority = True
         manager.commit()
