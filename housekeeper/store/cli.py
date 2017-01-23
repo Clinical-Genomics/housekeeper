@@ -412,6 +412,22 @@ def samples(context, limit, offset, case, missing):
         click.echo(sample.lims_id)
 
 
+@click.command()
+@click.option('-p', '--prioritize', is_flag=True, help='mark high priority')
+@click.argument('sample_name')
+@click.pass_context
+def sample(context, prioritize, sample_name):
+    """Show or update a sample."""
+    manager = api.manager(context.obj['database'])
+    sample_obj = api.sample(sample_name)
+    if prioritize:
+        sample_obj.priority = True
+        manager.commit()
+        log.info("prioritized sample!")
+
+    click.echo(sample_obj.to_json(pretty=True))
+
+
 @click.command('add-sample')
 @click.option('-d', '--date', help='date received for sample')
 @click.option('-p', '--priority', is_flag=True, help='mark high priority')
