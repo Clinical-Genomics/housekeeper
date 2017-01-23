@@ -65,7 +65,6 @@
         <tr {% if sample.priority %} class="bg-info" {% endif %}>
           <td>
             {{ sample.lims_id }}
-            <span class="badge pull-right">P</span>
           </td>
           <td>
             <a href="{{ url_for('case', name=sample.case_id) }}">
