@@ -50,6 +50,7 @@ class Sample(Model):
     lims_id = Column(types.String(32), nullable=False, unique=True)
     customer = Column(types.String(32), nullable=False)
     family_id = Column(types.String(128), nullable=False)
+    priority = Column(types.Boolean, default=False)
 
     created_at = Column(types.DateTime, default=datetime.now)
 

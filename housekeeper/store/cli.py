@@ -414,11 +414,12 @@ def samples(context, limit, offset, case, missing):
 
 @click.command('add-sample')
 @click.option('-d', '--date', help='date received for sample')
+@click.option('-p', '--priority', is_flag=True, help='mark high priority')
 @click.argument('customer')
 @click.argument('family_id')
 @click.argument('lims_id')
 @click.pass_context
-def add_sample(context, date, customer, family_id, lims_id):
+def add_sample(context, date, priority, customer, family_id, lims_id):
     """Add a new sample to the database."""
     manager = api.manager(context.obj['database'])
     existing_sample = Sample.query.filter_by(lims_id=lims_id).first()
@@ -426,7 +427,7 @@ def add_sample(context, date, customer, family_id, lims_id):
         log.error("sample already exists: %s", lims_id)
         context.abort()
     new_sample = Sample(lims_id=lims_id, customer=customer,
-                        family_id=family_id)
+                        family_id=family_id, priority=priority)
     if date:
         new_sample.received_at = parse_date(date)
     manager.add_commit(new_sample)
