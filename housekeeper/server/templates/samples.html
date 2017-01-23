@@ -62,8 +62,11 @@
     </thead>
     <tbody>
       {% for sample in samples %}
-        <tr {% if sample.priority %} class="bg-primary" {% endif %}>
-          <td>{{ sample.lims_id }}</td>
+        <tr {% if sample.priority %} class="bg-info" {% endif %}>
+          <td>
+            {{ sample.lims_id }}
+            <span class="badge pull-right">P</span>
+          </td>
           <td>
             <a href="{{ url_for('case', name=sample.case_id) }}">
               {{ sample.case_id }}
