@@ -51,7 +51,7 @@ def case(name):
 
 def samples(query_str=None, status_to=None, customer=None, family_id=None):
     """Get samples from the database."""
-    query = Sample.query.order_by(Sample.created_at.desc())
+    query = Sample.query.order_by(Sample.received_at.desc())
     if query_str:
         query = query.filter(Sample.lims_id.like("%{}%".format(query_str)))
 
@@ -77,7 +77,7 @@ def sample(lims_id):
 
 def cases(query_str=None, missing=None):
     """Get multiple cases from the database."""
-    query = Case.query.order_by(Case.received_at.desc())
+    query = Case.query.order_by(Case.created_at.desc())
 
     if missing == 'analyzed':
         query = (query.outerjoin(Case.runs)
