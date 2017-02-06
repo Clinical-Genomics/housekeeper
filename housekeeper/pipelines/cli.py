@@ -3,7 +3,7 @@ import logging
 import pkg_resources
 
 import click
-from path import path
+from path import Path
 import yaml
 
 from housekeeper.store import api
@@ -125,7 +125,7 @@ def extend(context, no_link, date, category, sample, archive_type, case_name,
     else:
         new_path = run_root.joinpath(filename)
         log.debug("link asset: %s -> %s", new_asset.original_path, new_path)
-        path(new_asset.original_path).link(new_path)
+        Path(new_asset.original_path).link(new_path)
 
     new_asset.path = new_path
     run_obj.assets.append(new_asset)

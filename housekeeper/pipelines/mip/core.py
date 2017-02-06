@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from path import path
+from path import Path
 
 from housekeeper.exc import MissingFileError
 from .build import build_analysis, build_asset
@@ -15,7 +15,7 @@ def build_assets(new_references, force=False):
     """Build assets from references."""
     for ref_data in new_references:
         log.debug("working on: %s", ref_data['reference']['category'])
-        if not path(ref_data['path']).exists():
+        if not Path(ref_data['path']).exists():
             is_required = ref_data['reference'].get('required', True)
             if force or not is_required:
                 log.warn("skipping asset: %s", ref_data['path'])

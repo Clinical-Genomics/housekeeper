@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 
-from path import path
+from path import Path
 
 from housekeeper.store import AnalysisRun, api, ExtraRunData
 from housekeeper.store.utils import get_rundir
@@ -40,7 +40,7 @@ def analysis(manager, root_path, case_obj, new_run):
     try:
         for asset in new_run.assets:
             log.debug("link asset: %s -> %s", asset.original_path, asset.path)
-            path(asset.original_path).link(asset.path)
+            Path(asset.original_path).link(asset.path)
     except Exception as error:
         log.warn("linking error: %s -> %s", asset.original_path, asset.path)
         log.debug('cleaning up database')

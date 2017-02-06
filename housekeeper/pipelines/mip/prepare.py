@@ -4,7 +4,7 @@ import csv
 import logging
 import re
 
-from path import path
+from path import Path
 import yaml
 
 from housekeeper.exc import AnalysisNotFinishedError, UnsupportedVersionError
@@ -50,7 +50,7 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids,
     # multiqc outputs
     qc_samples = {}
     for sample_id in sample_ids:
-        multiqc_path = path(outdata_dir).joinpath(sample_id, multiqc_samtools)
+        multiqc_path = Path(outdata_dir).joinpath(sample_id, multiqc_samtools)
         if multiqc_path.exists():
             log.debug("calculate total mapped reads for: %s", sample_id)
             with open(multiqc_path, 'r') as stream:
@@ -76,7 +76,7 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids,
         qc_data[qc_rootkey][sample_id]['MappedRate'] = mapped_data.get('percentage')
         qc_data[qc_rootkey][sample_id]['Duplicates'] = mapped_data['duplicates']
 
-    new_qcmetrics = path(qcmetrics_path.replace('.yaml', '.mod.yaml'))
+    new_qcmetrics = Path(qcmetrics_path.replace('.yaml', '.mod.yaml'))
     log.info("create updated qc metrics: %s", new_qcmetrics)
     with new_qcmetrics.open('w') as stream:
         dump = yaml.dump(qc_data, default_flow_style=False, allow_unicode=True)
@@ -97,7 +97,7 @@ def total_mapped(stream):
 
 def get_duplicates(outdata_dir, sample_id):
     """Parse out the duplicate rate."""
-    files = path(outdata_dir).glob("{0}/bwa/{0}_lanes_*_sorted_md_metric"
+    files = Path(outdata_dir).glob("{0}/bwa/{0}_lanes_*_sorted_md_metric"
                                    .format(sample_id))
     if len(files) == 1:
         with open(files[0], 'r') as stream:

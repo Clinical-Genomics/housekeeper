@@ -3,7 +3,7 @@ from datetime import datetime
 import json
 
 import alchy
-from path import path
+from path import Path
 from flask_login import UserMixin
 from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 
@@ -160,7 +160,7 @@ class Asset(Model):
     sample_id = Column(ForeignKey('sample.id'))
 
     def basename(self):
-        return path(self.original_path).basename()
+        return Path(self.original_path).basename()
 
 
 class User(Model, UserMixin):

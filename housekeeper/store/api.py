@@ -3,7 +3,7 @@ import datetime
 import logging
 
 from alchy import Manager
-from path import path
+from path import Path
 import sqlalchemy as sqa
 
 from housekeeper.constants import EXTRA_STATUSES
@@ -171,7 +171,7 @@ def delete(root_path, run_obj):
 def delete_asset(asset_obj):
     """Delete an asset completely from the database."""
     if asset_obj.is_local:
-        path(asset_obj.path).remove_p()
+        Path(asset_obj.path).remove_p()
     asset_obj.delete()
 
 
@@ -200,7 +200,7 @@ def postpone(run_obj, time=datetime.timedelta(days=30)):
 
 
 def delete_dir(directory):
-    directory_path = path(directory)
+    directory_path = Path(directory)
     if directory_path.exists():
         log.info("removing files under: %s", directory)
         directory_path.rmtree_p()
@@ -210,7 +210,7 @@ def delete_dir(directory):
 
 def add_asset(run_obj, asset_path, category, archive_type=None, sample=None):
     """Link an asset to a run."""
-    abs_path = path(asset_path).abspath()
+    abs_path = Path(asset_path).abspath()
     new_asset = Asset(original_path=abs_path, category=category,
                       archive_type=archive_type)
     new_asset.sample = sample
@@ -219,7 +219,7 @@ def add_asset(run_obj, asset_path, category, archive_type=None, sample=None):
 
 def sha1(asset_path):
     """Retrieves the sha1sum from an asset"""
-    abs_path = path(asset_path).abspath()
+    abs_path = Path(asset_path).abspath()
     query = Asset.query
     checksum = query.filter(Asset.original_path == abs_path).first().checksum
 

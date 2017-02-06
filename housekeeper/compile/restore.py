@@ -2,7 +2,7 @@
 """Restore archived files."""
 import tarfile
 
-from path import path
+from path import Path
 import yaml
 
 from housekeeper.store import api
@@ -23,7 +23,7 @@ def restore_run(root_path, run_obj, tar_path, archive_type):
 
     # update the "local" status of all files blindly
     for asset in run_obj.assets:
-        if path(asset.path).exists():
+        if Path(asset.path).exists():
             asset.is_local = True
 
 

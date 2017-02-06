@@ -2,7 +2,7 @@
 from __future__ import division
 import logging
 
-from path import path
+from path import Path
 
 from housekeeper.pipelines.general.add import analysis as general_analysis
 from housekeeper.store import Asset
@@ -25,7 +25,7 @@ def build_analysis(segments, version=None, customer=None):
 
 def build_asset(asset_path, reference):
     """Build Asset record from reference data."""
-    abs_path = path(asset_path).abspath()
+    abs_path = Path(asset_path).abspath()
     new_asset = Asset(original_path=abs_path, category=reference['category'],
                       archive_type=reference.get('archive_type'))
     return new_asset
