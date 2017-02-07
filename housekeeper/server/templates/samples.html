@@ -68,7 +68,7 @@
           </td>
           <td>
             <a href="{{ url_for('case', name=sample.case.name) }}">
-              {{ sample.case_id }}
+              {{ sample.case.name }}
             </a>
           </td>
           <td>{{ sample.received_at.date() if sample.received_at }}</td>
