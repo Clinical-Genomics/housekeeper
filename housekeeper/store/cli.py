@@ -369,12 +369,13 @@ def status(context, date, now, run_date, sample_status, run_status,
 @click.option('-l', '--limit', default=20, help='limit number of results')
 @click.option('-o', '--offset', default=0, help='skip initial results')
 @click.option('-m', '--missing', type=click.Choice(CASE_STATUSES))
+@click.option('-v', '--version', help='filter on pipeline version')
 @click.option('-r', '--ready', is_flag=True, help='check if samples are sequenced')
 @click.pass_context
-def cases(context, limit, offset, missing, ready):
+def cases(context, limit, offset, missing, version, ready):
     """Display information about cases."""
     api.manager(context.obj['database'])
-    query = api.cases(missing=missing)
+    query = api.cases(missing=missing, version=version)
     for case in query.offset(offset).limit(limit):
         if ready:
             case_samples = api.samples(customer=case.customer,

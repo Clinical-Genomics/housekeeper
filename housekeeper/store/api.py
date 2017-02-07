@@ -75,7 +75,7 @@ def sample(lims_id):
     return sample_obj
 
 
-def cases(query_str=None, missing=None):
+def cases(query_str=None, missing=None, version=None):
     """Get multiple cases from the database."""
     query = Case.query.order_by(Case.created_at.desc())
 
@@ -97,7 +97,9 @@ def cases(query_str=None, missing=None):
         query = (query.join(Case.runs, AnalysisRun.extra)
                       .filter(AnalysisRun.analyzed_at != None,
                               date_field == None))
-
+    if version:
+        query = (query.join(Case.runs)
+                      .filter(AnalysisRun.pipeline_version == version))
     if query_str:
         query = query.filter(Case.name.like("%{}%".format(query_str)))
     return query
