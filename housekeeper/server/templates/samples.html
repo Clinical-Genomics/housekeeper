@@ -67,7 +67,7 @@
             {{ sample.lims_id }}
           </td>
           <td>
-            <a href="{{ url_for('case', name=sample.case_id) }}">
+            <a href="{{ url_for('case', name=sample.case.name) }}">
               {{ sample.case_id }}
             </a>
           </td>
