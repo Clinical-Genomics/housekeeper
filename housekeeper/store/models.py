@@ -48,12 +48,10 @@ class Sample(Model):
 
     id = Column(types.Integer, primary_key=True)
     lims_id = Column(types.String(32), nullable=False, unique=True)
-    customer = Column(types.String(32), nullable=False)
-    family_id = Column(types.String(128), nullable=False)
+    case_id = Column(ForeignKey('case.id'))
     priority = Column(types.Boolean, default=False)
 
     created_at = Column(types.DateTime, default=datetime.now)
-
     received_at = Column(types.DateTime)
     sequenced_at = Column(types.DateTime)
     confirmed_at = Column(types.DateTime)
@@ -61,11 +59,6 @@ class Sample(Model):
     assets = orm.relationship('Asset', backref='sample')
     runs = orm.relationship('AnalysisRun', secondary='sample_run_link',
                             back_populates='samples')
-
-    @property
-    def case_id(self):
-        """Unique case id."""
-        return '-'.join([self.customer, self.family_id])
 
 
 class Case(Model):
@@ -80,6 +73,7 @@ class Case(Model):
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
                             backref='case', order_by='-AnalysisRun.id')
+    samples = orm.relationship('Sample', backref='case')
 
     @property
     def current(self):

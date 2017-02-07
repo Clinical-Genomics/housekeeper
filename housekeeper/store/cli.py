@@ -446,22 +446,24 @@ def add_sample(context, date, priority, customer, family_id, lims_id):
     if existing_sample:
         log.error("sample already exists: %s", lims_id)
         context.abort()
-    new_sample = Sample(lims_id=lims_id, customer=customer,
-                        family_id=family_id, priority=priority)
+    new_sample = Sample(lims_id=lims_id, priority=priority)
     if date:
         new_sample.received_at = parse_date(date)
-    manager.add_commit(new_sample)
-    log.info("added new sample: %s", lims_id)
 
-    # also add an empty case if it doesn't already exist
-    if api.case(new_sample.case_id) is None:
-        new_case = Case(name=new_sample.case_id,
-                        customer=new_sample.customer,
-                        family_id=new_sample.family_id)
-        manager.add_commit(new_case)
-        log.info("added new case: %s", new_case.name)
+    # also add a new case if it doesn't already exist
+    case_name = '-'.join([customer, family_id])
+    case_obj = api.case(case_name)
+    if case_obj is None:
+        case_obj = Case(name=case_name, customer=customer, family_id=family_id)
+        manager.add(case_obj)
+        log.info("added new case: %s", case_name)
     else:
-        log.debug("case already exists: %s", new_sample.case_id)
+        log.debug("case already exists: %s", case_name)
+
+    # link sample to case
+    case_obj.samples.append(new_sample)
+    manager.commit()
+    log.info("added new sample: %s", lims_id)
 
 
 @click.command('add-case')
@@ -471,14 +473,14 @@ def add_sample(context, date, priority, customer, family_id, lims_id):
 def add_case(context, customer, family_id):
     """Add a case to the database."""
     manager = api.manager(context.obj['database'])
-    case_id = "-".join([customer, family_id])
-    existing_case = Case.query.filter_by(name=case_id).first()
+    case_name = "-".join([customer, family_id])
+    existing_case = api.case(case_name)
     if existing_case:
-        log.error("case already exists")
+        log.error("case already exists: %s", case_name)
         context.abort()
-    new_case = Case(name=case_id, customer=customer, family_id=family_id)
+    new_case = Case(name=case_name, customer=customer, family_id=family_id)
     manager.add_commit(new_case)
-    log.info("added new case: %s", case_id)
+    log.info("added new case: %s", case_name)
 
 
 def build_date(date_str):
