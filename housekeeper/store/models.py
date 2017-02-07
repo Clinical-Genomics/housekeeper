@@ -76,6 +76,11 @@ class Case(Model):
     samples = orm.relationship('Sample', backref='case')
 
     @property
+    def has_priority(self):
+        """Check if related sample is priority."""
+        return any(sample.priority for sample in self.samples)
+
+    @property
     def current(self):
         """Return the current (active) run."""
         if self.runs:

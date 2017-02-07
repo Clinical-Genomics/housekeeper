@@ -49,13 +49,13 @@
 {% endmacro %}
 
 {% macro run_row(case, run) %}
-  <tr>
+  <tr {% if case.has_priority %} class="bg-info" {% endif %}>
     <td>
       <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
     </td>
     <td>
       {% for sample in case.samples %}
-        <span class="label label-default">{{ sample.lims_id }}</span>
+        <span class="label label-{{ 'success' if sample.sequenced_at else 'default' }}">{{ sample.lims_id }}</span>
       {% endfor %}
     </td>
 

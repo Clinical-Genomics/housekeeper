@@ -79,11 +79,16 @@ def index():
 @login_required
 def cases():
     """Overview all loaded cases."""
+    missing_category = request.args.get('missing')
+    if not missing_category:
+        missing_category = 'analyzed'
+    elif missing_category == 'empty':
+        missing_category = None
     page = int(request.args.get('page', '1'))
     qargs = {
         'query_str': request.args.get('query_str'),
         'per_page': 30,
-        'missing': request.args.get('missing'),
+        'missing': missing_category,
     }
     cases_q = api.cases(query_str=qargs['query_str'],
                         missing=qargs['missing'])

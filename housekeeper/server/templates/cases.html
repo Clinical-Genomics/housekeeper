@@ -16,7 +16,7 @@
       </div>
       <div class="panel-footer">
         <select class="form-control" name="missing">
-          <option value="">Cases missing...</option>
+          <option value="empty">Show all cases</option>
           {% for status in ['analyzed', 'delivered', 'archived', 'cleanedup'] %}
             <option value="{{ status }}" {% if status == qargs.missing %}selected{% endif %}>Cases to {{ status }}</option>
           {% endfor %}

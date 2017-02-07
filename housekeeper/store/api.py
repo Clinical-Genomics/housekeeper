@@ -81,10 +81,13 @@ def cases(query_str=None, missing=None, version=None):
 
     if missing == 'analyzed':
         query = (query.outerjoin(Case.runs)
-                      .filter(AnalysisRun.analyzed_at == None))
+                      .join(Case.samples)
+                      .filter(AnalysisRun.analyzed_at == None,
+                              Sample.sequenced_at != None))
     elif missing == 'delivered':
         query = (query.join(Case.runs)
-                      .filter(AnalysisRun.delivered_at == None))
+                      .filter(AnalysisRun.analyzed_at != None,
+                              AnalysisRun.delivered_at == None))
     elif missing == 'archived':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.archived_at == None))
