@@ -98,8 +98,9 @@ def cases(query_str=None, missing=None, version=None):
                       .filter(AnalysisRun.analyzed_at != None,
                               date_field == None))
     if version:
+        like_str = "{}%".format(version)
         query = (query.join(Case.runs)
-                      .filter(AnalysisRun.pipeline_version == version))
+                      .filter(AnalysisRun.pipeline_version.like(like_str)))
     if query_str:
         query = query.filter(Case.name.like("%{}%".format(query_str)))
     return query
