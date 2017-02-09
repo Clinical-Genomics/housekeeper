@@ -415,9 +415,11 @@ def samples(context, limit, offset, case, missing):
 
 @click.command()
 @click.option('-p', '--prioritize', is_flag=True, help='mark high priority')
+@click.option('-f', '--flowcell', 'flowcells', multiple=True,
+              help='link flowcell to sample')
 @click.argument('sample_name')
 @click.pass_context
-def sample(context, prioritize, sample_name):
+def sample(context, prioritize, flowcells, sample_name):
     """Show or update a sample."""
     manager = api.manager(context.obj['database'])
     sample_obj = api.sample(sample_name)
@@ -428,6 +430,16 @@ def sample(context, prioritize, sample_name):
         sample_obj.priority = True
         manager.commit()
         log.info("prioritized sample!")
+    if flowcells:
+        for flowcell in flowcells:
+            if len(flowcell) != 9:
+                log.error("invalid flowcell id: %s", flowcell)
+                context.abort()
+        flowcell_set = set(flowcells)
+        flowcell_set.update(sample_obj.flowcells)
+        sample_obj.flowcells = list(flowcell_set)
+        manager.commit()
+        log.info("updated sample flowcells: %s", sample_obj._flowcells)
 
     click.echo(sample_obj.to_json(pretty=True))
 

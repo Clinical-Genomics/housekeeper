@@ -9,6 +9,8 @@ from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 
 from housekeeper.constants import PIPELINES, ARCHIVE_TYPES
 
+SEQUENCERS = ('hiseqx', 'hiseq2500', 'hiseqHO', 'miseq', 'nextseq')
+
 
 def json_serial(obj):
     """JSON serializer for objects not serializable by default json code"""
@@ -50,6 +52,7 @@ class Sample(Model):
     lims_id = Column(types.String(32), nullable=False, unique=True)
     case_id = Column(ForeignKey('case.id'))
     priority = Column(types.Boolean, default=False)
+    _flowcells = Column(types.Text)
 
     created_at = Column(types.DateTime, default=datetime.now)
     received_at = Column(types.DateTime)
@@ -59,6 +62,16 @@ class Sample(Model):
     assets = orm.relationship('Asset', backref='sample')
     runs = orm.relationship('AnalysisRun', secondary='sample_run_link',
                             back_populates='samples')
+
+    @property
+    def flowcells(self):
+        """Return a list of flowcells."""
+        flowcell_list = self._flowcells.split(',') if self._flowcells else []
+        return flowcell_list
+
+    @flowcells.setter
+    def flowcells(self, flowcell_list):
+        self._flowcells = ','.join(flowcell_list) if flowcell_list else None
 
 
 class Case(Model):

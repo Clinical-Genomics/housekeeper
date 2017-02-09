@@ -57,6 +57,7 @@
         <th>Case</th>
         <th>Received at</th>
         <th>Sequenced at</th>
+        <th>Flowcells</th>
         <th>Confirmed at</th>
       </tr>
     </thead>
@@ -79,6 +80,11 @@
                 {{ (sample.sequenced_at - sample.received_at).days }} days
               </span>
             {% endif %}
+          </td>
+          <td>
+            {% for flowcell in sample.flowcells %}
+              <span class="label label-default">{{ flowcell }}</span>
+            {% endfor %}
           </td>
           <td>{{ sample.confirmed_at.date() if sample.confirmed_at }}</td>
         </tr>
