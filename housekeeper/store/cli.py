@@ -370,20 +370,13 @@ def status(context, date, now, run_date, sample_status, run_status,
 @click.option('-o', '--offset', default=0, help='skip initial results')
 @click.option('-m', '--missing', type=click.Choice(CASE_STATUSES))
 @click.option('-v', '--version', help='filter on pipeline version')
-@click.option('-r', '--ready', is_flag=True, help='check if samples are sequenced')
+@click.option('-r', '--ready', is_flag=True, help='DEPRECATED')
 @click.pass_context
 def cases(context, limit, offset, missing, version, ready):
     """Display information about cases."""
     api.manager(context.obj['database'])
     query = api.cases(missing=missing, version=version)
     for case in query.offset(offset).limit(limit):
-        if ready:
-            case_samples = api.samples(customer=case.customer,
-                                       family_id=case.family_id)
-            if ((case_samples.first() is None) or
-                    (not all(sample.sequenced_at for sample in case_samples))):
-                log.debug("skipping case, samples not sequenced")
-                continue
         click.echo(case.name)
 
 
