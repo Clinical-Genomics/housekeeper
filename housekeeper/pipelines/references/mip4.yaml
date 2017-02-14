@@ -107,3 +107,27 @@
   key: gbcf_file|path
   archive_type: result
   suffix: .csi
+
+- category: no-acmg-vcf
+  source: family
+  key: program|endvariantannotationblock|reformat_remove_genes_file|research|path
+  archive_type: result
+  required: no
+
+- category: acmg-vcf
+  source: family
+  key: program|endvariantannotationblock|research|path
+  archive_type: result
+  required: no
+
+- category: no-acmg-sv-vcf
+  source: family
+  key: program|sv_reformat|sv_reformat_remove_genes_file|research|path
+  archive_type: result
+  required: no
+
+- category: acmg-sv-vcf
+  source: family
+  key: program|sv_reformat|research|path
+  archive_type: result
+  required: no
