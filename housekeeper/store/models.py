@@ -114,6 +114,7 @@ class AnalysisRun(Model):
     created_at = Column(types.DateTime, default=datetime.now)
     pipeline = Column(types.Enum(*PIPELINES))
     pipeline_version = Column(types.String(32))
+    reference_genome = Column(types.String(64))
     # keep track of a date if the cases is requested to be rerun
     requested_at = Column(types.DateTime)
     analyzed_at = Column(types.DateTime)
