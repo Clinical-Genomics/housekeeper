@@ -90,8 +90,9 @@ def cases():
         'per_page': 30,
         'missing': missing_category,
     }
-    cases_q = api.cases(query_str=qargs['query_str'],
-                        missing=qargs['missing'])
+    version = 'v4' if qargs['missing'] == 'delivered' else None
+    cases_q = api.cases(query_str=qargs['query_str'], missing=qargs['missing'],
+                        version=version)
     cases_page = cases_q.paginate(page, per_page=qargs['per_page'])
     return render_template('cases.html', cases=cases_page, qargs=qargs)
 
