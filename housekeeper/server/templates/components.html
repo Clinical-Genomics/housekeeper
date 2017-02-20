@@ -49,7 +49,7 @@
 {% endmacro %}
 
 {% macro run_row(case, run) %}
-  <tr {% if case.has_priority %} class="bg-info" {% endif %}>
+  <tr {% if case.has_priority %} class="bg-warning" {% endif %}>
     <td>
       <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
     </td>
