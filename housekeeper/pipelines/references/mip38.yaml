@@ -18,28 +18,6 @@
   source: family
   key: pedigree_file|path
 
-- category: vcf-clinical-bin
-  source: family
-  key: vcf_binary_file|clinical|path
-  archive_type: result
-
-- category: vcf-clinical-bin-index
-  source: family
-  key: vcf_binary_file|clinical|path
-  suffix: .tbi
-  archive_type: result
-
-- category: vcf-research-bin
-  source: family
-  key: vcf_binary_file|research|path
-  archive_type: result
-
-- category: vcf-research-bin-index
-  source: family
-  key: vcf_binary_file|research|path
-  suffix: .tbi
-  archive_type: result
-
 - category: log
   source: family
   key: last_log_file_path
@@ -50,28 +28,6 @@
   key: outdata_dir
   suffix: /meta.yaml
   archive_type: meta
-
-- category: vcf-clinical-sv-bin
-  source: family
-  key: sv_vcf_binary_file|clinical|path
-  archive_type: result
-
-- category: vcf-clinical-sv-bin-index
-  source: family
-  key: sv_vcf_binary_file|clinical|path
-  suffix: .tbi
-  archive_type: result
-
-- category: vcf-research-sv-bin
-  source: family
-  key: sv_vcf_binary_file|research|path
-  archive_type: result
-
-- category: vcf-research-sv-bin-index
-  source: family
-  key: sv_vcf_binary_file|research|path
-  suffix: .tbi
-  archive_type: result
 
 - category: coverage
   source: samples
@@ -107,3 +63,27 @@
   key: gbcf_file|path
   archive_type: result
   suffix: .csi
+
+- category: no-acmg-vcf
+  source: family
+  key: program|endvariantannotationblock|reformat_remove_genes_file|research|path
+  archive_type: result
+  required: no
+
+- category: acmg-vcf
+  source: family
+  key: program|endvariantannotationblock|research|path
+  archive_type: result
+  required: no
+
+- category: no-acmg-sv-vcf
+  source: family
+  key: program|sv_reformat|sv_reformat_remove_genes_file|research|path
+  archive_type: result
+  required: no
+
+- category: acmg-sv-vcf
+  source: family
+  key: program|sv_reformat|research|path
+  archive_type: result
+  required: no

@@ -21,7 +21,7 @@ from .mip4.scout import prepare_scout
 log = logging.getLogger(__name__)
 
 LOADERS = {'mip': parse_mip, 'mip2': parse_mip2, 'mip4': parse_mip4,
-           'miparchive': parse_miparchive}
+           'mip38': parse_mip4, 'miparchive': parse_miparchive}
 
 
 @click.command()
