@@ -37,7 +37,7 @@ def build_analysis(segments):
     sample_ids = segments['config']['sample_ids']
     customer = segments['pedigree']['owner']
     genome_build = segments['family']['human_genome_build']
-    reference_genome = ''.join(genome_build['source'], genome_build['version'])
+    reference_genome = ''.join([genome_build['source'], genome_build['version']])
     name = "{}-{}".format(customer, segments['config']['family_id'])
     log.debug("build new analysis record: %s", name)
     new_run = general_analysis('mip', version, analyzed_at,
