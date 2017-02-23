@@ -15,7 +15,8 @@ from .migrate import migrate_root
 from .utils import get_rundir
 from . import api, Asset, AnalysisRun, Sample, Case
 
-RUN_STATUSES = ['analyzed', 'compiled', 'delivered', 'archived', 'cleanedup']
+RUN_STATUSES = ['analyzed', 'compiled', 'delivered', 'answeredout', 'archived',
+                'cleanedup']
 SAMPLE_STATUSES = ['received', 'sequenced', 'confirmed']
 CASE_STATUSES = RUN_STATUSES + EXTRA_STATUSES
 

@@ -120,6 +120,7 @@ class AnalysisRun(Model):
     analyzed_at = Column(types.DateTime)
     compiled_at = Column(types.DateTime)
     delivered_at = Column(types.DateTime)
+    answeredout_at = Column(types.DateTime)
     archived_at = Column(types.DateTime)
     cleanedup_at = Column(types.DateTime)
     will_cleanup_at = Column(types.DateTime)

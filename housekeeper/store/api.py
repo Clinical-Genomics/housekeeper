@@ -91,6 +91,10 @@ def cases(query_str=None, missing=None, version=None):
     elif missing == 'archived':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.archived_at == None))
+    elif missing == 'answeredout':
+        query = (query.join(Case.runs)
+                      .filter(AnalysisRun.delivered_at != None,
+                              AnalysisRun.answeredout_at == None))
     elif missing == 'cleanedup':
         today = datetime.datetime.today()
         query = (query.join(Case.runs)
