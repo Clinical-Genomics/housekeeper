@@ -69,9 +69,9 @@ def build_config(run_obj):
     customer, family = run_obj.case.name.split('-', 1)
     run_asset = partial(api.assets, run_id=run_obj.id)
     vcf = run_asset(category='vcf-clinical-bin').one()
-    vcf_sv = run_asset(category='vcf-clinical-sv-bin').one()
+    vcf_sv = run_asset(category='vcf-clinical-sv-bin').first()
     vcf_research = run_asset(category='vcf-research-bin').one()
-    vcf_research_sv = run_asset(category='vcf-research-sv-bin').one()
+    vcf_research_sv = run_asset(category='vcf-research-sv-bin').first()
     sampleinfo = run_asset(category='sampleinfo').one()
 
     # start from pedigree YAML and add additional information
@@ -86,12 +86,12 @@ def build_config(run_obj):
                     si_data['human_genome_build']['version'])
 
     data['vcf_snv'] = vcf.path
-    data['vcf_sv'] = vcf_sv.path
+    data['vcf_sv'] = vcf_sv.path if vcf_sv else None
     data['rank_model_version'] = float(rank_model)
     data['analysis_date'] = run_obj.analyzed_at
     data['human_genome_build'] = genome_build
     data['vcf_snv_research'] = vcf_research.path
-    data['vcf_sv_research'] = vcf_research_sv.path
+    data['vcf_sv_research'] = vcf_research_sv.path if vcf_research_sv else None
 
     for ped_sample in data['samples']:
         lims_id = ped_sample['sample_id']
