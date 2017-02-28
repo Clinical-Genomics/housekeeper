@@ -21,7 +21,7 @@ def parse_mip4(config_data, reference_data, force=False):
     # 4. parse references
     new_refs = parse_references(reference_data, segments=segments)
     # 5. build assets from references + link to new records
-    new_assets = build_assets(new_refs)
+    new_assets = build_assets(new_refs, force=force)
     return {
         'case': new_data['case'],
         'samples': new_data['samples'],
