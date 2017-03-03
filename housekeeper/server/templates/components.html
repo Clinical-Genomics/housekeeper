@@ -29,6 +29,7 @@
           <th class="col-xs-1">Analyzed</th>
           <th class="col-xs-1">Delivered</th>
           <th class="col-xs-2">Uploads</th>
+          <th class="col-xs-1">Answered out</th>
           <th class="col-xs-1">Archived</th>
           <th class="col-xs-1">Cleaned up</th>
         </tr>
@@ -76,6 +77,7 @@
           {% endif %}
         {% endfor %}
       </td>
+      <td>{{ run.answeredout_at.date() if run.answeredout_at }}</td>
       <td>{{ run.archived_at.date() if run.archived_at }}</td>
       <td>
         {% if run.cleanedup_at %}
