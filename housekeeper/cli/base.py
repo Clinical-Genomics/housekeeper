@@ -5,9 +5,8 @@ import os
 import pkg_resources
 
 import click
+import coloredlogs
 import yaml
-
-from .log import init_log
 
 log = logging.getLogger(__name__)
 
@@ -51,7 +50,7 @@ def build_cli(title, Model):
     @click.pass_context
     def root(context, config, database, root, log_level, log_file):
         """Interact with CLI."""
-        init_log(logging.getLogger(), loglevel=log_level, filename=log_file)
+        coloredlogs.install(level=loglevel)
         log.debug("{}: version {}".format(title, version))
 
         # read in config file if it exists
