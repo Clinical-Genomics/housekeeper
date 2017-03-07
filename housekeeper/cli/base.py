@@ -45,12 +45,11 @@ def build_cli(title, Model):
     @click.option('-r', '--root', type=click.Path(exists=True),
                   help='root dir for storing analyses')
     @click.option('-l', '--log-level', default='INFO')
-    @click.option('--log-file', type=click.Path())
     @click.version_option(version, prog_name=title)
     @click.pass_context
-    def root(context, config, database, root, log_level, log_file):
+    def root(context, config, database, root, log_level):
         """Interact with CLI."""
-        coloredlogs.install(level=loglevel)
+        coloredlogs.install(level=log_level)
         log.debug("{}: version {}".format(title, version))
 
         # read in config file if it exists
