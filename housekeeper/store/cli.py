@@ -185,20 +185,19 @@ def delete_sample(context, yes, sample_id):
 
 @delete.command('case')
 @click.option('-y', '--yes', is_flag=True, help='skip confirmation')
-@click.option('--samples/--no-samples', default=True, is_flag=True,
-              help='also delete samples')
 @click.argument('case_name')
 @click.pass_context
-def delete_case(context, yes, samples, case_name):
+def delete_case(context, yes, case_name):
     """Delete a case from the database."""
     manager = api.manager(context.obj['database'])
     case_obj = api.case(case_name)
     if case_obj is None:
         log.error("case not found: {}".format(case_name))
         context.abort()
-    if samples:
-        for sample_obj in case_obj.samples:
-            context.invoke(delete_sample, yes=yes, sample_id=sample_obj.lims_id)
+    for sample_obj in case_obj.samples:
+        log.warn("will remove sample: %s", sample_obj.lims_id)
+    for analysis_run in case_obj.runs:
+        log.warn("will remove analysis run: %s", analysis_run.analyzed_at.date())
     click.echo("you are about to delete case: {} - {}"
                .format(case_obj.name, case_obj.id))
     if yes or click.confirm('Are you sure?'):
