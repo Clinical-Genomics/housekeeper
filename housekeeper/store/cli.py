@@ -197,9 +197,7 @@ def delete_case(context, yes, samples, case_name):
         log.error("case not found: {}".format(case_name))
         context.abort()
     if samples:
-        related_samples = api.samples(customer=case_obj.customer,
-                                      family_id=case_obj.family_id)
-        for sample_obj in related_samples:
+        for sample_obj in case_obj.samples:
             context.invoke(delete_sample, yes=yes, sample_id=sample_obj.lims_id)
     click.echo("you are about to delete case: {} - {}"
                .format(case_obj.name, case_obj.id))

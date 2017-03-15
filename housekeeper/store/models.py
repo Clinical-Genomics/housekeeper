@@ -59,7 +59,7 @@ class Sample(Model):
     sequenced_at = Column(types.DateTime)
     confirmed_at = Column(types.DateTime)
 
-    assets = orm.relationship('Asset', backref='sample')
+    assets = orm.relationship('Asset', backref='sample', cascade='all,delete')
     runs = orm.relationship('AnalysisRun', secondary='sample_run_link',
                             back_populates='samples')
 
@@ -86,7 +86,7 @@ class Case(Model):
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
                             backref='case', order_by='-AnalysisRun.id')
-    samples = orm.relationship('Sample', backref='case')
+    samples = orm.relationship('Sample', backref='case', cascade='all,delete')
 
     @property
     def has_priority(self):
