@@ -80,9 +80,7 @@ def index():
 def cases():
     """Overview all loaded cases."""
     missing_category = request.args.get('missing')
-    if not missing_category:
-        missing_category = 'analyzed'
-    elif missing_category == 'empty':
+    if missing_category == 'empty':
         missing_category = None
     page = int(request.args.get('page', '1'))
     qargs = {
