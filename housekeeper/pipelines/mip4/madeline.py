@@ -48,6 +48,11 @@ def run(ped_stream, sample_map, exe):
     with codecs.open(out_path, 'r') as output:
         svg_content = output.read()
 
+    # strip away the script tag
+    script_tag = ('<script type="text/javascript" xlink:href='
+                  '"javascript/madeline.js"></script>')
+    svg_content.replace(script_tag, '')
+
     shutil.rmtree(output_dir)
     return svg_content
 
