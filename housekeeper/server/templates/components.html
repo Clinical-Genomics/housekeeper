@@ -54,6 +54,7 @@
   <tr {% if case.has_priority %} class="bg-warning" {% endif %}>
     <td>
       <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
+      {% if case.is_onhold %}<small class="label label-default">PAUSED</small>{% endif %}
     </td>
     <td>
       {% for sample in case.samples %}
@@ -87,15 +88,15 @@
           {{ postpone_btn(case.name, case.current) }}
         {% endif %}
       </td>
-      <td>
-        <form action="{{ url_for('case_onhold', case_name=case.name) }}" method="POST">
-          <button class="btn btn-default btn-sm">
-            {{ 'Unpaus' if case.is_onhold else 'Paus' }}
-          </button>
-        </form>
-      </td>
     {% else %}
       <td colspan="7"></td>
     {% endif %}
+    <td>
+      <form action="{{ url_for('case_onhold', case_name=case.name) }}" method="POST">
+        <button class="btn btn-default btn-xs">
+          {{ 'Unpaus' if case.is_onhold else 'Paus' }}
+        </button>
+      </form>
+    </td>
   </tr>
 {% endmacro %}
