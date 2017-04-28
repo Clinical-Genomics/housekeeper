@@ -75,7 +75,7 @@ def sample(lims_id):
     return sample_obj
 
 
-def cases(query_str=None, missing=None, version=None):
+def cases(query_str=None, missing=None, version=None, onhold=None):
     """Get multiple cases from the database."""
     query = Case.query.order_by(Case.created_at.desc())
 
@@ -83,8 +83,7 @@ def cases(query_str=None, missing=None, version=None):
         query = (query.outerjoin(Case.runs)
                       .join(Case.samples)
                       .filter(AnalysisRun.analyzed_at == None,
-                              Sample.sequenced_at != None,
-                              Case.is_onhold == False))
+                              Sample.sequenced_at != None))
     elif missing == 'delivered':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.analyzed_at != None,
@@ -111,6 +110,9 @@ def cases(query_str=None, missing=None, version=None):
                       .filter(AnalysisRun.pipeline_version.like(like_str)))
     if query_str:
         query = query.filter(Case.name.like("%{}%".format(query_str)))
+
+    if onhold:
+        query = query.filter(Case.is_onhold == onhold)
     return query
 
 
