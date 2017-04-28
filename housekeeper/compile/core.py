@@ -27,6 +27,7 @@ def compile_run(root_path, run_obj):
         new_asset = api.add_asset(run_obj, group.out, category)
         new_asset.path = group.out
         new_asset.checksum = group.checksum
+        new_asset.archive_type = 'archive'
         run_obj.assets.append(new_asset)
     run_obj.compiled_at = datetime.now()
 
@@ -45,7 +46,7 @@ def compress_run(root_path, run_obj):
 
 def encrypt_run(root_path, run_obj):
     """ Encrypts an input file and places the encrypted archive
-    and key in the run dir.
+    in the run dir.
     """
     run_dir = Path(get_rundir(root_path, run_obj.case.name, run=run_obj))
     groups = ('data', 'result')
@@ -65,21 +66,15 @@ def encrypt_run(root_path, run_obj):
 
         # the rest is administration
         archive_path = '{}.gpg'.format(asset.path)
-        archive_key_path = '{}.key.gpg'.format(asset.path)
         log.info(archive_path)
-        log.info(archive_key_path)
 
         compilation_path = asset.path
 
         new_asset = api.add_asset(run_obj, archive_path, asset.category)
         new_asset.path = archive_path
+        new_asset.archive_type = 'archive'
         new_asset.checksum = checksum(archive_path)
         run_obj.assets.append(new_asset)
-
-        new_key_asset = api.add_asset(run_obj, archive_key_path, asset.category)
-        new_key_asset.path = archive_key_path
-        new_key_asset.checksum = checksum(archive_key_path)
-        run_obj.assets.append(new_key_asset)
 
         api.delete_asset(asset)
     run_obj.compiled_at = datetime.now()

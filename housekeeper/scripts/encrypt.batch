@@ -44,53 +44,35 @@ OUTDIR=$2
 
 INDIR=$(dirname ${INFILE})
 COMPILATION=$(basename ${INFILE})
+read -srp "Passphrase: " PASSPHRASE # TODO: remove passphrase from key
 
 ########
 # MAIN #
 ########
 
-export TMPDIR=${OUTDIR}
-PASSPHRASEFILE=$(mktemp)
-chmod a-rwx,u+rw ${PASSPHRASEFILE}
-
 cd ${INDIR}
 
-# can take some time when there is not a lot of entropy
-log "gpg --gen-random 1 256 > ${PASSPHRASEFILE}"
-gpg --gen-random 2 256 > ${PASSPHRASEFILE}
-
-# asymmetrically encrypt the passphrase file
-log "gpg -e -r 'Kenny Billiau' -o ${PASSPHRASEFILE}.gpg ${PASSPHRASEFILE}"
-gpg -e -r 'Kenny Billiau' -o ${PASSPHRASEFILE}.gpg ${PASSPHRASEFILE}
-
-# previous step can take a long while, check if the compilation still is there
-if [[ ! -e ${COMPILATION} ]]; then
-    log "${COMPILATION} is gone - aborting"
-    exit 1
-fi
-
 # get the checksum
-housekeeper getsha1 --dash ${INFILE} > ${OUTDIR}/${COMPILATION}.sha1sum
+ORI_SHA1=$(housekeeper getsha1 --dash ${INFILE})
 
 # GPG
-log "gpg --symmetric --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch --compress-algo none -o ${OUTDIR}/${COMPILATION}.gpg ${INFILE}"
-     gpg --symmetric --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch --compress-algo none -o ${OUTDIR}/${COMPILATION}.gpg ${INFILE}
+log "gpg -e -r 'Kenny Billiau' --yes -o ${OUTDIR}/${COMPILATION}.gpg ${INFILE}"
+     gpg -e -r 'Kenny Billiau' --yes -o ${OUTDIR}/${COMPILATION}.gpg ${INFILE}
 
-# decrypt and calc the sha1sum
-log "gpg --decrypt --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch ${OUTDIR}/${COMPILATION}.gpg | sha1sum > ${OUTDIR}/${COMPILATION}.degpg.sha1sum"
-     gpg --decrypt --cipher-algo aes256 --passphrase-file ${PASSPHRASEFILE} --batch ${OUTDIR}/${COMPILATION}.gpg | sha1sum > ${OUTDIR}/${COMPILATION}.degpg.sha1sum
+# decrypt to make sure encryption went fine
+log "gpg --batch --passphrase -d ${OUTDIR}/${COMPILATION}.gpg | sha1sum"
+DECRYPT_SHA1=$(gpg --batch --passphrase "${PASSPHRASE}" -d ${OUTDIR}/${COMPILATION}.gpg | sha1sum)
 
-# check if the hashes match!
-log "diff -q ${OUTDIR}/${COMPILATION}.sha1sum ${OUTDIR}/${COMPILATION}.degpg.sha1sum"
-     diff -q ${OUTDIR}/${COMPILATION}.sha1sum ${OUTDIR}/${COMPILATION}.degpg.sha1sum
+if [[ ${DECRYPT_SHA1} != $ORI_SHA1 ]]; then
+    ( >&2 echo "ERROR: ${OUTDIR}/${COMPILATION}.gpg ENCRYPTION FAIL" )
+    exit 1
+fi
 
 ############
 # CLEAN UP #
 ############
 
-mv ${PASSPHRASEFILE}.gpg ${OUTDIR}/${COMPILATION}.key.gpg
 echo ${OUTDIR}/${COMPILATION}.gpg
-echo ${OUTDIR}/${COMPILATION}.key.gpg
 
 cd - > /dev/null
 log "Finished"
