@@ -84,7 +84,7 @@ def cases(query_str=None, missing=None, version=None):
                       .join(Case.samples)
                       .filter(AnalysisRun.analyzed_at == None,
                               Sample.sequenced_at != None,
-                              Case.is_onhold == False))
+                              Case.is_onhold != True))
     elif missing == 'delivered':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.analyzed_at != None,
