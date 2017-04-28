@@ -111,7 +111,7 @@ def cases(query_str=None, missing=None, version=None, onhold=None):
     if query_str:
         query = query.filter(Case.name.like("%{}%".format(query_str)))
 
-    if onhold:
+    if onhold is not None:
         query = query.filter(Case.is_onhold == onhold)
     return query
 
