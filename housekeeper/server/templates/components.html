@@ -32,6 +32,7 @@
           <th class="col-xs-1">Answered out</th>
           <th class="col-xs-1">Archived</th>
           <th class="col-xs-1">Cleaned up</th>
+          <th class="col-xs-1">On hold</th>
         </tr>
       </thead>
       <tbody>
@@ -86,8 +87,15 @@
           {{ postpone_btn(case.name, case.current) }}
         {% endif %}
       </td>
+      <td>
+        <form action="{{ url_for('case_onhold', case_name=case.name) }}" method="POST">
+          <button class="btn btn-default btn-sm">
+            {{ 'Unpaus' if case.is_onhold else 'Paus' }}
+          </button>
+        </form>
+      </td>
     {% else %}
-      <td colspan="6"></td>
+      <td colspan="7"></td>
     {% endif %}
   </tr>
 {% endmacro %}

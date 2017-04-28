@@ -117,6 +117,18 @@ def case_postpone(case_name):
     return redirect(request.referrer)
 
 
+@app.route('/cases/<case_name>/onhold', methods=['POST'])
+@login_required
+def case_onhold(case_name):
+    """Toggle onhold status for a case."""
+    case_obj = api.case(case_name)
+    if case_obj is None:
+        return abort(404)
+    case_obj.is_onhold = False if case_obj.is_onhold else True
+    db.commit()
+    return redirect(request.referrer)
+
+
 @app.route('/samples')
 @login_required
 def samples():

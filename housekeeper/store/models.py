@@ -83,6 +83,7 @@ class Case(Model):
     customer = Column(types.String(32), nullable=False)
     family_id = Column(types.String(128), nullable=False)
     created_at = Column(types.DateTime, default=datetime.now)
+    is_onhold = Column(types.Boolean)
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
                             backref='case', order_by='-AnalysisRun.id')
