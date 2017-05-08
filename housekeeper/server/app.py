@@ -145,6 +145,19 @@ def samples():
     return render_template('samples.html', samples=samples_page, qargs=qargs)
 
 
+@app.route('/comments/<int:case_id>', methods=['POST'])
+@login_required
+def comments(case_id):
+    """Interact with comments."""
+    case_obj = Case.query.get(case_id)
+    if case_obj is None:
+        return abort(404)
+    new_comment = request.form['comment']
+    case_obj.comment = new_comment
+    db.commit()
+    return redirect(request.referrer)
+
+
 # hookup extensions to app
 Bootstrap(app)
 db.init_app(app)

@@ -55,6 +55,8 @@
     <td>
       <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
       {% if case.is_onhold %}<small class="label label-default">PAUSED</small>{% endif %}
+
+      {{ comment_modal(case) }}
     </td>
     <td>
       {% for sample in case.samples %}
@@ -100,3 +102,34 @@
     </td>
   </tr>
 {% endmacro %}
+
+{% macro comment_modal(case) %}
+  {% set modalId = "comment-%s"|format(case.id) %}
+
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-{{ 'info' if case.comment else 'default' }} btn-xs pull-right" data-toggle="modal" data-target="#{{modalId}}"><span class="glyphicon glyphicon-comment"></span></button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="{{ modalId }}" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          <h4 class="modal-title">Add comment for {{ case.name }}</h4>
+        </div>
+        <form action="{{ url_for('comments', case_id=case.id) }}" method="POST">
+          <div class="modal-body">
+            <div class="form-group">
+              <textarea class="form-control" name="comment" cols="30" rows="10">{{ case.comment if case.comment }}</textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endmacro %}
+
