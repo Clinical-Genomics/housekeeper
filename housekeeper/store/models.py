@@ -10,6 +10,7 @@ from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 from housekeeper.constants import PIPELINES, ARCHIVE_TYPES
 
 SEQUENCERS = ('hiseqx', 'hiseq2500', 'hiseqHO', 'miseq', 'nextseq')
+SAMPLE_CATEGORIES = ('wgs', 'wes', 'tga', 'wgs-ext', 'wes-ext', 'tga-ext')
 
 
 def json_serial(obj):
@@ -53,6 +54,7 @@ class Sample(Model):
     case_id = Column(ForeignKey('case.id'))
     priority = Column(types.Boolean, default=False)
     _flowcells = Column(types.Text)
+    category = Column(types.Enum(*SAMPLE_CATEGORIES))
 
     created_at = Column(types.DateTime, default=datetime.now)
     received_at = Column(types.DateTime)
