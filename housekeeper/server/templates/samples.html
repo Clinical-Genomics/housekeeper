@@ -1,20 +1,20 @@
-{% extends "base.html" %}
+{% extends "layout.html" %}
 {% import "components.html" as components %}
 
 {% block main_content %}
   <form action="{{ url_for('samples') }}">
-    <div class="panel panel-default">
-      <div class="panel-body">
+    <div class="card mb-3">
+      <div class="card-block">
         <div class="row">
-          <div class="col-xs-10">
+          <div class="col-10">
             <input class="form-control" type="text" name="query_str" value="{{ qargs.query_str if qargs.query_str }}">
           </div>
-          <div class="col-xs-2">
-            <button class="btn btn-primary form-control">Search</button>
+          <div class="col-2">
+            <button class="btn btn-info form-control">Search</button>
           </div>
         </div>
       </div>
-      <div class="panel-footer">
+      <div class="card-footer">
         <select class="form-control" name="status_to">
           <option value="">Samples to...</option>
           {% for status in ['sequence', 'confirm'] %}
@@ -25,21 +25,20 @@
     </div>
   </form>
 
-  <div class="panel panel-default">
-    <div class="table-responsive">
-      {{ samples_table(samples.items) }}
-    </div>
-    <div class="panel-footer">
+  {{ samples_table(samples.items) }}
+
+  <div class="card mb-3">
+    <div class="card-block">
       <div class="row">
-        <div class="col-xs-4">
+        <div class="col-4">
           {% if samples.has_prev %}
             <a href="{{ url_for('samples', page=samples.prev_num, **qargs) }}">Previous</a>
           {% endif %}
         </div>
-        <div class="col-xs-4 text-center">
+        <div class="col-4 text-center">
           Page {{ samples.page }} <small class="text-muted">({{ samples.total }} samples)</small>
         </div>
-        <div class="col-xs-4 text-right">
+        <div class="col-4 text-right">
           {% if samples.has_next %}
             <a href="{{ url_for('samples', page=samples.next_num, **qargs) }}">Next</a>
           {% endif %}
@@ -76,14 +75,14 @@
           <td>
             {% if sample.sequenced_at %}
               {{ sample.sequenced_at.date() }}
-              <span class="badge pull-right">
+              <span class="badge badge-default pull-right">
                 {{ (sample.sequenced_at - sample.received_at).days }} days
               </span>
             {% endif %}
           </td>
           <td>
             {% for flowcell in sample.flowcells %}
-              <span class="label label-default">{{ flowcell }}</span>
+              <span class="badge badge-default">{{ flowcell }}</span>
             {% endfor %}
           </td>
           <td>{{ sample.confirmed_at.date() if sample.confirmed_at }}</td>

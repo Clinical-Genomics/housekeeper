@@ -1,0 +1,70 @@
+{% extends "layout.html" %}
+
+{% block main_content %}
+  {{ super() }}
+
+  <div class="row">
+
+    <div class="col">
+      <h4 class="mb-3">Not recieved</h4>
+      {{ sample_list(samples_to_receive) }}
+    </div>
+
+    <div class="col">
+      <h4 class="mb-3">Not sequenced</h4>
+      {{ sample_list(samples_to_sequence) }}
+    </div>
+
+    <div class="col">
+      <h4 class="mb-3">Not confirmed</h4>
+      {{ sample_list(samples_to_confirm) }}
+    </div>
+
+    <div class="col">
+      <h4 class="mb-3">Not analyzed</h4>
+      {{ case_list(cases_to_analyze) }}
+    </div>
+
+    <div class="col">
+      <h4 class="mb-3">Not delivered</h4>
+      {{ case_list(cases_to_deliver) }}
+    </div>
+
+  </div>
+{% endblock %}
+
+{% macro sample_list(samples) %}
+  {% for sample in samples %}
+    <div class="card mb-3 {{ 'card-info' if sample.priority }}">
+      <h6 class="card-header">{{ loop.index }}. {{ sample.lims_id }}</h6>
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <a class="card-link" href="{{ url_for('case', name=sample.case.name) }}">
+            {{ sample.case.name }}
+          </a>
+        </li>
+        {% if sample.flowcells %}
+          <li class="list-group-item"><small>{{ sample.flowcells|join(', ') }}</small></li>
+        {% endif %}
+      </ul>
+    </div>
+  {% else %}
+    <div class="card mb-3 card-success">
+      <div class="card-header">No samples!</div>
+    </div>
+  {% endfor %}
+{% endmacro %}
+
+{% macro case_list(cases) %}
+  {% for case in cases %}
+    <div class="card mb-3">
+      <h6 class="card-header">
+        {{ loop.index }}. <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
+      </h6>
+    </div>
+  {% else %}
+    <div class="card mb-3 card-success">
+      <div class="card-header">No cases!</div>
+    </div>
+  {% endfor %}
+{% endmacro %}

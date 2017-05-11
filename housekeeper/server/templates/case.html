@@ -1,45 +1,32 @@
-{% extends "base.html" %}
+{% extends "layout.html" %}
 {% import "components.html" as components %}
 
 {% block main_content %}
-  <div class="page-header">
-    <h1>{{ case.name }} (id: {{ case.id }})</h1>
-  </div>
+  <h1 class="mb-3">{{ case.name }} (id: {{ case.id }})</h1>
 
   {% if case.current %}
-    <div class="panel panel-default">
-      {{ components.runs_table(case=case) }}
-    </div>
+    {{ components.runs_table(case=case) }}
   {% else %}
-    <i>No runs completed yet</i>
+    <i class="mb-3">No runs completed yet</i>
   {% endif %}
 
   {% for run in case.runs %}
-    <div class="panel {% if run.archived_at %}panel-warning{% else %}panel-default{% endif %}">
-      <div class="panel-heading">
+    <div class="card mb-3 {% if run.archived_at %}card-warning{% else %}card-default{% endif %}">
+      <div class="card-header d-flex justify-content-between">
         <strong>{{ run.analyzed_at.date() }}</strong>
-        <div class="pull-right">
-          {{ components.postpone_btn(case.name, run) }}
-        </div>
+        {{ components.postpone_btn(case.name, run) }}
       </div>
-      <ul class="list-group">
-        <li class="list-group-item">
-          <ul class="list-inline">
-            <li>Included samples:</li>
-            {% for sample in run.samples %}
-              <li>
-                <a href="{{ url_for('samples', query_str=sample.lims_id) }}">
-                  {{ sample.lims_id }}
-                </a>
-              </li>
-            {% endfor %}
-          </ul>
-        </li>
-      </ul>
-      <div class="table-responsive">
-        {{ asset_table(run) }}
+      <div class="card-block">
+        <span class="card-text mr-3"><strong>Included samples</strong></span>
+        {% for sample in run.samples %}
+          <a class="card-link" href="{{ url_for('samples', query_str=sample.lims_id) }}">
+            {{ sample.lims_id }}
+          </a>
+        {% endfor %}
       </div>
     </div>
+
+    {{ asset_table(run) }}
   {% endfor %}
 {% endblock %}
 
@@ -56,10 +43,10 @@
     <tbody>
       {% for asset in run.assets %}
         <tr class="{{ 'danger' if not asset.is_local }}">
-          <td><span class="label label-primary">{{ asset.category }}</span></td>
+          <td><span class="badge badge-primary">{{ asset.category }}</span></td>
           <td>
             {% if asset.archive_type %}
-              <span class="label label-info">{{ asset.archive_type }}</span>
+              <span class="badge badge-info">{{ asset.archive_type }}</span>
             {% endif %}
           </td>
           <td>{{ asset.basename() }}</td>

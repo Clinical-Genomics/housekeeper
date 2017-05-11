@@ -7,11 +7,11 @@
       {% set btn_class = 'btn-warning' %}
     {% endif %}
   {% else %}
-    {% set btn_class = 'btn-default' %}
+    {% set btn_class = 'btn-secondary' %}
   {% endif %}
 
   <form action="{{ url_for('case_postpone', case_name=case_name) }}" method="POST" accept-charset="utf-8">
-    <button class="btn {{ btn_class }} btn-xs">
+    <button class="btn {{ btn_class }} btn-sm">
       {{ run.cleanup_in }} days
       <span class="glyphicon glyphicon-repeat"></span>
     </button>
@@ -19,55 +19,53 @@
 {% endmacro %}
 
 {% macro runs_table(case=None, cases=None) %}
-  <div class="table-responsive">
-    <table class="table table-bordered table-hover">
-      <thead>
-        <tr>
-          <th class="col-xs-2">Case</th>
-          <th class="col-xs-2">Samples</th>
-          <th class="col-xs-2">Pipeline</th>
-          <th class="col-xs-1">Analyzed</th>
-          <th class="col-xs-1">Delivered</th>
-          <th class="col-xs-2">Uploads</th>
-          <th class="col-xs-1">Answered out</th>
-          <th class="col-xs-1">Archived</th>
-          <th class="col-xs-1">Cleaned up</th>
-          <th class="col-xs-1">On hold</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% if case %}
-          {% for run in case.runs %}
-            {{ run_row(case, run) }}
-          {% endfor %}
-        {% elif cases %}
-          {% for case in cases %}
-            {{ run_row(case, case.current) }}
-          {% endfor %}
-        {% endif %}
-      </tbody>
-    </table>
-  </div>
+  <table class="table table-responsive table-bordered">
+    <thead>
+      <tr>
+        <th class="col-xs-2">Case</th>
+        <th class="col-xs-2">Samples</th>
+        <th class="col-xs-2">Pipeline</th>
+        <th class="col-xs-1">Analyzed</th>
+        <th class="col-xs-1">Delivered</th>
+        <th class="col-xs-2">Uploads</th>
+        <th class="col-xs-1">Answered out</th>
+        <th class="col-xs-1">Archived</th>
+        <th class="col-xs-1">Cleaned up</th>
+        <th class="col-xs-1">On hold</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if case %}
+        {% for run in case.runs %}
+          {{ run_row(case, run) }}
+        {% endfor %}
+      {% elif cases %}
+        {% for case in cases %}
+          {{ run_row(case, case.current) }}
+        {% endfor %}
+      {% endif %}
+    </tbody>
+  </table>
 {% endmacro %}
 
 {% macro run_row(case, run) %}
-  <tr {% if case.has_priority %} class="bg-warning" {% endif %}>
+  <tr {% if case.has_priority %} class="table-info" {% endif %}>
     <td>
       <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
-      {% if case.is_onhold %}<small class="label label-default">PAUSED</small>{% endif %}
+      {% if case.is_onhold %}<small class="badge badge-default">PAUSED</small>{% endif %}
 
       {{ comment_modal(case) }}
     </td>
     <td>
       {% for sample in case.samples %}
-        <span class="label label-{{ 'success' if sample.sequenced_at else 'default' }}">{{ sample.lims_id }}</span>
+        <span class="badge badge-{{ 'success' if sample.sequenced_at else 'default' }}">{{ sample.lims_id }}</span>
       {% endfor %}
     </td>
 
     {% if run %}
       <td>
         {{ run.pipeline }}
-        <span class="badge pull-right">{{ run.pipeline_version }}</span>
+        <span class="badge badge-default pull-right">{{ run.pipeline_version }}</span>
       </td>
       <td>{{ run.analyzed_at.date() }}</td>
       <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
@@ -75,9 +73,9 @@
         {% for column in EXTRA_STATUSES %}
           {% set column_key = "%s_date"|format(column) %}
           {% if run.extra[column_key] %}
-            <span class="label label-success">{{ column }}</span>
+            <span class="badge badge-success">{{ column }}</span>
           {% else %}
-            <span class="label label-default">{{ column }}</span>
+            <span class="badge badge-default">{{ column }}</span>
           {% endif %}
         {% endfor %}
       </td>
@@ -95,7 +93,7 @@
     {% endif %}
     <td>
       <form action="{{ url_for('case_onhold', case_name=case.name) }}" method="POST">
-        <button class="btn btn-default btn-xs">
+        <button class="btn btn-secondary btn-sm">
           {{ 'Unpaus' if case.is_onhold else 'Paus' }}
         </button>
       </form>
@@ -107,7 +105,7 @@
   {% set modalId = "comment-%s"|format(case.id) %}
 
   <!-- Button trigger modal -->
-  <button type="button" class="btn btn-{{ 'info' if case.comment else 'default' }} btn-xs pull-right" data-toggle="modal" data-target="#{{modalId}}"><span class="glyphicon glyphicon-comment"></span></button>
+  <button type="button" class="btn btn-{{ 'info' if case.comment else 'secondary' }} btn-sm pull-right" data-toggle="modal" data-target="#{{modalId}}">Comment</button>
 
   <!-- Modal -->
   <div class="modal fade" id="{{ modalId }}" tabindex="-1" role="dialog">
@@ -124,7 +122,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </form>

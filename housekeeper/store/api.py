@@ -11,6 +11,7 @@ from .models import AnalysisRun, Asset, Case, Model, Sample, ExtraRunData
 from .utils import get_rundir
 
 log = logging.getLogger(__name__)
+DATE_2017 = datetime.datetime(2017, 1, 1)
 
 
 def manager(db_uri):
@@ -56,10 +57,11 @@ def samples(query_str=None, status_to=None, customer=None, family_id=None):
         query = query.filter(Sample.lims_id.like("%{}%".format(query_str)))
 
     if status_to == 'sequence':
-        query = query.filter(Sample.received_at != None,
-                             Sample.sequenced_at == None)
+        query = query.filter(Sample.received_at != None, Sample.sequenced_at == None)
     elif status_to == 'confirm':
-        query = query.filter(Sample.confirmed_at == None)
+        query = query.filter(Sample.sequenced_at != None, Sample.confirmed_at == None)
+    elif status_to == 'receive':
+        query = query.filter(Sample.received_at == None)
 
     if customer:
         query = query.filter_by(customer=customer)
@@ -239,16 +241,12 @@ def sha1(asset_path):
     return checksum
 
 
-def to_analyzed(session, limit=50):
+def to_analyzed(session, category, limit=50):
     """Calculate times it takes to analyze a sample."""
-    date_2016 = datetime.datetime(2016, 1, 1)
-    query = (session.query(Sample.lims_id, Sample.received_at,
-                           AnalysisRun.analyzed_at)
+    query = (session.query(Sample.lims_id, Sample.received_at, AnalysisRun.analyzed_at)
                     .join(Sample.runs)
-                    .filter(Sample.received_at != None,
-                            Sample.received_at > date_2016,
-                            AnalysisRun.analyzed_at > date_2016)
-                    .order_by(Sample.received_at)
+                    .filter(Sample.category == category, Sample.received_at > DATE_2017)
+                    .order_by(Sample.received_at.desc())
                     .limit(limit))
     diffs = [{
         'name': item[0],
@@ -257,13 +255,12 @@ def to_analyzed(session, limit=50):
     return diffs
 
 
-def to_sequenced(session, limit=50):
+def to_sequenced(session, category, limit=50):
     """Calculate time it takes to sequence samples."""
-    day_diff = sqa.func.TIMESTAMPDIFF(sqa.text('DAY'), Sample.received_at,
-                                      Sample.sequenced_at)
-    query = (session.query(Sample.lims_id.label('name'),
-                           day_diff.label('y'))
-                    .order_by(Sample.received_at)
+    day_diff = sqa.func.TIMESTAMPDIFF(sqa.text('DAY'), Sample.received_at, Sample.sequenced_at)
+    query = (session.query(Sample.lims_id.label('name'), day_diff.label('y'))
+                    .filter(Sample.category == category, Sample.received_at > DATE_2017)
+                    .order_by(Sample.received_at.desc())
                     .limit(limit))
     diffs = [{'name': sample.name, 'y': sample.y} for sample in query]
     return diffs

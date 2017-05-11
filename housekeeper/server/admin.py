@@ -4,9 +4,8 @@ from flask_dance.contrib.google import make_google_blueprint
 from flask_dance.consumer import oauth_authorized
 from flask import flash, redirect, request, session, url_for
 from flask_login import (LoginManager, login_user, login_required, logout_user,
-                         AnonymousUserMixin, UserMixin)
+                         AnonymousUserMixin)
 from path import Path
-from sqlalchemy import Column, types
 import yaml
 
 
@@ -24,19 +23,6 @@ class AnonymousUser(AnonymousUserMixin):
             return False
 
 
-class UserManagementMixin(UserMixin):
-    id = Column(types.Integer, primary_key=True)
-    google_id = Column(types.String(128), unique=True)
-    email = Column(types.String(128), unique=True)
-    name = Column(types.String(128))
-    avatar = Column(types.Text)
-
-    @property
-    def first_name(self):
-        """First part of name."""
-        return self.name.split(' ')[0]
-
-
 class UserManagement(object):
 
     """Provide usermanagement for a Flask app.
@@ -51,18 +37,12 @@ class UserManagement(object):
         super(UserManagement, self).__init__()
         self.User = User
         self.manager = manager
-
         self.login_manager = None
         self.blueprint = None
-        self.user_db_path = None
-
         self.setup()
 
     def init_app(self, app):
         app.register_blueprint(self.blueprint, url_prefix='/login')
-
-        # user admin
-        self.user_db_path = Path(app.config['USER_DATABASE_PATH'])
 
         @app.route('/login')
         def login():
@@ -70,7 +50,6 @@ class UserManagement(object):
             # store potential next param URL in the session
             if 'next' in request.args:
                 session['next_url'] = request.args.get('next')
-
             return redirect(url_for('google.login'))
 
         @app.route('/logout')
@@ -109,24 +88,22 @@ class UserManagement(object):
 
                 # check if the user is whitelisted
                 email = userinfo['email']
-                if not this.confirm(email):
+                user_obj = this.User.query.filter_by(email=email).first()
+                if user_obj is None:
                     flash("email not whitelisted: {}".format(email), 'danger')
                     return redirect(url_for('index'))
 
-                user = this.User.query.filter_by(google_id=userinfo['id']).first()
-                if user:
-                    user.name = userinfo['name']
-                    user.avatar = userinfo['picture']
-                    user.email = email
+                if user_obj:
+                    user_obj.name = userinfo['name']
+                    user_obj.avatar = userinfo['picture']
+                    user_obj.google_id = userinfo['id']
                 else:
-                    user = this.User(google_id=userinfo['id'],
-                                     name=userinfo['name'],
-                                     avatar=userinfo['picture'],
-                                     email=email)
-                    this.manager.add(user)
+                    user_obj = this.User(google_id=userinfo['id'], name=userinfo['name'],
+                                         avatar=userinfo['picture'], email=email)
+                    this.manager.add(user_obj)
 
                 this.manager.commit()
-                login_user(user)
+                login_user(user_obj)
                 flash('Successfully signed in with Google', 'success')
             else:
                 message = "Failed to fetch user info from {}".format(blueprint.name)
@@ -135,16 +112,11 @@ class UserManagement(object):
             next_url = session.pop('next_url', None)
             return redirect(next_url or url_for('index'))
 
-    def confirm(self, email):
-        """Confirm that a user has been whitelisted."""
-        # read in the file on every request
-        with self.user_db_path.open('r') as in_handle:
-            whitelisted_emails = yaml.load(in_handle)['whitelist']
-        return email in whitelisted_emails
-
 
 class UserAdmin(object):
+
     """docstring for UserAdmin"""
+
     def __init__(self, database_path=None):
         super(UserAdmin, self).__init__()
         self.database_path = Path(database_path) if database_path else None

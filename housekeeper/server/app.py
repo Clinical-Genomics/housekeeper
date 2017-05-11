@@ -49,30 +49,31 @@ def index():
     if not current_user.is_authenticated:
         return render_template('index.html')
 
-    to_sequenced = api.to_sequenced(db.session)
-    to_analyzed = api.to_analyzed(db.session)
-    all_samples = Sample.query
-    samples_count = all_samples.count()
-    sequenced_count = all_samples.filter(Sample.sequenced_at != None).count()
-    day_difference = sqa.func.TIMESTAMPDIFF(sqa.text('DAY'),
-                                            Sample.received_at,
-                                            Sample.sequenced_at)
-    until_sequenced = db.query(sqa.func.avg(day_difference).label('average'))
+    plots = []
+    for category in ['wgs', 'wes', 'tga']:
+        all_samples = Sample.query.filter_by(category=category)
+        samples_count = all_samples.count()
+        sequenced_count = all_samples.filter(Sample.sequenced_at != None).count()
+        plots.append({
+            'category': category,
+            'total': samples_count,
+            'sequenced': sequenced_count,
+            'sequenced_percent': (sequenced_count / samples_count) * 100,
+            'to_sequenced': api.to_sequenced(db.session, category),
+            'to_analyzed': api.to_analyzed(db.session, category),
+        })
+
     all_cases = Case.query
     cases_count = all_cases.count()
     analyzed_cases = (all_cases.join(Case.runs)
                                .filter(AnalysisRun.analyzed_at != None)
                                .count())
     data = {
-        'samples': all_samples.count(),
-        'sequenced': sequenced_count,
-        'sequenced_percent': (sequenced_count / samples_count) * 100,
         'cases': cases_count,
         'analyzed_percent': (analyzed_cases / cases_count) * 100,
-        'until_sequenced': until_sequenced.first().average,
+        'plots': plots,
     }
-    return render_template('dashboard.html', to_analyzed=to_analyzed,
-                           data=data, to_sequenced=to_sequenced)
+    return render_template('dashboard.html', **data)
 
 
 @app.route('/cases')
@@ -156,6 +157,20 @@ def comments(case_id):
     case_obj.comment = new_comment
     db.commit()
     return redirect(request.referrer)
+
+
+@app.route('/queue')
+@login_required
+def queue():
+    """Overview of status of samples/cases."""
+    data = dict(
+        samples_to_receive=api.samples(status_to='receive').limit(10),
+        samples_to_sequence=api.samples(status_to='sequence').limit(10),
+        samples_to_confirm=api.samples(status_to='confirm').limit(10),
+        cases_to_analyze=api.cases(missing='analyzed', onhold=False).limit(10),
+        cases_to_deliver=api.cases(missing='delivered').limit(10),
+    )
+    return render_template('queue.html', **data)
 
 
 # hookup extensions to app
