@@ -4,7 +4,8 @@ from flask_dance.contrib.google import make_google_blueprint
 from flask_dance.consumer import oauth_authorized
 from flask import flash, redirect, request, session, url_for
 from flask_login import (LoginManager, login_user, login_required, logout_user,
-                         AnonymousUserMixin)
+                         AnonymousUserMixin, UserMixin)
+from sqlalchemy import types, Column
 from path import Path
 import yaml
 
@@ -21,6 +22,19 @@ class AnonymousUser(AnonymousUserMixin):
             return True
         else:
             return False
+
+
+class UserManagementMixin(UserMixin):
+    id = Column(types.Integer, primary_key=True)
+    google_id = Column(types.String(128), unique=True)
+    email = Column(types.String(128), unique=True)
+    name = Column(types.String(128))
+    avatar = Column(types.Text)
+
+    @property
+    def first_name(self):
+        """First part of name."""
+        return self.name.split(' ')[0]
 
 
 class UserManagement(object):
