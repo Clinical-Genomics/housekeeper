@@ -81,7 +81,7 @@ def sample(lims_id):
 
 def cases(query_str=None, missing=None, version=None, onhold=None):
     """Get multiple cases from the database."""
-    query = Case.query.filter(Case.is_manual != True).order_by(Case.created_at.desc())
+    query = Case.query.filter(Case.is_manual == None).order_by(Case.created_at.desc())
 
     if missing == 'analyzed':
         query = (query.outerjoin(Case.runs)
