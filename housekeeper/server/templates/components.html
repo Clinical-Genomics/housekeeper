@@ -69,16 +69,7 @@
       </td>
       <td>{{ run.analyzed_at.date() }}</td>
       <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
-      <td>
-        {% for column in EXTRA_STATUSES %}
-          {% set column_key = "%s_date"|format(column) %}
-          {% if run.extra[column_key] %}
-            <span class="badge badge-success">{{ column }}</span>
-          {% else %}
-            <span class="badge badge-default">{{ column }}</span>
-          {% endif %}
-        {% endfor %}
-      </td>
+      <td>{{ status_badges(run) }}</td>
       <td>{{ run.answeredout_at.date() if run.answeredout_at }}</td>
       <td>{{ run.archived_at.date() if run.archived_at }}</td>
       <td>
@@ -99,6 +90,17 @@
       </form>
     </td>
   </tr>
+{% endmacro %}
+
+{% macro status_badges(run) %}
+  {% for column in EXTRA_STATUSES %}
+    {% set column_key = "%s_date"|format(column) %}
+    {% if run.extra[column_key] %}
+      <span class="badge badge-success mb-1 mr-1">{{ column }}</span>
+    {% else %}
+      <span class="badge badge-default mb-1 mr-1">{{ column }}</span>
+    {% endif %}
+  {% endfor %}
 {% endmacro %}
 
 {% macro comment_modal(case) %}

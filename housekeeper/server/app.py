@@ -8,7 +8,6 @@ from flask import abort, Flask, render_template, request, redirect
 from flask_alchy import Alchy
 from flask_bootstrap import Bootstrap
 from flask_login import current_user, login_required
-import sqlalchemy as sqa
 from werkzeug.contrib.fixers import ProxyFix
 
 from housekeeper.constants import EXTRA_STATUSES
@@ -27,7 +26,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY') or 'thisIsNotSecret!'
 SQLALCHEMY_DATABASE_URI = os.environ['SQLALCHEMY_DATABASE_URI']
 GOOGLE_OAUTH_CLIENT_ID = os.environ['GOOGLE_OAUTH_CLIENT_ID']
 GOOGLE_OAUTH_CLIENT_SECRET = os.environ['GOOGLE_OAUTH_CLIENT_SECRET']
-USER_DATABASE_PATH = os.environ['USER_DATABASE_PATH']
 # serve boostrap assets locally is running in debug mode
 BOOTSTRAP_SERVE_LOCAL = 'FLASK_DEBUG' in os.environ
 if 'mysql' in SQLALCHEMY_DATABASE_URI:  # pragma: no cover

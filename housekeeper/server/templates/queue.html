@@ -1,4 +1,5 @@
 {% extends "layout.html" %}
+{% from "components.html" import status_badges %}
 
 {% block main_content %}
   {{ super() }}
@@ -22,7 +23,7 @@
 
     <div class="col">
       <h4 class="mb-3">Not analyzed</h4>
-      {{ case_list(cases_to_analyze) }}
+      {{ case_list(cases_to_analyze, show_running=True) }}
     </div>
 
     <div class="col">
@@ -55,12 +56,23 @@
   {% endfor %}
 {% endmacro %}
 
-{% macro case_list(cases) %}
+{% macro case_list(cases, show_running=False) %}
   {% for case in cases %}
     <div class="card mb-3">
-      <h6 class="card-header">
-        {{ loop.index }}. <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
+      <h6 class="card-header d-flex justify-content-between align-items-center">
+        <span>
+          {{ loop.index }}. <a href="{{ url_for('case', name=case.name) }}">{{ case.name }}</a>
+        </span>
+
+        {% if show_running and case.is_started %}
+          <a href="http://trailblazer.clinicalgenomics.se/analyses/{{ case.name }}" class="float-right indicator" target="_blank"></a>
+        {% endif %}
       </h6>
+      <ul class="list-group list-group-flush">
+        {% if case.current %}
+          <li class="list-group-item">{{ status_badges(case.current) }}</li>
+        {% endif %}
+      </ul>
     </div>
   {% else %}
     <div class="card mb-3 card-success">

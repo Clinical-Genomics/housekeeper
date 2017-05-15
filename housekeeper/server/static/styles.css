@@ -31,3 +31,12 @@ body {
 .navbar-cg > .navbar-brand:active {
   color: rgba(255, 255, 255, 1);
 }
+
+.indicator {
+  background-color: green;
+  width: 7px;
+  height: 7px;
+  border-radius: 7px;
+  display: inline-block;
+  box-shadow: 0 0 4px green;
+}
