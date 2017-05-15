@@ -53,7 +53,7 @@ def case(name):
 def samples(query_str=None, status_to=None, customer=None, family_id=None):
     """Get samples from the database."""
     query = (Sample.query.join(Sample.case)
-                         .filter(Case.is_manual != True)
+                         .filter(Case.is_manual == None)
                          .order_by(Sample.received_at.desc()))
     if query_str:
         query = query.filter(Sample.lims_id.like("%{}%".format(query_str)))

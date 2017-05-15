@@ -17,11 +17,6 @@
     </div>
 
     <div class="col">
-      <h4 class="mb-3">Not confirmed</h4>
-      {{ sample_list(samples_to_confirm) }}
-    </div>
-
-    <div class="col">
       <h4 class="mb-3">Not analyzed</h4>
       {{ case_list(cases_to_analyze, show_running=True) }}
     </div>
@@ -39,10 +34,14 @@
     <div class="card mb-3 {{ 'card-info' if sample.priority }}">
       <h6 class="card-header">{{ loop.index }}. {{ sample.lims_id }}</h6>
       <ul class="list-group list-group-flush">
-        <li class="list-group-item">
+        <li class="list-group-item d-flex justify-content-between">
           <a class="card-link" href="{{ url_for('case', name=sample.case.name) }}">
-            {{ sample.case.name }}
+            <small>{{ sample.case.name|truncate(20, True) }}</small>
           </a>
+
+          <form action="{{ url_for('case_manual', case_id=sample.case.id) }}" method="POST" class="float-right">
+            <button class="btn btn-info btn-sm">Manual</button>
+          </form>
         </li>
         {% if sample.flowcells %}
           <li class="list-group-item"><small>{{ sample.flowcells|join(', ') }}</small></li>

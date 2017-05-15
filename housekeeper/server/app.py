@@ -171,6 +171,18 @@ def queue():
     return render_template('queue.html', **data)
 
 
+@app.route('/cases/<int:case_id>/manual', methods=['POST'])
+@login_required
+def case_manual(case_id):
+    """Mark a case as manual."""
+    case_obj = Case.query.get(case_id)
+    if case_obj is None:
+        return abort(404)
+    case_obj.is_manual = True
+    db.commit()
+    return redirect(request.referrer)
+
+
 # hookup extensions to app
 Bootstrap(app)
 db.init_app(app)
