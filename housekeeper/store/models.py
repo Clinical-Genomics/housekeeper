@@ -88,6 +88,7 @@ class Case(Model):
     is_onhold = Column(types.Boolean, default=False)
     comment = Column(types.Text)
     is_started = Column(types.Boolean, default=False)
+    is_manual = Column(types.Boolean, default=False)
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
                             backref='case', order_by='-AnalysisRun.id')
