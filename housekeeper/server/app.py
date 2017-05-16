@@ -4,6 +4,7 @@ from __future__ import division
 import logging
 import os
 
+from dateutil.parser import parse as parse_date
 from flask import abort, Flask, render_template, request, redirect
 from flask_alchy import Alchy
 from flask_bootstrap import Bootstrap
@@ -179,6 +180,19 @@ def case_manual(case_id):
     if case_obj is None:
         return abort(404)
     case_obj.is_manual = True
+    db.commit()
+    return redirect(request.referrer)
+
+
+@app.route('/samples/<int:sample_id>/sequenced', methods=['POST'])
+@login_required
+def sample_sequenced(sample_id):
+    """Mark a sample as sequenced."""
+    sample_obj = Sample.query.get(sample_id)
+    if sample_obj is None:
+        return abort(404)
+    sequence_date = parse_date(request.form['when'])
+    sample_obj.sequenced_at = sequence_date
     db.commit()
     return redirect(request.referrer)
 

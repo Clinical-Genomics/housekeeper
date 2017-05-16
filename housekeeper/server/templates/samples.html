@@ -75,9 +75,11 @@
           <td>
             {% if sample.sequenced_at %}
               {{ sample.sequenced_at.date() }}
-              <span class="badge badge-default pull-right">
-                {{ (sample.sequenced_at - sample.received_at).days }} days
-              </span>
+              {% if sample.received_at %}
+                <span class="badge badge-default pull-right">
+                  {{ (sample.sequenced_at - sample.received_at).days }} days
+                </span>
+              {% endif %}
             {% endif %}
           </td>
           <td>
