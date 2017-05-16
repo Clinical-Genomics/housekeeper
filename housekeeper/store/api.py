@@ -91,7 +91,8 @@ def cases(query_str=None, missing=None, version=None, onhold=None):
     elif missing == 'delivered':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.analyzed_at != None,
-                              AnalysisRun.delivered_at == None))
+                              AnalysisRun.delivered_at == None,
+                              AnalysisRun.pipeline_version.like("%v4.%")))
     elif missing == 'archived':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.archived_at == None))
