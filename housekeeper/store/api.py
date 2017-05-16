@@ -59,7 +59,8 @@ def samples(query_str=None, status_to=None, customer=None, family_id=None):
         query = query.filter(Sample.lims_id.like("%{}%".format(query_str)))
 
     if status_to == 'sequence':
-        query = query.filter(Sample.received_at != None, Sample.sequenced_at == None)
+        query = query.filter(Sample.received_at > datetime.date(2017, 1, 1),
+                             Sample.sequenced_at == None)
     elif status_to == 'confirm':
         query = query.filter(Sample.sequenced_at != None, Sample.confirmed_at == None)
     elif status_to == 'receive':
