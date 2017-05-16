@@ -49,3 +49,7 @@ body {
 .width-inherit {
   width: inherit;
 }
+
+.btn {
+  cursor: pointer;
+}

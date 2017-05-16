@@ -7,23 +7,35 @@
   <div class="row">
 
     <div class="col">
-      <h4 class="mb-3">Not recieved</h4>
-      {{ sample_list(samples_to_receive) }}
+      <h4 class="mb-3">
+        Not recieved
+        <span class="badge badge-info float-right">{{ samples_to_receive.count() }}</span>
+      </h4>
+      {{ sample_list(samples_to_receive.limit(10)) }}
     </div>
 
     <div class="col">
-      <h4 class="mb-3">Not sequenced</h4>
-      {{ sample_list(samples_to_sequence) }}
+      <h4 class="mb-3">
+        Not sequenced
+        <span class="badge badge-info float-right">{{ samples_to_sequence.count() }}</span>
+      </h4>
+      {{ sample_list(samples_to_sequence.limit(10)) }}
     </div>
 
     <div class="col">
-      <h4 class="mb-3">Not analyzed</h4>
+      <h4 class="mb-3">
+        Not analyzed
+        <span class="badge badge-info float-right">{{ cases_to_analyze.count() }}</span>
+      </h4>
       {{ case_list(cases_to_analyze, show_running=True) }}
     </div>
 
     <div class="col">
-      <h4 class="mb-3">Not delivered</h4>
-      {{ case_list(cases_to_deliver) }}
+      <h4 class="mb-3">
+        Not delivered
+        <span class="badge badge-info float-right">{{ cases_to_deliver.count() }}</span>
+      </h4>
+      {{ case_list(cases_to_deliver.limit(10)) }}
     </div>
 
   </div>
@@ -33,7 +45,10 @@
   {% for sample in samples %}
     <div class="card mb-3 {{ 'card-info' if sample.priority }}">
       <h6 class="card-header d-flex justify-content-between">
-        <span>{{ loop.index }}. {{ sample.lims_id }}</span>
+        <span>
+          {{ loop.index }}. 
+          <a href="{{ url_for('samples', query_str=sample.lims_id) }}">{{ sample.lims_id }}</a>
+        </span>
         <span class="badge badge-pill badge-default">{{ sample.category or 'N/A' }}</span>
       </h6>
       <ul class="list-group list-group-flush">

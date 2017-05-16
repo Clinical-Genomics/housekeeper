@@ -2,7 +2,17 @@
 {% import "components.html" as components %}
 
 {% block main_content %}
-  <h1 class="mb-3">{{ case.name }} (id: {{ case.id }})</h1>
+  <div class="card mb-3">
+    <h3 class="card-header">{{ case.name }} (id: {{ case.id }})</h3>
+    <div class="card-block d-flex">
+      <strong class="mr-2">Samples</strong>
+      {% for sample in case.samples %}
+        <a class="card-link mr-2" href="{{ url_for('samples', query_str=sample.lims_id) }}">
+          {{ sample.lims_id }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
 
   {% if case.current %}
     {{ components.runs_table(case=case) }}

@@ -163,11 +163,10 @@ def comments(case_id):
 def queue():
     """Overview of status of samples/cases."""
     data = dict(
-        samples_to_receive=api.samples(status_to='receive').limit(10),
-        samples_to_sequence=api.samples(status_to='sequence').limit(10),
-        samples_to_confirm=api.samples(status_to='confirm').limit(10),
-        cases_to_analyze=api.cases(missing='analyzed', onhold=False).limit(10),
-        cases_to_deliver=api.cases(missing='delivered').limit(10),
+        samples_to_receive=api.samples(status_to='receive'),
+        samples_to_sequence=api.samples(status_to='sequence'),
+        cases_to_analyze=api.cases(missing='analyzed', onhold=False),
+        cases_to_deliver=api.cases(missing='delivered'),
     )
     return render_template('queue.html', **data)
 

@@ -63,7 +63,7 @@ def samples(query_str=None, status_to=None, customer=None, family_id=None):
     elif status_to == 'confirm':
         query = query.filter(Sample.sequenced_at != None, Sample.confirmed_at == None)
     elif status_to == 'receive':
-        query = query.filter(Sample.received_at == None)
+        query = query.filter(Sample.received_at == None, Sample.sequenced_at == None)
 
     if customer:
         query = query.filter_by(customer=customer)

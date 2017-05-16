@@ -387,18 +387,11 @@ def cases(context, limit, offset, missing, version, ready):
 def samples(context, limit, offset, case, missing):
     """Display information about samples."""
     api.manager(context.obj['database'])
-    query = api.samples()
+    status_to = {'received': 'receive', 'sequenced': 'sequence', 'confirmed': 'confirm'}
+    query = api.samples(status_to=status_to.get(missing))
 
     if case:
-        query = (query.join(Sample.runs)
-                      .join(AnalysisRun.case)
-                      .filter(Case.name == case))
-    if missing == 'received':
-        query = query.filter(Sample.received_at == None)
-    elif missing == 'sequenced':
-        query = query.filter(Sample.sequenced_at == None)
-    elif missing == 'confirmed':
-        query = query.filter(Sample.confirmed_at == None)
+        query = query.join(Sample.case).filter(Case.name == case)
 
     for sample in query.offset(offset).limit(limit):
         click.echo(sample.lims_id)
