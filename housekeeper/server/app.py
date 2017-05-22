@@ -5,7 +5,7 @@ import logging
 import os
 
 from dateutil.parser import parse as parse_date
-from flask import abort, Flask, render_template, request, redirect
+from flask import abort, flash, Flask, render_template, request, redirect
 from flask_alchy import Alchy
 from flask_bootstrap import Bootstrap
 from flask_login import current_user, login_required
@@ -180,6 +180,19 @@ def case_manual(case_id):
         return abort(404)
     case_obj.is_manual = True
     db.commit()
+    return redirect(request.referrer)
+
+
+@app.route('/runs/<int:run_id>/delivered', methods=['POST'])
+@login_required
+def run_delivered(run_id):
+    """Mark an analysis run of a case as delivered."""
+    run_obj = AnalysisRun.query.get(run_id)
+    if run_obj is None:
+        flash("run not found: %s", run_id)
+    else:
+        run_obj.delivered_at = parse_date(request.form['delivery_date'])
+        db.commit()
     return redirect(request.referrer)
 
 

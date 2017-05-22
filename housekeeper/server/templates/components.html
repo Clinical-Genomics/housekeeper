@@ -68,7 +68,18 @@
         <span class="badge badge-default pull-right">{{ run.pipeline_version }}</span>
       </td>
       <td>{{ run.analyzed_at.date() }}</td>
-      <td>{{ run.delivered_at.date() if run.delivered_at }}</td>
+      <td>
+        {% if run.delivered_at %}
+          {{ run.delivered_at.date() }}
+        {% else %}
+          <form action="{{ url_for('run_delivered', run_id=run.id) }}" method="POST">
+            <div class="form-group">
+              <input name="delivery_date" type="date" value="{{ run.suggested_delivery() }}" class="form-control">
+            </div>
+            <button class="form-control form-control-sm">Save</button>
+          </form>
+        {% endif %}
+      </td>
       <td>{{ status_badges(run) }}</td>
       <td>{{ run.answeredout_at.date() if run.answeredout_at }}</td>
       <td>{{ run.archived_at.date() if run.archived_at }}</td>
@@ -96,7 +107,7 @@
   {% for column in EXTRA_STATUSES %}
     {% set column_key = "%s_date"|format(column) %}
     {% if run.extra[column_key] %}
-      <span class="badge badge-success mb-1 mr-1">{{ column }}</span>
+      <span class="badge badge-success mb-1 mr-1" title="{{ run.extra[column_key].date() }}">{{ column }}</span>
     {% else %}
       <span class="badge badge-default mb-1 mr-1">{{ column }}</span>
     {% endif %}

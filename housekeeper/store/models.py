@@ -7,7 +7,7 @@ from path import Path
 from flask_login import UserMixin
 from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint
 
-from housekeeper.constants import PIPELINES, ARCHIVE_TYPES
+from housekeeper.constants import PIPELINES, ARCHIVE_TYPES, EXTRA_STATUSES
 
 SEQUENCERS = ('hiseqx', 'hiseq2500', 'hiseqHO', 'miseq', 'nextseq')
 SAMPLE_CATEGORIES = ('wgs', 'wes', 'tga', 'wgs-ext', 'wes-ext', 'tga-ext')
@@ -153,6 +153,17 @@ class AnalysisRun(Model):
     def analysis_date(self):
         """Date of the analysis run."""
         return self.analyzed_at.date()
+
+    def suggested_delivery(self):
+        """Suggest date for delivery based on upload dates."""
+        uploads = []
+        for column in EXTRA_STATUSES:
+            column_key = "{}_date".format(column)
+            upload_date = getattr(self.extra, column_key)
+            if upload_date:
+                uploads.append(upload_date)
+        latest_date = max(uploads)
+        return latest_date.date() if latest_date else None
 
     def to_dict(self, skip_samples=False):
         """Also include samples in the dict serialization."""
