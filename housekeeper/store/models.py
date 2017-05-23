@@ -89,6 +89,7 @@ class Case(Model):
     comment = Column(types.Text)
     is_started = Column(types.Boolean, default=False)
     is_manual = Column(types.Boolean)
+    rerun_requested = Column(types.Boolean, default=False)
 
     runs = orm.relationship('AnalysisRun', cascade='all,delete',
                             backref='case', order_by='-AnalysisRun.id')
