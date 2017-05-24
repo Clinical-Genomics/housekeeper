@@ -4,7 +4,7 @@ import logging
 from functools import partial
 
 from path import Path
-import yaml
+import ruamel.yaml
 
 from housekeeper.store import api
 from housekeeper.store.utils import get_rundir
@@ -25,7 +25,7 @@ def prepare_scout(run_obj, root_path, madeline_exe):
     # extract external sample ids
     ped_yaml = api.assets(category='pedigree-yaml', run_id=run_obj.id).one()
     with Path(ped_yaml.path).open() as in_handle:
-        ped_data = yaml.load(in_handle)
+        ped_data = ruamel.yaml.safe_load(in_handle)
     sample_map = {sample['sample_id']: sample['sample_name']
                   for sample in ped_data['samples']}
     madeline_path = build_madeline(pedigree.path, run_root, madeline_exe,
@@ -40,8 +40,7 @@ def prepare_scout(run_obj, root_path, madeline_exe):
     # save the new scout config
     config_path = Path(run_root).joinpath('scout.conf.yaml')
     with open(config_path, 'w') as out_handle:
-        yaml.safe_dump(config_data, out_handle, indent=4,
-                       default_flow_style=False)
+        ruamel.yaml.dump(config_data, stream=out_handle, Dumper=ruamel.yaml.RoundTripDumper)
 
     scout_asset = api.add_asset(run_obj, config_path, 'scout-config')
     scout_asset.path = config_path
@@ -77,10 +76,10 @@ def build_config(run_obj):
     # start from pedigree YAML and add additional information
     pedigree_yaml = run_asset(category='pedigree-yaml').one()
     with open(pedigree_yaml.path, 'r') as in_handle:
-        data = yaml.load(in_handle)
+        data = ruamel.yaml.safe_load(in_handle)
 
     with open(sampleinfo.path, 'r') as in_handle:
-        si_data = yaml.load(in_handle)
+        si_data = ruamel.yaml.safe_load(in_handle)
     rank_model = si_data['program']['rankvariant']['rank_model']['version']
     genome_build = (si_data['human_genome_build']['source'] +
                     si_data['human_genome_build']['version'])

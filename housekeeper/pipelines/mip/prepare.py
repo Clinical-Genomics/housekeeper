@@ -5,7 +5,7 @@ import logging
 import re
 
 from path import Path
-import yaml
+import ruamel.yaml
 
 from housekeeper.exc import AnalysisNotFinishedError, UnsupportedVersionError
 from .meta import build_meta, write_meta
@@ -45,8 +45,7 @@ def validate(family):
         raise UnsupportedVersionError(version)
 
 
-def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids,
-                     multiqc_samtools=MULTIQC_SAMTOOLS):
+def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids, multiqc_samtools=MULTIQC_SAMTOOLS):
     # multiqc outputs
     qc_samples = {}
     for sample_id in sample_ids:
@@ -67,8 +66,8 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids,
 
     log.debug("parse QC metrics YAML: %s", qcmetrics_path)
     with open(qcmetrics_path, 'r') as stream:
-        qc_data = yaml.load(stream)
-        qc_rootkey = 'sample' if 'sample' in qc_data else qc_data.keys()[0]
+        qc_data = ruamel.yaml.safe_load(stream)
+        qc_rootkey = 'sample' if 'sample' in qc_data else list(qc_data.keys())[0]
 
     for sample_id, mapped_data in qc_samples.items():
         qc_data[qc_rootkey][sample_id]['MappedReads'] = mapped_data.get('mapped')
@@ -79,8 +78,7 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids,
     new_qcmetrics = Path(qcmetrics_path.replace('.yaml', '.mod.yaml'))
     log.info("create updated qc metrics: %s", new_qcmetrics)
     with new_qcmetrics.open('w') as stream:
-        dump = yaml.dump(qc_data, default_flow_style=False, allow_unicode=True)
-        stream.write(dump.decode('utf-8'))
+        ruamel.yaml.dump(qc_data, stream=stream, Dumper=ruamel.yaml.RoundTripDumper)
 
 
 def total_mapped(stream):

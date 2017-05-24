@@ -3,7 +3,7 @@ from __future__ import division
 import logging
 
 from path import Path
-import yaml
+import ruamel.yaml
 
 from housekeeper.exc import AnalysisNotFinishedError, UnsupportedVersionError
 from housekeeper.pipelines.mip.meta import write_meta
@@ -42,7 +42,7 @@ def validate(family):
 def modify_qcmetrics(outdata_dir, qcmetrics_path):
     """Summarize some stats on sample level."""
     with open(qcmetrics_path, 'r') as in_handle:
-        qc_data = yaml.load(in_handle)
+        qc_data = ruamel.yaml.safe_load(in_handle)
 
     for sample_id, values in qc_data['sample'].items():
         # extract data dicts
@@ -63,4 +63,4 @@ def modify_qcmetrics(outdata_dir, qcmetrics_path):
     new_qcmetrics = Path(qcmetrics_path.replace('.yaml', '.mod.yaml'))
     log.info("create updated qc metrics: %s", new_qcmetrics)
     with new_qcmetrics.open('w') as out_handle:
-        yaml.safe_dump(qc_data, stream=out_handle, default_flow_style=False)
+        ruamel.yaml.dump(qc_data, stream=out_handle, Dumper=ruamel.yaml.RoundTripDumper)

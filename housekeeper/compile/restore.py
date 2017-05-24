@@ -3,7 +3,7 @@
 import tarfile
 
 from path import Path
-import yaml
+import ruamel.yaml
 
 from housekeeper.store import api
 from housekeeper.store.utils import get_rundir
@@ -32,7 +32,7 @@ def run_fromtar(tar_path):
     with tarfile.open(tar_path, 'r:*') as in_handle:
         filename = 'meta.yaml'
         meta_file = in_handle.extractfile(filename)
-        meta_data = yaml.load(meta_file)
+        meta_data = ruamel.yaml.safe_load(meta_file)
 
     run_date = meta_data['analyzed_at'].date()
     query = api.runs(meta_data['name'], run_date=run_date)

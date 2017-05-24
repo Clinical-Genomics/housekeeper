@@ -5,7 +5,7 @@ from alchy import Manager
 from click.testing import CliRunner
 from path import Path
 import pytest
-import yaml
+import ruamel.yaml
 
 from housekeeper.cli import root
 from housekeeper.store import api, Model
@@ -75,7 +75,7 @@ def config_path(mip_output):
 @pytest.fixture()
 def config_data(config_path):
     with open(config_path, "r") as in_handle:
-        _config_data = yaml.load(in_handle)
+        _config_data = ruamel.yaml.safe_load(in_handle)
     return _config_data
 
 

@@ -2,7 +2,7 @@
 import logging
 
 import click
-import yaml
+import ruamel.yaml
 
 from housekeeper.store import api
 
@@ -23,7 +23,7 @@ def mip_sex(context, sample, case_id):
         case_id = sample_obj.case_id
 
     qc_metrics = api.assets(case_id, category='qc').first()
-    qcm_data = yaml.load(qc_metrics.path)
+    qcm_data = ruamel.yaml.safe_load(qc_metrics.path)
     sample_sexes = parse_mipsex(qcm_data)
     if sample:
         click.echo(sample_sexes[sample])

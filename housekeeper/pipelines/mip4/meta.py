@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import yaml
+import ruamel.yaml
 
 
 def build_meta(case_name, segments):
@@ -21,4 +21,4 @@ def build_meta(case_name, segments):
         'analyzed_at': segments['family']['analysis_date'],
         'samples': sample_map,
     }
-    return yaml.safe_dump(metadata, default_flow_style=False)
+    return ruamel.yaml.dump(metadata, Dumper=ruamel.yaml.RoundTripDumper)

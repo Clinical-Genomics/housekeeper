@@ -7,7 +7,7 @@ from flask_login import (LoginManager, login_user, login_required, logout_user,
                          AnonymousUserMixin, UserMixin)
 from sqlalchemy import types, Column
 from path import Path
-import yaml
+import ruamel.yaml
 
 
 class AnonymousUser(AnonymousUserMixin):
@@ -143,5 +143,5 @@ class UserAdmin(object):
         """Confirm that a user has been whitelisted."""
         # read in the file on every request
         with self.database_path.open('r') as in_handle:
-            whitelisted_emails = yaml.load(in_handle)['whitelist']
+            whitelisted_emails = ruamel.yaml.safe_load(in_handle)['whitelist']
         return email in whitelisted_emails

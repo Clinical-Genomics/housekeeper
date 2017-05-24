@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import yaml
+import ruamel.yaml
 
 from housekeeper.exc import MalformattedPedigreeError
 
@@ -22,7 +22,7 @@ def build_meta(case_name, family_data, qc_ped, version=None, strict=True):
         str: YAML-formatted string of the data
     """
     with open(qc_ped, 'r') as stream:
-        qcped_data = yaml.load(stream)
+        qcped_data = ruamel.yaml.safe_load(stream)
     sample_map = sampleid_map(qcped_data, strict=strict)
     metadata = {
         'name': case_name,
@@ -31,12 +31,12 @@ def build_meta(case_name, family_data, qc_ped, version=None, strict=True):
         'analyzed_at': family_data['AnalysisDate'],
         'samples': sample_map,
     }
-    return yaml.dump(metadata, default_flow_style=False)
+    return ruamel.yaml.dump(metadata, Dumper=ruamel.yaml.RoundTripDumper)
 
 
 def sampleid_map(qc_ped, strict=True):
     """Take out information about internal/external sample names."""
-    fam_key = qc_ped.keys()[0]
+    fam_key = list(qc_ped.keys())[0]
     samples = {}
     for sample in qc_ped[fam_key].values():
         sample_id = sample.get('Individual ID', sample.get('SampleID'))

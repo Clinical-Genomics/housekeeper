@@ -6,7 +6,7 @@ import logging
 import click
 from dateutil.parser import parse as parse_date
 from path import Path
-import yaml
+import ruamel.yaml
 
 from housekeeper.cli.utils import run_orabort
 from housekeeper.constants import EXTRA_STATUSES
@@ -287,9 +287,8 @@ def migrate(context, yes, only_db, new_root):
         if yes or click.confirm("update config file?"):
             # update the root in the config
             with config_path.open('w') as out_handle:
-                dump = yaml.dump(context.obj, default_flow_style=False,
-                                 allow_unicode=True)
-                out_handle.write(dump.decode('utf-8'))
+                ruamel.yaml.dump(context.obj, stream=out_handle,
+                                 Dumper=ruamel.yaml.RoundTripDumper)
 
 
 @click.command()

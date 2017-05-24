@@ -2,7 +2,7 @@
 from functools import partial
 
 import click
-import yaml
+import ruamel.yaml
 
 from housekeeper.store import api
 from housekeeper.parsemip import parse_mipsex
@@ -17,10 +17,9 @@ def export(context, case_id, existing_data):
     api.manager(context.obj['database'])
     run_obj = api.runs(case_id).first()
     hk_data = export_data(run_obj)
-    existing = yaml.load(existing_data)
+    existing = ruamel.yaml.safe_load(existing_data)
     new_data = fillin_data(existing, hk_data)
-    raw_dump = yaml.safe_dump(new_data, default_flow_style=False,
-                              allow_unicode=True)
+    raw_dump = ruamel.yaml.safe_dump(new_data, Dumper=ruamel.yaml.RoundTripDumper)
     click.echo(raw_dump)
 
 
@@ -43,7 +42,7 @@ def export_data(run_obj):
     }
 
     # get predicted sex
-    qcm_data = yaml.load(open(qc_metrics.path, 'r'))
+    qcm_data = ruamel.yaml.safe_load(open(qc_metrics.path, 'r'))
     predicted_sexes = parse_mipsex(qcm_data)
 
     samples_data = {

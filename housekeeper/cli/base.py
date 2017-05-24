@@ -6,7 +6,7 @@ import pkg_resources
 
 import click
 import coloredlogs
-import yaml
+import ruamel.yaml
 
 log = logging.getLogger(__name__)
 
@@ -55,7 +55,7 @@ def build_cli(title, Model):
         # read in config file if it exists
         if os.path.exists(config):
             with codecs.open(config) as conf_handle:
-                context.obj = yaml.load(conf_handle)
+                context.obj = ruamel.yaml.safe_load(conf_handle)
                 context.obj['config'] = config
         else:
             context.obj = {}

@@ -4,7 +4,7 @@ import pkg_resources
 
 import click
 from path import Path
-import yaml
+import ruamel.yaml
 
 from housekeeper.store import api
 from housekeeper.store.utils import get_rundir
@@ -36,11 +36,11 @@ LOADERS = {'mip': parse_mip, 'mip2': parse_mip2, 'mip4': parse_mip4,
 def add(context, force, yes, replace, references, pipeline, config):
     """Add analyses from different pipelines."""
     manager = api.manager(context.obj['database'])
-    config_data = yaml.load(config)
+    config_data = ruamel.yaml.safe_load(config)
     if not references:
         default_ref = "pipelines/references/{}.yaml".format(pipeline)
         references = pkg_resources.resource_string("housekeeper", default_ref)
-    reference_data = yaml.load(references)
+    reference_data = ruamel.yaml.safe_load(references)
     loader = LOADERS[pipeline]
     try:
         data = loader(config_data, reference_data, force=force)

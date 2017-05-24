@@ -2,7 +2,7 @@
 import logging
 
 from path import Path
-import yaml
+import ruamel.yaml
 
 from housekeeper.exc import MissingFileError
 
@@ -43,7 +43,7 @@ def prepare_inputs(config_data):
     sampleinfo_path = config_data['sampleInfoFile']
     log.debug("parse sampleinfo YAML: %s", sampleinfo_path)
     with open(sampleinfo_path, 'r') as in_handle:
-        data = yaml.load(in_handle)
+        data = ruamel.yaml.safe_load(in_handle)
     family = data[fam_key][fam_key]
     samples = {key: subdata for key, subdata in data[fam_key].items()
                if key != fam_key}
