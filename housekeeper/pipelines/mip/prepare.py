@@ -28,8 +28,7 @@ def prepare_run(segments, force=False):
     meta_output = build_meta(case_name, segments['family'], qcped_path)
     write_meta(meta_output, outdata_dir)
 
-    qcmetrics_path = (segments['family']['Program']['QCCollect']
-                              ['QCCollectMetricsFile']['Path'])
+    qcmetrics_path = (segments['family']['Program']['QCCollect']['QCCollectMetricsFile']['Path'])
     sample_ids = segments['config']['sampleIDs']
     modify_qcmetrics(outdata_dir, qcmetrics_path, sample_ids)
 

@@ -34,6 +34,8 @@ def analysis(manager, root_path, case_obj, new_run):
     new_run.extra = ExtraRunData()
     case_obj.runs.append(new_run)
     manager.add_commit(case_obj)
+    # reset the rerun request if any
+    case_obj.rerun_requested = False
 
     # perform linking to the new structure
     run_root.makedirs_p()
