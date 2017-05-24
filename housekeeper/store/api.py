@@ -85,10 +85,11 @@ def cases(query_str=None, missing=None, version=None, onhold=None):
     query = Case.query.filter(Case.is_manual == None).order_by(Case.created_at)
 
     if missing == 'analyzed':
+        not_analyzed = ((Sample.sequenced_at > datetime.date(2017, 1, 1)) &
+                        (AnalysisRun.analyzed_at == None))
         query = (query.outerjoin(Case.runs)
                       .join(Case.samples)
-                      .filter(AnalysisRun.analyzed_at == None,
-                              Sample.sequenced_at > datetime.date(2017, 1, 1)))
+                      .filter(not_analyzed | Case.rerun_requested))
     elif missing == 'delivered':
         query = (query.join(Case.runs)
                       .filter(AnalysisRun.analyzed_at != None,
