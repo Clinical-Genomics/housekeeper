@@ -185,7 +185,7 @@ def delete_asset(asset_obj):
     asset_obj.delete()
 
 
-def clean_up(root_path, run_obj, force=False):
+def clean_up(root_path, run_obj, force=False, untagged_only=False):
     """Clean up files for an analysis."""
     # check if run is ready
     if not force and not all([run_obj.archived_at, run_obj.delivered_at]):
@@ -196,12 +196,14 @@ def clean_up(root_path, run_obj, force=False):
             if not asset.archive_type:
                 asset.delete()
             else:
-                asset.is_local = False
+                if not untagged_only:
+                    asset.is_local = False
 
-        run_dir = get_rundir(root_path, run_obj.case.name, run_obj)
-        log.info("removing rundir: %s", run_dir)
-        delete_dir(run_dir)
-        run_obj.cleanedup_at = datetime.datetime.now()
+        if not untagged_only:
+            run_dir = get_rundir(root_path, run_obj.case.name, run_obj)
+            log.info("removing rundir: %s", run_dir)
+            delete_dir(run_dir)
+            run_obj.cleanedup_at = datetime.datetime.now()
 
 
 def postpone(run_obj, time=datetime.timedelta(days=30)):
