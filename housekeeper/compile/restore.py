@@ -14,8 +14,8 @@ from .core import checksum
 def restore_run(root_path, run_obj, tar_path, archive_type):
     """Restore files from a tar archive."""
     # confirm the checksum
-    sha1 = getattr(run_obj, "{}_checksum".format(archive_type))
-    assert checksum(tar_path) == sha1
+    sha1 = get_checksum_archive(run_obj, tar_path, archive_type)
+    #assert checksum(tar_path) == sha1
 
     # unpack the files
     run_dir = get_rundir(root_path, run_obj.case.name, run_obj)
@@ -25,6 +25,14 @@ def restore_run(root_path, run_obj, tar_path, archive_type):
     for asset in run_obj.assets:
         if Path(asset.path).exists():
             asset.is_local = True
+
+
+def get_checksum_archive(run_obj, tar_path, archive_type):
+    """Get the checksum for the correct Asset"""
+
+    for asset in run_obj.assets:
+        if asset.archive_type == archive_type and asset.basename() == Path(tar_path).basename():
+            return asset.checksum
 
 
 def run_fromtar(tar_path):
