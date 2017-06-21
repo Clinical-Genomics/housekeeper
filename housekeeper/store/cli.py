@@ -235,6 +235,7 @@ def clean(context, force, date, limit, before, after, untagged_only, case_name):
         if untagged_only:
             force = True
         for run_obj in run_objs:
+            click.echo('Cleaning run: {}'.format(run_obj))
             api.clean_up(context.obj['root'], run_obj, force=force,
                          untagged_only=untagged_only)
         manager.commit()
