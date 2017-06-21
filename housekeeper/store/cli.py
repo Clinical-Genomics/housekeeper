@@ -209,14 +209,34 @@ def delete_case(context, yes, case_name):
 @click.option('-f', '--force', is_flag=True,
               help='auto confirm and override sanity checks')
 @click.option('-d', '--date', help="date of the particular run")
-@click.argument('case_name')
+@click.option('-l', '--limit', default=20)
+@click.option('-b', '--before', help='runs before a date')
+@click.option('-a', '--after', help='runs after a date')
+@click.option('-u', '--untagged-only', is_flag=True, default=False, help='only remove assets without archive type')
+@click.argument('case_name', required=False)
 @click.pass_context
-def clean(context, force, date, case_name):
-    """Clean up files for an analysis."""
+def clean(context, force, date, limit, before, after, untagged_only, case_name):
+    """Clean up files for an analysis.
+    Providing a CASE_NAME will ignore --before, --after options
+    """
     manager = api.manager(context.obj['database'])
-    run_obj = run_orabort(context, case_name, date)
-    if force or click.confirm('Are you sure?'):
-        api.clean_up(context.obj['root'], run_obj, force=force)
+    if case_name:
+        run_objs = [run_orabort(context, case_name, date)]
+    else:
+        before_date = parse_date(before) if before else None
+        after_date = parse_date(after) if after else None
+        run_objs = api.runs(before=before_date, after=after_date).limit(limit)
+        if run_objs.first() is None:
+            log.error("no runs found")
+            context.abort()
+
+    if force or click.confirm('Cleaning following runs: {}'.
+                              format([ run_obj.case.name for run_obj in run_objs ])):
+        if untagged_only:
+            force = True
+        for run_obj in run_objs:
+            api.clean_up(context.obj['root'], run_obj, force=force,
+                         untagged_only=untagged_only)
         manager.commit()
 
 
