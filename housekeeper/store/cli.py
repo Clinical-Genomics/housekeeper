@@ -209,13 +209,13 @@ def delete_case(context, yes, case_name):
 @click.option('-f', '--force', is_flag=True,
               help='auto confirm and override sanity checks')
 @click.option('-d', '--date', help="date of the particular run")
-@click.option('-a', '--all', 'clean_all', is_flag=True, default=False, help="select all runs")
+@click.option('-l', '--limit', default=20)
 @click.option('-b', '--before', help='runs before a date')
 @click.option('-a', '--after', help='runs after a date')
 @click.option('-u', '--untagged-only', is_flag=True, default=False, help='only remove assets without archive type')
 @click.argument('case_name', required=False)
 @click.pass_context
-def clean(context, force, date, clean_all, before, after, untagged_only, case_name):
+def clean(context, force, date, limit, before, after, untagged_only, case_name):
     """Clean up files for an analysis.
     Providing a CASE_NAME will ignore --before, --after options
     """
@@ -225,7 +225,7 @@ def clean(context, force, date, clean_all, before, after, untagged_only, case_na
     else:
         before_date = parse_date(before) if before else None
         after_date = parse_date(after) if after else None
-        run_objs = api.runs(before=before_date, after=after_date)
+        run_objs = api.runs(before=before_date, after=after_date).limit(limit)
         if run_objs.first() is None:
             log.error("no runs found")
             context.abort()
