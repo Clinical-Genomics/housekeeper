@@ -205,6 +205,7 @@ def clean_up(root_path, run_obj, force=False, untagged_only=False):
         for asset in run_obj.assets:
             if not asset.archive_type:
                 asset.delete()
+                delete_file(asset.path)
             else:
                 if not untagged_only:
                     asset.is_local = False
@@ -219,6 +220,15 @@ def clean_up(root_path, run_obj, force=False, untagged_only=False):
 def postpone(run_obj, time=datetime.timedelta(days=30)):
     """Postpone the automatic archival of analysis by X time."""
     run_obj.will_cleanup_at += time
+
+
+def delete_file(filename):
+    file_path = Path(filename)
+    if file_path.exists():
+        log.info("removing file : %s", filename)
+        file_path.remove_p()
+    else:
+        log.debug("asset not found: %s", filename)
 
 
 def delete_dir(directory):
