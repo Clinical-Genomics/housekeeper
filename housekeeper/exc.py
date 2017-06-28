@@ -3,25 +3,13 @@
 
 class HousekeeperError(Exception):
 
-    def __init__(self, message=None):
+    def __init__(self, message):
         self.message = message
 
 
-class AnalysisConflictError(HousekeeperError):
+class VersionIncludedError(HousekeeperError):
     pass
 
 
-class MissingFileError(HousekeeperError):
-    pass
-
-
-class AnalysisNotFinishedError(HousekeeperError):
-    pass
-
-
-class UnsupportedVersionError(HousekeeperError):
-    pass
-
-
-class MalformattedPedigreeError(HousekeeperError):
+class BundleValidationError(HousekeeperError):
     pass
