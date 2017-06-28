@@ -52,7 +52,7 @@ Setup (or reset) the database. It will simply setup all the tables in the databa
 
 ```bash
 housekeeper --database "sqlite:///hk.sqlite3" init
-Success! New tables: bundle, file, file_tag_link, tag, user, version
+Success! New tables: bundle, file, file_tag_link, tag, version
 ```
 
 #### Command: `include`

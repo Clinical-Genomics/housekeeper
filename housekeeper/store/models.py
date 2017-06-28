@@ -8,23 +8,6 @@ from sqlalchemy import Column, ForeignKey, orm, types, UniqueConstraint, Table
 Model = alchy.make_declarative_base(Base=alchy.ModelBase)
 
 
-class User(Model):
-
-    __tablename__ = 'user'
-
-    id = Column(types.Integer, primary_key=True)
-    google_id = Column(types.String(128), unique=True)
-    email = Column(types.String(128), unique=True)
-    name = Column(types.String(128))
-    avatar = Column(types.Text)
-    created_at = Column(types.DateTime, default=datetime.datetime.now)
-
-    @property
-    def first_name(self) -> str:
-        """First part of name."""
-        return self.name.split(' ')[0]
-
-
 file_tag_link = Table(
     'file_tag_link',
     Model.metadata,
