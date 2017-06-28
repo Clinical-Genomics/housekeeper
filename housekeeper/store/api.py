@@ -13,15 +13,10 @@ log = logging.getLogger(__name__)
 
 class BaseHandler:
 
-    User = models.User
     Bundle = models.Bundle
     Version = models.Version
     File = models.File
     Tag = models.Tag
-
-    def user(self, email: str) -> models.User:
-        """Fetch a user from the database."""
-        return self.User.query.filter_by(email=email).first()
 
     def bundles(self):
         """Fetch bundles."""
@@ -34,12 +29,6 @@ class BaseHandler:
     def tag(self, name: str) -> models.Tag:
         """Fetch a tag from the database."""
         return self.Tag.query.filter_by(name=name).first()
-
-    def add_user(self, name: str, email: str) -> models.User:
-        """Add a new user to the database."""
-        new_user = self.User(name=name, email=email)
-        self.add_commit(new_user)
-        return new_user
 
     def new_bundle(self, name: str, created_at: datetime.datetime=None) -> models.Bundle:
         """Create a new file bundle."""
