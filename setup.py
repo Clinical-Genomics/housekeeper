@@ -105,31 +105,7 @@ setup(
     # target platform.
     entry_points={
         'console_scripts': [
-            'housekeeper = housekeeper.cli:root',
-        ],
-        'housekeeper.subcommands.1': [
-            'init = housekeeper.initiate:init',
-            'add = housekeeper.pipelines.cli:add',
-            'get = housekeeper.store.cli:get',
-            'getsha1 = housekeeper.store.cli:getsha1',
-            'postpone = housekeeper.store.cli:postpone',
-            'extend = housekeeper.pipelines.cli:extend',
-            'delete = housekeeper.store.cli:delete',
-            'compile = housekeeper.compile.cli:compile',
-            'archive = housekeeper.archive.cli:archive',
-            'clean = housekeeper.store.cli:clean',
-            'restore = housekeeper.compile.cli:restore',
-            'ls = housekeeper.store.cli:ls',
-            'migrate = housekeeper.store.cli:migrate',
-            'runs = housekeeper.store.cli:runs',
-            'scout = housekeeper.pipelines.cli:scout',
-            'status = housekeeper.store.cli:status',
-            'samples = housekeeper.store.cli:samples',
-            'cases = housekeeper.store.cli:cases',
-            'add-sample = housekeeper.store.cli:add_sample',
-            'add-case = housekeeper.store.cli:add_case',
-            'export = housekeeper.export:export',
-            'sample = housekeeper.store.cli:sample',
+            'housekeeper = housekeeper.cli:base',
         ],
     },
 
