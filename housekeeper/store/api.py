@@ -23,6 +23,10 @@ class BaseHandler:
         """Fetch a user from the database."""
         return self.User.query.filter_by(email=email).first()
 
+    def bundles(self):
+        """Fetch bundles."""
+        return self.Bundle.query
+
     def bundle(self, name: str) -> models.Bundle:
         """Fetch a bundle form the database."""
         return self.Bundle.query.filter_by(name=name).first()
