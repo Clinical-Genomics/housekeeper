@@ -20,4 +20,4 @@ def bundles():
         bundle_data['versions'] = [version.to_dict() for version in bundle_obj.versions]
         data.append(bundle_data)
 
-    return jsonify(analyses=data)
+    return jsonify(bundles=data)

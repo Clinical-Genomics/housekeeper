@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from .api import Store
+from .api import Store, BaseHandler
