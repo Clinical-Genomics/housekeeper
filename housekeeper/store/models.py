@@ -66,6 +66,13 @@ class File(Model):
     version_id = Column(ForeignKey(Version.id, ondelete='CASCADE'), nullable=False)
     tags = orm.relationship('Tag', secondary=file_tag_link, backref='files')
 
+    root_dir = None
+
+    @property
+    def full_path(self):
+        """Return the full path to the file."""
+        return self.root_dir / self.path
+
 
 class Tag(Model):
 
