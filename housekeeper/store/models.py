@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+import datetime as dt
 from pathlib import Path
 
 import alchy
@@ -25,7 +25,7 @@ class Bundle(Model):
 
     id = Column(types.Integer, primary_key=True)
     name = Column(types.String(64), unique=True, nullable=False)
-    created_at = Column(types.DateTime, default=datetime.datetime.now)
+    created_at = Column(types.DateTime, default=dt.datetime.now)
     versions = orm.relationship('Version', backref='bundle', order_by='-Version.created_at')
 
 
@@ -74,4 +74,4 @@ class Tag(Model):
     id = Column(types.Integer, primary_key=True)
     name = Column(types.String(64), unique=True, nullable=False)
     category = Column(types.String(64))
-    created_at = Column(types.DateTime, default=datetime.datetime.now)
+    created_at = Column(types.DateTime, default=dt.datetime.now)
