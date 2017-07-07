@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+import datetime as dt
 import logging
 from typing import List
 
@@ -23,20 +23,26 @@ class BaseHandler:
         return self.Bundle.query
 
     def bundle(self, name: str) -> models.Bundle:
-        """Fetch a bundle form the database."""
-        return self.Bundle.query.filter_by(name=name).first()
+        """Fetch a bundle from the store."""
+        return self.Bundle.filter_by(name=name).first()
+
+    def version(self, bundle: str, date: dt.datetime) -> models.Version:
+        """Fetch a version from the store."""
+        return (self.Version.join(models.Version.bundle)
+                            .filter(models.Bundle.name == bundle,
+                                    models.Version.created_at == date)
+                            .first())
 
     def tag(self, name: str) -> models.Tag:
         """Fetch a tag from the database."""
-        return self.Tag.query.filter_by(name=name).first()
+        return self.Tag.filter_by(name=name).first()
 
-    def new_bundle(self, name: str, created_at: datetime.datetime=None) -> models.Bundle:
+    def new_bundle(self, name: str, created_at: dt.datetime=None) -> models.Bundle:
         """Create a new file bundle."""
         new_bundle = self.Bundle(name=name, created_at=created_at)
         return new_bundle
 
-    def new_version(self, created_at: datetime.datetime,
-                    expires_at: datetime.datetime=None) -> models.Version:
+    def new_version(self, created_at: dt.datetime, expires_at: dt.datetime=None) -> models.Version:
         """Create a new bundle version."""
         new_version = self.Version(created_at=created_at, expires_at=expires_at)
         return new_version
