@@ -37,23 +37,24 @@ def test_cli_init(cli_runner, invoke_cli):
         assert database_path.exists() is False
 
         # WHEN calling "init"
-        result = invoke_cli(['--database', database_uri, 'init'])
+        result = invoke_cli(['--database', database_uri, '--root', '.', 'init'])
 
         # THEN it should setup the database with some tables
         assert result.exit_code == 0
         assert database_path.exists()
-        assert len(Store(database_uri).engine.table_names()) > 0
+        assert len(Store(database_uri, root='/tmp').engine.table_names()) > 0
 
         # GIVEN the database already exists
         # WHEN calling the init function
-        result = invoke_cli(['--database', database_uri, 'init'])
+        result = invoke_cli(['--database', database_uri, '--root', '.', 'init'])
         # THEN it should print an error and give error exit code
         assert result.exit_code != 0
         assert 'Database already exists' in result.output
 
         # GIVEN the database already exists
         # WHEN calling "init" with "--reset"
-        result = invoke_cli(['--database', database_uri, 'init', '--reset'], input='Yes')
+        result = invoke_cli(['--database', database_uri, '--root', '.', 'init', '--reset'],
+                            input='Yes')
         # THEN it should re-setup the tables and print new tables
         assert result.exit_code == 0
         assert 'Success!' in result.output

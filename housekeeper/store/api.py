@@ -2,6 +2,7 @@
 import datetime as dt
 import logging
 from typing import List
+from pathlib import Path
 
 import alchy
 
@@ -28,7 +29,8 @@ class BaseHandler:
 
     def version(self, bundle: str, date: dt.datetime) -> models.Version:
         """Fetch a version from the store."""
-        return (self.Version.join(models.Version.bundle)
+        return (self.Version.query
+                            .join(models.Version.bundle)
                             .filter(models.Bundle.name == bundle,
                                     models.Version.created_at == date)
                             .first())
@@ -84,5 +86,6 @@ class Store(alchy.Manager, BaseHandler, AddHandler):
         uri (str): SQLAlchemy database connection str
     """
 
-    def __init__(self, uri: str):
+    def __init__(self, uri: str, root: str):
         super(Store, self).__init__(config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=models.Model)
+        self.File.root_dir = Path(root)

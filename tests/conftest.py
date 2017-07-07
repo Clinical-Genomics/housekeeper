@@ -24,8 +24,8 @@ def version(tmpdir):
 
 
 @pytest.yield_fixture(scope='function')
-def store():
-    _store = Store(uri='sqlite://')
+def store(tmpdir):
+    _store = Store(uri='sqlite://', root=str(tmpdir))
     _store.create_all()
     yield _store
     _store.drop_all()

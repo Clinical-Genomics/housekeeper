@@ -14,15 +14,16 @@ from housekeeper.store import Store
 @click.group()
 @click.option('-c', '--config', type=click.File())
 @click.option('-d', '--database', help='path/URI of the SQL database')
+@click.option('-r', '--root', type=click.Path(exists=True), help='Housekeeper root dir')
 @click.option('-l', '--log-level', default='INFO')
 @click.version_option(housekeeper.__version__, prog_name=housekeeper.__title__)
 @click.pass_context
-def base(context, config, database, log_level):
+def base(context, config, database, root, log_level):
     """Housekeeper - Access your files!"""
     coloredlogs.install(level=log_level)
     context.obj = ruamel.yaml.safe_load(config) if config else {}
-    if database:
-        context.obj['database'] = database
+    context.obj['database'] = database if database else context.obj['database']
+    context.obj['root'] = root if root else context.obj['root']
 
 
 @base.command()
@@ -31,7 +32,7 @@ def base(context, config, database, log_level):
 @click.pass_context
 def init(context, reset, force):
     """Setup the database."""
-    store = Store(context.obj['database'])
+    store = Store(context.obj['database'], context.obj['root'])
     existing_tables = store.engine.table_names()
     if force or reset:
         if existing_tables and not force:
@@ -56,7 +57,7 @@ def include(context, bundle_name, version):
 
     Use bundle name if you simply want to inlcude the latest version.
     """
-    store = Store(context.obj['database'])
+    store = Store(context.obj['database'], context.obj['root'])
     if version:
         version_obj = store.Version.get(version)
         if version_obj is None:
