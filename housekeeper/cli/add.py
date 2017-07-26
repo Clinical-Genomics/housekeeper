@@ -20,10 +20,14 @@ def bundle(context, name):
         click.echo(click.style('bundle name already exists', fg='yellow'))
         context.abort()
     new_bundle = context.obj['db'].new_bundle(name)
-    new_version = context.obj['db'].new_version(created_at=new_bundle.created_at)
-    new_bundle.versions.append(new_version)
     context.obj['db'].add_commit(new_bundle)
-    click.echo(click.style(f"new bundle created: {new_bundle.name} ({new_bundle.id})", fg='green'))
+
+    # add default version
+    new_version = context.obj['db'].new_version(created_at=new_bundle.created_at)
+    new_version.bundle = new_bundle
+    context.obj['db'].add_commit(new_version)
+
+    click.echo(click.style(f"new bundle added: {new_bundle.name} ({new_bundle.id})", fg='green'))
 
 
 @add.command()
@@ -42,9 +46,9 @@ def file(context, tags, archive, bundle_name, path):
     new_file = context.obj['db'].new_file(
         path=path,
         to_archive=archive,
-        tags=[context.db.tag(tag_name) if context.db.tag(tag_name) else
-              context.db.new_tag(tag_name) for tag_name in tags]
+        tags=[context.obj['db'].tag(tag_name) if context.obj['db'].tag(tag_name) else
+              context.obj['db'].new_tag(tag_name) for tag_name in tags]
     )
     new_file.version = version_obj
     context.obj['db'].add_commit(new_file)
-    click.echo(click.style(f"new file created: {new_file.path} ({new_file.id})", fg='green'))
+    click.echo(click.style(f"new file added: {new_file.path} ({new_file.id})", fg='green'))
