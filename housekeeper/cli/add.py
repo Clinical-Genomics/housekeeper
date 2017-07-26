@@ -8,7 +8,7 @@ from housekeeper.store import Store
 @click.pass_context
 def add(context):
     """Add things to the store."""
-    context.obj.db = Store(context.obj['database'], context.obj['root'])
+    context.obj['db'] = Store(context.obj['database'], context.obj['root'])
 
 
 @add.command()
@@ -16,13 +16,13 @@ def add(context):
 @click.pass_context
 def bundle(context, name):
     """Add a new bundle."""
-    if context.obj.db.bundle(name):
+    if context.obj['db'].bundle(name):
         click.echo(click.style('bundle name already exists', fg='yellow'))
         context.abort()
-    new_bundle = context.obj.db.new_bundle(name)
-    new_version = context.obj.db.new_version(created_at=new_bundle.created_at)
+    new_bundle = context.obj['db'].new_bundle(name)
+    new_version = context.obj['db'].new_version(created_at=new_bundle.created_at)
     new_bundle.versions.append(new_version)
-    context.obj.db.add_commit(new_bundle)
+    context.obj['db'].add_commit(new_bundle)
     click.echo(click.style(f"new bundle created: {new_bundle.name} ({new_bundle.id})", fg='green'))
 
 
@@ -34,17 +34,17 @@ def bundle(context, name):
 @click.pass_context
 def file(context, tags, archive, bundle_name, path):
     """Add a file to a bundle."""
-    bundle_obj = context.obj.db.bundle(bundle_name)
+    bundle_obj = context.obj['db'].bundle(bundle_name)
     if bundle_obj is None:
         click.echo(click.style(f"unknown bundle: {bundle_name}", fg='red'))
         context.abort()
     version_obj = bundle_obj.versions[0]
-    new_file = context.obj.db.new_file(
+    new_file = context.obj['db'].new_file(
         path=path,
         to_archive=archive,
         tags=[context.db.tag(tag_name) if context.db.tag(tag_name) else
               context.db.new_tag(tag_name) for tag_name in tags]
     )
     new_file.version = version_obj
-    context.obj.db.add_commit(new_file)
+    context.obj['db'].add_commit(new_file)
     click.echo(click.style(f"new file created: {new_file.path} ({new_file.id})", fg='green'))
