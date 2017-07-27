@@ -60,7 +60,7 @@ class BaseHandler:
         new_tag = self.Tag(name=name, category=category)
         return new_tag
 
-    def files(self, *, bundle: str=None, tags: List[str]=None, version: int=None):
+    def files(self, *, bundle: str=None, tags: List[str]=None, version: int=None, path: str=None):
         """Fetch files from the store."""
         query = self.File.query
         if bundle:
@@ -71,7 +71,10 @@ class BaseHandler:
             query = query.join(self.File.tags).filter(self.Tag.name.in_(tags))
 
         if version:
-            query.join(self.File.version).filter(self.Version.id == version)
+            query = query.join(self.File.version).filter(self.Version.id == version)
+
+        if path:
+            query = query.filter_by(path=path)
 
         return query
 
