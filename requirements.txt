@@ -1,14 +1,11 @@
-alchy
+Alchy
 Click
-path.py
+coloredlogs
+marshmallow
 ruamel.yaml
-ped_parser
-sqlalchemy
+SQLAlchemy
+
+# server
 Flask
+Flask-CORS
 Flask-Alchy
-Flask-Bootstrap
-python-dateutil
-Flask-Dance[sqla]
-Flask-Login
-sqlalchemy-utils
-blinker

@@ -1,4 +1,4 @@
 pytest
 pytest-cov
 coveralls
-flask-shell-ipython
+pytest-flask

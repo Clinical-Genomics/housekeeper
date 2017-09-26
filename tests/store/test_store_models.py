@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
-import json
+from pathlib import Path
+import datetime
 
-from housekeeper.store import Sample
+from housekeeper.store import models
 
 
-def test_to_json():
-    # GIVEN a basic sample model
-    sample_name = 'ADM12'
-    new_sample = Sample(lims_id=sample_name)
-    # WHEN serializing to JSON
-    sample_json = new_sample.to_json()
-    # THEN it should return a serialized dict
-    data = json.loads(sample_json)
-    assert data['lims_id'] == sample_name
+def test_Version():
+    # GIVEN a bundle version
+    bundle_obj = models.Bundle(name='handsomepig')
+    now = datetime.datetime.now()
+    version_obj = models.Version(created_at=now, bundle=bundle_obj)
+    # WHEN accessing the relative root path
+    root_dir = version_obj.root_dir
+    # THEN it should point to the correct folder
+    now_str = str(now.date())
+    assert root_dir == Path('handsomepig') / now_str
