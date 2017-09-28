@@ -4,7 +4,7 @@ import coloredlogs
 import ruamel.yaml
 
 import housekeeper
-from . import add, include, init
+from . import add, include, init, get
 
 
 @click.group()
@@ -25,3 +25,4 @@ def base(context, config, database, root, log_level):
 base.add_command(init.init)
 base.add_command(add.add)
 base.add_command(include.include)
+base.add_command(get.get)
