@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from pathlib import Path
+
 import click
 
 from housekeeper.store import Store
@@ -44,7 +46,7 @@ def file(context, tags, archive, bundle_name, path):
         context.abort()
     version_obj = bundle_obj.versions[0]
     new_file = context.obj['db'].new_file(
-        path=path,
+        path=Path(path).absolute(),
         to_archive=archive,
         tags=[context.obj['db'].tag(tag_name) if context.obj['db'].tag(tag_name) else
               context.obj['db'].new_tag(tag_name) for tag_name in tags]

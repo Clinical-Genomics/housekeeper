@@ -71,7 +71,10 @@ class File(Model):
     @property
     def full_path(self):
         """Return the full path to the file."""
-        return self.root_dir / self.path
+        if Path(self.path).is_absolute():
+            return self.path
+        else:
+            return self.root_dir / self.path
 
 
 class Tag(Model):

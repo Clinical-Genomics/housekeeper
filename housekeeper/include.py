@@ -23,9 +23,6 @@ def include_version(global_root: str, version_obj: models.Version):
     log.info(f"created new bundle version dir: {version_root_dir}")
 
     for file_obj in version_obj.files:
-        if file_obj.to_archive:
-            # calculate sha1 checksum if file is to be archived
-            file_obj.checksum = checksum(file_obj.path)
         # hardlink file to the internal structure
         new_path = version_root_dir / Path(file_obj.path).name
         os.link(file_obj.path, new_path)
