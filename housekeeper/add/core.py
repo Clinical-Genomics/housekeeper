@@ -4,7 +4,7 @@ from typing import List
 
 from housekeeper.store import models
 
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 class AddHandler:
@@ -15,7 +15,8 @@ class AddHandler:
         The format of the input dict is defined in the `schema` module.
         """
         bundle_obj = self.bundle(data['name'])
-        if bundle_obj and bundle_obj.versions[0].created_at == data['created']:
+        if bundle_obj and self.version(bundle_obj, data['created']):
+            LOG.debug('version of bundle already added')
             return None
 
         if bundle_obj is None:
@@ -28,7 +29,7 @@ class AddHandler:
         tag_map = self._build_tags(tag_names)
 
         for file_data in data['files']:
-            log.debug(f"adding file: {file_data['path']}")
+            LOG.debug(f"adding file: {file_data['path']}")
             tags = [tag_map[tag_name] for tag_name in file_data['tags']]
             new_file = self.new_file(file_data['path'], to_archive=file_data['archive'], tags=tags)
             version_obj.files.append(new_file)
@@ -42,7 +43,7 @@ class AddHandler:
         for tag_name in tag_names:
             tag_obj = self.tag(tag_name)
             if tag_obj is None:
-                log.debug(f"create new tag: {tag_name}")
+                LOG.debug(f"create new tag: {tag_name}")
                 tag_obj = self.new_tag(tag_name)
             tags[tag_name] = tag_obj
         return tags
