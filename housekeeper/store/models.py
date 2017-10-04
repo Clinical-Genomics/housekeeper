@@ -74,12 +74,12 @@ class File(Model):
         if Path(self.path).is_absolute():
             return self.path
         else:
-            return self.root_dir / self.path
+            return str(self.root_dir / self.path)
 
     @property
     def is_included(self):
         """Check if the file is included in Housekeeper."""
-        return self.root_dir in self.full_path
+        return str(self.root_dir) in self.full_path
 
 
 class Tag(Model):

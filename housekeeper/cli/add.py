@@ -32,13 +32,13 @@ def bundle(context, name):
     click.echo(click.style(f"new bundle added: {new_bundle.name} ({new_bundle.id})", fg='green'))
 
 
-@add.command()
+@add.command('file')
 @click.option('-t', '--tag', 'tags', multiple=True, help='tag to associate the file by')
 @click.option('-a', '--archive', is_flag=True, help='mark file to be archived')
 @click.argument('bundle_name')
 @click.argument('path')
 @click.pass_context
-def file(context, tags, archive, bundle_name, path):
+def file_cmd(context, tags, archive, bundle_name, path):
     """Add a file to a bundle."""
     bundle_obj = context.obj['db'].bundle(bundle_name)
     if bundle_obj is None:
@@ -46,7 +46,7 @@ def file(context, tags, archive, bundle_name, path):
         context.abort()
     version_obj = bundle_obj.versions[0]
     new_file = context.obj['db'].new_file(
-        path=Path(path).absolute(),
+        path=str(Path(path).absolute()),
         to_archive=archive,
         tags=[context.obj['db'].tag(tag_name) if context.obj['db'].tag(tag_name) else
               context.obj['db'].new_tag(tag_name) for tag_name in tags]
