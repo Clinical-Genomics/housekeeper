@@ -46,10 +46,12 @@ class Version(Model):
     bundle_id = Column(ForeignKey(Bundle.id, ondelete='CASCADE'), nullable=False)
     files = orm.relationship('File', backref='version')
 
+    app_root = None
+
     @property
     def root_dir(self):
         """Build the relative root dir path for the bundle version."""
-        return Path(self.bundle.name) / str(self.created_at.date())
+        return self.app_root / self.bundle.name / str(self.created_at.date())
 
 
 class File(Model):
