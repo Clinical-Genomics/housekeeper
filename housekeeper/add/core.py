@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+from pathlib import Path
 from typing import List
 
 from housekeeper.store import models
@@ -30,6 +31,8 @@ class AddHandler:
 
         for file_data in data['files']:
             LOG.debug(f"adding file: {file_data['path']}")
+            if not Path(file_data['path']).exists():
+                raise FileNotFoundError(file_data['path'])
             tags = [tag_map[tag_name] for tag_name in file_data['tags']]
             new_file = self.new_file(file_data['path'], to_archive=file_data['archive'], tags=tags)
             version_obj.files.append(new_file)
