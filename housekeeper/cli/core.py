@@ -4,7 +4,7 @@ import coloredlogs
 import ruamel.yaml
 
 import housekeeper
-from . import add, include, init, get
+from . import add, include, init, get, delete
 
 
 @click.group()
@@ -26,3 +26,4 @@ base.add_command(init.init)
 base.add_command(add.add)
 base.add_command(include.include)
 base.add_command(get.get)
+base.add_command(delete.delete)
