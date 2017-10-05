@@ -92,3 +92,4 @@ class Store(alchy.Manager, BaseHandler, AddHandler):
     def __init__(self, uri: str, root: str):
         super(Store, self).__init__(config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=models.Model)
         self.File.root_dir = Path(root)
+        self.Version.app_root = Path(root)
