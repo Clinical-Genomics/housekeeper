@@ -5,6 +5,7 @@ from typing import List
 from pathlib import Path
 
 import alchy
+from sqlalchemy import func
 
 from housekeeper.add.core import AddHandler
 from . import models
@@ -68,7 +69,13 @@ class BaseHandler:
                           .filter(self.Bundle.name == bundle))
 
         if tags:
-            query = query.join(self.File.tags).filter(self.Tag.name.in_(tags))
+            # require records to match ALL tags
+            query = (
+                query.join(self.File.tags)
+                .filter(self.Tag.name.in_(tags))
+                .group_by(models.File.id)
+                .having(func.count(models.Tag.name) == len(tags))
+            )
 
         if version:
             query = query.join(self.File.version).filter(self.Version.id == version)
