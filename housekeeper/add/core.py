@@ -16,7 +16,7 @@ class AddHandler:
         The format of the input dict is defined in the `schema` module.
         """
         bundle_obj = self.bundle(data['name'])
-        if bundle_obj and self.version(bundle_obj, data['created']):
+        if bundle_obj and self.version(bundle_obj.name, data['created']):
             LOG.debug('version of bundle already added')
             return None
 
