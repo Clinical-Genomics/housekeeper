@@ -64,6 +64,9 @@ def file_cmd(context, tags, archive, bundle_name, path):
 def tag(context: click.Context, file_id: int, tags: List[str]):
     """Add tags to an existing file."""
     file_obj = context.obj['db'].file_(file_id)
+    if file_obj is None:
+        print(click.style('unable to find file', fg='red'))
+        context.abort()
     for tag_name in tags:
         tag_obj = context.obj['db'].tag(tag_name)
         if tag_obj is None:
@@ -73,4 +76,5 @@ def tag(context: click.Context, file_id: int, tags: List[str]):
             continue
         file_obj.tags.append(tag_obj)
     context.obj['db'].commit()
-    print(f"file tags: {', '.join(tag.name for tag in file_obj.tags)}", fg='info')
+    all_tags = (tag.name for tag in file_obj.tags)
+    print(click.style(f"file tags: {', '.join(all_tags)}", fg='blue'))
