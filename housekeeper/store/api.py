@@ -61,6 +61,10 @@ class BaseHandler:
         new_tag = self.Tag(name=name, category=category)
         return new_tag
 
+    def file_(self, file_id: int):
+        """Get a file by record id."""
+        return self.File.get(file_id)
+
     def files(self, *, bundle: str=None, tags: List[str]=None, version: int=None, path: str=None):
         """Fetch files from the store."""
         query = self.File.query
