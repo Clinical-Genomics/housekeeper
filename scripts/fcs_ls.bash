@@ -9,7 +9,7 @@ DEMUX_DIR=$(readlink -m ${DEMUX_DIR})
 
 # find all fastq files that are older than certain date
 # filter out the X FCs only
-FASTQS=$(find ${DEMUX_DIR}/{*ALXX,*CCXX} -name *.fastq.gz ! -newermt ${CUTOFF_DATE})
+FASTQS=$(find ${DEMUX_DIR}/{*ALXX,*CCXX,*CCXY} -name *.fastq.gz ! -newermt ${CUTOFF_DATE})
 
 # get the rundirs
 RUN_DIRS=()
