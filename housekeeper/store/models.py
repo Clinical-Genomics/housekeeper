@@ -26,7 +26,7 @@ class Bundle(Model):
     id = Column(types.Integer, primary_key=True)
     name = Column(types.String(64), unique=True, nullable=False)
     created_at = Column(types.DateTime, default=dt.datetime.now)
-    versions = orm.relationship('Version', backref='bundle', order_by='-Version.created_at', cascade='delete')
+    versions = orm.relationship('Version', backref='bundle', order_by='-Version.created_at', cascade='delete, save-update')
 
 
 class Version(Model):
@@ -44,7 +44,7 @@ class Version(Model):
     archive_checksum = Column(types.String(256), unique=True)
 
     bundle_id = Column(ForeignKey(Bundle.id, ondelete='CASCADE'), nullable=False)
-    files = orm.relationship('File', backref='version', cascade='delete')
+    files = orm.relationship('File', backref='version', cascade='delete, save-update')
 
     app_root = None
 
