@@ -48,8 +48,8 @@ def file_cmd(context, yes, file_id):
     else:
         question = f"remove file from database: {file_obj.full_path}"
     if yes or click.confirm(question):
-        if file_obj.is_included and file_obj.full_path.exists():
-            file_obj.full_path.unlink()
+        if file_obj.is_included and Path(file_obj.full_path).exists():
+            Path(file_obj.full_path).unlink()
 
         file_obj.delete()
         context.obj['store'].commit()
