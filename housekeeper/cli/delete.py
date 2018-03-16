@@ -62,7 +62,6 @@ def files(context, yes, tag, bundle, before, unassociated):
     if before:
         before_dt = parse_date(before)
         query = query.join(models.Version).filter(models.Version.created_at < before_dt)
-    import ipdb; ipdb.set_trace()
     file_objs = query.all()
 
     if unassociated:
