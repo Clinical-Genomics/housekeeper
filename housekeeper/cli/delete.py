@@ -1,9 +1,10 @@
 from pathlib import Path
 import shutil
+from dateutil.parser import parse as parse_date
 
 import click
 
-from housekeeper.store import Store
+from housekeeper.store import Store, models
 
 
 @click.group()
@@ -34,6 +35,50 @@ def bundle(context, yes, bundle_name):
         version_obj.delete()
         context.obj['store'].commit()
         click.echo(f"version deleted: {version_obj.root_dir}")
+
+
+@delete.command()
+@click.option('-y', '--yes', is_flag=True, help='skip checks')
+@click.option('-t', '--tag', multiple=True, help='file tag')
+@click.option('-b', '--bundle', help='bundle name')
+@click.option('-a', '--before', help='version created before...')
+@click.option('-u', '--unassociated', is_flag=True, help='rm db entry from files not on disk')
+@click.pass_context
+def files(context, yes, tag, bundle, before, unassociated):
+    """Delete files based on tags."""
+    file_objs = []
+
+    if not tag and not bundle:
+        click.echo("I'm afraid I can't let you do that.")
+        context.abort()
+
+    if bundle:
+        bundle_obj = context.obj['store'].bundle(bundle)
+        if bundle_obj is None:
+            click.echo(click.style('bundle not found', fg='red'))
+            context.abort()
+
+    query = context.obj['store'].files(tags=tag, bundle=bundle)
+    if before:
+        before_dt = parse_date(before)
+        query = query.join(models.Version).filter(models.Version.created_at < before_dt)
+    import ipdb; ipdb.set_trace()
+    file_objs = query.all()
+
+    if unassociated:
+        for i, file_obj in reversed(list(enumerate(file_objs))):
+            file_path = Path(file_obj.full_path)
+            if file_path.is_file():
+                del file_objs[i]
+
+    for file_obj in file_objs:
+        if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
+            if file_obj.is_included and Path(file_obj.full_path).exists():
+                Path(file_obj.full_path).unlink()
+
+        file_obj.delete()
+        context.obj['store'].commit()
+        click.echo('{file_obj.full_path} deleted')
 
 
 @delete.command('file')
