@@ -51,7 +51,7 @@ class Version(Model):
     @property
     def root_dir(self):
         """Build the relative root dir path for the bundle version."""
-        return self.app_root / self.bundle.name / str(self.created_at.date())
+        return Path(self.app_root) / self.bundle.name / str(self.created_at.date())
 
 
 class File(Model):
