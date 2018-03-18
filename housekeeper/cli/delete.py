@@ -77,7 +77,7 @@ def files(context, yes, tag, bundle, before, unassociated):
 
         file_obj.delete()
         context.obj['store'].commit()
-        click.echo('{file_obj.full_path} deleted')
+        click.echo(f'{file_obj.full_path} deleted')
 
 
 @delete.command('file')
