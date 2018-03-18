@@ -27,7 +27,7 @@ def test_add_bundle(store, bundle_data):
     # GIVEN some input data for a new bundle
     assert store.Bundle.query.count() == 0
     # WHEN adding the new bundle
-    bundle_obj = store.add_bundle(bundle_data)
+    bundle_obj, version_obj = store.add_bundle(bundle_data)
     # THEN it should look as expected
     assert bundle_obj.name == bundle_data['name']
     assert bundle_obj.created_at == bundle_data['created']
@@ -44,7 +44,7 @@ def test_add_bundle(store, bundle_data):
 
 def test_add_bundle_twice(store, bundle_data):
     # GIVEN a bundle in the store
-    bundle_obj = store.add_bundle(bundle_data)
+    bundle_obj, version_obj = store.add_bundle(bundle_data)
     store.add_commit(bundle_obj)
     assert store.Bundle.query.first() == bundle_obj
     # WHEN adding the same bundle again
@@ -63,9 +63,12 @@ def test_add_two_versions_of_bundle(store, bundle_data):
     for file_data in bundle_2['files']:
         file_data['path'] = file_data['path'].replace('.vcf', '.2.vcf')
     # WHEN adding them to the database
-    for bundle in [bundle_1, bundle_2]:
-        bundle_obj = store.add_bundle(bundle)
-        store.add_commit(bundle_obj)
+    to_store = []
+    with store.session.no_autoflush:
+        for bundle in [bundle_1, bundle_2]:
+            bundle_obj, version_obj = store.add_bundle(bundle)
+            store.add_commit(bundle_obj)
+
     # THEN it should only create a single bundle
     assert store.Bundle.query.count() == 1
     # ... but two versions
