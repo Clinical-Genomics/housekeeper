@@ -38,13 +38,13 @@ def bundle(context, yes, bundle_name):
 
 
 @delete.command()
-@click.option('-y', '--yes', is_flag=True, help='skip checks')
+@click.option('--yes', is_flag=True, help='skip checks')
 @click.option('-t', '--tag', multiple=True, help='file tag')
 @click.option('-b', '--bundle', help='bundle name')
 @click.option('-a', '--before', help='version created before...')
-@click.option('-u', '--unassociated', is_flag=True, help='rm db entry from files not on disk')
+@click.option('-n', '--notondisk', is_flag=True, help='rm db entry from files not on disk')
 @click.pass_context
-def files(context, yes, tag, bundle, before, unassociated):
+def files(context, yes, tag, bundle, before, notondisk):
     """Delete files based on tags."""
     file_objs = []
 
@@ -64,11 +64,8 @@ def files(context, yes, tag, bundle, before, unassociated):
         query = query.join(models.Version).filter(models.Version.created_at < before_dt)
     file_objs = query.all()
 
-    if unassociated:
-        for i, file_obj in reversed(list(enumerate(file_objs))):
-            file_path = Path(file_obj.full_path)
-            if file_path.is_file():
-                del file_objs[i]
+    if notondisk:
+        file_objs = [ file_obj for file_obj in file_objs if not Path(file_obj.full_path).is_file() ]
 
     for file_obj in file_objs:
         if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
