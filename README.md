@@ -68,7 +68,7 @@ This will only work if the bundle only has a single version which can be "import
 #### Command: `delete files`
 
 Delete files that are not on disk anymore like his:
-`housekeeper delete files --tag fastq --unassociated`
+`housekeeper delete files --tag fastq --notondisk`
 
 Remove all bam files before a certain date:
 `housekeeper delete files --tag bam --before 2017-06-15`
@@ -76,8 +76,8 @@ Remove all bam files before a certain date:
 Remove fastq files from a flowcell:
 `housekeeper delete files --tag fastq --tag H0HKKALXX`
 
-It'll always ask for confirmation, unless you add -y:
-`housekeeper delete files --bundle sillyfish -y`
+It'll always ask for confirmation, unless you add --yes:
+`housekeeper delete files --bundle sillyfish --yes`
 
 If you do not provide a --tag or --bundle, essentially deleting everything, the function will not let you do that.
 
