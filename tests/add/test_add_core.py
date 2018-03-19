@@ -63,7 +63,6 @@ def test_add_two_versions_of_bundle(store, bundle_data):
     for file_data in bundle_2['files']:
         file_data['path'] = file_data['path'].replace('.vcf', '.2.vcf')
     # WHEN adding them to the database
-    to_store = []
     with store.session.no_autoflush:
         for bundle in [bundle_1, bundle_2]:
             bundle_obj, version_obj = store.add_bundle(bundle)
