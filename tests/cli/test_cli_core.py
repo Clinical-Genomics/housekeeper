@@ -58,3 +58,14 @@ def test_cli_init(cli_runner, invoke_cli):
         # THEN it should re-setup the tables and print new tables
         assert result.exit_code == 0
         assert 'Success!' in result.output
+
+
+def test_cli_delete_files(tmpdir, invoke_cli):
+    config_file = tmpdir.join('config.yaml')
+    config_file.write(ruamel.yaml.safe_dump(dict(root=str(tmpdir), database='sqlite://')))
+    result = invoke_cli(['--config', str(config_file), 'delete', 'files'])
+    assert result.exit_code == 1
+    assert result.output == "I'm afraid I can't let you do that.\nAborted!\n"
+
+
+       

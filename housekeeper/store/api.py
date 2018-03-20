@@ -3,6 +3,7 @@ import datetime as dt
 import logging
 from typing import List
 from pathlib import Path
+from dateutil.parser import parse as parse_date
 
 import alchy
 from sqlalchemy import func
@@ -88,6 +89,21 @@ class BaseHandler:
             query = query.filter_by(path=path)
 
         return query
+
+
+    def files_before(self, *, bundle: str=None, tags: List[str]=None, before:
+                     str=None, notondisk: bool=None):
+        """Fetch files before date from store"""
+        query = self.files(tags=tags, bundle=bundle)
+        if before:
+            before_dt = parse_date(before)
+            query = query.join(models.Version).filter(models.Version.created_at < before_dt)
+        file_objs = query.all()
+
+        if notondisk:
+            file_objs = [ file_obj for file_obj in file_objs if not Path(file_obj.full_path).is_file() ]
+            
+        return file_objs
 
 
 class Store(alchy.Manager, BaseHandler, AddHandler):

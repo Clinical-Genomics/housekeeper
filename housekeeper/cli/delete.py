@@ -1,6 +1,5 @@
 from pathlib import Path
 import shutil
-from dateutil.parser import parse as parse_date
 
 import click
 
@@ -57,15 +56,9 @@ def files(context, yes, tag, bundle, before, notondisk):
         if bundle_obj is None:
             click.echo(click.style('bundle not found', fg='red'))
             context.abort()
-
-    query = context.obj['store'].files(tags=tag, bundle=bundle)
-    if before:
-        before_dt = parse_date(before)
-        query = query.join(models.Version).filter(models.Version.created_at < before_dt)
-    file_objs = query.all()
-
-    if notondisk:
-        file_objs = [ file_obj for file_obj in file_objs if not Path(file_obj.full_path).is_file() ]
+    
+    file_objs = context.obj['store'].files_before(bundle = bundle, tags = tag, before = before,
+                                                  notondisk = notondisk)
 
     for file_obj in file_objs:
         if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
