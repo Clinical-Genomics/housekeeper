@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
+import tempfile
+import dateutil
 
 import pytest
 
@@ -24,6 +26,69 @@ def version(tmpdir):
         models.File(path=file_path_2, to_archive=False, tags=[models.Tag(name='tmp')])
     )
     return version_obj
+
+
+@pytest.fixture(scope='function')
+def bundle_data():
+    data = {
+        'name': 'sillyfish',
+        'created': datetime.datetime.now(),
+        'expires': datetime.datetime.now(),
+        'files': [{
+            'path': 'tests/fixtures/example.vcf',
+            'archive': False,
+            'tags': ['vcf', 'sample']
+        }, {
+            'path': 'tests/fixtures/family.vcf',
+            'archive': True,
+            'tags': ['vcf', 'family']
+        }]
+    }
+    return data
+
+
+@pytest.fixture(scope='function')
+def bundle_data_old():
+    data = {
+        'name': 'angrybird',
+        'created': dateutil.parser.parse('2018/01/01 00:00:00'),
+        'expires': datetime.datetime.now(),
+        'files': [{
+            'path': 'tests/fixtures/example.2.vcf',
+            'archive': False,
+            'tags': ['vcf', 'sample']
+        }, {
+            'path': 'tests/fixtures/family.2.vcf',
+            'archive': True,
+            'tags': ['vcf', 'family']
+        }]
+    }
+    return data
+
+
+@pytest.fixture(scope='function')
+def bundle_data_notondisk():
+    data = {}
+    with tempfile.NamedTemporaryFile(delete=False) as file1:
+        with tempfile.NamedTemporaryFile(delete=False) as file2:
+                        
+            data = {
+                'name': 'sillyfish',
+                'created': datetime.datetime.now(),
+                'expires': datetime.datetime.now(),
+                'files': [{
+                    'path': file1.name(),
+                    'archive': False,
+                    'tags': ['vcf', 'sample']
+                }, {
+                    'path': file2.name(),
+                    'archive': True,
+                    'tags': ['vcf', 'family']
+                }]
+            }
+
+    return data
+
 
 
 @pytest.yield_fixture(scope='function')

@@ -57,8 +57,10 @@ def files(context, yes, tag, bundle, before, notondisk):
             click.echo(click.style('bundle not found', fg='red'))
             context.abort()
     
-    file_objs = context.obj['store'].files_before(bundle = bundle, tags = tag, before = before,
-                                                  notondisk = notondisk)
+    file_objs = context.obj['store'].files_before(bundle = bundle, tags = tag, before = before)
+    
+    if notondisk:
+        file_objs = context.obj['store'].files_notondisk(file_objs)
 
     for file_obj in file_objs:
         if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
