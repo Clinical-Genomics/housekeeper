@@ -71,7 +71,7 @@ def bundle_data_notondisk():
     data = {}
     with tempfile.NamedTemporaryFile(delete=False) as file1:
         with tempfile.NamedTemporaryFile(delete=False) as file2:
-                        
+
             data = {
                 'name': 'sillyfish',
                 'created': datetime.datetime.now(),
@@ -88,7 +88,6 @@ def bundle_data_notondisk():
             }
 
     return data
-
 
 
 @pytest.yield_fixture(scope='function')
