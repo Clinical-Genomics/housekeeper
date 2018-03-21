@@ -66,7 +66,7 @@ class BaseHandler:
         """Get a file by record id."""
         return self.File.get(file_id)
 
-    def files(self, *, bundle: str=None, tags: List[str]=None, version: int=None, 
+    def files(self, *, bundle: str=None, tags: List[str]=None, version: int=None,
               path: str=None) -> models.File:
         """Fetch files from the store."""
         query = self.File.query
@@ -100,14 +100,14 @@ class BaseHandler:
             before_dt = parse_date(before)
             query = query.join(models.Version).filter(models.Version.created_at < before_dt)
 
-        return query 
+        return query
 
 
     def files_notondisk(self, file_objs: models.File) -> list:
         """
         """
         return [ file_obj for file_obj in file_objs if not Path(file_obj.full_path).is_file() ]
-               
+
 
 class Store(alchy.Manager, BaseHandler, AddHandler):
 

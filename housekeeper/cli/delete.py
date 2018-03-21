@@ -56,9 +56,9 @@ def files(context, yes, tag, bundle, before, notondisk):
         if bundle_obj is None:
             click.echo(click.style('bundle not found', fg='red'))
             context.abort()
-    
+
     file_objs = context.obj['store'].files_before(bundle = bundle, tags = tag, before = before)
-    
+
     if notondisk:
         file_objs = context.obj['store'].files_notondisk(file_objs)
 
