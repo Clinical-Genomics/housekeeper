@@ -9,7 +9,7 @@ def test_Version():
     # GIVEN a bundle version
     bundle_obj = models.Bundle(name='handsomepig')
     now = datetime.datetime.now()
-    version_obj = models.Version(created_at=now, bundle=bundle_obj)
+    version_obj = models.Version(created_at=now, bundle=bundle_obj, app_root='')
     # WHEN accessing the relative root path
     root_dir = version_obj.root_dir
     # THEN it should point to the correct folder
