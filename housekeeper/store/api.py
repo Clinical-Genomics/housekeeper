@@ -93,7 +93,7 @@ class BaseHandler:
 
 
     def files_before(self, *, bundle: str=None, tags: List[str]=None, before:
-                     str=None, notondisk: bool=None) -> models.File:
+                     str=None) -> models.File:
         """Fetch files before date from store"""
         query = self.files(tags=tags, bundle=bundle)
         if before:
@@ -103,10 +103,10 @@ class BaseHandler:
         return query
 
 
-    def files_notondisk(self, file_objs: models.File) -> list:
-        """
-        """
-        return [ file_obj for file_obj in file_objs if not Path(file_obj.full_path).is_file() ]
+    def files_ondisk(self, file_objs: models.File) -> set:
+        """Returns a list of files that are not on disk."""
+
+        return set([ file_obj for file_obj in file_objs if Path(file_obj.path).is_file() ])
 
 
 class Store(alchy.Manager, BaseHandler, AddHandler):

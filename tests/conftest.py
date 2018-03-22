@@ -17,7 +17,7 @@ def version(tmpdir):
     file_path_2 = tmpdir.join('example2.txt')
     file_path_2.write('content')
     bundle_obj = models.Bundle(name='privatefox')
-    version_obj = models.Version(created_at=datetime.datetime.now(), bundle=bundle_obj, app_root='')
+    version_obj = models.Version(created_at=datetime.datetime.now(), bundle=bundle_obj, app_root=tmpdir)
     version_obj.files.append(
         models.File(path=file_path_1, to_archive=True, tags=[models.Tag(name='vcf-gz')],
             checksum=file_path_1_checksum),
@@ -63,30 +63,6 @@ def bundle_data_old():
             'tags': ['vcf', 'family']
         }]
     }
-    return data
-
-
-@pytest.fixture(scope='function')
-def bundle_data_notondisk():
-    data = {}
-    with tempfile.NamedTemporaryFile(delete=False) as file1:
-        with tempfile.NamedTemporaryFile(delete=False) as file2:
-
-            data = {
-                'name': 'sillyfish',
-                'created': datetime.datetime.now(),
-                'expires': datetime.datetime.now(),
-                'files': [{
-                    'path': file1.name(),
-                    'archive': False,
-                    'tags': ['vcf', 'sample']
-                }, {
-                    'path': file2.name(),
-                    'archive': True,
-                    'tags': ['vcf', 'family']
-                }]
-            }
-
     return data
 
 

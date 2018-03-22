@@ -37,7 +37,7 @@ def bundle(context, yes, bundle_name):
 
 
 @delete.command()
-@click.option('--yes', is_flag=True, help='skip checks')
+@click.option('--yes', multiple=True, is_flag=True, help='skip checks')
 @click.option('-t', '--tag', multiple=True, help='file tag')
 @click.option('-b', '--bundle', help='bundle name')
 @click.option('-a', '--before', help='version created before...')
@@ -60,7 +60,11 @@ def files(context, yes, tag, bundle, before, notondisk):
     file_objs = context.obj['store'].files_before(bundle = bundle, tags = tag, before = before)
 
     if notondisk:
-        file_objs = context.obj['store'].files_notondisk(file_objs)
+        file_objs = set(file_objs) - context.obj['store'].files_ondisk(file_objs)
+
+    if len(yes) < 2:
+        if not click.confirm(f"Are you sure you want to delete {len(file_objs)} files?"):
+            context.abort()
 
     for file_obj in file_objs:
         if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
