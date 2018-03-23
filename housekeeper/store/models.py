@@ -49,8 +49,12 @@ class Version(Model):
     app_root = None
 
     @property
-    def root_dir(self):
+    def relative_root_dir(self):
         """Build the relative root dir path for the bundle version."""
+        return Path(self.bundle.name) / str(self.created_at.date())
+
+    @property
+    def full_path(self):
         return Path(self.app_root) / self.bundle.name / str(self.created_at.date())
 
 
@@ -68,7 +72,7 @@ class File(Model):
     version_id = Column(ForeignKey(Version.id, ondelete='CASCADE'), nullable=False)
     tags = orm.relationship('Tag', secondary=file_tag_link, backref='files')
 
-    root_dir = None
+    app_root = None
 
     @property
     def full_path(self):
@@ -76,12 +80,12 @@ class File(Model):
         if Path(self.path).is_absolute():
             return self.path
         else:
-            return str(self.root_dir / self.path)
+            return str(self.app_root / self.path)
 
     @property
     def is_included(self):
         """Check if the file is included in Housekeeper."""
-        return str(self.root_dir) in self.full_path
+        return str(self.app_root) in self.full_path
 
 
 class Tag(Model):

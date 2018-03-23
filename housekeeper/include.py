@@ -18,7 +18,7 @@ def include_version(global_root: str, version_obj: models.Version):
         raise VersionIncludedError(f"version included on {version_obj.included_at}")
 
     # generate root directory
-    version_root_dir = global_root_dir / version_obj.root_dir
+    version_root_dir = global_root_dir / version_obj.relative_root_dir
     version_root_dir.mkdir(parents=True, exist_ok=True)
     log.info(f"created new bundle version dir: {version_root_dir}")
 
