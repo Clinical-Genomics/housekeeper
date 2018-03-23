@@ -60,12 +60,31 @@ def test_cli_init(cli_runner, invoke_cli):
         assert 'Success!' in result.output
 
 
-def test_cli_delete_files(tmpdir, invoke_cli):
+def test_cli_delete_files(tmpdir, invoke_cli, bundle_data):
     config_file = tmpdir.join('config.yaml')
-    config_file.write(ruamel.yaml.safe_dump(dict(root=str(tmpdir), database='sqlite://')))
+    database_path = Path(tmpdir).joinpath('database.sqlite')
+    config_file.write(ruamel.yaml.safe_dump(dict(root=str(tmpdir), database='sqlite:///' + str(database_path))))
+    store = Store(uri='sqlite:///' + str(database_path), root=str(tmpdir))
+    store.create_all()
+
+    # GIVEN you want to remove everything
     result = invoke_cli(['--config', str(config_file), 'delete', 'files'])
+    # THEN HAL9000 should interfere
     assert result.exit_code == 1
     assert result.output == "I'm afraid I can't let you do that.\nAborted!\n"
 
+    # GIVEN you want to delete a not existing bundle
+    result = invoke_cli(['--config', str(config_file),'delete', 'files', '--bundle', 'sillyfish'])
+    # THEN it should not be found
+    assert result.exit_code == 1
+    assert result.output == "bundle not found\nAborted!\n"
 
-       
+    # GIVEN you want to delete a bundle
+    bundle_obj, version_obj = store.add_bundle(data=bundle_data)
+    store.add_commit(bundle_obj)
+    result = invoke_cli(['--config', str(config_file),'delete', 'files', '--bundle', 'sillyfish'])
+    # THEN it should ask you if you are sure
+    assert result.exit_code == 1
+    assert result.output == "Are you sure you want to delete 2 files? [y/N]: \nAborted!\n"
+
+    store.drop_all()
