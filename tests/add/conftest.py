@@ -3,24 +3,7 @@ from copy import deepcopy
 import datetime
 import pytest
 
-
-@pytest.fixture(scope='function')
-def bundle_data():
-    data = {
-        'name': 'sillyfish',
-        'created': datetime.datetime.now(),
-        'expires': datetime.datetime.now(),
-        'files': [{
-            'path': 'tests/fixtures/example.vcf',
-            'archive': False,
-            'tags': ['vcf', 'sample']
-        }, {
-            'path': 'tests/fixtures/family.vcf',
-            'archive': True,
-            'tags': ['vcf', 'family']
-        }]
-    }
-    return data
+import tempfile
 
 
 @pytest.fixture(scope='function')

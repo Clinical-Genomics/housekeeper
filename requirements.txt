@@ -4,6 +4,7 @@ coloredlogs
 marshmallow
 ruamel.yaml
 SQLAlchemy
+python-dateutil
 
 # server
 Flask
