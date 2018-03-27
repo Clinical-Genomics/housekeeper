@@ -6,6 +6,8 @@ from copy import deepcopy
 from pathlib import Path
 import tempfile
 
+from housekeeper.include import include_version
+
 def test_delete_both(store, bundle_data, bundle_data_old):
     """
     test deletion where all files are older than before date
@@ -49,19 +51,6 @@ def test_delete_notondisk(store, tmpdir, bundle_data):
     """
     test deletion of files that are not on disk
     """
-
-    def include_version(global_root: str, version_obj):
-
-        global_root_path = Path(global_root)
-        version_root_dir = global_root_path / version_obj.relative_root_dir
-        version_root_dir.mkdir(parents=True, exist_ok=True)
-
-        for file_obj in version_obj.files:
-            # softlink file to the internal structure
-            new_path = version_root_dir / Path(file_obj.path).name
-            os.symlink(Path(file_obj.path).resolve(), new_path)
-            file_obj.path = str(new_path).replace(f"{global_root_path}/", '', 1)
-
     with tempfile.NamedTemporaryFile(delete=True) as file1:
 
         bundle_data_notondisk = deepcopy(bundle_data)
@@ -72,10 +61,10 @@ def test_delete_notondisk(store, tmpdir, bundle_data):
 
         bundle_obj, version_obj = store.add_bundle(data=bundle_data)
         store.add_commit(bundle_obj)
-        include_version(tmpdir, version_obj)
+        include_version(tmpdir, version_obj, hardlink=False)
         bundle_obj_notondisk, version_obj_notondisk = store.add_bundle(data=bundle_data_notondisk)
         store.add_commit(bundle_obj_notondisk)
-        include_version(tmpdir, version_obj_notondisk)
+        include_version(tmpdir, version_obj_notondisk, hardlink=False)
 
     query = store.files_before()
 

@@ -11,7 +11,7 @@ BLOCKSIZE = 65536
 log = logging.getLogger(__name__)
 
 
-def include_version(global_root: str, version_obj: models.Version):
+def include_version(global_root: str, version_obj: models.Version, hardlink:bool=True):
     """Include files in existing bundle version."""
     global_root_dir = Path(global_root)
     if version_obj.included_at:
@@ -24,8 +24,12 @@ def include_version(global_root: str, version_obj: models.Version):
 
     for file_obj in version_obj.files:
         # hardlink file to the internal structure
-        new_path = version_root_dir / Path(file_obj.path).name
-        os.link(file_obj.path, new_path)
+        file_obj_path = Path(file_obj.path)
+        new_path = version_root_dir / file_obj_path.name
+        if hardlink:
+            os.link(file_obj_path.resolve(), new_path)
+        else:
+            os.symlink(file_obj_path.resolve(), new_path)
         log.info(f"linked file: {file_obj.path} -> {new_path}")
         file_obj.path = str(new_path).replace(f"{global_root_dir}/", '', 1)
 
