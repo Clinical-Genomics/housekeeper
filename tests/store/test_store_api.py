@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import datetime
 from copy import deepcopy
 
@@ -44,12 +45,24 @@ def test_delete_none(store, bundle_data, bundle_data_old):
     assert len(query.all()) == 0
 
 
-def test_delete_notondisk(store, bundle_data):
+def test_delete_notondisk(store, tmpdir, bundle_data):
     """
     test deletion of files that are not on disk
     """
 
-    with tempfile.NamedTemporaryFile(delete=False) as file1:
+    def include_version(global_root: str, version_obj):
+
+        global_root_path = Path(global_root)
+        version_root_dir = global_root_path / version_obj.relative_root_dir
+        version_root_dir.mkdir(parents=True, exist_ok=True)
+
+        for file_obj in version_obj.files:
+            # softlink file to the internal structure
+            new_path = version_root_dir / Path(file_obj.path).name
+            os.symlink(Path(file_obj.path).resolve(), new_path)
+            file_obj.path = str(new_path).replace(f"{global_root_path}/", '', 1)
+
+    with tempfile.NamedTemporaryFile(delete=True) as file1:
 
         bundle_data_notondisk = deepcopy(bundle_data)
         bundle_data_notondisk['files'][0]['path']=file1.name
@@ -59,15 +72,15 @@ def test_delete_notondisk(store, bundle_data):
 
         bundle_obj, version_obj = store.add_bundle(data=bundle_data)
         store.add_commit(bundle_obj)
-        bundle_obj_notondisk, version_old_notondisk = store.add_bundle(data=bundle_data_notondisk)
+        include_version(tmpdir, version_obj)
+        bundle_obj_notondisk, version_obj_notondisk = store.add_bundle(data=bundle_data_notondisk)
         store.add_commit(bundle_obj_notondisk)
-
-        Path(file1.name).unlink()
+        include_version(tmpdir, version_obj_notondisk)
 
     query = store.files_before()
 
     assert len(query.all()) == 4
 
-    file_obj_list = set(query) - store.files_ondisk(query)
+    files_notondisk = set(query) - store.files_ondisk(query)
 
-    assert len(file_obj_list) == 1
+    assert len(files_notondisk) == 1
