@@ -70,8 +70,9 @@ def files(context, yes, tag, bundle, before, notondisk):
 
     for file_obj in file_objs:
         if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
-            if file_obj.is_included and Path(file_obj.full_path).exists():
-                Path(file_obj.full_path).unlink()
+            file_obj_path = Path(file_obj.full_path)
+            if file_obj.is_included and (file_obj_path.exists() or file_obj_path.is_symlink()):
+                file_obj_path.unlink()
             file_obj.delete()
             context.obj['store'].commit()
             click.echo(f'{file_obj.full_path} deleted')
