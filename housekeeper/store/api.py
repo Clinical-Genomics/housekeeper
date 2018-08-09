@@ -3,6 +3,7 @@ import datetime as dt
 import logging
 from typing import List
 from pathlib import Path
+from dateutil.parser import parse as parse_date
 
 import alchy
 from sqlalchemy import func
@@ -65,7 +66,8 @@ class BaseHandler:
         """Get a file by record id."""
         return self.File.get(file_id)
 
-    def files(self, *, bundle: str=None, tags: List[str]=None, version: int=None, path: str=None):
+    def files(self, *, bundle: str=None, tags: List[str]=None, version: int=None,
+              path: str=None) -> models.File:
         """Fetch files from the store."""
         query = self.File.query
         if bundle:
@@ -90,6 +92,23 @@ class BaseHandler:
         return query
 
 
+    def files_before(self, *, bundle: str=None, tags: List[str]=None, before:
+                     str=None) -> models.File:
+        """Fetch files before date from store"""
+        query = self.files(tags=tags, bundle=bundle)
+        if before:
+            before_dt = parse_date(before)
+            query = query.join(models.Version).filter(models.Version.created_at < before_dt)
+
+        return query
+
+
+    def files_ondisk(self, file_objs: models.File) -> set:
+        """Returns a list of files that are not on disk."""
+
+        return set([ file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file() ])
+
+
 class Store(alchy.Manager, BaseHandler, AddHandler):
 
     """
@@ -102,5 +121,5 @@ class Store(alchy.Manager, BaseHandler, AddHandler):
 
     def __init__(self, uri: str, root: str):
         super(Store, self).__init__(config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=models.Model)
-        self.File.root_dir = Path(root)
+        self.File.app_root = Path(root)
         self.Version.app_root = Path(root)

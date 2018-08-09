@@ -32,4 +32,6 @@ while read RUN; do
         rm -rf /mnt/hds/proj/bioinfo/DEMUX/${RUN}/Unaligned*/
         rm -rf /mnt/hds/proj/bioinfo/DEMUX/${RUN}/l?t??/
     fi
+
+    cg set flowcell ${FC} --status removed
 done < ${FCS_FILE}

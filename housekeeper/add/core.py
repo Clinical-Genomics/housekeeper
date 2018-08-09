@@ -36,6 +36,7 @@ class AddHandler:
             new_file = self.new_file(file_data['path'], to_archive=file_data['archive'], tags=tags)
             version_obj.files.append(new_file)
 
+        version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
 
     def _build_tags(self, tag_names: List[str]) -> dict:

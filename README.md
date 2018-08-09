@@ -65,8 +65,23 @@ housekeeper myBundle
 
 This will only work if the bundle only has a single version which can be "imported". If you want to import a specific version of a bundle you can use the `--version` option.
 
-[pypi]: https://pypi.python.org/pypi/trailblazer/
+#### Command: `delete files`
 
+Delete files that are not on disk anymore like his:
+`housekeeper delete files --tag fastq --notondisk`
+
+Remove all bam files before a certain date:
+`housekeeper delete files --tag bam --before 2017-06-15`
+
+Remove fastq files from a flowcell:
+`housekeeper delete files --tag fastq --tag H0HKKALXX`
+
+It'll always ask for confirmation, unless you add --yes:
+`housekeeper delete files --bundle sillyfish --yes`
+
+If you do not provide a --tag or --bundle, essentially deleting everything, the function will not let you do that.
+
+[pypi]: https://pypi.python.org/pypi/housekeeper/
 [travis-url]: https://travis-ci.org/Clinical-Genomics/housekeeper
 [travis-image]: https://img.shields.io/travis/Clinical-Genomics/housekeeper.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/Clinical-Genomics/housekeeper
