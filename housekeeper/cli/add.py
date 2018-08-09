@@ -3,6 +3,7 @@ from pathlib import Path
 from typing import List
 
 import click
+import datetime as dt
 
 from housekeeper.store import Store
 
@@ -16,21 +17,31 @@ def add(context):
 
 @add.command()
 @click.argument('name')
+@click.argument('new-version', 'new_version', is_flag=true)
 @click.pass_context
-def bundle(context, name):
+def bundle(context, name, new_version):
     """Add a new bundle."""
-    if context.obj['db'].bundle(name):
+    cur_bundle = context.obj['db'].bundle(name)
+    if not new_version and cur_bundle:
         click.echo(click.style('bundle name already exists', fg='yellow'))
         context.abort()
-    new_bundle = context.obj['db'].new_bundle(name)
-    context.obj['db'].add_commit(new_bundle)
+
+    if not new_version:
+        new_bundle = context.obj['db'].new_bundle(name)
+        context.obj['db'].add_commit(new_bundle)
+        created_at = new_bundle.created_at
+    else:
+        created_at = dt.datetime.now()
 
     # add default version
-    new_version = context.obj['db'].new_version(created_at=new_bundle.created_at)
-    new_version.bundle = new_bundle
+    new_version = context.obj['db'].new_version(created_at=created_at)
+    new_version.bundle = cur_bundle if cur_bundle else new_bundle
     context.obj['db'].add_commit(new_version)
 
-    click.echo(click.style(f"new bundle added: {new_bundle.name} ({new_bundle.id})", fg='green'))
+    if new_version:
+        click.echo(click.style(f"new version added: {cur_bundle.name} ({new_version.created_at})", fg='green'))
+    else:
+        click.echo(click.style(f"new bundle added: {new_bundle.name} ({new_bundle.id})", fg='green'))
 
 
 @add.command('file')
