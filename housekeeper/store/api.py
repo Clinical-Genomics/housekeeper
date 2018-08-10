@@ -123,3 +123,4 @@ class Store(alchy.Manager, BaseHandler, AddHandler):
         super(Store, self).__init__(config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=models.Model)
         self.File.app_root = Path(root)
         self.Version.app_root = Path(root)
+        self.Bundle.app_root = Path(root)

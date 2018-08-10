@@ -28,6 +28,12 @@ class Bundle(Model):
     created_at = Column(types.DateTime, default=dt.datetime.now)
     versions = orm.relationship('Version', backref='bundle', order_by='-Version.created_at', cascade='delete, save-update')
 
+    app_root = None
+
+    @property
+    def full_path(self):
+        return Path(self.app_root) / self.name
+
 
 class Version(Model):
 
