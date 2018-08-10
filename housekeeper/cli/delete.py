@@ -18,22 +18,46 @@ def delete(context):
 @click.argument('bundle_name')
 @click.pass_context
 def bundle(context, yes, bundle_name):
-    """Delete the latest bundle version."""
+    """Delete all versions of a bundle."""
     bundle_obj = context.obj['store'].bundle(bundle_name)
     if bundle_obj is None:
         click.echo(click.style('bundle not found', fg='red'))
         context.abort()
-    version_obj = bundle_obj.versions[0]
-    if version_obj.included_at:
-        question = f"remove bundle version from file system and database: {version_obj.full_path}"
+
+    versions_obj = bundle_obj.versions
+    creation_dates = [version.created_at.strftime('%Y-%m-%d') for version in versions_obj]
+    if len(creation_dates) > 1:
+        echo_dates = ", ".join(creation_dates[:-1]) + " and " + creation_dates[-1]
     else:
-        question = f"remove bundle version from database: {version_obj.created_at.date()}"
-    if yes or click.confirm(question):
-        if version_obj.included_at:
-            shutil.rmtree(version_obj.full_path, ignore_errors=True)
-        version_obj.delete()
+        echo_dates = creation_dates[0]
+
+    question = f"Remove all versions from bundle {bundle_name} with the following creation " \
+               f"date(s): {echo_dates}?"
+    if yes or click.confirm(click.style(question, fg='yellow')):
+        # delete bundle and all versions fomr disk
+        shutil.rmtree(bundle_obj.full_path, ignore_errors=True)
+        # delete all files belonging to bundle from housekeeper
+        files_query = context.obj['store'].files(bundle=bundle_obj.name)
+        for file_obj in files_query:
+            file_obj.delete()
+        # delete all versions in bundle from housekeeper
+        for version_obj in versions_obj:
+            click.echo(click.style(f"version deleted: "
+                                   f"{version_obj.created_at.strftime('%Y-%m-%d')} of bundle "
+                                   f"{bundle_obj.name}", fg='green'))
+            version_obj.delete()
+            #  TODO: error message when not commiting right after deleting version from database.
+            #  Check cascading in Model!
+            context.obj['store'].commit()
+        # delete bundle from housekeeper
+        bundle_obj.delete()
         context.obj['store'].commit()
-        click.echo(f"version deleted: {version_obj.full_path}")
+
+    # version_obj = bundle_obj.versions[0]
+    # if version_obj.included_at:
+    #     question = f"remove bundle version from file system and database: {version_obj.full_path}"
+    # else:
+    #     question = f"remove bundle version from database: {version_obj.created_at.date()}"
 
 
 @delete.command()
