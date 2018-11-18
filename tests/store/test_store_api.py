@@ -60,11 +60,11 @@ def test_delete_notondisk(store, tmpdir, bundle_data):
         bundle_data_notondisk['name']='angrybird'
 
         bundle_obj, version_obj = store.add_bundle(data=bundle_data)
-        store.add_commit(bundle_obj)
         include_version(tmpdir, version_obj, hardlink=False)
+        store.add_commit(bundle_obj)
         bundle_obj_notondisk, version_obj_notondisk = store.add_bundle(data=bundle_data_notondisk)
-        store.add_commit(bundle_obj_notondisk)
         include_version(tmpdir, version_obj_notondisk, hardlink=False)
+        store.add_commit(bundle_obj_notondisk)
 
     query = store.files_before()
 
