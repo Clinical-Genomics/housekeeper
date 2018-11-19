@@ -37,6 +37,14 @@ class BaseHandler:
                                     models.Version.created_at == date)
                             .first())
 
+    def latest_version(self, bundle: str) -> models.Version:
+        """Fetch latest version of bundle from the store."""
+        return (self.Version.query
+                            .join(models.Version.bundle)
+                            .filter(models.Bundle.name == bundle)
+                            .order_by(models.Version.created_at.desc())
+                            .first())
+
     def tag(self, name: str) -> models.Tag:
         """Fetch a tag from the database."""
         return self.Tag.filter_by(name=name).first()

@@ -4,6 +4,7 @@ import tempfile
 import dateutil
 
 import pytest
+from pathlib import Path
 
 from housekeeper import include
 from housekeeper.store import models, Store
@@ -66,9 +67,25 @@ def bundle_data_old():
     return data
 
 
+@pytest.fixture(scope='function')
+def bundle_file_1():
+    return 'tests/fixtures/example.vcf'
+
+
+@pytest.fixture(scope='function')
+def bundle_file_2():
+    return 'tests/fixtures/family.vcf'
+
+
+@pytest.fixture(scope='function')
+def store_url(tmpdir):
+    database_path = Path(tmpdir).joinpath('database.sqlite')
+    return 'sqlite:///' + str(database_path)
+
+
 @pytest.yield_fixture(scope='function')
-def store(tmpdir):
-    _store = Store(uri='sqlite://', root=str(tmpdir))
+def store(store_url, tmpdir):
+    _store = Store(uri=store_url, root=str(tmpdir))
     _store.create_all()
     yield _store
-    _store.drop_all()
+#    _store.drop_all()

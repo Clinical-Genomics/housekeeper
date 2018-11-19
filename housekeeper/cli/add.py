@@ -36,16 +36,20 @@ def bundle(context, name):
 @add.command('file')
 @click.option('-t', '--tag', 'tags', multiple=True, help='tag to associate the file by')
 @click.option('-a', '--archive', is_flag=True, help='mark file to be archived')
+@click.option('-v', '--version', help='add to this version instead of latest')
 @click.argument('bundle_name')
 @click.argument('path')
 @click.pass_context
-def file_cmd(context, tags, archive, bundle_name, path):
-    """Add a file to a bundle."""
-    bundle_obj = context.obj['db'].bundle(bundle_name)
-    if bundle_obj is None:
+def file_cmd(context, tags, archive, version, bundle_name, path):
+    """Add a file to latest version of a bundle."""
+    if version:
+        version_obj = context.obj['db'].version(bundle=bundle_name, date=version)
+    else:
+        version_obj = context.obj['db'].latest_version(bundle=bundle_name)
+
+    if version_obj is None:
         click.echo(click.style(f"unknown bundle: {bundle_name}", fg='red'))
         context.abort()
-    version_obj = bundle_obj.versions[0]
     new_file = context.obj['db'].new_file(
         path=str(Path(path).absolute()),
         to_archive=archive,
