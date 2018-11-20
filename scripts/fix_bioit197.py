@@ -28,8 +28,6 @@ def main(argv):
         cases = ruamel.yaml.safe_load(cases_file)
 
         for current_case in cases.keys():
-            #if current_case != 'ableakita':
-            #    continue
             for file_type in ('vcf', 'selected'):
                 current_selected = Path(cases[current_case]['original_vcf_paths'][file_type].replace(old_root, root))
                 correct_selected = Path(cases[current_case]['corrected_vcf_paths'][file_type].replace(old_root, root))
@@ -75,7 +73,6 @@ def main(argv):
                 except IntegrityError:
                     store.session.rollback()
                     print(f"file already in db: {broken_selected}")
-                sys.exit()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
