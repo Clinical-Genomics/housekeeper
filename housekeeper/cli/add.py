@@ -36,7 +36,7 @@ def bundle(context, name):
 @add.command('file')
 @click.option('-t', '--tag', 'tags', multiple=True, help='tag to associate the file by')
 @click.option('-a', '--archive', is_flag=True, help='mark file to be archived')
-@click.option('-v', '--version', help='the creation datetime of the version')
+@click.option('-v', '--version', help='creation datetime of the version [Y-m-d H:M:S]')
 @click.argument('bundle_name')
 @click.argument('path')
 @click.pass_context
