@@ -88,4 +88,4 @@ def store(store_url, tmpdir):
     _store = Store(uri=store_url, root=str(tmpdir))
     _store.create_all()
     yield _store
-#    _store.drop_all()
+    _store.drop_all()
