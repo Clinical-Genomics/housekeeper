@@ -1,9 +1,8 @@
-from pathlib import Path
 import shutil
+from pathlib import Path
 
 import click
-
-from housekeeper.store import Store, models
+from housekeeper.store import Store
 
 
 @click.group()
@@ -39,30 +38,41 @@ def bundle(context, yes, bundle_name):
 @delete.command()
 @click.option('--yes', multiple=True, is_flag=True, help='skip checks')
 @click.option('-t', '--tag', multiple=True, help='file tag')
-@click.option('-b', '--bundle', help='bundle name')
+@click.option('-b', '--bundle-name', help='bundle name')
 @click.option('-a', '--before', help='version created before...')
 @click.option('-n', '--notondisk', is_flag=True, help='rm db entry from files not on disk')
+@click.option('-l', '--list-files', is_flag=True, help='lists files that will be deleted')
+@click.option('-L', '--list-files-verbose', is_flag=True, help='lists additional information')
 @click.pass_context
-def files(context, yes, tag, bundle, before, notondisk):
+def files(context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose):
     """Delete files based on tags."""
     file_objs = []
 
-    if not tag and not bundle:
+    if not tag and not bundle_name:
         click.echo("I'm afraid I can't let you do that.")
         context.abort()
 
-    if bundle:
-        bundle_obj = context.obj['store'].bundle(bundle)
+    if bundle_name:
+        bundle_obj = context.obj['store'].bundle(bundle_name)
         if bundle_obj is None:
             click.echo(click.style('bundle not found', fg='red'))
             context.abort()
 
-    query = context.obj['store'].files_before(bundle = bundle, tags = tag, before = before)
+    query = context.obj['store'].files_before(bundle=bundle_name, tags=tag, before=before)
 
     if notondisk:
         file_objs = set(query) - context.obj['store'].files_ondisk(query)
     else:
         file_objs = query.all()
+
+    if list_files_verbose:
+        for file_obj in file_objs:
+            tags = ', '.join(tag.name for tag in file_obj.tags)
+            click.echo(f"{click.style(str(file_obj.id), fg='blue')} | {file_obj.full_path} | "
+                       f"{click.style(tags, fg='yellow')}")
+    elif list_files:
+        for file_obj in file_objs:
+            click.echo(file_obj.full_path)
 
     if len(file_objs) > 0 and len(yes) < 2:
         if not click.confirm(f"Are you sure you want to delete {len(file_objs)} files?"):
