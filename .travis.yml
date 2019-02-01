@@ -4,11 +4,15 @@ language: python
 python:
   - '3.6'
 
+before_install:
+  - pip install git-lint pylint pycodestyle yamllint docutils html-linter
+  - git reset --soft ${TRAVIS_COMMIT_RANGE%...*} && git lint
+
 install:
   - pip install -q -r requirements-dev.txt .
 
 script:
-  - coverage run --source housekeeper setup.py test
+  - coverage run --source "$(basename "$PWD")" setup.py test
 
 after_success: coveralls
 

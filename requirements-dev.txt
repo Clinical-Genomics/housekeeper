@@ -1,4 +1,10 @@
-pytest
+pytest>=3.6
 pytest-cov
 coveralls
 pytest-flask
+git-lint
+pylint
+pycodestyle
+yamllint
+docutils
+html-linter
