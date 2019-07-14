@@ -90,3 +90,4 @@ If you do not provide a --tag or --bundle, essentially deleting everything, the 
 [travis-image]: https://img.shields.io/travis/Clinical-Genomics/housekeeper.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/Clinical-Genomics/housekeeper
 [coveralls-image]: https://img.shields.io/coveralls/Clinical-Genomics/housekeeper.svg?style=flat-square
+[development manual]: http://www.clinicalgenomics.se/development/dev/githubflow/
