@@ -30,6 +30,10 @@ cd housekeeper
 pip install --editable .
 ```
 
+## Contributing
+
+Housekeeper is using github flow branching model as described in our [development manual][development manual].
+
 ## Documentation
 
 ### Command line interface
