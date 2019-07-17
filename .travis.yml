@@ -1,8 +1,9 @@
 ---
+dist: xenial
 language: python
-
 python:
   - '3.6'
+  - '3.7'
 
 before_install:
   - pip install git-lint pylint pycodestyle yamllint docutils html-linter
@@ -18,8 +19,6 @@ after_success: coveralls
 
 notifications:
   email: false
-  slack:
-    secure: xjtJOKsJolsv/dtDgxG742XN8l9RGVbW9gLMG6aiPqXl2j273SJd4dQeG+bU66hD+XlsBa7pfNx/KQUw6AECCIZyM4AbNhckKihgkFJbjM+iyqzMry6y4qZjsY34I2T9hwPlOtL9/pz3PcmH/oz1XNOaEjggcCJ1it1f5Lksqz/qx6iSra7WSaIxxYl1PYMS2eBDNNz/7o4okZdz8tmTOVbum9PaPI9bZDZ9QPnWXD4iaOEBVnhGmGaKVHW1jJ8D30Lfjq4rVBXsQ/W+bh8SqXVMT4RTJ1RVcLVzfBhhrIOtP5GY8I8E64FSCZno6iEaMxRoxEk4heKmtwFW/egbIld1gfqyOkZmTjS0UN19r1HDeOjW/J3vFXtBOw9VrUbraoD6TmzaWzrdBwBq2zwtDZVzWqD+v+D0I3ybSIUv/9H8dHL3oyDPUYRO8f54uM3GkJtbgCtZppuuzswmbLXSOVQ3ZL3dg0IgV4D2udVeiJxz2Zf3G/IAzhPFUy/Xzofg8q01Cycoa9907Gb/Jwk+I0rp0d5QwiSCoyDkOksIs1Kbe3i2q4ijNKhcrVDan+5jDUcBHy3Now3tn/yH18/iwigiSrfiKdBONE2GRVMYMGXz44hax9tE+HKnVWEdkXJC3onRdqbzhV3u8AaRoO+BM7FYo9CUMQ/zUV1bZZ/Zefk=
 
 deploy:
   provider: pypi
