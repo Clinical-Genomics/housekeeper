@@ -2,9 +2,9 @@
 from pathlib import Path
 
 import ruamel.yaml
+from housekeeper.store import Store
 
 import housekeeper
-from housekeeper.store import Store
 
 
 def test_cli_version(invoke_cli):
@@ -63,7 +63,8 @@ def test_cli_init(cli_runner, invoke_cli):
 def test_cli_delete_files(tmpdir, invoke_cli, bundle_data):
     config_file = tmpdir.join('config.yaml')
     database_path = Path(tmpdir).joinpath('database.sqlite')
-    config_file.write(ruamel.yaml.safe_dump(dict(root=str(tmpdir), database='sqlite:///' + str(database_path))))
+    config_file.write(
+        ruamel.yaml.safe_dump(dict(root=str(tmpdir), database='sqlite:///' + str(database_path))))
     store = Store(uri='sqlite:///' + str(database_path), root=str(tmpdir))
     store.create_all()
 
@@ -74,7 +75,8 @@ def test_cli_delete_files(tmpdir, invoke_cli, bundle_data):
     assert result.output == "I'm afraid I can't let you do that.\nAborted!\n"
 
     # GIVEN you want to delete a not existing bundle
-    result = invoke_cli(['--config', str(config_file),'delete', 'files', '--bundle', 'sillyfish'])
+    result = invoke_cli(['--config', str(config_file), 'delete', 'files', '--bundle-name',
+                         'sillyfish'])
     # THEN it should not be found
     assert result.exit_code == 1
     assert result.output == "bundle not found\nAborted!\n"
@@ -82,7 +84,8 @@ def test_cli_delete_files(tmpdir, invoke_cli, bundle_data):
     # GIVEN you want to delete a bundle
     bundle_obj, version_obj = store.add_bundle(data=bundle_data)
     store.add_commit(bundle_obj)
-    result = invoke_cli(['--config', str(config_file),'delete', 'files', '--bundle', 'sillyfish'])
+    result = invoke_cli(
+        ['--config', str(config_file), 'delete', 'files', '--bundle-name', 'sillyfish'])
     # THEN it should ask you if you are sure
     assert result.exit_code == 1
     assert result.output == "Are you sure you want to delete 2 files? [y/N]: \nAborted!\n"
