@@ -29,12 +29,17 @@ class AddHandler:
         tag_map = self._build_tags(tag_names)
 
         for file_data in data['files']:
-            LOG.debug(f"adding file: {file_data['path']}")
-            if not Path(file_data['path']).exists():
-                raise FileNotFoundError(file_data['path'])
-            tags = [tag_map[tag_name] for tag_name in file_data['tags']]
-            new_file = self.new_file(file_data['path'], to_archive=file_data['archive'], tags=tags)
-            version_obj.files.append(new_file)
+            if isinstance(file_data['path'], str):
+                paths = [file_data['path']]
+            else:
+                paths = file_data['path']
+            for path in paths:
+                LOG.debug(f"adding file: {path}")
+                if not Path(path).exists():
+                    raise FileNotFoundError(path)
+                tags = [tag_map[tag_name] for tag_name in file_data['tags']]
+                new_file = self.new_file(path, to_archive=file_data['archive'], tags=tags)
+                version_obj.files.append(new_file)
 
         version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
