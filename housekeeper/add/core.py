@@ -34,7 +34,7 @@ class AddHandler:
             else:
                 paths = file_data['path']
             for path in paths:
-                LOG.debug(f"adding file: {path}")
+                LOG.debug("adding file: %s", path)
                 if not Path(path).exists():
                     raise FileNotFoundError(path)
                 tags = [tag_map[tag_name] for tag_name in file_data['tags']]
@@ -50,7 +50,7 @@ class AddHandler:
         for tag_name in tag_names:
             tag_obj = self.tag(tag_name)
             if tag_obj is None:
-                LOG.debug(f"create new tag: {tag_name}")
+                LOG.debug("create new tag: %s", tag_name)
                 tag_obj = self.new_tag(tag_name)
             tags[tag_name] = tag_obj
         return tags
