@@ -109,7 +109,12 @@ class BaseHandler:
         return set([ file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file() ])
 
 
-class Store(alchy.Manager, BaseHandler, AddHandler):
+class CoreHandler(BaseHandler, AddHandler):
+    """Aggregating class for the store api handlers"""
+    pass
+
+
+class Store(alchy.Manager, CoreHandler):
 
     """
     Handles interactions with the database in the context when a temporary
