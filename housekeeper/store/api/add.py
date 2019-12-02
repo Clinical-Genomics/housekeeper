@@ -8,6 +8,7 @@ import datetime as dt
 
 from housekeeper.store import models
 from housekeeper.store.api.base import BaseHandler
+from housekeeper.store.api.find import FindHandler
 
 
 LOG = logging.getLogger(__name__)
@@ -15,6 +16,11 @@ LOG = logging.getLogger(__name__)
 
 class AddHandler(BaseHandler):
     """Handles adding things to the store"""
+
+    def __init__(self):
+        self.version = FindHandler.version
+        self.bundle = FindHandler.bundle
+        self.tag = FindHandler.tag
 
     def add_bundle(self, data: dict) -> models.Bundle:
         """Build a new bundle version of files.
