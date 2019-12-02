@@ -18,9 +18,10 @@ class AddHandler(BaseHandler):
     """Handles adding things to the store"""
 
     def __init__(self):
-        self.version = FindHandler.version
-        self.bundle = FindHandler.bundle
-        self.tag = FindHandler.tag
+        super().__init__()
+        AddHandler.version = FindHandler.version
+        AddHandler.bundle = FindHandler.bundle
+        AddHandler.tag = FindHandler.tag
 
     def add_bundle(self, data: dict) -> models.Bundle:
         """Build a new bundle version of files.
