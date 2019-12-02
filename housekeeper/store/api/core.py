@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-import datetime as dt
+"""This is a core module for the Store API"""
+
 import logging
-from typing import List
-from dateutil.parser import parse as parse_date
 from pathlib import Path
 
 import alchy
@@ -11,9 +10,7 @@ from housekeeper.store.api.add import AddHandler
 from housekeeper.store.api.find import FindHandler
 from housekeeper.store import models
 
-log = logging.getLogger(__name__)
-
-
+LOG = logging.getLogger(__name__)
 
 
 class CoreHandler(FindHandler, AddHandler):
