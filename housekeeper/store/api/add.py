@@ -2,13 +2,17 @@
 import logging
 from pathlib import Path
 from typing import List
+import datetime as dt
 
 from housekeeper.store import models
+from housekeeper.store.api.base import BaseHandler
+from housekeeper.store.api.find import FindHandler
+
 
 LOG = logging.getLogger(__name__)
 
 
-class AddHandler:
+class AddHandler(BaseHandler):
 
     def add_bundle(self, data: dict) -> models.Bundle:
         """Build a new bundle version of files.
@@ -54,3 +58,25 @@ class AddHandler:
                 tag_obj = self.new_tag(tag_name)
             tags[tag_name] = tag_obj
         return tags
+
+    def new_bundle(self, name: str, created_at: dt.datetime=None) -> models.Bundle:
+        """Create a new file bundle."""
+        new_bundle = self.Bundle(name=name, created_at=created_at)
+        return new_bundle
+
+    def new_version(self, created_at: dt.datetime, expires_at: dt.datetime=None) -> models.Version:
+        """Create a new bundle version."""
+        new_version = self.Version(created_at=created_at, expires_at=expires_at)
+        return new_version
+
+    def new_file(self, path: str, checksum: str=None, to_archive: bool=False,
+                 tags: List[models.Tag]=None) -> models.File:
+        """Create a new file."""
+        new_file = self.File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
+        return new_file
+
+    def new_tag(self, name: str, category: str=None) -> models.Tag:
+        """Create a new tag."""
+        new_tag = self.Tag(name=name, category=category)
+        return new_tag
+
