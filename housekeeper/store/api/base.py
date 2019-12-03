@@ -1,4 +1,5 @@
 """This module defines a BaseHandler class holding different models"""
+# pylint: disable=invalid-name
 from dataclasses import dataclass
 
 from housekeeper.store import models
