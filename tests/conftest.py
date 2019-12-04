@@ -66,6 +66,36 @@ def bundle_data_old():
     return data
 
 
+@pytest.fixture(scope='function')
+def rna_bundle_data_one_file():
+    data = {
+        'name': 'finequagga',
+        'created': datetime.datetime.now(),
+        'expires': datetime.datetime.now(),
+        'files': [{
+            'path': 'tests/fixtures/example.vcf',
+            'archive': False,
+            'tags': ['vcf', 'sample']
+        }]
+    }
+    return data
+
+
+@pytest.fixture(scope='function')
+def rna_bundle_data_two_files():
+    data = {
+        'name': 'finequagga',
+        'created': datetime.datetime.now(),
+        'expires': datetime.datetime.now(),
+        'files': [{
+            'path': ['tests/fixtures/example.vcf', 'tests/fixtures/example.2.vcf'],
+            'archive': False,
+            'tags': ['vcf', 'sample']
+        }]
+    }
+    return data
+
+
 @pytest.yield_fixture(scope='function')
 def store(tmpdir):
     _store = Store(uri='sqlite://', root=str(tmpdir))
