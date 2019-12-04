@@ -68,6 +68,7 @@ def bundle_data_old():
 
 @pytest.fixture(scope='function')
 def rna_bundle_data_one_file():
+    """test fixture"""
     data = {
         'name': 'finequagga',
         'created': datetime.datetime.now(),
@@ -83,6 +84,7 @@ def rna_bundle_data_one_file():
 
 @pytest.fixture(scope='function')
 def rna_bundle_data_two_files():
+    """test fixture"""
     data = {
         'name': 'finequagga',
         'created': datetime.datetime.now(),
