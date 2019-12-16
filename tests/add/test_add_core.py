@@ -83,7 +83,7 @@ def test_rna_add_one_file_per_type(store, rna_bundle_data_one_file):
     bundle_obj, version_obj = store.add_bundle(rna_bundle_data_one_file)
     # THEN that one file should be added to the version object
     assert len(version_obj.files) == 1
-    assert version_obj.files[0]['path'] == 'tests/fixtures/example.vcf'
+    assert version_obj.files[0]['path'] == rna_bundle_data_one_file['files'][0]['path']
     assert version_obj.bundle == bundle_obj
 
 
@@ -94,6 +94,6 @@ def test_rna_add_two_files_per_type(store, rna_bundle_data_two_files):
     bundle_obj, version_obj = store.add_bundle(rna_bundle_data_two_files)
     # THEN that both files should be added to the version object
     assert len(version_obj.files) == 2
-    assert version_obj.files[0]['path'] == 'tests/fixtures/example.vcf'
-    assert version_obj.files[1]['path'] == 'tests/fixtures/example.2.vcf'
+    assert version_obj.files[0]['path'] == rna_bundle_data_two_files['files'][0]['path'][0]
+    assert version_obj.files[1]['path'] == rna_bundle_data_two_files['files'][0]['path'][1]
     assert version_obj.bundle == bundle_obj
