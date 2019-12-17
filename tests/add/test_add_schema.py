@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from housekeeper.add import schema
+from housekeeper.store.api import schema
 
 
 def test_schema_with_valid_input(bundle_data_json):
