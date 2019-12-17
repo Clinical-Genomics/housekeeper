@@ -92,6 +92,7 @@ def test_rna_add_one_file_per_type(store, rna_bundle_data_one_file):
 def test_rna_add_two_files_per_type(store, rna_bundle_data_two_files):
     # GIVEN two files for a given file type
     assert isinstance(rna_bundle_data_two_files['files'][0]['path'], list)
+
     # WHEN adding the paths to the version object
     bundle_obj, version_obj = store.add_bundle(rna_bundle_data_two_files)
     # THEN that both files should be added to the version object
