@@ -1,10 +1,15 @@
 pytest>=3.6
+coverage<5
 pytest-cov
 coveralls
-pytest-flask
+pytest-mock
 git-lint
 pylint
 pycodestyle
 yamllint
 docutils
 html-linter
+tidy
+python-coveralls
+black
+pre-commit
