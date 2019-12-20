@@ -10,6 +10,7 @@ yamllint
 docutils
 html-linter
 tidy
+six>=1.12                   # due to astroid 2.3.3
 python-coveralls
 black
 pre-commit
