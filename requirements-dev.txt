@@ -1,10 +1,16 @@
 pytest>=3.6
+coverage<5
 pytest-cov
 coveralls
-pytest-flask
+pytest-mock
 git-lint
 pylint
 pycodestyle
 yamllint
 docutils
 html-linter
+tidy
+six>=1.12                   # due to astroid 2.3.3
+python-coveralls
+black
+pre-commit
