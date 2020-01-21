@@ -32,7 +32,7 @@ jobs:
       script: pip check
 
     - name: "Coverage"
-      if: NOT type = pull_request
+      if: NOT type = push
       install:
         - pip install -U cython
         - pip install -U -r requirements.txt -r requirements-dev.txt .
