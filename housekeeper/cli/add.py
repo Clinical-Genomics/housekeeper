@@ -57,11 +57,11 @@ def file_cmd(context, tags, archive, bundle_name, path):
     click.echo(click.style(f"new file added: {new_file.path} ({new_file.id})", fg='green'))
 
 
-@add.command()
+@add.command('file-tags')
 @click.argument('file_id', type=int)
 @click.argument('tags', nargs=-1)
 @click.pass_context
-def tag(context: click.Context, file_id: int, tags: List[str]):
+def file_tags(context: click.Context, file_id: int, tags: List[str]):
     """Add tags to an existing file."""
     file_obj = context.obj['db'].file_(file_id)
     if file_obj is None:
@@ -78,3 +78,17 @@ def tag(context: click.Context, file_id: int, tags: List[str]):
     context.obj['db'].commit()
     all_tags = (tag.name for tag in file_obj.tags)
     print(click.style(f"file tags: {', '.join(all_tags)}", fg='blue'))
+
+
+@add.command()
+@click.argument('name')
+@click.pass_context
+def tag(context, name):
+    """Add a new tag."""
+    if context.obj['db'].tag(name):
+        click.echo(click.style('tag name already exists', fg='yellow'))
+        context.abort()
+    new_tag = context.obj['db'].new_tag(name)
+    context.obj['db'].add_commit(new_tag)
+
+    click.echo(click.style(f"new tag added: {new_tag.name} ({new_tag.id})", fg='green'))
