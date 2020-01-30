@@ -57,38 +57,39 @@ def file_cmd(context, tags, archive, bundle_name, path):
     click.echo(click.style(f"new file added: {new_file.path} ({new_file.id})", fg='green'))
 
 
-@add.command('file-tags')
-@click.argument('file_id', type=int)
+@add.command()
+@click.argument('file_id', type=int, required=False)
 @click.argument('tags', nargs=-1)
 @click.pass_context
-def file_tags(context: click.Context, file_id: int, tags: List[str]):
+def tag(context: click.Context, tags: List[str], file_id: int=None):
     """Add tags to an existing file."""
-    file_obj = context.obj['db'].file_(file_id)
-    if file_obj is None:
-        print(click.style('unable to find file', fg='red'))
-        context.abort()
+
+    if file_id:
+        file_obj = context.obj['db'].file_(file_id)
+        if not file_obj:
+            print(click.style('unable to find file', fg='red'))
+            context.abort()
+
     for tag_name in tags:
         tag_obj = context.obj['db'].tag(tag_name)
-        if tag_obj is None:
+
+        if not tag_obj:
+            print(click.style(f"{tag_name}: tag created", fg='green'))
             tag_obj = context.obj['db'].new_tag(tag_name)
-        elif tag_obj in file_obj.tags:
+
+        if not file_obj:
+            continue
+
+        if tag_obj in file_obj.tags:
             print(click.style(f"{tag_name}: tag already added", fg='yellow'))
             continue
+
         file_obj.tags.append(tag_obj)
+
     context.obj['db'].commit()
+
+    if not file_obj:
+        context.exit()
+
     all_tags = (tag.name for tag in file_obj.tags)
     print(click.style(f"file tags: {', '.join(all_tags)}", fg='blue'))
-
-
-@add.command()
-@click.argument('name')
-@click.pass_context
-def tag(context, name):
-    """Add a new tag."""
-    if context.obj['db'].tag(name):
-        click.echo(click.style('tag name already exists', fg='yellow'))
-        context.abort()
-    new_tag = context.obj['db'].new_tag(name)
-    context.obj['db'].add_commit(new_tag)
-
-    click.echo(click.style(f"new tag added: {new_tag.name} ({new_tag.id})", fg='green'))
