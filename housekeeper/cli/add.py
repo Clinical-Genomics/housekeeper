@@ -58,8 +58,8 @@ def file_cmd(context, tags, archive, bundle_name, path):
 
 
 @add.command()
-@click.argument('file_id', type=int, required=False)
 @click.argument('tags', nargs=-1)
+@click.option('-f', '--file-id' , 'file_id', type=int)
 @click.pass_context
 def tag(context: click.Context, tags: List[str], file_id: int=None):
     """Add tags to an existing file."""
