@@ -63,6 +63,7 @@ def file_cmd(context, tags, archive, bundle_name, path):
 @click.pass_context
 def tag(context: click.Context, tags: List[str], file_id: int=None):
     """Add tags to an existing file."""
+file_obj = None
 
     if file_id:
         file_obj = context.obj['db'].file_(file_id)
