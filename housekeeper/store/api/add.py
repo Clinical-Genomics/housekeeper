@@ -23,7 +23,7 @@ class AddHandler(BaseHandler):
         AddHandler.bundle = FindHandler.bundle
         AddHandler.tag = FindHandler.tag
 
-    def add_bundle(self, data: dict) -> models.Bundle:
+    def add_bundle(self, data: dict) -> (models.Bundle, models.Version):
         """Build a new bundle version of files.
 
         The format of the input dict is defined in the `schema` module.
