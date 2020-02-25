@@ -39,7 +39,7 @@ jobs:
 
     - name: "Code formatting"
       if: type = pull_request
-      install: pip install -U black
+      install: pip install black
       script: git --no-pager diff --name-only --diff-filter=AM $TRAVIS_COMMIT_RANGE | grep -F ".py" | xargs black --check
 
     - name: "Pylint score"
@@ -49,7 +49,7 @@ jobs:
 
     - name: "Linting"
       if: type = pull_request
-      install: pip install -U -r requirements-dev.txt
+      install: pip install -r requirements-dev.txt
       script: git reset --soft ${TRAVIS_COMMIT_RANGE%...*} && git lint
 
 notifications:
