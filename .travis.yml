@@ -4,6 +4,13 @@ cache: pip
 
 jobs:
   include:
+    - name: "Coverage"
+      install:
+        - pip install cython
+        - pip install . -r requirements-dev.txt
+      script: coverage run --branch --omit="*.html" --source "$(basename "$PWD")" setup.py test
+      after_success: coveralls
+
     - name: "Tests on python 3.7 (Hasta)"
       python: "3.7.1"   # version in P_main
       install: pip install -U -r requirements.txt -r requirements-dev.txt .
@@ -29,14 +36,6 @@ jobs:
         - pip install cython
         - pip install -U -r requirements.txt -r requirements-dev.txt .
       script: pip check
-
-    - name: "Coverage"
-      if: NOT type = pull_request
-      install:
-        - pip install -U cython
-        - pip install -U -r requirements.txt -r requirements-dev.txt .
-      script: coverage run --branch --omit="*.html" --source "$(basename "$PWD")" setup.py test
-      after_success: coveralls
 
     - name: "Code formatting"
       if: type = pull_request
