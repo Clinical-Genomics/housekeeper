@@ -65,13 +65,3 @@ jobs:
 
 notifications:
   email: never
-
-deploy:
-  provider: pypi
-  user: robinandeer
-  password:
-    secure: UkXbhDi1Y+GhgUVxt3qEH3zVppS0rbtzRWUTGd13/nIJUcwELAe16gIaIVgGwJK/OVrGMAFfoCpC3By+5cKXhmIyPlVKf7PjHC1QD3koJ0Rlgb04JeMt0yfb5ve16l5Tp/pr4rTKmGq+RFMziHen7m2Hc344k+ruvi0gYcwxPvPTZG6KnJwjn5tz/HylQgcQFsUR8QJD/Zut1ysa5H9iVa0nrUa/7YzMgHUHX4GM+TzCOuo4Q4eNsYcgu3Ntp0wygQT4+/JAfUoOkOqmTK31O9itGnRhylmmfri7gshuxEDsLllRbxSUu99Fj5kHZKcp+BCE/fvmmAokmnhyfnOaHiOszISEUMqD3ZvSzrMuO3RYT4CTEUtOND2eDzdTDrUB6HQ9UJw+QcOTvpEN7q2oZWy5/Ohgj3hmsxS+tJG7PAmZPWYrLkF8qsTxqxB0Fu1fbhJUT5o1gBkVzPT9h5YthjFa79Wz1gBmAKWlohKPPSVjoEdw0+RPzj7h8quhBhtNXUFLg0Vr8y+XSjwjt1QSr/BlcEAbeumoDDLRFD/evp6NzcttBiIgqZE0OXxXY8O77cwad4ME98qeRNyrI+x+IR/l5ZiIub2NsSeZqdZ7eKC2OMVbJDqpqMEmFUT4SasxtK4uKiCOcE9sTLTIM0U9/0amtgXiYAgpQhwuLnDLvPc=
-  on:
-    tags: true
-    distributions: sdist bdist_wheel
-    repo: Clinical-Genomics/housekeeper
