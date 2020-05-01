@@ -9,6 +9,21 @@ import pytest
 from housekeeper import include
 from housekeeper.store import Store, models
 
+# basic fixtures
+
+
+@pytest.fixture(scope="function", name="case_id")
+def fixture_case_id() -> str:
+    """Return name of a case"""
+    return "handsomepig"
+
+
+@pytest.fixture(scope="function", name="timestamp")
+def fixture_timestamp() -> datetime.datetime:
+    """Return a time stamp in date time format"""
+    return datetime.datetime.now()
+
+
 # dir fixtures
 
 
@@ -149,9 +164,12 @@ def rna_bundle_data_two_files():
     return data
 
 
+# Store fixtures
+
+
 @pytest.yield_fixture(scope="function")
-def store(tmpdir):
-    _store = Store(uri="sqlite://", root=str(tmpdir))
+def store(project_dir):
+    _store = Store(uri="sqlite://", root=str(project_dir))
     _store.create_all()
     yield _store
     _store.drop_all()

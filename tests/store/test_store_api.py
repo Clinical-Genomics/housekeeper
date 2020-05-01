@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
-import os
 import datetime
-from copy import deepcopy
-
-from pathlib import Path
+import os
 import tempfile
+from copy import deepcopy
+from pathlib import Path
 
 from housekeeper.include import include_version
+
 
 def test_delete_both(store, bundle_data, bundle_data_old):
     """
@@ -47,24 +47,27 @@ def test_delete_none(store, bundle_data, bundle_data_old):
     assert len(query.all()) == 0
 
 
-def test_delete_notondisk(store, tmpdir, bundle_data):
+def test_delete_notondisk(store, project_dir, bundle_data):
     """
     test deletion of files that are not on disk
     """
     with tempfile.NamedTemporaryFile(delete=True) as file1:
 
         bundle_data_notondisk = deepcopy(bundle_data)
-        bundle_data_notondisk['files'][0]['path']=file1.name
-        bundle_data_notondisk['files'][1]['path']=bundle_data_notondisk['files'][1]['path'].replace('.vcf',
-                                                                                    '.2.vcf')
-        bundle_data_notondisk['name']='angrybird'
+        bundle_data_notondisk["files"][0]["path"] = file1.name
+        bundle_data_notondisk["files"][1]["path"] = bundle_data_notondisk["files"][1][
+            "path"
+        ].replace(".vcf", ".2.vcf")
+        bundle_data_notondisk["name"] = "angrybird"
 
         bundle_obj, version_obj = store.add_bundle(data=bundle_data)
         store.add_commit(bundle_obj)
-        include_version(tmpdir, version_obj, hardlink=False)
-        bundle_obj_notondisk, version_obj_notondisk = store.add_bundle(data=bundle_data_notondisk)
+        include_version(project_dir, version_obj, hardlink=False)
+        bundle_obj_notondisk, version_obj_notondisk = store.add_bundle(
+            data=bundle_data_notondisk
+        )
         store.add_commit(bundle_obj_notondisk)
-        include_version(tmpdir, version_obj_notondisk, hardlink=False)
+        include_version(project_dir, version_obj_notondisk, hardlink=False)
 
     query = store.files_before()
 
