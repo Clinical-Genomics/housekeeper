@@ -6,9 +6,9 @@ from pathlib import Path
 
 import alchy
 
+from housekeeper.store import models
 from housekeeper.store.api.add import AddHandler
 from housekeeper.store.api.find import FindHandler
-from housekeeper.store import models
 
 LOG = logging.getLogger(__name__)
 
@@ -28,6 +28,8 @@ class Store(alchy.Manager, CoreHandler):
     """
 
     def __init__(self, uri: str, root: str):
-        super(Store, self).__init__(config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=models.Model)
+        super(Store, self).__init__(
+            config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=models.Model
+        )
         self.File.app_root = Path(root)
         self.Version.app_root = Path(root)

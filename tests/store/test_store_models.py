@@ -13,6 +13,15 @@ def test_instantiate_bundle(case_id, timestamp):
     assert bundle_obj.created_at == timestamp
 
 
+def test_instantiate_bundle_no_name():
+    """Test instantiate a Bundle object without a name"""
+    # WHEN instantiating a bundle without a name
+    bundle_obj = models.Bundle()
+    # THEN assert it was instantiated as expected
+    assert bundle_obj.name == None
+    assert bundle_obj.versions == []
+
+
 def test_version_obj_full_path(project_dir, store, bundle_obj):
     """Test the to get the full path from a version object"""
     # GIVEN a bundle object
