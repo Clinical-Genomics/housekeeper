@@ -41,26 +41,6 @@ def test_create_version(store, timestamp):
     assert new_version.created_at == timestamp
 
 
-# def test_build_tags(store):
-#     # GIVEN a store with some tags
-#     tag_names = ["vcf", "family"]
-#     new_tag = store.new_tag(tag_names[0])
-#     store.add_commit(new_tag)
-#     assert store.Tag.query.count() == 1
-#     assert store.Tag.query.first() == new_tag
-#     # WHEN adding tags...
-#     tag_map = store._build_tags(tag_names)
-#     # THEN it should return the existing tag
-#     assert len(tag_map) == len(tag_names)
-#     assert tag_map[tag_names[0]].name == tag_names[0]
-#     # ... and build the missing tag
-#     assert tag_map[tag_names[1]].name == tag_names[1]
-#     # which can be committed to the database
-#     assert store.Tag.query.count() == 1
-#     store.add_commit(list(tag_map.values()))
-#     assert store.Tag.query.count() == 2
-
-
 def test_add_bundle(store, bundle_data):
     # GIVEN a store without files, tags or bundles
     assert store.Bundle.query.count() == 0
