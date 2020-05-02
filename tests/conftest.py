@@ -12,6 +12,42 @@ from housekeeper.store import Store, models
 # basic fixtures
 
 
+@pytest.fixture(scope="function", name="vcf_tag_name")
+def fixture_vcf_tag_name() -> str:
+    """Return a tag named 'vcf'"""
+    return "vcf"
+
+
+@pytest.fixture(scope="function", name="family_tag_name")
+def fixture_family_tag_name() -> str:
+    """Return a tag named 'family'"""
+    return "family"
+
+
+@pytest.fixture(scope="function", name="sample_tag_name")
+def fixture_sample_tag_name() -> str:
+    """Return a tag named 'sample'"""
+    return "sample"
+
+
+@pytest.fixture(scope="function", name="family_tag_names")
+def fixture_family_tag_names(vcf_tag_name, family_tag_name) -> list:
+    """Return a list of the family tag names"""
+    return [vcf_tag_name, family_tag_name]
+
+
+@pytest.fixture(scope="function", name="sample_tag_names")
+def fixture_family_tags(vcf_tag_name, sample_tag_name) -> list:
+    """Return a list of the sample tag names"""
+    return [vcf_tag_name, sample_tag_name]
+
+
+@pytest.fixture(scope="function", name="vcf_tag_obj")
+def fixture_vcf_tag_obj(vcf_tag_name, timestamp) -> str:
+    """Return a tag object"""
+    return models.Tag(name=vcf_tag_name, created_at=timestamp)
+
+
 @pytest.fixture(scope="function", name="case_id")
 def fixture_case_id() -> str:
     """Return name of a case"""
@@ -22,6 +58,23 @@ def fixture_case_id() -> str:
 def fixture_timestamp() -> datetime.datetime:
     """Return a time stamp in date time format"""
     return datetime.datetime.now()
+
+
+@pytest.fixture(scope="function", name="bundle_data")
+def fixture_bundle_data(
+    case_id, sample_vcf, family_vcf, timestamp, family_tag_names, sample_tag_name
+) -> dict:
+    """Return a dummy bundle"""
+    data = {
+        "name": case_id,
+        "created": timestamp,
+        "expires": timestamp,
+        "files": [
+            {"path": str(sample_vcf), "archive": False, "tags": sample_tag_names},
+            {"path": str(family_vcf), "archive": True, "tags": family_tag_names},
+        ],
+    }
+    return data
 
 
 # dir fixtures
@@ -89,21 +142,6 @@ def version(tmpdir):
         models.File(path=file_path_2, to_archive=False, tags=[models.Tag(name="tmp")])
     )
     return version_obj
-
-
-@pytest.fixture(scope="function", name="bundle_data")
-def fixture_bundle_data(sample_vcf, family_vcf) -> dict:
-    """Return a dummy bundle"""
-    data = {
-        "name": "sillyfish",
-        "created": datetime.datetime.now(),
-        "expires": datetime.datetime.now(),
-        "files": [
-            {"path": str(sample_vcf), "archive": False, "tags": ["vcf", "sample"]},
-            {"path": str(family_vcf), "archive": True, "tags": ["vcf", "family"]},
-        ],
-    }
-    return data
 
 
 @pytest.fixture(scope="function")

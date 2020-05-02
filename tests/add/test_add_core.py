@@ -2,42 +2,70 @@
 import datetime
 from copy import deepcopy
 
+from housekeeper.store import models
 
-def test_add_tag(store):
+# tag tests
+
+
+def test_create_tag(store, vcf_tag_name):
+    """Test to add a tag"""
+    # GIVEN a store and a tag name
+    # WHEN creating a tag
+    new_tag = store.new_tag(vcf_tag_name)
+    # THEN assert a tag object was created
+    assert isinstance(new_tag, models.Tag)
+    assert new_tag.name == vcf_tag_name
+
+
+def test_add_tag(store, vcf_tag_obj):
     """Test to add a tag"""
     # GIVEN a store without tags
     assert store.Tag.query.count() == 0
     # WHEN adding a tag
-    new_tag = store.new_tag("new_tag")
-    store.add_commit(new_tag)
+    store.add_commit(vcf_tag_obj)
     # THEN assert the new tag was added
     assert store.Tag.query.count() == 1
-    assert store.Tag.query.first() == new_tag
+    assert store.Tag.query.first() == vcf_tag_obj
 
 
-def test_build_tags(store):
-    # GIVEN a store with some tags
-    tag_names = ["vcf", "family"]
-    new_tag = store.new_tag(tag_names[0])
-    store.add_commit(new_tag)
-    assert store.Tag.query.count() == 1
-    assert store.Tag.query.first() == new_tag
-    # WHEN adding tags...
-    tag_map = store._build_tags(tag_names)
-    # THEN it should return the existing tag
-    assert len(tag_map) == len(tag_names)
-    assert tag_map[tag_names[0]].name == tag_names[0]
-    # ... and build the missing tag
-    assert tag_map[tag_names[1]].name == tag_names[1]
-    # which can be committed to the database
-    assert store.Tag.query.count() == 1
-    store.add_commit(list(tag_map.values()))
-    assert store.Tag.query.count() == 2
+# version tests
+
+
+def test_create_version(store, timestamp):
+    """Test to create a version object"""
+    # GIVEN a store and a time stamp
+    # WHEN creating a version
+    new_version = store.new_version(created_at=timestamp, expires_at=timestamp)
+    # THEN assert a version object was created
+    assert isinstance(new_version, models.Version)
+    assert new_version.created_at == timestamp
+
+
+# def test_build_tags(store):
+#     # GIVEN a store with some tags
+#     tag_names = ["vcf", "family"]
+#     new_tag = store.new_tag(tag_names[0])
+#     store.add_commit(new_tag)
+#     assert store.Tag.query.count() == 1
+#     assert store.Tag.query.first() == new_tag
+#     # WHEN adding tags...
+#     tag_map = store._build_tags(tag_names)
+#     # THEN it should return the existing tag
+#     assert len(tag_map) == len(tag_names)
+#     assert tag_map[tag_names[0]].name == tag_names[0]
+#     # ... and build the missing tag
+#     assert tag_map[tag_names[1]].name == tag_names[1]
+#     # which can be committed to the database
+#     assert store.Tag.query.count() == 1
+#     store.add_commit(list(tag_map.values()))
+#     assert store.Tag.query.count() == 2
 
 
 def test_add_bundle(store, bundle_data):
-    # GIVEN some input data for a new bundle
+    # GIVEN a store without files, tags or bundles
     assert store.Bundle.query.count() == 0
+    assert store.Tag.query.count() == 0
+    assert store.Version.query.count() == 0
     # WHEN adding the new bundle
     bundle_obj, version_obj = store.add_bundle(bundle_data)
     # THEN it should look as expected
