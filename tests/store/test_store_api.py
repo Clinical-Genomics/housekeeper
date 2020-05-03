@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
+"""Tests for the store api"""
 import datetime
-import os
 import tempfile
 from copy import deepcopy
-from pathlib import Path
 
 from housekeeper.include import include_version
 

@@ -3,7 +3,6 @@ import datetime
 import shutil
 from pathlib import Path
 
-import dateutil
 import pytest
 
 from housekeeper import include
@@ -136,6 +135,18 @@ def fixture_family_vcf(fixtures_dir) -> Path:
     return fixtures_dir / "family.vcf"
 
 
+@pytest.fixture(scope="function", name="second_sample_vcf")
+def fixture_second_sample_vcf(fixtures_dir) -> Path:
+    """Return the path to a vcf file"""
+    return fixtures_dir / "example.2.vcf"
+
+
+@pytest.fixture(scope="function", name="second_family_vcf")
+def fixture_second_family_vcf(fixtures_dir) -> Path:
+    """Return the path to a vcf file"""
+    return fixtures_dir / "family.2.vcf"
+
+
 @pytest.fixture(scope="function", name="checksum_file")
 def fixture_checksum_file(fixtures_dir) -> Path:
     """Return the path to file to test checksum"""
@@ -169,28 +180,6 @@ def version(tmpdir):
         models.File(path=file_path_2, to_archive=False, tags=[models.Tag(name="tmp")])
     )
     return version_obj
-
-
-@pytest.fixture(scope="function")
-def bundle_data_old():
-    data = {
-        "name": "angrybird",
-        "created": dateutil.parser.parse("2018/01/01 00:00:00"),
-        "expires": datetime.datetime.now(),
-        "files": [
-            {
-                "path": "tests/fixtures/example.2.vcf",
-                "archive": False,
-                "tags": ["vcf", "sample"],
-            },
-            {
-                "path": "tests/fixtures/family.2.vcf",
-                "archive": True,
-                "tags": ["vcf", "family"],
-            },
-        ],
-    }
-    return data
 
 
 # Store fixtures

@@ -1,7 +1,6 @@
 """Fixtures for housekeeper add"""
 import datetime
 from copy import deepcopy
-from pathlib import Path
 
 import pytest
 
@@ -13,18 +12,6 @@ def bundle_data_json(bundle_data):
     json_data["created"] = json_data["created"].isoformat()
     json_data["expires"] = json_data["expires"].isoformat()
     return json_data
-
-
-@pytest.fixture(scope="function", name="second_sample_vcf")
-def fixture_second_sample_vcf(fixtures_dir) -> Path:
-    """Return the path to a vcf file"""
-    return fixtures_dir / "example.2.vcf"
-
-
-@pytest.fixture(scope="function", name="second_family_vcf")
-def fixture_second_family_vcf(fixtures_dir) -> Path:
-    """Return the path to a vcf file"""
-    return fixtures_dir / "family.2.vcf"
 
 
 @pytest.fixture(scope="function", name="second_timestamp")
