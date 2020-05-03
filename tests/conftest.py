@@ -42,16 +42,22 @@ def fixture_family_tags(vcf_tag_name, sample_tag_name) -> list:
     return [vcf_tag_name, sample_tag_name]
 
 
-@pytest.fixture(scope="function", name="vcf_tag_obj")
-def fixture_vcf_tag_obj(vcf_tag_name, timestamp) -> str:
-    """Return a tag object"""
-    return models.Tag(name=vcf_tag_name, created_at=timestamp)
-
-
 @pytest.fixture(scope="function", name="case_id")
 def fixture_case_id() -> str:
     """Return name of a case"""
     return "handsomepig"
+
+
+@pytest.fixture(scope="function", name="sample_data")
+def fixture_sample_data(sample_tag_names, sample_vcf) -> str:
+    """Return file and tags for sample"""
+    return {"tags": sample_tag_names, "file": sample_vcf}
+
+
+@pytest.fixture(scope="function", name="family_data")
+def fixture_family_data(family_tag_names, family_vcf) -> str:
+    """Return file and tags for sample"""
+    return {"tags": family_tag_names, "file": family_vcf}
 
 
 @pytest.fixture(scope="function", name="timestamp")
@@ -61,20 +67,35 @@ def fixture_timestamp() -> datetime.datetime:
 
 
 @pytest.fixture(scope="function", name="bundle_data")
-def fixture_bundle_data(
-    case_id, sample_vcf, family_vcf, timestamp, family_tag_names, sample_tag_name
-) -> dict:
+def fixture_bundle_data(case_id, sample_data, family_data, timestamp) -> dict:
     """Return a dummy bundle"""
     data = {
         "name": case_id,
         "created": timestamp,
         "expires": timestamp,
         "files": [
-            {"path": str(sample_vcf), "archive": False, "tags": sample_tag_names},
-            {"path": str(family_vcf), "archive": True, "tags": family_tag_names},
+            {
+                "path": str(sample_data["file"]),
+                "archive": False,
+                "tags": sample_data["tags"],
+            },
+            {
+                "path": str(family_data["file"]),
+                "archive": True,
+                "tags": family_data["tags"],
+            },
         ],
     }
     return data
+
+
+# object fixtures
+
+
+@pytest.fixture(scope="function", name="vcf_tag_obj")
+def fixture_vcf_tag_obj(vcf_tag_name, timestamp) -> str:
+    """Return a tag object"""
+    return models.Tag(name=vcf_tag_name, created_at=timestamp)
 
 
 # dir fixtures

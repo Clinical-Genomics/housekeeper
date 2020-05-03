@@ -41,6 +41,28 @@ def test_create_version(store, timestamp):
     assert new_version.created_at == timestamp
 
 
+# bundle tests
+
+
+def test_create_bundle_obj(store, bundle_data):
+    """Test to create a bundle object"""
+    # GIVEN some bundle information
+    # WHEN adding the new bundle
+    bundle_obj = store.add_bundle(bundle_data)[0]
+    # THEN the bundle should have correct name
+    assert bundle_obj.name == bundle_data["name"]
+    # THEN the bundle should have correct creation time
+    assert bundle_obj.created_at == bundle_data["created"]
+    # THEN assert that a version was added
+    assert len(bundle_obj.versions) == 1
+    # THEN assert that the number of nested files is correct
+    assert len(bundle_obj.versions[0].files) == len(bundle_data["files"])
+    print(bundle_obj)
+    print(bundle_obj.versions)
+    print(bundle_obj.versions[0].files)
+    assert False
+
+
 def test_add_bundle(store, bundle_data):
     # GIVEN a store without files, tags or bundles
     assert store.Bundle.query.count() == 0

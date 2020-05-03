@@ -37,6 +37,8 @@ class Bundle(Model):
 
 class Version(Model):
 
+    """Keeps track of versions"""
+
     __tablename__ = "version"
 
     id = Column(types.Integer, primary_key=True)
@@ -61,6 +63,7 @@ class Version(Model):
 
     @property
     def full_path(self):
+        """Returns the full path of the bundle"""
         return Path(self.app_root) / self.bundle.name / str(self.created_at.date())
 
 
@@ -85,8 +88,7 @@ class File(Model):
         """Return the full path to the file."""
         if Path(self.path).is_absolute():
             return self.path
-        else:
-            return str(self.app_root / self.path)
+        return str(self.app_root / self.path)
 
     @property
     def is_included(self):
@@ -95,6 +97,8 @@ class File(Model):
 
 
 class Tag(Model):
+
+    """Represents tags for bundles"""
 
     __tablename__ = "tag"
 
