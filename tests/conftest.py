@@ -63,7 +63,7 @@ def fixture_family_data(family_tag_names, family_vcf) -> str:
 @pytest.fixture(scope="function", name="timestamp")
 def fixture_timestamp() -> datetime.datetime:
     """Return a time stamp in date time format"""
-    return datetime.datetime.now()
+    return datetime.datetime(2020, 5, 1)
 
 
 @pytest.fixture(scope="function", name="bundle_data")
@@ -96,6 +96,12 @@ def fixture_bundle_data(case_id, sample_data, family_data, timestamp) -> dict:
 def fixture_vcf_tag_obj(vcf_tag_name, timestamp) -> str:
     """Return a tag object"""
     return models.Tag(name=vcf_tag_name, created_at=timestamp)
+
+
+@pytest.fixture(scope="function", name="bundle_obj")
+def fixture_bundle_obj(bundle_data, store) -> str:
+    """Return a bundle object"""
+    return store.add_bundle(bundle_data)[0]
 
 
 # dir fixtures
@@ -187,48 +193,21 @@ def bundle_data_old():
     return data
 
 
-@pytest.fixture(scope="function")
-def rna_bundle_data_one_file():
-    """test fixture"""
-    data = {
-        "name": "finequagga",
-        "created": datetime.datetime.now(),
-        "expires": datetime.datetime.now(),
-        "files": [
-            {
-                "path": "tests/fixtures/example.vcf",
-                "archive": False,
-                "tags": ["vcf", "sample"],
-            }
-        ],
-    }
-    return data
-
-
-@pytest.fixture(scope="function")
-def rna_bundle_data_two_files():
-    """test fixture"""
-    data = {
-        "name": "finequagga",
-        "created": datetime.datetime.now(),
-        "expires": datetime.datetime.now(),
-        "files": [
-            {
-                "path": ["tests/fixtures/example.vcf", "tests/fixtures/example.2.vcf"],
-                "archive": False,
-                "tags": ["vcf", "sample"],
-            }
-        ],
-    }
-    return data
-
-
 # Store fixtures
 
 
-@pytest.yield_fixture(scope="function")
-def store(project_dir):
+@pytest.yield_fixture(scope="function", name="store")
+def fixture_store(project_dir):
+    """Return a store setup with all tables"""
     _store = Store(uri="sqlite://", root=str(project_dir))
     _store.create_all()
     yield _store
     _store.drop_all()
+
+
+@pytest.yield_fixture(scope="function", name="populated_store")
+def fixture_populated_store(store, bundle_data):
+    """Returns a populated store"""
+    bundle_obj = store.add_bundle(bundle_data)[0]
+    store.add_commit(bundle_obj)
+    return store
