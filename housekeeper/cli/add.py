@@ -1,17 +1,14 @@
-# -*- coding: utf-8 -*-
+"""Code for adding via CLI"""
 from pathlib import Path
 from typing import List
 
 import click
 
-from housekeeper.store import Store
-
 
 @click.group()
 @click.pass_context
-def add(context):
+def add():
     """Add things to the store."""
-    context.obj["db"] = Store(context.obj["database"], context.obj["root"])
 
 
 @add.command()
@@ -19,16 +16,17 @@ def add(context):
 @click.pass_context
 def bundle(context, name):
     """Add a new bundle."""
-    if context.obj["db"].bundle(name):
+    store = context.obj["store"]
+    if store.bundle(name):
         click.echo(click.style("bundle name already exists", fg="yellow"))
         context.abort()
-    new_bundle = context.obj["db"].new_bundle(name)
-    context.obj["db"].add_commit(new_bundle)
+    new_bundle = store.new_bundle(name)
+    store.add_commit(new_bundle)
 
     # add default version
-    new_version = context.obj["db"].new_version(created_at=new_bundle.created_at)
+    new_version = store.new_version(created_at=new_bundle.created_at)
     new_version.bundle = new_bundle
-    context.obj["db"].add_commit(new_version)
+    store.add_commit(new_version)
 
     click.echo(
         click.style(
@@ -45,23 +43,22 @@ def bundle(context, name):
 @click.pass_context
 def file_cmd(context, tags, archive, bundle_name, path):
     """Add a file to a bundle."""
-    bundle_obj = context.obj["db"].bundle(bundle_name)
+    store = context.obj["store"]
+    bundle_obj = store.bundle(bundle_name)
     if bundle_obj is None:
         click.echo(click.style(f"unknown bundle: {bundle_name}", fg="red"))
         context.abort()
     version_obj = bundle_obj.versions[0]
-    new_file = context.obj["db"].new_file(
+    new_file = store.new_file(
         path=str(Path(path).absolute()),
         to_archive=archive,
         tags=[
-            context.obj["db"].tag(tag_name)
-            if context.obj["db"].tag(tag_name)
-            else context.obj["db"].new_tag(tag_name)
+            store.tag(tag_name) if store.tag(tag_name) else store.new_tag(tag_name)
             for tag_name in tags
         ],
     )
     new_file.version = version_obj
-    context.obj["db"].add_commit(new_file)
+    store.add_commit(new_file)
     click.echo(
         click.style(f"new file added: {new_file.path} ({new_file.id})", fg="green")
     )
@@ -73,34 +70,35 @@ def file_cmd(context, tags, archive, bundle_name, path):
 @click.pass_context
 def tag(context: click.Context, tags: List[str], file_id: int = None):
     """Add tags to an existing file."""
+    store = context.obj["db"]
     file_obj = None
 
     if file_id:
-        file_obj = context.obj["db"].file_(file_id)
+        file_obj = store.file_(file_id)
         if not file_obj:
-            print(click.style("unable to find file", fg="red"))
+            click.echo(click.style("unable to find file", fg="red"))
             context.abort()
 
     for tag_name in tags:
-        tag_obj = context.obj["db"].tag(tag_name)
+        tag_obj = store.tag(tag_name)
 
         if not tag_obj:
-            print(click.style(f"{tag_name}: tag created", fg="green"))
-            tag_obj = context.obj["db"].new_tag(tag_name)
+            click.echo(click.style(f"{tag_name}: tag created", fg="green"))
+            tag_obj = store.new_tag(tag_name)
 
         if not file_obj:
             continue
 
         if tag_obj in file_obj.tags:
-            print(click.style(f"{tag_name}: tag already added", fg="yellow"))
+            click.echo(click.style(f"{tag_name}: tag already added", fg="yellow"))
             continue
 
         file_obj.tags.append(tag_obj)
 
-    context.obj["db"].commit()
+    store.commit()
 
     if not file_obj:
         context.exit()
 
     all_tags = (tag.name for tag in file_obj.tags)
-    print(click.style(f"file tags: {', '.join(all_tags)}", fg="blue"))
+    click.echo(click.style(f"file tags: {', '.join(all_tags)}", fg="blue"))
