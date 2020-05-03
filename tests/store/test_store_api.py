@@ -6,42 +6,57 @@ from copy import deepcopy
 from housekeeper.include import include_version
 
 
-def test_delete_both(store, bundle_data, bundle_data_old):
+def test_fetch_bundles(populated_store, bundle_data_old):
     """
-    test deletion where all files are older than before date
+    test fetch all files when two bundles are added
     """
-    bundle_obj, version_obj = store.add_bundle(data=bundle_data)
-    store.add_commit(bundle_obj)
-    bundle_old_obj, version_old_obj = store.add_bundle(data=bundle_data_old)
+    store = populated_store
+    # GIVEN a store with two bundles and two files in each bundle
+    bundle_old_obj = store.add_bundle(data=bundle_data_old)[0]
     store.add_commit(bundle_old_obj)
 
+    # WHEN fetching all files in the database
     query = store.files_before(before=str(datetime.datetime.now()))
+
+    # THEN all four files should be fetched
     assert len(query.all()) == 4
 
 
-def test_delete_one(store, bundle_data, bundle_data_old):
+def test_fetch_old(populated_store, bundle_data_old, timestamp, old_timestamp):
     """
-    test deletion where not all files are older than before date
+    test fetch files where not all files are older than before date
     """
-    bundle_obj, version_obj = store.add_bundle(data=bundle_data)
-    store.add_commit(bundle_obj)
-    bundle_old_obj, version_old_obj = store.add_bundle(data=bundle_data_old)
+    store = populated_store
+    # GIVEN a store with two bundles and two files in each bundle
+    bundle_old_obj = store.add_bundle(data=bundle_data_old)[0]
     store.add_commit(bundle_old_obj)
 
-    query = store.files_before(before="2018-02-01")
+    # WHEN fetching all files before the oldest date
+    date = old_timestamp + datetime.timedelta(days=10)
+    assert old_timestamp < date < timestamp
+    query = store.files_before(before=str(date))
+
+    # THEN assert only files from the old bundle was found
     assert len(query.all()) == 2
 
 
-def test_delete_none(store, bundle_data, bundle_data_old):
+def test_fetch_before_oldest(
+    populated_store, bundle_data_old, old_timestamp, timestamp
+):
     """
-    test deletion where no files are older than before date
+    test fetch files where no files are older than before date
     """
-    bundle_obj, version_obj = store.add_bundle(data=bundle_data)
-    store.add_commit(bundle_obj)
-    bundle_old_obj, version_old_obj = store.add_bundle(data=bundle_data_old)
+    store = populated_store
+    # GIVEN a store with two bundles and two files in each bundle
+    bundle_old_obj = store.add_bundle(data=bundle_data_old)[0]
     store.add_commit(bundle_old_obj)
 
-    query = store.files_before(before="2017-02-01")
+    # WHEN fetching all files before the oldest date
+    date = old_timestamp - datetime.timedelta(days=10)
+    assert date < old_timestamp < timestamp
+    query = store.files_before(before=str(date))
+
+    # THEN assert no files where that old
     assert len(query.all()) == 0
 
 
