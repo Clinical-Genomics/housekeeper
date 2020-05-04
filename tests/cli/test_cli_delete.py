@@ -16,7 +16,7 @@ def test_delete_non_existing_bundle(base_context, cli_runner, case_id):
     assert "bundle not found" in result.output
 
 
-def test_delete_existing_bundle(populated_context, cli_runner, case_id):
+def test_delete_existing_bundle_no_input(populated_context, cli_runner, case_id):
     """Test to delete a non existing bundle"""
     # GIVEN a context with a store and a cli runner
     # WHEN trying to delete a bundle
@@ -25,6 +25,19 @@ def test_delete_existing_bundle(populated_context, cli_runner, case_id):
     assert result.exit_code == 1
     # THEN it should ask if you are sure
     assert "remove bundle version from" in result.output
+
+
+def test_delete_existing_bundle(populated_context, cli_runner, case_id):
+    """Test to delete a non existing bundle"""
+    # GIVEN a context with a store and a cli runner
+    # WHEN trying to delete a bundle
+    result = cli_runner.invoke(
+        delete.bundle, [case_id], obj=populated_context, input="Yes"
+    )
+    # THEN assert it exits non zero
+    assert result.exit_code == 0
+    # THEN it should communicate that it was deleted
+    assert "version deleted:" in result.output
 
 
 # delete files
