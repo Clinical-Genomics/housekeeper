@@ -28,7 +28,7 @@ def test_delete_existing_file_no_input(populated_context, cli_runner):
     store = populated_context["store"]
     file_id = 1
     # GIVEN that the file exists
-    file_obj = store.File.get(1)
+    file_obj = store.File.get(file_id)
     assert file_obj
     # WHEN trying to delete the file
     result = cli_runner.invoke(delete.file_cmd, [str(file_id)], obj=populated_context)
@@ -42,7 +42,7 @@ def test_delete_existing_file(populated_context, cli_runner):
     store = populated_context["store"]
     file_id = 1
     # GIVEN that the file exists
-    file_obj = store.File.get(1)
+    file_obj = store.File.get(file_id)
     assert file_obj
     # WHEN trying to delete the file
     result = cli_runner.invoke(
