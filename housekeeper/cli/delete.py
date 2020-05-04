@@ -30,7 +30,7 @@ def bundle(context, yes, bundle_name):
             f"remove bundle version from database: {version_obj.created_at.date()}"
         )
     if not (yes or click.confirm(question)):
-        return
+        context.abort()
 
     if version_obj.included_at:
         shutil.rmtree(version_obj.full_path, ignore_errors=True)
@@ -40,7 +40,7 @@ def bundle(context, yes, bundle_name):
 
 
 @delete.command()
-@click.option("--yes", multiple=True, is_flag=True, help="skip checks")
+@click.option("--yes", is_flag=True, help="skip checks")
 @click.option("-t", "--tag", multiple=True, help="file tag")
 @click.option("-b", "--bundle-name", help="bundle name")
 @click.option("-a", "--before", help="version created before...")
@@ -60,8 +60,7 @@ def files(
     """Delete files based on tags."""
     store = context.obj["store"]
     file_objs = []
-
-    if not tag and not bundle_name:
+    if not (tag or bundle_name):
         click.echo("I'm afraid I can't let you do that.")
         click.echo("Please specify a bundle or a tag")
         context.abort()
@@ -79,22 +78,22 @@ def files(
     else:
         file_objs = query.all()
 
-    if list_files_verbose:
-        for file_obj in file_objs:
+    for file_obj in file_objs:
+        if list_files_verbose:
             tags = ", ".join(tag.name for tag in file_obj.tags)
             click.echo(
                 f"{click.style(str(file_obj.id), fg='blue')} | {file_obj.full_path} | "
                 f"{click.style(tags, fg='yellow')}"
             )
-    elif list_files:
-        for file_obj in file_objs:
+        elif list_files:
             click.echo(file_obj.full_path)
+        else:
+            continue
 
-    if len(file_objs) > 0 and len(yes) < 2:
-        if not click.confirm(
-            f"Are you sure you want to delete {len(file_objs)} files?"
-        ):
-            context.abort()
+    if not (
+        yes or click.confirm(f"Are you sure you want to delete {len(file_objs)} files?")
+    ):
+        context.abort()
 
     for file_obj in file_objs:
         if yes or click.confirm(

@@ -99,7 +99,7 @@ def test_delete_files_existing_bundle(populated_context, cli_runner, case_id):
 
     # WHEN trying to delete files without specifying bundle name or tag
     result = cli_runner.invoke(
-        delete.files, ["--bundle-name", case_id], obj=populated_context, input="Yes"
+        delete.files, ["--bundle-name", case_id, "--yes"], obj=populated_context
     )
     # THEN the files should have been removed
-    assert "remove file from disk and database" in result.output
+    assert "deleted" in result.output

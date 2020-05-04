@@ -3,6 +3,17 @@
 import pytest
 from click.testing import CliRunner
 
+from housekeeper.store import Store
+
+
+@pytest.yield_fixture(scope="function", name="store")
+def fixture_store(project_dir, db_uri):
+    """Override the store fixture to get a controlled db path"""
+    _store = Store(uri=db_uri, root=str(project_dir))
+    _store.create_all()
+    yield _store
+    _store.drop_all()
+
 
 @pytest.fixture(name="cli_runner")
 def fixture_cli_runner():

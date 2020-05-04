@@ -244,9 +244,9 @@ def version(tmpdir):
 
 
 @pytest.yield_fixture(scope="function", name="store")
-def fixture_store(project_dir, db_uri):
+def fixture_store(project_dir):
     """Return a store setup with all tables"""
-    _store = Store(uri=db_uri, root=str(project_dir))
+    _store = Store(uri="sqlite:///", root=str(project_dir))
     _store.create_all()
     yield _store
     _store.drop_all()
