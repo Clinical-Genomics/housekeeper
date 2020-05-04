@@ -16,7 +16,7 @@ def test_fetch_bundles(populated_store, bundle_data_old):
     store.add_commit(bundle_old_obj)
 
     # WHEN fetching all files in the database
-    query = store.files_before(before=str(datetime.datetime.now()))
+    query = store.files_before(before="2020-05-04")
 
     # THEN all four files should be fetched
     assert len(query.all()) == 4

@@ -2,17 +2,19 @@
 This module handles finding things in the store/database
 """
 import datetime as dt
-from typing import List
 from pathlib import Path
-from dateutil.parser import parse as parse_date
+from typing import List
 
 from sqlalchemy import func as sqlalchemy_func
 
+from housekeeper.date import get_date
 from housekeeper.store import models
+
 from .base import BaseHandler
 
 
 class FindHandler(BaseHandler):
+    """Handler for searching the database"""
 
     def bundles(self):
         """Fetch bundles."""
@@ -24,11 +26,11 @@ class FindHandler(BaseHandler):
 
     def version(self, bundle: str, date: dt.datetime) -> models.Version:
         """Fetch a version from the store."""
-        return (self.Version.query
-                            .join(models.Version.bundle)
-                            .filter(models.Bundle.name == bundle,
-                                    models.Version.created_at == date)
-                            .first())
+        return (
+            self.Version.query.join(models.Version.bundle)
+            .filter(models.Bundle.name == bundle, models.Version.created_at == date)
+            .first()
+        )
 
     def tag(self, name: str) -> models.Tag:
         """Fetch a tag from the database."""
@@ -38,13 +40,20 @@ class FindHandler(BaseHandler):
         """Get a file by record id."""
         return self.File.get(file_id)
 
-    def files(self, *, bundle: str=None, tags: List[str]=None, version: int=None,
-              path: str=None) -> models.File:
+    def files(
+        self,
+        *,
+        bundle: str = None,
+        tags: List[str] = None,
+        version: int = None,
+        path: str = None
+    ) -> models.File:
         """Fetch files from the store."""
         query = self.File.query
         if bundle:
-            query = (query.join(self.File.version, self.Version.bundle)
-                          .filter(self.Bundle.name == bundle))
+            query = query.join(self.File.version, self.Version.bundle).filter(
+                self.Bundle.name == bundle
+            )
 
         if tags:
             # require records to match ALL tags
@@ -63,19 +72,27 @@ class FindHandler(BaseHandler):
 
         return query
 
-
-    def files_before(self, *, bundle: str=None, tags: List[str]=None, before:
-                     str=None) -> models.File:
+    def files_before(
+        self, *, bundle: str = None, tags: List[str] = None, before: str = None
+    ) -> models.File:
         """Fetch files before date from store"""
         query = self.files(tags=tags, bundle=bundle)
         if before:
-            before_dt = parse_date(before)
-            query = query.join(models.Version).filter(models.Version.created_at < before_dt)
+            try:
+                before_dt = get_date(before)
+            except ValueError:
+                before_dt = get_date(before, "%Y-%m-%d %H:%M:%S")
+            query = query.join(models.Version).filter(
+                models.Version.created_at < before_dt
+            )
 
         return query
 
-
-    def files_ondisk(self, file_objs: models.File) -> set:
+    @staticmethod
+    def files_ondisk(file_objs: models.File) -> set:
         """Returns a list of files that are not on disk."""
 
-        return set([file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file()])
+        files_on_disk = {
+            file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file()
+        }
+        return files_on_disk
