@@ -63,6 +63,7 @@ def files(
 
     if not tag and not bundle_name:
         click.echo("I'm afraid I can't let you do that.")
+        click.echo("Please specify a bundle or a tag")
         context.abort()
 
     if bundle_name:
