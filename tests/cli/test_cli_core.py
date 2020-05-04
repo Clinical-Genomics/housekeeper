@@ -1,103 +1,87 @@
-# -*- coding: utf-8 -*-
-from pathlib import Path
-
-import ruamel.yaml
+"""Tests for the core cli"""
 
 import housekeeper
-from housekeeper.store import Store
+from housekeeper.cli.core import base
+from housekeeper.cli.init import init as init_command
 
 
-def test_cli_version(invoke_cli):
-    # GIVEN I want to see the version of the program
+def test_cli_title(cli_runner):
+    """Test the title output"""
+    # GIVEN a cli runner
     # WHEN asking to see the version
-    result = invoke_cli(["--version"])
-    # THEN it should display the version of the program
-    # THEN it should print the name and version of the tool only
+    result = cli_runner.invoke(base, ["--version"])
+    # THEN it should display the title of the program
     assert housekeeper.__title__ in result.output
+
+
+def test_cli_version(cli_runner):
+    """Test the version option"""
+    # GIVEN a cli runner
+    # WHEN asking to see the version
+    result = cli_runner.invoke(base, ["--version"])
+    # THEN it should display the version of the program
     assert housekeeper.__version__ in result.output
 
 
-def test_cli_config(tmpdir, invoke_cli):
-    # GIVEN a simple, valid cli
-    config_file = tmpdir.join("config.yaml")
-    config_file.write(
-        ruamel.yaml.safe_dump(dict(root=str(tmpdir), database="sqlite://"))
-    )
+def test_init_config(config_file, cli_runner):
+    """Test init housekeeper with a config file"""
+    # GIVEN a config file and a cli runner
     # WHEN calling the CLI
-    result = invoke_cli(["--config", str(config_file), "init", "--help"])
+    result = cli_runner.invoke(base, ["--config", str(config_file), "init"])
     # THEN it should read the config and import it to the context
     assert result.exit_code == 0
-    # ... not sure how to test :-( ...
+    assert "Success!" in result.output
 
 
-def test_cli_init(cli_runner, invoke_cli):
-    # GIVEN you want to setup a new database using the CLI
-    database = "./test_db.sqlite3"
-    database_path = Path(database)
-    database_uri = f"sqlite:///{database}"
-    with cli_runner.isolated_filesystem():
-        assert database_path.exists() is False
-
-        # WHEN calling "init"
-        result = invoke_cli(["--database", database_uri, "--root", ".", "init"])
-
-        # THEN it should setup the database with some tables
-        assert result.exit_code == 0
-        assert database_path.exists()
-        assert len(Store(database_uri, root="/tmp").engine.table_names()) > 0
-
-        # GIVEN the database already exists
-        # WHEN calling the init function
-        result = invoke_cli(["--database", database_uri, "--root", ".", "init"])
-        # THEN it should print an error and give error exit code
-        assert result.exit_code != 0
-        assert "Database already exists" in result.output
-
-        # GIVEN the database already exists
-        # WHEN calling "init" with "--reset"
-        result = invoke_cli(
-            ["--database", database_uri, "--root", ".", "init", "--reset"], input="Yes"
-        )
-        # THEN it should re-setup the tables and print new tables
-        assert result.exit_code == 0
-        assert "Success!" in result.output
-
-
-def test_cli_delete_files(tmpdir, invoke_cli, bundle_data, case_id):
-    config_file = tmpdir.join("config.yaml")
-    database_path = Path(tmpdir).joinpath("database.sqlite")
-    config_file.write(
-        ruamel.yaml.safe_dump(
-            dict(root=str(tmpdir), database="sqlite:///" + str(database_path))
-        )
+def test_init_database(db_uri, db_path, cli_runner, project_dir):
+    """Test init housekeeper with cli options"""
+    # GIVEN a uri, a non exosting database, a project dir and a cli runner
+    assert not db_path.exists()
+    # WHEN calling the CLI
+    result = cli_runner.invoke(
+        base, ["--database", db_uri, "--root", project_dir, "init"]
     )
-    store = Store(uri="sqlite:///" + str(database_path), root=str(tmpdir))
-    store.create_all()
+    # THEN the database should have been created
+    assert db_path.exists()
+    # THEN success should be communicated
+    assert "Success!" in result.output
 
-    # GIVEN you want to remove everything
-    result = invoke_cli(["--config", str(config_file), "delete", "files"])
-    # THEN HAL9000 should interfere
-    assert result.exit_code == 1
-    assert result.output == "I'm afraid I can't let you do that.\nAborted!\n"
 
-    # GIVEN you want to delete a not existing bundle
-    result = invoke_cli(
-        ["--config", str(config_file), "delete", "files", "--bundle-name", case_id]
-    )
-    # THEN it should not be found
-    assert result.exit_code == 1
-    assert result.output == "bundle not found\nAborted!\n"
+def test_init_existing_database(cli_runner, base_context, db_path):
+    """Test init housekeeper when db exists"""
+    # GIVEN the uri to an initialised database, a project dir and a cli runner
+    assert db_path.exists()
 
-    # GIVEN you want to delete a bundle
-    bundle_obj, version_obj = store.add_bundle(data=bundle_data)
-    store.add_commit(bundle_obj)
-    result = invoke_cli(
-        ["--config", str(config_file), "delete", "files", "--bundle-name", case_id]
-    )
-    # THEN it should ask you if you are sure
-    assert result.exit_code == 1
-    assert (
-        result.output == "Are you sure you want to delete 2 files? [y/N]: \nAborted!\n"
-    )
+    # WHEN trying to intitialize existing db
+    result = cli_runner.invoke(init_command, [], obj=base_context)
 
-    store.drop_all()
+    # THEN it should exist with a non zero exit status
+    assert result.exit_code != 0
+    # THEN it should communicate that the database exists
+    assert "Database already exists" in result.output
+
+
+def test_override_existing_database(cli_runner, db_path, base_context):
+    """Test init housekeeper database and overwrite existing one"""
+    # GIVEN the uri to an initialised database, a project dir and a cli runner
+    assert db_path.exists()
+
+    # WHEN intitializing and overriding existing db
+    result = cli_runner.invoke(init_command, ["--reset"], obj=base_context, input="Yes")
+
+    # THEN it should communicate that the database exists
+    assert "Delete existing tables?" in result.output
+    # THEN it should communicate success
+    assert "Success!" in result.output
+
+
+def test_force_override_existing_database(cli_runner, db_path, base_context):
+    """Test init housekeeper database and overwrite existing one"""
+    # GIVEN the uri to an initialised database, a project dir and a cli runner
+    assert db_path.exists()
+
+    # WHEN intitializing and overriding existing db
+    result = cli_runner.invoke(init_command, ["--force"], obj=base_context)
+
+    # THEN it should communicate success
+    assert "Success!" in result.output

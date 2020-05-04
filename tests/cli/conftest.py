@@ -1,17 +1,22 @@
-from functools import partial
+"""Fixtures for CLI tests"""
 
-from click.testing import CliRunner
 import pytest
+from click.testing import CliRunner
 
-from housekeeper.cli import base
 
-
-@pytest.fixture
-def cli_runner():
+@pytest.fixture(name="cli_runner")
+def fixture_cli_runner():
+    """Return a cli runner for testing Click"""
     runner = CliRunner()
     return runner
 
 
-@pytest.fixture
-def invoke_cli(cli_runner):
-    return partial(cli_runner.invoke, base)
+@pytest.fixture(name="base_context")
+def fixture_base_context(db_uri, project_dir, store):
+    """Return a context with initialized database"""
+    _ctx = {
+        "database": db_uri,
+        "root": project_dir,
+        "store": store,
+    }
+    return _ctx
