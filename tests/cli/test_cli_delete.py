@@ -2,6 +2,33 @@
 
 from housekeeper.cli import delete
 
+# delete bundle
+
+
+def test_delete_non_existing_bundle(base_context, cli_runner, case_id):
+    """Test to delete a non existing bundle"""
+    # GIVEN a context with a store and a cli runner
+    # WHEN trying to delete a bundle
+    result = cli_runner.invoke(delete.bundle, [case_id], obj=base_context)
+    # THEN assert it exits non zero
+    assert result.exit_code == 1
+    # THEN it should communicate that the bundle was not found
+    assert "bundle not found" in result.output
+
+
+def test_delete_existing_bundle(populated_context, cli_runner, case_id):
+    """Test to delete a non existing bundle"""
+    # GIVEN a context with a store and a cli runner
+    # WHEN trying to delete a bundle
+    result = cli_runner.invoke(delete.bundle, [case_id], obj=populated_context)
+    # THEN assert it exits non zero
+    assert result.exit_code == 1
+    # THEN it should ask if you are sure
+    assert "remove bundle version from" in result.output
+
+
+# delete files
+
 
 def test_delete_files_non_specified(base_context, cli_runner):
     """Test to delete files"""
