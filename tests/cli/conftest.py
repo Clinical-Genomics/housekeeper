@@ -20,3 +20,14 @@ def fixture_base_context(db_uri, project_dir, store):
         "store": store,
     }
     return _ctx
+
+
+@pytest.fixture(name="populated_context")
+def fixture_populated_context(db_uri, project_dir, populated_store):
+    """Return a context with initialized database with some data"""
+    _ctx = {
+        "database": db_uri,
+        "root": project_dir,
+        "store": populated_store,
+    }
+    return _ctx
