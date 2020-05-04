@@ -1,0 +1,31 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pytest = "*"
+pytest-mock = "*"
+pytest-cov = "*"
+black = "*"
+pylint = "*"
+flake8 = "*"
+
+[packages]
+alchy = "*"
+click = "<7"
+coloredlogs = "*"
+marshmallow = "*"
+"ruamel.yaml" = "*"
+SQLAlchemy = "*"
+Flask = ">=1.1.1"
+Flask-Cors = "*"
+Flask-Alchy = "*"
+housekeeper = {editable = true,path = "."}
+pytest-cov = "*"
+
+[requires]
+python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
