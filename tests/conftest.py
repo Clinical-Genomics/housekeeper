@@ -4,6 +4,7 @@ import shutil
 from pathlib import Path
 
 import pytest
+import ruamel.yaml
 
 from housekeeper import include
 from housekeeper.store import Store, models
@@ -88,6 +89,37 @@ def fixture_bundle_data(case_id, sample_data, family_data, timestamp) -> dict:
     return data
 
 
+@pytest.fixture(scope="function", name="db_name")
+def fixture_db_name() -> str:
+    """Return the name of a database"""
+    return "hk_test.db"
+
+
+@pytest.fixture(scope="function", name="db_path")
+def fixture_db_path(db_dir, db_name) -> Path:
+    """Return the path to a database"""
+    return db_dir / db_name
+
+
+@pytest.fixture(scope="function", name="db_uri")
+def fixture_db_uri(db_path) -> Path:
+    """Return the uri to an in memory database"""
+    return "sqlite:///" + str(db_path)
+
+
+@pytest.fixture(scope="function", name="db_uri_memory")
+def fixture_db_uri_memory() -> Path:
+    """Return the uri to an in memory database"""
+    return "sqlite:///:memory:"
+
+
+@pytest.fixture(scope="function", name="configs")
+def fixture_configs(project_dir, db_uri) -> dict:
+    """Return a dict with housekeeper configs"""
+    _configs = {"root": str(project_dir), "database": db_uri}
+    return _configs
+
+
 # object fixtures
 
 
@@ -120,7 +152,32 @@ def fixture_project_dir(tmpdir_factory):
     shutil.rmtree(str(my_tmpdir))
 
 
+@pytest.fixture(scope="function", name="config_dir")
+def fixture_config_dir(tmpdir_factory):
+    """Path to a temporary directory for config files"""
+    my_tmpdir = Path(tmpdir_factory.mktemp("confdir"))
+    yield my_tmpdir
+    shutil.rmtree(str(my_tmpdir))
+
+
+@pytest.fixture(scope="function", name="db_dir")
+def fixture_db_dir(tmpdir_factory):
+    """Path to a temporary directory for databases"""
+    my_tmpdir = Path(tmpdir_factory.mktemp("db_dir"))
+    yield my_tmpdir
+    shutil.rmtree(str(my_tmpdir))
+
+
 # File fixtures
+
+
+@pytest.fixture(scope="function", name="config_file")
+def fixture_config_file(config_dir, configs) -> Path:
+    """Create a config file and return the path to if"""
+    conf_path = config_dir / "config.json"
+    with open(conf_path, "w") as out_file:
+        out_file.write(ruamel.yaml.safe_dump(configs))
+    return conf_path
 
 
 @pytest.fixture(scope="function", name="sample_vcf")
@@ -161,6 +218,7 @@ def fixture_checksum(checksum_file) -> Path:
 
 @pytest.fixture
 def version(tmpdir):
+    """Return a version object"""
     file_path_1 = tmpdir.join("example.vcf.gz")
     file_path_1.write("content")
     file_path_1_checksum = include.checksum(file_path_1)
@@ -186,9 +244,9 @@ def version(tmpdir):
 
 
 @pytest.yield_fixture(scope="function", name="store")
-def fixture_store(project_dir):
+def fixture_store(project_dir, db_uri):
     """Return a store setup with all tables"""
-    _store = Store(uri="sqlite://", root=str(project_dir))
+    _store = Store(uri=db_uri, root=str(project_dir))
     _store.create_all()
     yield _store
     _store.drop_all()
