@@ -1,5 +1,5 @@
 # Housekeeper
-[![Housekeeper tests]][github-url] [![Coverage Status][coveralls-image]][coveralls-url] [![CodeFactor][codefactor-image]][codefactor-url] [![Code style: black][black-image]][black-url]
+![Housekeeper tests][github-url] [![Coverage Status][coveralls-image]][coveralls-url] [![CodeFactor][codefactor-image]][codefactor-url] [![Code style: black][black-image]][black-url]
 
 ### Store, tag, fetch, and archive files with ease 🗃
 
