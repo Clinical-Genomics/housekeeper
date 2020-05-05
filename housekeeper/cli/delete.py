@@ -1,4 +1,4 @@
-"""Code for deleting via CLI"""
+"""Module for deleting via CLI"""
 import shutil
 from pathlib import Path
 
