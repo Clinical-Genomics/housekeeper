@@ -1,4 +1,4 @@
-"""Code for adding via CLI"""
+"""Module for adding via CLI"""
 from pathlib import Path
 from typing import List
 
