@@ -61,7 +61,6 @@ def files(
     store = context.obj["store"]
     file_objs = []
     if not (tag or bundle_name):
-        click.echo("I'm afraid I can't let you do that.")
         click.echo("Please specify a bundle or a tag")
         context.abort()
 
@@ -78,7 +77,8 @@ def files(
     else:
         file_objs = query.all()
 
-    for file_obj in file_objs:
+    i = 0
+    for i, file_obj in enumerate(file_objs, 1):
         if list_files_verbose:
             tags = ", ".join(tag.name for tag in file_obj.tags)
             click.echo(
@@ -89,6 +89,10 @@ def files(
             click.echo(file_obj.full_path)
         else:
             continue
+
+    if i == 0:
+        click.echo(click.style("no files found", fg="red"))
+        context.abort()
 
     if not (
         yes or click.confirm(f"Are you sure you want to delete {len(file_objs)} files?")

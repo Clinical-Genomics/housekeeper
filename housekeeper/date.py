@@ -1,6 +1,11 @@
-"""Code to parse dates"""
+"""Module to parse dates"""
 import datetime
 import re
+
+SPACE = " "
+DASH = "-"
+DOT = "."
+FWD_SLASH = " "
 
 
 def match_date(date):
@@ -43,7 +48,7 @@ def get_date(date, date_format=None):
     if not match_date(date):
         raise ValueError("Date %s is invalid" % date)
 
-    for separator in ["-", " ", ".", "/"]:
+    for separator in [DASH, SPACE, DOT, FWD_SLASH]:
         splited_date = date.split(separator)
         if len(splited_date) == 3:
             return datetime.datetime(*(int(number) for number in splited_date))

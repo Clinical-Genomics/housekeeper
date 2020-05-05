@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+"""Constants for housekeeper"""
 from datetime import timedelta
 
 PIPELINES = ("mip",)

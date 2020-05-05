@@ -3,7 +3,7 @@
 from housekeeper.store import models
 
 
-def test_instantiate_bundle(case_id, timestamp):
+def test_instantiate_bundle_obj(case_id, timestamp):
     """Test instantiate a Bundle object"""
     # GIVEN a case id and a time stamp
     # WHEN instantiating a bundle
@@ -13,7 +13,7 @@ def test_instantiate_bundle(case_id, timestamp):
     assert bundle_obj.created_at == timestamp
 
 
-def test_instantiate_bundle_no_name():
+def test_instantiate_bundle_obj_no_name():
     """Test instantiate a Bundle object without a name"""
     # WHEN instantiating a bundle without a name
     bundle_obj = models.Bundle()

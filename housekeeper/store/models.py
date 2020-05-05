@@ -1,4 +1,4 @@
-"""Code for the models"""
+"""Module for the models"""
 
 import datetime as dt
 from pathlib import Path

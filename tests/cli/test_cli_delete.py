@@ -22,8 +22,8 @@ def test_delete_non_existing_file(base_context, cli_runner):
     assert "file not found" in result.output
 
 
-def test_delete_existing_file_no_input(populated_context, cli_runner):
-    """Test to delete a non existing bundle"""
+def test_delete_existing_file_with_confirmation(populated_context, cli_runner):
+    """Test to delete an existing file using confirmation"""
     # GIVEN a context with a populated store, a file id and a cli runner
     store = populated_context["store"]
     file_id = 1
@@ -36,8 +36,8 @@ def test_delete_existing_file_no_input(populated_context, cli_runner):
     assert "remove file from" in result.output
 
 
-def test_delete_existing_file(populated_context, cli_runner):
-    """Test to delete a non existing bundle"""
+def test_delete_existing_file_no_confirmation(populated_context, cli_runner):
+    """Test to delete a existing file without confirmation"""
     # GIVEN a context with a populated store, a file id and a cli runner
     store = populated_context["store"]
     file_id = 1
@@ -48,7 +48,7 @@ def test_delete_existing_file(populated_context, cli_runner):
     result = cli_runner.invoke(
         delete.file_cmd, [str(file_id), "--yes"], obj=populated_context
     )
-    # THEN it should ask if you are sure
+    # THEN file delete should be in output
     assert "file deleted" in result.output
 
 
@@ -66,8 +66,10 @@ def test_delete_non_existing_bundle(base_context, cli_runner, case_id):
     assert "bundle not found" in result.output
 
 
-def test_delete_existing_bundle_no_input(populated_context, cli_runner, case_id):
-    """Test to delete a non existing bundle"""
+def test_delete_existing_bundle_with_confirmation(
+    populated_context, cli_runner, case_id
+):
+    """Test to delete an existing bundle"""
     # GIVEN a context with a store and a cli runner
     # WHEN trying to delete a bundle
     result = cli_runner.invoke(delete.bundle, [case_id], obj=populated_context)
@@ -77,8 +79,8 @@ def test_delete_existing_bundle_no_input(populated_context, cli_runner, case_id)
     assert "remove bundle version from" in result.output
 
 
-def test_delete_existing_bundle(populated_context, cli_runner, case_id):
-    """Test to delete a non existing bundle"""
+def test_delete_existing_bundle_no_confirmation(populated_context, cli_runner, case_id):
+    """Test to delete an existing bundle without confirmation"""
     # GIVEN a context with a store and a cli runner
     # WHEN trying to delete a bundle
     result = cli_runner.invoke(
@@ -94,14 +96,14 @@ def test_delete_existing_bundle(populated_context, cli_runner, case_id):
 
 
 def test_delete_files_non_specified(base_context, cli_runner):
-    """Test to delete files"""
+    """Test to delete files without specifying bundle name or tag"""
     # GIVEN a context with a store and a cli runner
     # WHEN trying to delete files without specifying bundle name or tag
     result = cli_runner.invoke(delete.files, [], obj=base_context)
     # THEN assert it exits non zero
     assert result.exit_code == 1
     # THEN HAL9000 should interfere
-    assert "I'm afraid I can't let you do that" in result.output
+    assert "Please specify a bundle or a tag" in result.output
 
 
 def test_delete_files_non_existing_bundle(base_context, cli_runner, case_id):
@@ -117,8 +119,10 @@ def test_delete_files_non_existing_bundle(base_context, cli_runner, case_id):
     assert "bundle not found" in result.output
 
 
-def test_delete_files_existing_bundle_no_input(populated_context, cli_runner, case_id):
-    """Test to delete a non existing bundle"""
+def test_delete_existing_bundle_with_confirmation(
+    populated_context, cli_runner, case_id
+):
+    """Test to delete an existing bundle with confirmation"""
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
@@ -134,8 +138,8 @@ def test_delete_files_existing_bundle_no_input(populated_context, cli_runner, ca
     assert "Are you sure you want to delete" in result.output
 
 
-def test_delete_files_existing_bundle(populated_context, cli_runner, case_id):
-    """Test to delete a non existing bundle"""
+def test_delete_existing_bundle_no_confirmation(populated_context, cli_runner, case_id):
+    """Test to delete an existing bundle without confirmation"""
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
@@ -147,9 +151,9 @@ def test_delete_files_existing_bundle(populated_context, cli_runner, case_id):
     nr_files = query.count()
     assert nr_files > 0
 
-    # WHEN trying to delete files without specifying bundle name or tag
+    # WHEN trying to delete a bundle without requiring confirmation
     result = cli_runner.invoke(
         delete.files, ["--bundle-name", case_id, "--yes"], obj=populated_context
     )
-    # THEN the files should have been removed
+    # THEN the bundle should have been removed
     assert "deleted" in result.output

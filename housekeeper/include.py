@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+"""Module for code to include files in housekeeper"""
 import hashlib
 import logging
 import os
@@ -8,6 +8,7 @@ from housekeeper.exc import VersionIncludedError
 from housekeeper.store import models
 
 BLOCKSIZE = 65536
+EMPTY_STR = ""
 log = logging.getLogger(__name__)
 
 
@@ -33,7 +34,7 @@ def include_version(
         else:
             os.symlink(file_obj_path.resolve(), new_path)
         log.info(f"linked file: {file_obj.path} -> {new_path}")
-        file_obj.path = str(new_path).replace(f"{global_root_dir}/", "", 1)
+        file_obj.path = str(new_path).replace(f"{global_root_dir}/", EMPTY_STR, 1)
 
 
 def checksum(path):

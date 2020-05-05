@@ -22,7 +22,7 @@ def test_fetch_bundles(populated_store, bundle_data_old):
     assert len(query.all()) == 4
 
 
-def test_fetch_old(populated_store, bundle_data_old, timestamp, old_timestamp):
+def test_fetch_past_files(populated_store, bundle_data_old, timestamp, old_timestamp):
     """
     test fetch files where not all files are older than before date
     """
@@ -40,7 +40,7 @@ def test_fetch_old(populated_store, bundle_data_old, timestamp, old_timestamp):
     assert len(query.all()) == 2
 
 
-def test_fetch_before_oldest(
+def test_fetch_no_files_before_oldest(
     populated_store, bundle_data_old, old_timestamp, timestamp
 ):
     """

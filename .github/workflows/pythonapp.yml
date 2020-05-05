@@ -30,6 +30,7 @@ jobs:
     - name: Development Dependencies
       run: |
         pip install -r requirements-dev.txt
+        pip install flake8
         pip check
 
     - name: Run linters

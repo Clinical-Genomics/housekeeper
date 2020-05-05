@@ -53,28 +53,28 @@ def test_add_tag_existing_file(populated_context, cli_runner):
     # GIVEN a new tag
     tag = "new-tag"
 
-    # WHEN trying to add a tag to the non existing file
+    # WHEN trying to add a tag to the existing file
     result = cli_runner.invoke(
         add.tag, [tag, "-f", str(file_id)], obj=populated_context
     )
-    # THEN assert it has a non zero exit status
+    # THEN assert it has a zero exit status
     assert result.exit_code == 0
-    # THEN check that the error message is displayed
+    # THEN check that the tag is displayed in the output
     assert tag in result.output
 
 
 def test_add_tag_non_existing_file(populated_context, cli_runner):
-    """Test to add a tag to a file that not exists"""
+    """Test to add a tag to a file that not exist"""
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a non existing file id
-    file_id = 42
-    file_obj = store.File.get(file_id)
+    missing_file_id = 42
+    file_obj = store.File.get(missing_file_id)
     assert not file_obj
 
     # WHEN trying to add a tag to the non existing file
     result = cli_runner.invoke(
-        add.tag, ["new-tag", "-f", str(file_id)], obj=populated_context
+        add.tag, ["new-tag", "-f", str(missing_file_id)], obj=populated_context
     )
     # THEN assert it has a non zero exit status
     assert result.exit_code == 1
@@ -125,24 +125,24 @@ def test_add_file_non_existing_bundle(
 ):
     """Test to add a file to a non existing bundle"""
     # GIVEN a context with a empty store and a cli runner
-    bundle_name = case_id
+    unknown_bundle_name = case_id
 
     # WHEN trying to add a bundle
     result = cli_runner.invoke(
-        add.file_cmd, [bundle_name, str(second_sample_vcf)], obj=base_context
+        add.file_cmd, [unknown_bundle_name, str(second_sample_vcf)], obj=base_context
     )
 
     # THEN assert it fails
     assert result.exit_code == 1
     # THEN check that the proper information is displayed
-    assert f"unknown bundle: {bundle_name}" in result.output
+    assert f"unknown bundle: {unknown_bundle_name}" in result.output
 
 
 def test_add_file_existing_bundle(
     populated_context, cli_runner, case_id, second_sample_vcf
 ):
     """Test to add a file to a existing bundle"""
-    # GIVEN a context with a empty store and a cli runner
+    # GIVEN a context with a populated store and a cli runner
     bundle_name = case_id
 
     # WHEN trying to add the file to a bundle

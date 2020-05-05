@@ -35,7 +35,7 @@ def test_init_config(config_file, cli_runner):
 
 def test_init_database(db_uri, db_path, cli_runner, project_dir):
     """Test init housekeeper with cli options"""
-    # GIVEN a uri, a non exosting database, a project dir and a cli runner
+    # GIVEN a uri, a non existing database, a project dir and a cli runner
     assert not db_path.exists()
     # WHEN calling the CLI
     result = cli_runner.invoke(

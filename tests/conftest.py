@@ -173,7 +173,7 @@ def fixture_db_dir(tmpdir_factory):
 
 @pytest.fixture(scope="function", name="config_file")
 def fixture_config_file(config_dir, configs) -> Path:
-    """Create a config file and return the path to if"""
+    """Create a config file and return the path to it"""
     conf_path = config_dir / "config.json"
     with open(conf_path, "w") as out_file:
         out_file.write(ruamel.yaml.safe_dump(configs))

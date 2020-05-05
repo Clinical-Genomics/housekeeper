@@ -5,8 +5,8 @@ from housekeeper.store import models
 # tag tests
 
 
-def test_create_tag(store, vcf_tag_name):
-    """Test to add a tag"""
+def test_create_tag_obj(store, vcf_tag_name):
+    """Test to create a tag object"""
     # GIVEN a store and a tag name
     # WHEN creating a tag
     new_tag = store.new_tag(vcf_tag_name)
@@ -29,7 +29,7 @@ def test_add_tag(store, vcf_tag_obj):
 # version tests
 
 
-def test_create_version(store, timestamp):
+def test_create_version_obj(store, timestamp):
     """Test to create a version object"""
     # GIVEN a store and a time stamp
     # WHEN creating a version
@@ -74,6 +74,8 @@ def test_add_bundle(store, bundle_obj):
     assert store.Tag.query.count() > 0
     # THEN assert some files where added
     assert store.File.query.count() > 0
+    # THEN assert we have a version
+    assert store.Version.query.count() > 0
 
 
 def test_add_bundle_twice(populated_store, bundle_data):

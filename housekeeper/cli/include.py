@@ -1,4 +1,4 @@
-"""Code for including files via CLI"""
+"""Module for including files via CLI"""
 import datetime as dt
 
 import click

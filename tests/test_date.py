@@ -27,7 +27,7 @@ def test_match_date_dot():
 
 
 def test_match_invalid_date():
-    """Test to bad formated date string"""
+    """Test to match a bad formated date string"""
     # GIVEN a datestring without separators
     date_str = "20150510"
     # WHEN checking if it is a valid datestring
@@ -37,7 +37,7 @@ def test_match_invalid_date():
 
 
 def test_match_non_date():
-    """Test to non date string"""
+    """Test to match non date string"""
     # GIVEN a datestring not even similar to a date
     date_str = "hello"
     # WHEN checking if it is a valid datestring
@@ -46,8 +46,8 @@ def test_match_non_date():
     assert res is False
 
 
-def test_valid_date():
-    """Test to get a date from a valid date string"""
+def test_valid_date_str():
+    """Test to get a date object from a valid date string"""
     # GIVEN a datestring separated by '-'
     date_str = "2015-05-10"
     # WHEN converting to a datetime object
@@ -56,8 +56,8 @@ def test_valid_date():
     assert isinstance(date_obj, datetime.datetime)
 
 
-def test_valid_date_no_date():
-    """Test get a datetime object when date string is valid"""
+def test_valid_date_str_no_value():
+    """Test get a datetime object when date string has no value"""
     # GIVEN no datestring
     date_str = None
     # WHEN fetching a date object
@@ -66,7 +66,7 @@ def test_valid_date_no_date():
     assert isinstance(date_obj, datetime.datetime)
 
 
-def test_invalid_date():
+def test_invalid_date_str():
     """Test get a datetime object when date string is invalid"""
     # GIVEN a datestring without separators
     date_str = "20150510"
