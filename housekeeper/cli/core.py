@@ -1,4 +1,4 @@
-"""Code for base CLI"""
+"""Module for base CLI"""
 import click
 import coloredlogs
 import ruamel.yaml
