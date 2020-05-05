@@ -12,7 +12,7 @@ jobs:
 
     steps:
 
-    # Check out Scout code
+    # Check out Housekeeper code
     - uses: actions/checkout@v1
 
     # Set up python
