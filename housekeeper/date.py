@@ -5,7 +5,7 @@ import re
 SPACE = " "
 DASH = "-"
 DOT = "."
-FWD_SLASH = " "
+FWD_SLASH = "/"
 
 
 def match_date(date):
