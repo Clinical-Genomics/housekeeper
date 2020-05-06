@@ -12,9 +12,9 @@ def test_add_two_tags(populated_context, cli_runner):
     tag1 = "new-tag"
     tag2 = "other-tag"
 
-    # WHEN trying to add a tag to the non existing file
+    # WHEN trying to add two tags to the an existing file
     result = cli_runner.invoke(add.tag, [tag1, tag2], obj=populated_context)
-    # THEN assert it has a non zero exit status
+    # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tags are logged
     assert tag1 in result.output
@@ -23,7 +23,7 @@ def test_add_two_tags(populated_context, cli_runner):
 
 
 def test_add_existing_tag_existing_file(populated_context, cli_runner):
-    """Test to add a tag to a file that exists"""
+    """Test to add a existing tag to a file that exists"""
     # GIVEN a context with a populated store, and a cli runner
     store = populated_context["store"]
     # GIVEN a existing file id
@@ -43,7 +43,7 @@ def test_add_existing_tag_existing_file(populated_context, cli_runner):
 
 
 def test_add_tag_existing_file(populated_context, cli_runner):
-    """Test to add a tag to a file that exists"""
+    """Test to add a non existing tag to a file that exists"""
     # GIVEN a context with a populated store, and a cli runner
     store = populated_context["store"]
     # GIVEN a existing file id
@@ -60,7 +60,7 @@ def test_add_tag_existing_file(populated_context, cli_runner):
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tag is displayed in the output
-    assert tag in result.output
+    assert f"{tag}: created" in result.output
 
 
 def test_add_tag_non_existing_file(populated_context, cli_runner):
