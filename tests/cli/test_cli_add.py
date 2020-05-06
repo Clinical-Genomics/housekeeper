@@ -60,7 +60,7 @@ def test_add_tag_existing_file(populated_context, cli_runner):
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tag is displayed in the output
-    assert f"{tag}: created" in result.output
+    assert f"{tag}: tag created" in result.output
 
 
 def test_add_tag_non_existing_file(populated_context, cli_runner):

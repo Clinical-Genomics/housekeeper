@@ -77,8 +77,8 @@ def files(
     else:
         file_objs = query.all()
 
-    i = 0
-    for i, file_obj in enumerate(file_objs, 1):
+    nr_files = 0
+    for nr_files, file_obj in enumerate(file_objs, 1):
         if list_files_verbose:
             tags = ", ".join(tag.name for tag in file_obj.tags)
             click.echo(
@@ -90,7 +90,7 @@ def files(
         else:
             continue
 
-    if i == 0:
+    if nr_files == 0:
         click.echo(click.style("no files found", fg="red"))
         context.abort()
 
