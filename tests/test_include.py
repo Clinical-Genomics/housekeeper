@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+"""Tests for the include module"""
 import datetime
 from pathlib import Path
 
@@ -8,19 +8,18 @@ from housekeeper import include
 from housekeeper.exc import VersionIncludedError
 
 
-def test_checksum():
+def test_checksum(checksum, checksum_file):
+    """Test calculate checksum"""
     # GIVEN a file with a specific checksum
-    file_path = Path('tests/fixtures/26a90105b99c05381328317f913e9509e373b64f.txt')
-    expected_checksum = file_path.name.rstrip('.txt')
     # WHEN calculating the checksum
-    checksum = include.checksum(file_path)
+    calculated_checksum = include.checksum(checksum_file)
     # THEN it should match
-    assert checksum == expected_checksum
+    assert calculated_checksum == checksum
 
 
 def test_include_version(tmpdir, version):
     # GIVEN a new directory as the global root
-    global_root = tmpdir.mkdir('destination')
+    global_root = tmpdir.mkdir("destination")
     global_root_path = Path(global_root)
     file_names = [Path(file_obj.path).name for file_obj in version.files]
     date_str = str(version.created_at.date())

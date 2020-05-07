@@ -8,14 +8,14 @@ from flask_cors import CORS
 import housekeeper
 from housekeeper.server import api, ext
 
-coloredlogs.install(level='INFO')
+coloredlogs.install(level="INFO")
 app = Flask(__name__)
 
-SECRET_KEY = 'unsafe!!!'
+SECRET_KEY = "unsafe!!!"
 TEMPLATES_AUTO_RELOAD = True
-SQLALCHEMY_DATABASE_URI = os.environ['SQLALCHEMY_DATABASE_URI']
+SQLALCHEMY_DATABASE_URI = os.environ["SQLALCHEMY_DATABASE_URI"]
 SQLALCHEMY_POOL_RECYCLE = 7200
-SQLALCHEMY_TRACK_MODIFICATIONS = 'FLASK_DEBUG' in os.environ
+SQLALCHEMY_TRACK_MODIFICATIONS = "FLASK_DEBUG" in os.environ
 
 app.config.from_object(__name__)
 
@@ -24,9 +24,9 @@ app.register_blueprint(api.blueprint)
 
 # configure extensions
 ext.store.init_app(app)
-cors = CORS(app, resources={r"/api/*": {'origins': '*'}})
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
-@app.route('/')
+@app.route("/")
 def index():
     return f"Welcome to {housekeeper.__title__} REST API"

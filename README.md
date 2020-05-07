@@ -1,4 +1,5 @@
-# Housekeeper [![Build Status][travis-image]][travis-url] [![Coverage Status][coveralls-image]][coveralls-url]
+# Housekeeper
+![Housekeeper tests][github-url] [![Coverage Status][coveralls-image]][coveralls-url] [![CodeFactor][codefactor-image]][codefactor-url] [![Code style: black][black-image]][black-url]
 
 ### Store, tag, fetch, and archive files with ease 🗃
 
@@ -86,8 +87,11 @@ It'll always ask for confirmation, unless you add --yes:
 If you do not provide a --tag or --bundle, essentially deleting everything, the function will not let you do that.
 
 [pypi]: https://pypi.python.org/pypi/housekeeper/
-[travis-url]: https://travis-ci.org/Clinical-Genomics/housekeeper
-[travis-image]: https://img.shields.io/travis/Clinical-Genomics/housekeeper.svg?style=flat-square
 [coveralls-url]: https://coveralls.io/r/Clinical-Genomics/housekeeper
 [coveralls-image]: https://img.shields.io/coveralls/Clinical-Genomics/housekeeper.svg?style=flat-square
+[github-url]: https://github.com/Clinical-Genomics/housekeeper/workflows/Housekeeper%20tests/badge.svg
 [development manual]: http://www.clinicalgenomics.se/development/dev/githubflow/
+[codefactor-image]: https://www.codefactor.io/repository/github/clinical-genomics/housekeeper/badge
+[codefactor-url]: https://www.codefactor.io/repository/github/clinical-genomics/housekeeper
+[black-image]: https://img.shields.io/badge/code%20style-black-000000.svg
+[black-url]: https://github.com/psf/black

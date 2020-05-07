@@ -48,8 +48,9 @@ TRASH*
 _DEVELOP/
 .vscode/
 
-# SublimeText: workspace files are user-specific
+# Editors
 *.sublime-workspace
+.tm_properties
 
 # project files should be version controlled, unless a significant
 # proportion of contributors will probably not be using SublimeText
@@ -69,6 +70,9 @@ alembic.ini
 # Module
 *.mod.yaml
 meta.yaml
+
+# Local files
+local/
 
 housekeeperold/
 testsold/
