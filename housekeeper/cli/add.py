@@ -6,7 +6,6 @@ import click
 
 
 @click.group()
-@click.pass_context
 def add():
     """Add things to the store."""
 
@@ -72,6 +71,9 @@ def tag(context: click.Context, tags: List[str], file_id: int = None):
     """Add tags to an existing file."""
     store = context.obj["store"]
     file_obj = None
+    if len(tags) == 0:
+        click.echo(click.style("No tags provided", fg="yellow"))
+        return
 
     if file_id:
         file_obj = store.file_(file_id)
