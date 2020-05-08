@@ -31,5 +31,6 @@ class Store(alchy.Manager, CoreHandler):
         super(Store, self).__init__(
             config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=models.Model
         )
+        LOG.debug("Initializing Store")
         self.File.app_root = Path(root)
         self.Version.app_root = Path(root)

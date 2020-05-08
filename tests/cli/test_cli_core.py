@@ -23,6 +23,16 @@ def test_cli_version(cli_runner):
     assert housekeeper.__version__ in result.output
 
 
+def test_cli_get_no_db(cli_runner):
+    """Test running the get command without specifying a database. Should raise exception"""
+    # GIVEN a cli runner
+    # WHEN asking to see the version
+    result = cli_runner.invoke(base, ["get"])
+    # THEN it should exit with a non zero status
+    assert result.exit_code == 1
+    assert "Please provide a database" in result.output
+
+
 def test_init_config(config_file, cli_runner):
     """Test init housekeeper with a config file"""
     # GIVEN a config file and a cli runner

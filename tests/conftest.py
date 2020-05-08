@@ -1,5 +1,6 @@
 """Base fixtures"""
 import datetime
+import logging
 import shutil
 from pathlib import Path
 
@@ -8,6 +9,14 @@ import ruamel.yaml
 
 from housekeeper import include
 from housekeeper.store import Store, models
+
+
+@pytest.fixture(scope="function", name="log_output")
+def fixture_log_output(caplog):
+    """Return the log messages as a chunk of text"""
+    caplog.set_level(logging.DEBUG)
+    return caplog.text
+
 
 # basic fixtures
 

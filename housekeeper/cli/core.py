@@ -1,4 +1,6 @@
 """Module for base CLI"""
+import logging
+
 import click
 import coloredlogs
 import ruamel.yaml
@@ -7,6 +9,8 @@ import housekeeper
 from housekeeper.store import Store
 
 from . import add, delete, get, include, init
+
+LOG = logging.getLogger(__name__)
 
 
 @click.group()
@@ -20,9 +24,18 @@ def base(context, config, database, root, log_level):
     """Housekeeper - Access your files!"""
     coloredlogs.install(level=log_level)
     context.obj = ruamel.yaml.safe_load(config) if config else {}
-    context.obj["database"] = database if database else context.obj["database"]
-    context.obj["root"] = root if root else context.obj["root"]
-    context.obj["store"] = Store(context.obj["database"], context.obj["root"])
+    db_path = database if database else context.obj.get("database")
+    root_path = context.obj["root"] = root if root else context.obj.get("root")
+    if not db_path:
+        LOG.error("Please provide a database")
+        raise click.Abort
+    if not root_path:
+        LOG.error("Please provide a root path")
+        raise click.Abort
+    LOG.info("Use database %s", db_path)
+    context.obj["database"] = db_path
+    LOG.info("Use root path %s", root_path)
+    context.obj["store"] = Store(db_path, root_path)
 
 
 base.add_command(init.init)

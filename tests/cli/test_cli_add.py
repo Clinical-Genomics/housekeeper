@@ -1,29 +1,31 @@
 """Tests for adding via CLI"""
+import logging
 
 from housekeeper.cli import add
 
 # tests adding tags
 
 
-def test_add_two_tags(populated_context, cli_runner):
+def test_add_two_tags(populated_context, cli_runner, caplog):
     """Test to add a two tags to the database"""
     # GIVEN a context with a populated store, and a cli runner
+    caplog.set_level(logging.DEBUG)
     # GIVEN two new tags
     tag1 = "new-tag"
     tag2 = "other-tag"
-
     # WHEN trying to add two tags to the an existing file
     result = cli_runner.invoke(add.tag, [tag1, tag2], obj=populated_context)
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tags are logged
-    assert tag1 in result.output
+    assert tag1 in caplog.text
     # THEN check that the tags are logged
-    assert tag2 in result.output
+    assert tag2 in caplog.text
 
 
-def test_add_existing_tag_existing_file(populated_context, cli_runner):
+def test_add_existing_tag_existing_file(populated_context, cli_runner, caplog):
     """Test to add a existing tag to a file that exists"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store, and a cli runner
     store = populated_context["store"]
     # GIVEN a existing file id
@@ -39,11 +41,12 @@ def test_add_existing_tag_existing_file(populated_context, cli_runner):
     # THEN assert it has a non zero exit status
     assert result.exit_code == 0
     # THEN check that it communicates that the tag existed
-    assert f"{tag}: tag already added" in result.output
+    assert f"{tag}: tag already added" in caplog.text
 
 
-def test_add_tag_existing_file(populated_context, cli_runner):
+def test_add_tag_existing_file(populated_context, cli_runner, caplog):
     """Test to add a non existing tag to a file that exists"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store, and a cli runner
     store = populated_context["store"]
     # GIVEN a existing file id
@@ -60,11 +63,12 @@ def test_add_tag_existing_file(populated_context, cli_runner):
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tag is displayed in the output
-    assert f"{tag}: tag created" in result.output
+    assert f"{tag}: tag created" in caplog.text
 
 
-def test_add_tag_non_existing_file(populated_context, cli_runner):
+def test_add_tag_non_existing_file(populated_context, cli_runner, caplog):
     """Test to add a tag to a file that not exist"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a non existing file id
@@ -79,14 +83,15 @@ def test_add_tag_non_existing_file(populated_context, cli_runner):
     # THEN assert it has a non zero exit status
     assert result.exit_code == 1
     # THEN check that the error message is displayed
-    assert "unable to find file" in result.output
+    assert "unable to find file" in caplog.text
 
 
 # tests adding bundles
 
 
-def test_add_existing_bundle(populated_context, cli_runner):
+def test_add_existing_bundle(populated_context, cli_runner, caplog):
     """Test to add a bundle that exists"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
@@ -100,11 +105,12 @@ def test_add_existing_bundle(populated_context, cli_runner):
     # THEN assert it has a non zero exit status
     assert result.exit_code == 1
     # THEN check that the error message is displayed
-    assert "bundle name already exists" in result.output
+    assert "bundle name already exists" in caplog.text
 
 
-def test_add_bundle(base_context, cli_runner, case_id):
+def test_add_bundle(base_context, cli_runner, case_id, caplog):
     """Test to add a new bundle"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a empty store and a cli runner
     bundle_name = case_id
 
@@ -114,16 +120,17 @@ def test_add_bundle(base_context, cli_runner, case_id):
     # THEN assert it succeded
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
-    assert "new bundle added" in result.output
+    assert "new bundle added" in caplog.text
 
 
 # tests adding file to bundle
 
 
 def test_add_file_non_existing_bundle(
-    base_context, cli_runner, case_id, second_sample_vcf
+    base_context, cli_runner, case_id, second_sample_vcf, caplog
 ):
     """Test to add a file to a non existing bundle"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a empty store and a cli runner
     unknown_bundle_name = case_id
 
@@ -135,13 +142,14 @@ def test_add_file_non_existing_bundle(
     # THEN assert it fails
     assert result.exit_code == 1
     # THEN check that the proper information is displayed
-    assert f"unknown bundle: {unknown_bundle_name}" in result.output
+    assert f"unknown bundle: {unknown_bundle_name}" in caplog.text
 
 
 def test_add_file_existing_bundle(
-    populated_context, cli_runner, case_id, second_sample_vcf
+    populated_context, cli_runner, case_id, second_sample_vcf, caplog
 ):
     """Test to add a file to a existing bundle"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
     bundle_name = case_id
 
@@ -153,4 +161,4 @@ def test_add_file_existing_bundle(
     # THEN assert it succedes
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
-    assert "new file added" in result.output
+    assert "new file added" in caplog.text

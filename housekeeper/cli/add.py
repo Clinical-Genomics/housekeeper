@@ -1,8 +1,11 @@
 """Module for adding via CLI"""
+import logging
 from pathlib import Path
 from typing import List
 
 import click
+
+LOG = logging.getLogger(__name__)
 
 
 @click.group()
@@ -15,10 +18,11 @@ def add():
 @click.pass_context
 def bundle(context, name):
     """Add a new bundle."""
+    LOG.info("Running add bundle")
     store = context.obj["store"]
     if store.bundle(name):
-        click.echo(click.style("bundle name already exists", fg="yellow"))
-        context.abort()
+        LOG.warning("bundle name already exists")
+        raise click.Abort
     new_bundle = store.new_bundle(name)
     store.add_commit(new_bundle)
 
@@ -27,11 +31,7 @@ def bundle(context, name):
     new_version.bundle = new_bundle
     store.add_commit(new_version)
 
-    click.echo(
-        click.style(
-            f"new bundle added: {new_bundle.name} ({new_bundle.id})", fg="green"
-        )
-    )
+    LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
 
 @add.command("file")
@@ -42,11 +42,12 @@ def bundle(context, name):
 @click.pass_context
 def file_cmd(context, tags, archive, bundle_name, path):
     """Add a file to a bundle."""
+    LOG.info("Running add file")
     store = context.obj["store"]
     bundle_obj = store.bundle(bundle_name)
     if bundle_obj is None:
-        click.echo(click.style(f"unknown bundle: {bundle_name}", fg="red"))
-        context.abort()
+        LOG.warning("unknown bundle: %s", bundle_name)
+        raise click.Abort
     version_obj = bundle_obj.versions[0]
     new_file = store.new_file(
         path=str(Path(path).absolute()),
@@ -58,9 +59,7 @@ def file_cmd(context, tags, archive, bundle_name, path):
     )
     new_file.version = version_obj
     store.add_commit(new_file)
-    click.echo(
-        click.style(f"new file added: {new_file.path} ({new_file.id})", fg="green")
-    )
+    LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
 
 
 @add.command()
@@ -69,30 +68,31 @@ def file_cmd(context, tags, archive, bundle_name, path):
 @click.pass_context
 def tag(context: click.Context, tags: List[str], file_id: int = None):
     """Add tags to an existing file."""
+    LOG.info("Running add tag")
     store = context.obj["store"]
     file_obj = None
     if len(tags) == 0:
-        click.echo(click.style("No tags provided", fg="yellow"))
+        LOG.warning("No tags provided")
         return
 
     if file_id:
         file_obj = store.file_(file_id)
         if not file_obj:
-            click.echo(click.style("unable to find file", fg="red"))
-            context.abort()
+            LOG.warning("unable to find file with id %s", file_id)
+            raise click.Abort
 
     for tag_name in tags:
         tag_obj = store.tag(tag_name)
 
         if not tag_obj:
-            click.echo(click.style(f"{tag_name}: tag created", fg="green"))
+            LOG.info("%s: tag created", tag_name)
             tag_obj = store.new_tag(tag_name)
 
         if not file_obj:
             continue
 
         if tag_obj in file_obj.tags:
-            click.echo(click.style(f"{tag_name}: tag already added", fg="yellow"))
+            LOG.info("%s: tag already added", tag_name)
             continue
 
         file_obj.tags.append(tag_obj)
@@ -100,7 +100,7 @@ def tag(context: click.Context, tags: List[str], file_id: int = None):
     store.commit()
 
     if not file_obj:
-        context.exit()
+        return
 
     all_tags = (tag.name for tag in file_obj.tags)
-    click.echo(click.style(f"file tags: {', '.join(all_tags)}", fg="blue"))
+    LOG.info("file tags: %s", ", ".join(all_tags))
