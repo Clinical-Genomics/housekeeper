@@ -6,7 +6,6 @@ import click
 
 
 @click.group()
-@click.pass_context
 def delete():
     """Delete things in the database."""
 
