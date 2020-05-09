@@ -1,9 +1,15 @@
 """Module for adding via CLI"""
+import json as jsonlib
 import logging
+from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import List
 
 import click
+from marshmallow.exceptions import ValidationError
+
+from housekeeper.date import get_date
+from housekeeper.store.api.schema import BundleSchema
 
 LOG = logging.getLogger(__name__)
 
@@ -14,22 +20,53 @@ def add():
 
 
 @add.command()
-@click.argument("name")
+@click.argument("bundle_data")
+@click.option("-j", "--json", is_flag=True, help="If input is in json format")
 @click.pass_context
-def bundle(context, name):
+def bundle(context, bundle_data, json):
     """Add a new bundle."""
     LOG.info("Running add bundle")
     store = context.obj["store"]
-    if store.bundle(name):
-        LOG.warning("bundle name already exists")
-        raise click.Abort
-    new_bundle = store.new_bundle(name)
-    store.add_commit(new_bundle)
+    if not json:
+        bundle_name = bundle_data
+        new_bundle = store.new_bundle(bundle_name)
+        store.add_commit(new_bundle)
+        # add default version
+        new_version = store.new_version(created_at=new_bundle.created_at)
+        new_version.bundle = new_bundle
+        store.add_commit(new_version)
+    else:
+        try:
+            LOG.info("Loading json information")
+            data = jsonlib.loads(bundle_data)
+        except JSONDecodeError as err:
+            LOG.warning("Something wrong in json string")
+            LOG.error(err)
+            raise click.Abort
 
-    # add default version
-    new_version = store.new_version(created_at=new_bundle.created_at)
-    new_version.bundle = new_bundle
-    store.add_commit(new_version)
+        data["created"] = get_date(data.get("created"))
+        if "expires" in data:
+            data["expires"] = get_date(data["expires"])
+        if "files" not in data:
+            data["files"] = []
+        schema = BundleSchema()
+        formatet_data = schema.dump(data)
+        try:
+            LOG.info("Validate marshmallow schema")
+            result = schema.load(formatet_data)
+        except ValidationError as err:
+            LOG.warning("Input data does not follow the models")
+            LOG.error(err)
+            raise click.Abort
+        bundle_name = data["name"]
+        if store.bundle(bundle_name):
+            LOG.warning("bundle name already exists")
+            raise click.Abort
+
+        new_bundle, new_version = store.add_bundle(result)
+        store.add_commit(new_bundle)
+        new_version.bundle = new_bundle
+        store.add_commit(new_version)
 
     LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
