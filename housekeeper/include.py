@@ -9,7 +9,7 @@ from housekeeper.store import models
 
 BLOCKSIZE = 65536
 EMPTY_STR = ""
-log = logging.getLogger(__name__)
+LOG = logging.getLogger(__name__)
 
 
 def include_version(
@@ -23,7 +23,7 @@ def include_version(
     # generate root directory
     version_root_dir = global_root_dir / version_obj.relative_root_dir
     version_root_dir.mkdir(parents=True, exist_ok=True)
-    log.info(f"created new bundle version dir: {version_root_dir}")
+    LOG.info("created new bundle version dir: %s", version_root_dir)
 
     for file_obj in version_obj.files:
         # hardlink file to the internal structure
@@ -33,7 +33,7 @@ def include_version(
             os.link(file_obj_path.resolve(), new_path)
         else:
             os.symlink(file_obj_path.resolve(), new_path)
-        log.info(f"linked file: {file_obj.path} -> {new_path}")
+        LOG.info("linked file: %s -> %s", file_obj.path, new_path)
         file_obj.path = str(new_path).replace(f"{global_root_dir}/", EMPTY_STR, 1)
 
 
