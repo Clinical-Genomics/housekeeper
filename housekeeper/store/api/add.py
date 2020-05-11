@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 """This module handles adding things to the store"""
 
+import datetime as dt
 import logging
 from pathlib import Path
 from typing import List
-import datetime as dt
 
 from housekeeper.store import models
 from housekeeper.store.api.base import BaseHandler
 from housekeeper.store.api.find import FindHandler
-
 
 LOG = logging.getLogger(__name__)
 
@@ -77,12 +76,14 @@ class AddHandler(BaseHandler):
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
         """Create a new file bundle."""
         new_bundle = self.Bundle(name=name, created_at=created_at)
+        LOG.info("Created new bundle: %s", new_bundle.name)
         return new_bundle
 
     def new_version(
         self, created_at: dt.datetime, expires_at: dt.datetime = None
     ) -> models.Version:
         """Create a new bundle version."""
+        LOG.info("Created new version")
         new_version = self.Version(created_at=created_at, expires_at=expires_at)
         return new_version
 

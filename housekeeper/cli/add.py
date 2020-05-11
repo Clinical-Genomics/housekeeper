@@ -19,56 +19,63 @@ def add():
     """Add things to the store."""
 
 
-@add.command()
+@add.command("bundle")
 @click.argument("bundle_data")
 @click.option("-j", "--json", is_flag=True, help="If input is in json format")
 @click.pass_context
-def bundle(context, bundle_data, json):
+def bundle_cmd(context, bundle_data, json):
     """Add a new bundle."""
     LOG.info("Running add bundle")
     store = context.obj["store"]
     if not json:
         bundle_name = bundle_data
-        new_bundle = store.new_bundle(bundle_name)
-        store.add_commit(new_bundle)
-        # add default version
-        new_version = store.new_version(created_at=new_bundle.created_at)
-        new_version.bundle = new_bundle
-        store.add_commit(new_version)
-    else:
-        try:
-            LOG.info("Loading json information")
-            data = jsonlib.loads(bundle_data)
-        except JSONDecodeError as err:
-            LOG.warning("Something wrong in json string")
-            LOG.error(err)
-            raise click.Abort
-
-        data["created"] = get_date(data.get("created"))
-        if "expires" in data:
-            data["expires"] = get_date(data["expires"])
-        if "files" not in data:
-            data["files"] = []
-        schema = BundleSchema()
-        formatet_data = schema.dump(data)
-        try:
-            LOG.info("Validate marshmallow schema")
-            result = schema.load(formatet_data)
-        except ValidationError as err:
-            LOG.warning("Input data does not follow the models")
-            LOG.error(err)
-            raise click.Abort
-        bundle_name = data["name"]
         if store.bundle(bundle_name):
             LOG.warning("bundle name already exists")
             raise click.Abort
-
-        new_bundle, new_version = store.add_bundle(result)
+        new_bundle = store.new_bundle(bundle_name)
         store.add_commit(new_bundle)
+        context.invoke(
+            version_cmd, bundle_name=new_bundle.name, created_at=new_bundle.created_at
+        )
+        LOG.info("Create a default version")
+        new_version = store.new_version(created_at=new_bundle.created_at)
+        LOG.debug("Add bundle %s to version %s", new_bundle.id, new_version.id)
         new_version.bundle = new_bundle
         store.add_commit(new_version)
+        LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
+        return
 
-    LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
+    LOG.info("Loading json information")
+    try:
+        data = jsonlib.loads(bundle_data)
+    except JSONDecodeError as err:
+        LOG.warning("Something wrong in json string")
+        LOG.error(err)
+        raise click.Abort
+
+    data["created"] = get_date(data.get("created"))
+    if "expires" in data:
+        data["expires"] = get_date(data["expires"])
+    if "files" not in data:
+        data["files"] = []
+    schema = BundleSchema()
+    formated_data = schema.dump(data)
+    try:
+        LOG.info("Validate marshmallow schema")
+        result = schema.load(formated_data)
+    except ValidationError as err:
+        LOG.warning("Input data does not follow the models")
+        LOG.error(err)
+        raise click.Abort
+    bundle_name = data["name"]
+    if store.bundle(bundle_name):
+        LOG.warning("bundle name already exists")
+        raise click.Abort
+
+    new_bundle, new_version = store.add_bundle(result)
+    store.add_commit(new_bundle)
+    new_version.bundle = new_bundle
+    store.add_commit(new_version)
 
 
 @add.command("file")
@@ -78,7 +85,7 @@ def bundle(context, bundle_data, json):
 @click.argument("path")
 @click.pass_context
 def file_cmd(context, tags, archive, bundle_name, path):
-    """Add a file to a bundle."""
+    """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
     store = context.obj["store"]
     bundle_obj = store.bundle(bundle_name)
@@ -99,11 +106,28 @@ def file_cmd(context, tags, archive, bundle_name, path):
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
 
 
-@add.command()
+@add.command("version")
+@click.option("-j", "--json", is_flag=True, help="If input is in json format")
+@click.option("--created-at", help="Date when created")
+@click.argument("bundle_name")
+@click.pass_context
+def version_cmd(context, bundle_name, created_at, json):
+    """Add a new version to a bundle."""
+    LOG.info("Running add bundle")
+    store = context.obj["store"]
+    bundle_obj = store.bundle(bundle_name)
+    if bundle_obj is None:
+        LOG.warning("unknown bundle: %s", bundle_name)
+        raise click.Abort
+    store.add_commit(new_file)
+    LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
+
+
+@add.command("tag")
 @click.argument("tags", nargs=-1)
 @click.option("-f", "--file-id", "file_id", type=int)
 @click.pass_context
-def tag(context: click.Context, tags: List[str], file_id: int = None):
+def tag_cmd(context: click.Context, tags: List[str], file_id: int = None):
     """Add tags to an existing file."""
     LOG.info("Running add tag")
     store = context.obj["store"]
