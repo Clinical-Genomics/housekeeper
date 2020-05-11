@@ -2,6 +2,7 @@
 This module handles finding things in the store/database
 """
 import datetime as dt
+import logging
 from pathlib import Path
 from typing import List
 
@@ -12,6 +13,8 @@ from housekeeper.store import models
 
 from .base import BaseHandler
 
+LOG = logging.getLogger(__name__)
+
 
 class FindHandler(BaseHandler):
     """Handler for searching the database"""
@@ -20,8 +23,10 @@ class FindHandler(BaseHandler):
         """Fetch bundles."""
         return self.Bundle.query
 
-    def bundle(self, name: str) -> models.Bundle:
+    def bundle(self, name: str = None, bundle_id: int = None) -> models.Bundle:
         """Fetch a bundle from the store."""
+        if bundle_id:
+            return self.Bundle.get(bundle_id)
         return self.Bundle.filter_by(name=name).first()
 
     def version(self, bundle: str, date: dt.datetime) -> models.Version:
@@ -32,9 +37,17 @@ class FindHandler(BaseHandler):
             .first()
         )
 
+    def versions(self, bundle: str) -> List:
+        """Fetch a version from the store."""
+        return self.Version.query
+
     def tag(self, name: str) -> models.Tag:
         """Fetch a tag from the database."""
         return self.Tag.filter_by(name=name).first()
+
+    def tags(self) -> List:
+        """Fetch all tags from the database."""
+        return self.Tag.query
 
     def file_(self, file_id: int):
         """Get a file by record id."""
@@ -51,11 +64,13 @@ class FindHandler(BaseHandler):
         """Fetch files from the store."""
         query = self.File.query
         if bundle:
+            LOG.info("Fetching files from bundle %s", bundle)
             query = query.join(self.File.version, self.Version.bundle).filter(
                 self.Bundle.name == bundle
             )
 
         if tags:
+            LOG.info("Fetching files with tags in [%s]", ",".join(tags))
             # require records to match ALL tags
             query = (
                 query.join(self.File.tags)
@@ -65,9 +80,11 @@ class FindHandler(BaseHandler):
             )
 
         if version:
+            LOG.info("Fetching files from version %s", version)
             query = query.join(self.File.version).filter(self.Version.id == version)
 
         if path:
+            LOG.info("Fetching files with path %s", path)
             query = query.filter_by(path=path)
 
         return query

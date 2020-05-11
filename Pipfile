@@ -7,7 +7,6 @@ verify_ssl = true
 pytest = "*"
 pytest-mock = "*"
 
-
 [packages]
 alchy = "*"
 click = "<7"
@@ -20,6 +19,7 @@ Flask-Cors = "*"
 Flask-Alchy = "*"
 housekeeper = {editable = true,path = "."}
 pytest-cov = "*"
+rich = "*"
 
 [requires]
 python_version = "3.7"
