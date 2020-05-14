@@ -15,10 +15,6 @@ coloredlogs = "*"
 marshmallow = "*"
 "ruamel.yaml" = "*"
 SQLAlchemy = "*"
-Flask = ">=1.1.1"
-Flask-Cors = "*"
-Flask-Alchy = "*"
-housekeeper = {editable = true,path = "."}
 pytest-cov = "*"
 
 [requires]

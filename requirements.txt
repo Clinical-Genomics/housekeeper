@@ -5,7 +5,4 @@ marshmallow
 ruamel.yaml
 SQLAlchemy
 
-# server
-Flask>=1.1.1
-Flask-CORS
-Flask-Alchy
+
