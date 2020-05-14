@@ -1,19 +1,33 @@
-This PR adds/fixes ...
+# Summary
 
-**How to prepare for test**:
+- This pr solves **this**
+- And adresses **that**
+
+## This
+
+More details on why this was solved and how
+
+## That
+
+How was **that** adressed
+
+## Testing
+
+### How to prepare for test
+
 - [ ] ssh to hasta (depending on type of change)
 - [ ] install on stage:
 `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-housekeeper-stage.sh [THIS-BRANCH-NAME]`
 
-**How to test**:
+### How to test
 - [ ] login to ...
 - [ ] do ...
 
-**Expected test outcome**:
+### Expected test outcome
 - [ ] check that ...
 - [ ] Take a screenshot and attach or copy/paste the output.
 
-**Review:**
+## Review
 - [ ] code approved by
 - [ ] tests executed by
 - [ ] "Merge and deploy" approved by
