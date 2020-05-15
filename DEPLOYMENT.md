@@ -1,6 +1,9 @@
 # Deployment guide
 This includes instructions for deploying Houskeeper in the Clinical Genomics :hospital: setting. General instructions for deployment is in the [development guide][development-guide]
 
+## Branch model
+
+Housekeeper if following the [GitHub flow][gh-flow] branching model which means that every time a PR is merged to master a new release is created.
 
 ## Requirements
 
@@ -29,3 +32,4 @@ This includes instructions for deploying Houskeeper in the Clinical Genomics :ho
 [pr-version]: docs/img/version.png
 [confirm-deploy]: docs/img/confirm_deploy.png
 [development-guide]: http://www.clinicalgenomics.se/development/publish/prod/
+[gh-flow]: http://www.clinicalgenomics.se/development/dev/models/#rolling-release-github-flow
