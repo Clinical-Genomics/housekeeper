@@ -12,7 +12,7 @@ Housekeeper if following the [GitHub flow][gh-flow] branching model which means 
 ## Steps
 
 1. Check in the PR if the change is a minor, mayor or patch: ![Version][pr-version]
-1. Make sure you are on `master` and bump version according to step 1 example: `bumpversion minor`
+1. Make sure you are on `master` (`git checkout master`) and bump version according to step 1, example: `bumpversion minor`
 1. Push the commit: `git push`
 1. Push the tag: `git push --tags`
 1. First deploy on stage so log into hasta and run:
