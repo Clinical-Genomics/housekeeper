@@ -27,10 +27,10 @@ def base(context, config, database, root, log_level):
     db_path = database if database else context.obj.get("database")
     root_path = context.obj["root"] = root if root else context.obj.get("root")
     if not db_path:
-        LOG.error("Please provide a database")
+        LOG.error("Please point to a database")
         raise click.Abort
     if not root_path:
-        LOG.error("Please provide a root path")
+        LOG.error("Please specify a root dir")
         raise click.Abort
     LOG.info("Use database %s", db_path)
     context.obj["database"] = db_path
