@@ -1,5 +1,9 @@
 """Initialise HK db from CLI"""
+import logging
+
 import click
+
+LOG = logging.getLogger(__name__)
 
 
 @click.command()
@@ -16,9 +20,8 @@ def init(context, reset, force):
             click.confirm(click.style(message, fg="yellow"), abort=True)
         store.drop_all()
     elif existing_tables:
-        click.echo(click.style("Database already exists, use '--reset'", fg="red"))
+        LOG.error("Database already exists, use '--reset'")
         context.abort()
 
     store.create_all()
-    message = f"Success! New tables: {', '.join(store.engine.table_names())}"
-    click.echo(click.style(message, fg="green"))
+    LOG.info("Success! New tables: %s", ", ".join(store.engine.table_names()))
