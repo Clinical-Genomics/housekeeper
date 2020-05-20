@@ -1,5 +1,6 @@
 """Code for CLI get"""
 import json as jsonlib
+import logging
 from pathlib import Path
 from typing import List
 
@@ -7,8 +8,9 @@ import click
 from rich.console import Console
 from rich.table import Table
 
-from housekeeper.store import models
 from housekeeper.store.api import schema
+
+LOG = logging.getLogger(__name__)
 
 
 def get_tags_table(rows: List) -> Table:
@@ -49,7 +51,7 @@ def get_bundles_table(rows: List) -> Table:
     table = Table(show_header=True, header_style="bold magenta")
     table.add_column("ID")
     table.add_column("Bundle name")
-    table.add_column("Versions")
+    table.add_column("Version IDs")
     table.add_column("Created")
     for bundle_obj in rows:
         bundle_versions = ", ".join(
@@ -102,8 +104,9 @@ def get():
 
 @get.command()
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
+@click.option("-n", "--name", multiple=True, help="Specify a tag name")
 @click.pass_context
-def tags(context, json):
+def tags(context, json, name):
     """Get the tags from database"""
     store = context.obj["store"]
 
@@ -111,7 +114,12 @@ def tags(context, json):
     template = schema.TagSchema()
     result = []
     for tag_obj in tag_objs:
+        if name and (tag_obj.name not in name):
+            continue
         result.append(template.dump(tag_obj))
+    if not result:
+        LOG.info("Could not find any of the specified tags [%s]", ", ".join(name))
+        return
     if json:
         click.echo(jsonlib.dumps(result))
         return
