@@ -13,9 +13,9 @@ from housekeeper.store import Store, models
 
 @pytest.fixture(scope="function", name="log_output")
 def fixture_log_output(caplog):
-    """Return the log messages as a chunk of text"""
+    """Return the a formated caplog object"""
     caplog.set_level(logging.DEBUG)
-    return caplog.text
+    return caplog
 
 
 # basic fixtures
