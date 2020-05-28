@@ -160,10 +160,13 @@ def bundle_cmd(context, json):
 def versions(context, bundle, json):
     """Get versions from database"""
     store = context.obj["store"]
-    bundle_versions = store.versions(bundle)
+    bundle = store.bundle(name=bundle)
+    if not bundle:
+        LOG.info("Could not find bundle %s", bundle)
+        return
     version_template = schema.VersionSchema()
     result = []
-    for version_obj in bundle_versions:
+    for version_obj in bundle.versions:
         bundle_obj = store.bundle(bundle_id=version_obj.bundle_id)
         res = version_template.dump(version_obj)
         res["bundle_name"] = bundle_obj.name
