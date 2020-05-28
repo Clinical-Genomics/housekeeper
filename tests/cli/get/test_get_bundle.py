@@ -19,6 +19,42 @@ def test_get_existing_bundle_name(populated_context, cli_runner):
     assert bundle_name in result.output
 
 
+def test_get_non_existing_bundle_name(base_context, cli_runner, helpers, case_id):
+    """Test to fetch a non existing bundle based on name"""
+    # GIVEN a context with a empty store and a cli runner
+    store = base_context["store"]
+    # GIVEN that there are no bundles
+    assert helpers.count_iterable(store.bundles()) == 0
+
+    # WHEN trying to fetch the bundle based on bundle name
+    result = cli_runner.invoke(bundle_cmd, ["-n", case_id], obj=base_context)
+
+    # THEN assert that the bundle was written to terminal
+    assert case_id not in result.output
+
+
+def test_get_non_existing_bundle_populated_store(
+    populated_context, cli_runner, other_case_id, helpers
+):
+    """Test to fetch a non existing bundle based on name when bundles exists"""
+    # GIVEN a context with a populated store and a cli runner
+    store = populated_context["store"]
+    # GIVEN a non empty store
+    assert helpers.count_iterable(store.bundles()) > 0
+    # GIVEN a bundle name that does not exist in database
+    assert store.bundle(name=other_case_id) is None
+
+    # WHEN trying to fetch the non existing bundle
+    json_bundles = helpers.get_json(
+        cli_runner.invoke(
+            bundle_cmd, ["-n", other_case_id, "--json"], obj=populated_context
+        ).output
+    )
+
+    # THEN assert that the bundle was written to terminal
+    assert len(json_bundles) == 0
+
+
 def test_get_existing_bundle_id(populated_context, cli_runner):
     """Test to fetch an existing bundle based on bundle id"""
     # GIVEN a context with a populated store and a cli runner
