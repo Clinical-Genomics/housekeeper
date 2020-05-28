@@ -186,14 +186,14 @@ def versions(context, bundle, json):
     console.print(get_versions_table(result))
 
 
-@get.command()
+@get.command("files")
 @click.option("-t", "--tag", "tags", multiple=True, help="filter by file tag")
 @click.option("-v", "--version", type=int, help="filter by version of the bundle")
 @click.option("-V", "--verbose", is_flag=True, help="print additional information")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.argument("bundle", required=False)
 @click.pass_context
-def files(
+def files_cmd(
     context, tags: List[str], version: int, verbose: bool, bundle: str, json: bool
 ):
     """Get files from database"""
