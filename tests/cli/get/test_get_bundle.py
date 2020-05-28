@@ -43,10 +43,11 @@ def test_get_bundle_json(populated_context, cli_runner, helpers):
     bundle_id = bundle_obj.id
 
     # WHEN fetching the bundle in json format
-    result = cli_runner.invoke(
-        bundle_cmd, ["-i", bundle_id, "--json"], obj=populated_context
+    json_bundles = helpers.get_json(
+        cli_runner.invoke(
+            bundle_cmd, ["-i", bundle_id, "--json"], obj=populated_context
+        ).output
     )
-    json_bundles = helpers.get_json(result.output)
 
     # THEN assert that the output is a list of bundles
     assert isinstance(json_bundles, list)
@@ -66,8 +67,27 @@ def test_get_bundles_multiple_bundles(
     assert nr_bundles > 1
 
     # WHEN fetching all bundles by not specifying any bundle
-    result = cli_runner.invoke(bundle_cmd, ["--json"], obj=populated_context)
-    json_bundles = helpers.get_json(result.output)
+    json_bundles = helpers.get_json(
+        cli_runner.invoke(bundle_cmd, ["--json"], obj=populated_context).output
+    )
 
     # THEN assert that all bundles where fetched
     assert len(json_bundles) == nr_bundles
+
+
+def test_get_bundles_no_bundle(base_context, cli_runner, helpers):
+    """Test to get all bundles when there are no bundles"""
+    # GIVEN a context with a populated store and a cli runner
+    store = base_context["store"]
+    # GIVEN a store without bundles
+    assert helpers.count_iterable(store.bundles()) == 0
+
+    # WHEN fetching all bundles by not specifying any bundle
+    json_bundles = helpers.get_json(
+        cli_runner.invoke(bundle_cmd, ["--json"], obj=base_context).output
+    )
+
+    # THEN assert that we still get a list
+    assert isinstance(json_bundles, list)
+    # THEN assert that no bundles where fetched
+    assert len(json_bundles) == 0
