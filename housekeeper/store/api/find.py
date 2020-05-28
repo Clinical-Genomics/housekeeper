@@ -21,12 +21,15 @@ class FindHandler(BaseHandler):
 
     def bundles(self):
         """Fetch bundles."""
+        LOG.info("Fetching all bundles")
         return self.Bundle.query
 
     def bundle(self, name: str = None, bundle_id: int = None) -> models.Bundle:
         """Fetch a bundle from the store."""
         if bundle_id:
+            LOG.info("Fetching bundle with id: %s", bundle_id)
             return self.Bundle.get(bundle_id)
+        LOG.info("Fetching bundle with name: %s", name)
         return self.Bundle.filter_by(name=name).first()
 
     def version(self, bundle: str, date: dt.datetime) -> models.Version:
