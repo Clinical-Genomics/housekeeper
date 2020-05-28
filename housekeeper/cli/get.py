@@ -135,12 +135,19 @@ def tag_cmd(context, json, name):
 
 
 @get.command("bundles")
+@click.option("-n", "--bundle-name", help="Search for a bundle with name")
+@click.option("-i", "--bundle-id", type=int, help="Search for a bundle with bundle id")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.pass_context
-def bundle_cmd(context, json):
+def bundle_cmd(context, bundle_name, bundle_id, json):
     """Get bundle from database"""
     store = context.obj["store"]
     bundle_objs = store.bundles()
+    if bundle_name or bundle_id:
+        bundle_obj = store.bundle(name=bundle_name, bundle_id=bundle_id)
+        bundle_objs = [bundle_obj] if bundle_obj else []
+    if not bundle_objs:
+        LOG.info("Could not find any bundles")
     template = schema.BundleSchema()
     result = []
     for bundle_obj in bundle_objs:

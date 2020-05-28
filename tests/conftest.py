@@ -2,6 +2,7 @@
 import datetime
 import logging
 import shutil
+from copy import deepcopy
 from pathlib import Path
 
 import pytest
@@ -9,6 +10,8 @@ import ruamel.yaml
 
 from housekeeper import include
 from housekeeper.store import Store, models
+
+from .helper_functions import Helpers
 
 
 @pytest.fixture(scope="function", name="log_output")
@@ -57,6 +60,12 @@ def fixture_case_id() -> str:
     return "handsomepig"
 
 
+@pytest.fixture(scope="function", name="other_case_id")
+def fixture_other_case_id() -> str:
+    """Return name of a another case"""
+    return "maturecogar"
+
+
 @pytest.fixture(scope="function", name="sample_data")
 def fixture_sample_data(sample_tag_names, sample_vcf) -> str:
     """Return file and tags for sample"""
@@ -73,6 +82,12 @@ def fixture_family_data(family_tag_names, family_vcf) -> str:
 def fixture_timestamp() -> datetime.datetime:
     """Return a time stamp in date time format"""
     return datetime.datetime(2020, 5, 1)
+
+
+@pytest.fixture(scope="function", name="later_timestamp")
+def fixture_later_timestamp() -> datetime.datetime:
+    """Return a time stamp in date time format to a later date"""
+    return datetime.datetime(2020, 5, 25)
 
 
 @pytest.fixture(scope="function", name="bundle_data")
@@ -95,6 +110,20 @@ def fixture_bundle_data(case_id, sample_data, family_data, timestamp) -> dict:
             },
         ],
     }
+    return data
+
+
+@pytest.fixture(scope="function", name="other_bundle")
+def fixture_other_bundle(
+    bundle_data, other_case_id, later_timestamp, second_sample_vcf, second_family_vcf
+) -> dict:
+    """Return a dummy bundle"""
+    data = deepcopy(bundle_data)
+    data["name"] = other_case_id
+    data["created"] = later_timestamp
+    data["expires"] = later_timestamp
+    data["files"][0]["path"] = str(second_sample_vcf)
+    data["files"][1]["path"] = str(second_family_vcf)
     return data
 
 
@@ -153,6 +182,12 @@ def fixture_fixtures_dir() -> Path:
     return Path("tests/fixtures/")
 
 
+@pytest.fixture(scope="function", name="vcf_dir")
+def fixture_vcf_dir(fixtures_dir) -> Path:
+    """Return the path to the vcf fixtures directory"""
+    return fixtures_dir / "vcfs"
+
+
 @pytest.fixture(scope="function", name="project_dir")
 def fixture_project_dir(tmpdir_factory):
     """Path to a temporary working directory"""
@@ -190,27 +225,27 @@ def fixture_config_file(config_dir, configs) -> Path:
 
 
 @pytest.fixture(scope="function", name="sample_vcf")
-def fixture_sample_vcf(fixtures_dir) -> Path:
+def fixture_sample_vcf(vcf_dir) -> Path:
     """Return the path to a vcf file"""
-    return fixtures_dir / "example.vcf"
+    return vcf_dir / "example.vcf"
 
 
 @pytest.fixture(scope="function", name="family_vcf")
-def fixture_family_vcf(fixtures_dir) -> Path:
+def fixture_family_vcf(vcf_dir) -> Path:
     """Return the path to a vcf file"""
-    return fixtures_dir / "family.vcf"
+    return vcf_dir / "family.vcf"
 
 
 @pytest.fixture(scope="function", name="second_sample_vcf")
-def fixture_second_sample_vcf(fixtures_dir) -> Path:
+def fixture_second_sample_vcf(vcf_dir) -> Path:
     """Return the path to a vcf file"""
-    return fixtures_dir / "example.2.vcf"
+    return vcf_dir / "example.2.vcf"
 
 
 @pytest.fixture(scope="function", name="second_family_vcf")
-def fixture_second_family_vcf(fixtures_dir) -> Path:
+def fixture_second_family_vcf(vcf_dir) -> Path:
     """Return the path to a vcf file"""
-    return fixtures_dir / "family.2.vcf"
+    return vcf_dir / "family.2.vcf"
 
 
 @pytest.fixture(scope="function", name="checksum_file")
@@ -249,6 +284,12 @@ def version(tmpdir):
     return version_obj
 
 
+@pytest.fixture(scope="function", name="helpers")
+def fixture_helpers() -> Path:
+    """Return a test helper object"""
+    return Helpers()
+
+
 # Store fixtures
 
 
@@ -262,8 +303,7 @@ def fixture_store(project_dir):
 
 
 @pytest.yield_fixture(scope="function", name="populated_store")
-def fixture_populated_store(store, bundle_data):
+def fixture_populated_store(store, bundle_data, helpers):
     """Returns a populated store"""
-    bundle_obj = store.add_bundle(bundle_data)[0]
-    store.add_commit(bundle_obj)
+    helpers.add_bundle(store, bundle_data)
     return store
