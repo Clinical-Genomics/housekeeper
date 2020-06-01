@@ -96,3 +96,21 @@ class BundleSchema(ma.Schema):
     expires = ma.fields.DateTime()
     files = ma.fields.List(ma.fields.Nested(FileSchema), required=True)
     versions = ma.fields.List(ma.fields.Nested(VersionSchema), required=True)
+
+
+class InputBundleSchema(ma.Schema):
+    """
+    Bundle input schema definition
+
+    Used when adding bundle via CLI
+    """
+
+    id = ma.fields.Int()
+    name = ma.fields.Str(
+        required=True, error_messages={"required": "Bundle name is required."}
+    )
+    created_at = ma.fields.Str(
+        required=True, error_messages={"required": "Bundle date is required."}
+    )
+    expires = ma.fields.Str(required=False)
+    files = ma.fields.List(ma.fields.Str, required=False)

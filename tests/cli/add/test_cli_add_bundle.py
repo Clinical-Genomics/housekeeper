@@ -20,7 +20,7 @@ def test_add_existing_bundle(populated_context, cli_runner, caplog):
     # THEN assert it has a non zero exit status
     assert result.exit_code == 1
     # THEN check that the error message is displayed
-    assert "bundle name already exists" in caplog.text
+    assert "already exists" in caplog.text
 
 
 def test_add_bundle(base_context, cli_runner, case_id, caplog):
@@ -31,6 +31,26 @@ def test_add_bundle(base_context, cli_runner, case_id, caplog):
 
     # WHEN trying to add a bundle
     result = cli_runner.invoke(bundle_cmd, [bundle_name], obj=base_context)
+
+    # THEN assert it succeded
+    assert result.exit_code == 0
+    # THEN check that the proper information is displayed
+    assert "new bundle added" in caplog.text
+
+
+def test_add_bundle_json(base_context, cli_runner, bundle_data_json, caplog):
+    """Test to add a new bundle using json as input"""
+    caplog.set_level(logging.DEBUG)
+    # GIVEN a context with a empty store, a cli runner and a bundle in json format
+    from pprint import pprint as pp
+
+    pp(bundle_data_json)
+    print(type(bundle_data_json))
+    print(bundle_data_json)
+    # WHEN trying to add a bundle
+    result = cli_runner.invoke(
+        bundle_cmd, [bundle_data_json, "--json"], obj=base_context
+    )
 
     # THEN assert it succeded
     assert result.exit_code == 0

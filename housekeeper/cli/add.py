@@ -1,4 +1,5 @@
 """Module for adding via CLI"""
+import datetime as dt
 import json as jsonlib
 import logging
 from json.decoder import JSONDecodeError
@@ -9,8 +10,7 @@ import click
 from marshmallow.exceptions import ValidationError
 
 from housekeeper.date import get_date
-from housekeeper.store.api.schema import (BundleSchema, InputFileSchema,
-                                          TagSchema)
+from housekeeper.store.api import schema as schemas
 
 LOG = logging.getLogger(__name__)
 
@@ -24,15 +24,18 @@ def load_json(json_str: str) -> dict:
         LOG.warning("Something wrong in json string")
         LOG.error(err)
         raise click.Abort
+    LOG.info("Succesfull loading of JSON")
     return data
 
 
 def validate_input(data: dict, input_type: str):
     """Validate input with the marshmallow schemas"""
     if input_type == "bundle":
-        schema = BundleSchema()
+        schema = schemas.InputBundleSchema()
+        LOG.info("Validating bundle schema")
     elif input_type == "file":
-        schema = InputFileSchema()
+        schema = schemas.InputFileSchema()
+        LOG.info("Validating file schema")
     else:
         LOG.warning("Invalid input type %s", input_type)
 
@@ -60,41 +63,32 @@ def bundle_cmd(context, bundle_data, json):
     """Add a new bundle."""
     LOG.info("Running add bundle")
     store = context.obj["store"]
+    data = {}
     if not json:
-        bundle_name = bundle_data
-        if store.bundle(bundle_name):
-            LOG.warning("bundle name already exists")
-            raise click.Abort
-        new_bundle = store.new_bundle(bundle_name)
-        store.add_commit(new_bundle)
-        context.invoke(
-            version_cmd, bundle_name=new_bundle.name, created_at=new_bundle.created_at
-        )
-        LOG.info("Create a default version")
-        new_version = store.new_version(created_at=new_bundle.created_at)
-        LOG.debug("Add bundle %s to version %s", new_bundle.id, new_version.id)
-        new_version.bundle = new_bundle
-        store.add_commit(new_version)
-        LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
-        return
+        data["name"] = bundle_data
+        data["created_at"] = str(dt.datetime.now())
 
-    data = load_json(bundle_data)
+    else:
+        data = load_json(bundle_data)
 
-    data["created"] = get_date(data.get("created"))
+    validate_input(data, input_type="bundle")
+    data["created"] = get_date(data.get("created_at"))
+
     if "expires" in data:
         data["expires"] = get_date(data["expires"])
     if "files" not in data:
         data["files"] = []
-    schema = BundleSchema()
+
     bundle_name = data["name"]
     if store.bundle(bundle_name):
-        LOG.warning("bundle name already exists")
+        LOG.warning("bundle name %s already exists", bundle_name)
         raise click.Abort
 
-    new_bundle, new_version = store.add_bundle(result)
+    new_bundle, new_version = store.add_bundle(data)
     store.add_commit(new_bundle)
     new_version.bundle = new_bundle
     store.add_commit(new_version)
+    LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
 
 @add.command("file")
@@ -135,7 +129,7 @@ def file_cmd(context, tags, archive, bundle_name, json, path):
 
 
 @add.command("version")
-@click.option("-j", "--json", is_flag=True, help="If input is in json format")
+# @click.option("-j", "--json", is_flag=True, help="If input is in json format")
 @click.option("--created-at", help="Date when created")
 @click.argument("bundle_name")
 @click.pass_context

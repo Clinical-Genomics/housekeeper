@@ -1,5 +1,7 @@
 """Base fixtures"""
+import copy
 import datetime
+import json
 import logging
 import shutil
 from copy import deepcopy
@@ -111,6 +113,15 @@ def fixture_bundle_data(case_id, sample_data, family_data, timestamp) -> dict:
         ],
     }
     return data
+
+
+@pytest.fixture(scope="function", name="bundle_data_json")
+def fixture_bundle_data_json(bundle_data) -> dict:
+    """Return a dummy bundle"""
+    json_data = copy.deepcopy(bundle_data)
+    json_data["created_at"] = str(json_data.pop("created"))
+    json_data["expires"] = str(json_data.pop("expires"))
+    return json.dumps(json_data)
 
 
 @pytest.fixture(scope="function", name="other_bundle")
