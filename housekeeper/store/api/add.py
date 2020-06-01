@@ -21,6 +21,12 @@ class AddHandler(BaseHandler):
         AddHandler.bundle = FindHandler.bundle
         AddHandler.tag = FindHandler.tag
 
+    def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
+        """Create a new file bundle."""
+        new_bundle = self.Bundle(name=name, created_at=created_at)
+        LOG.info("Created new bundle: %s", new_bundle.name)
+        return new_bundle
+
     def add_bundle(self, data: dict) -> (models.Bundle, models.Version):
         """Build a new bundle version of files.
 
@@ -61,6 +67,26 @@ class AddHandler(BaseHandler):
         version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
 
+    def new_version(
+        self, created_at: dt.datetime, expires_at: dt.datetime = None
+    ) -> models.Version:
+        """Create a new bundle version."""
+        LOG.info("Created new version")
+        new_version = self.Version(created_at=created_at, expires_at=expires_at)
+        return new_version
+
+    def add_version(self, data: dict, bundle: models.Bundle,) -> models.Version:
+        """Build a new version object and add it to an existing bundle"""
+        if self.version(bundle.name, data["created"]):
+            LOG.debug("version of bundle already added")
+            return None
+
+        version_obj = self.new_version(
+            created_at=data["created"], expires_at=data.get("expires")
+        )
+        version_obj.bundle = bundle
+        return version_obj
+
     def add_file(
         self,
         file_path: Path,
@@ -88,20 +114,6 @@ class AddHandler(BaseHandler):
                 tag_obj = self.new_tag(tag_name)
             tags[tag_name] = tag_obj
         return tags
-
-    def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
-        """Create a new file bundle."""
-        new_bundle = self.Bundle(name=name, created_at=created_at)
-        LOG.info("Created new bundle: %s", new_bundle.name)
-        return new_bundle
-
-    def new_version(
-        self, created_at: dt.datetime, expires_at: dt.datetime = None
-    ) -> models.Version:
-        """Create a new bundle version."""
-        LOG.info("Created new version")
-        new_version = self.Version(created_at=created_at, expires_at=expires_at)
-        return new_version
 
     def new_file(
         self,

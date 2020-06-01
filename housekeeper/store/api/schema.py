@@ -95,7 +95,7 @@ class InputVersionSchema(ma.Schema):
     archived_at = ma.fields.Str()
     archived_path = ma.fields.Str()
     archived_checksum = ma.fields.Str()
-    bundle_name = ma.fields.Str()
+    bundle_name = ma.fields.Str(required=True)
     files = ma.fields.List(ma.fields.Str(), required=False)
 
 

@@ -30,14 +30,17 @@ def load_json(json_str: str) -> dict:
 
 def validate_input(data: dict, input_type: str):
     """Validate input with the marshmallow schemas"""
-    if input_type == "bundle":
-        schema = schemas.InputBundleSchema()
-        LOG.info("Validating bundle schema")
-    elif input_type == "file":
-        schema = schemas.InputFileSchema()
-        LOG.info("Validating file schema")
-    else:
+    valid_schemas = {
+        "bundle": schemas.InputBundleSchema(),
+        "file": schemas.InputFileSchema(),
+        "version": schemas.InputVersionSchema(),
+    }
+    schema = valid_schemas.get(input_type)
+    if schema is None:
         LOG.warning("Invalid input type %s", input_type)
+        raise ValueError()
+
+    LOG.info("Validating bundle schema")
 
     formated_data = schema.dump(data)
     try:
@@ -106,9 +109,10 @@ def file_cmd(context, tags, archive, bundle_name, json, path):
     if json:
         data = load_json(path)
         validate_input(data, input_type="file")
-        return
 
-    file_path = Path(data.get("path", path))
+    else:
+
+        file_path = Path(data.get("path", path))
     if not file_path.exists():
         LOG.warning("File: %s does not exist", file_path)
         raise click.Abort
@@ -129,7 +133,7 @@ def file_cmd(context, tags, archive, bundle_name, json, path):
 
 
 @add.command("version")
-# @click.option("-j", "--json", is_flag=True, help="If input is in json format")
+@click.option("-j", "--json", is_flag=True, help="If input is in json format")
 @click.option("--created-at", help="Date when created")
 @click.argument("bundle_name")
 @click.pass_context
@@ -137,12 +141,36 @@ def version_cmd(context, bundle_name, created_at, json):
     """Add a new version to a bundle."""
     LOG.info("Running add bundle")
     store = context.obj["store"]
+    data = {}
+    if not json:
+        data["bundle_name"] = bundle_name
+        data["created_at"] = created_at
+
+    else:
+        data = load_json(bundle_name)
+    data["created_at"] = data.get("created_at") or str(dt.datetime.now())
+    validate_input(data, input_type="version")
+    from pprint import pprint as pp
+
+    pp(data)
+
+    bundle_name = data["bundle_name"]
     bundle_obj = store.bundle(bundle_name)
     if bundle_obj is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
-    store.add_commit(new_file)
-    LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
+
+    data["created"] = get_date(data.get("created_at"))
+    if "expires_at" in data:
+        data["expires"] = get_date(data["created_at"])
+
+    new_version = store.add_version(data, bundle_obj)
+    if not new_version:
+        LOG.warning("Seems like version already exists for the bundle")
+        raise click.Abort
+
+    store.add_commit(new_version)
+    LOG.info("new version (%s) added to bundle %s", new_version.id, bundle_obj.name)
 
 
 @add.command("tag")
