@@ -49,7 +49,7 @@ def fixture_family_tag_names(vcf_tag_name, family_tag_name) -> list:
 
 
 @pytest.fixture(scope="function", name="sample_tag_names")
-def fixture_family_tags(vcf_tag_name, sample_tag_name) -> list:
+def fixture_sample_tag_names(vcf_tag_name, sample_tag_name) -> list:
     """Return a list of the sample tag names"""
     return [vcf_tag_name, sample_tag_name]
 

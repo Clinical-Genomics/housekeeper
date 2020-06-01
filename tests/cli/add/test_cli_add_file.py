@@ -14,7 +14,7 @@ def test_add_file_non_existing_bundle(
 
     # WHEN trying to add a bundle
     result = cli_runner.invoke(
-        file_cmd, [unknown_bundle_name, str(second_sample_vcf)], obj=base_context
+        file_cmd, [str(second_sample_vcf), "-b", unknown_bundle_name], obj=base_context
     )
 
     # THEN assert it fails
@@ -33,7 +33,7 @@ def test_add_file_existing_bundle(
 
     # WHEN trying to add the file to a bundle
     result = cli_runner.invoke(
-        file_cmd, [bundle_name, str(second_sample_vcf)], obj=populated_context
+        file_cmd, [str(second_sample_vcf), "-b", bundle_name], obj=populated_context
     )
 
     # THEN assert it succedes

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Schema definitions
 """
@@ -44,6 +43,23 @@ class FileSchema(ma.Schema):
     )
     archive = ma.fields.Boolean(default=False)
     tags = ma.fields.List(ma.fields.Nested(TagSchema), required=True)
+
+
+class InputFileSchema(ma.Schema):
+    """
+    File input schema definition
+
+    This is used for files that are add via json in the CLI
+    """
+
+    path = ma.fields.Str(
+        required=True, error_messages={"required": "File path is required."}
+    )
+    bundle = ma.fields.Str(
+        required=True, error_messages={"required": "Bundle name is required."}
+    )
+    archive = ma.fields.Boolean(default=False)
+    tags = ma.fields.List(ma.fields.Str, required=False)
 
 
 class VersionSchema(ma.Schema):

@@ -4,7 +4,7 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import List
+from typing import Iterable, List
 
 from sqlalchemy import func as sqlalchemy_func
 
@@ -42,7 +42,12 @@ class FindHandler(BaseHandler):
 
     def versions(self, bundle: str) -> List:
         """Fetch a version from the store."""
-        return self.Version.query
+        query = self.Version.query
+        if bundle:
+            query = query.join(models.Version.bundle).filter(
+                models.Bundle.name == bundle
+            )
+        return query
 
     def tag(self, name: str) -> models.Tag:
         """Fetch a tag from the database."""
@@ -63,7 +68,7 @@ class FindHandler(BaseHandler):
         tags: List[str] = None,
         version: int = None,
         path: str = None
-    ) -> models.File:
+    ) -> Iterable[models.File]:
         """Fetch files from the store."""
         query = self.File.query
         if bundle:
