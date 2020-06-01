@@ -77,3 +77,15 @@ def test_datetime_str():
 
     # THEN assert the new date is the same as original
     assert new_date == date
+
+
+def test_datetime_timestamp(timestamp):
+    """Test get a datetime object the string is a datetime str"""
+    # GIVEN a datestring directly from datetime
+    date_str = str(timestamp)
+
+    # WHEN converting the string to a datetime object
+    new_date = get_date(date_str)
+
+    # THEN assert the new date is the same as original
+    assert new_date == timestamp
