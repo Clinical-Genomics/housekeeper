@@ -1,4 +1,5 @@
 """Tests for adding bundles via CLI"""
+import json
 import logging
 
 from housekeeper.cli.add import bundle_cmd
@@ -42,11 +43,6 @@ def test_add_bundle_json(base_context, cli_runner, bundle_data_json, caplog):
     """Test to add a new bundle using json as input"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a empty store, a cli runner and a bundle in json format
-    from pprint import pprint as pp
-
-    pp(bundle_data_json)
-    print(type(bundle_data_json))
-    print(bundle_data_json)
     # WHEN trying to add a bundle
     result = cli_runner.invoke(
         bundle_cmd, [bundle_data_json, "--json"], obj=base_context
@@ -56,3 +52,47 @@ def test_add_bundle_json(base_context, cli_runner, bundle_data_json, caplog):
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
     assert "new bundle added" in caplog.text
+
+
+def test_add_bundle_json_no_files(base_context, cli_runner, bundle_data_json, caplog):
+    """Test to add a new bundle using json as input but no files. It should be possible to add
+    a bundle without any files
+    """
+    caplog.set_level(logging.DEBUG)
+    # GIVEN a context with a empty store, a cli runner and a bundle in json format without files
+    bundle_data = json.loads(bundle_data_json)
+    bundle_data.pop("files")
+    bundle_data_json = json.dumps(bundle_data)
+
+    # WHEN trying to add a bundle
+    result = cli_runner.invoke(
+        bundle_cmd, [bundle_data_json, "--json"], obj=base_context
+    )
+
+    # THEN assert it succeded
+    assert result.exit_code == 0
+    # THEN check that the proper information is displayed even if there where no files added
+    assert "new bundle added" in caplog.text
+
+
+def test_add_bundle_json_missing_data(
+    base_context, cli_runner, bundle_data_json, caplog
+):
+    """Test to add a new bundle using json as input but no date. It is mandatory to have a
+        created_at date.
+    """
+    caplog.set_level(logging.DEBUG)
+    # GIVEN a context with a empty store, a cli runner and a bundle in json format without files
+    bundle_data = json.loads(bundle_data_json)
+    bundle_data.pop("created_at")
+    bundle_data_json = json.dumps(bundle_data)
+
+    # WHEN trying to add a bundle
+    result = cli_runner.invoke(
+        bundle_cmd, [bundle_data_json, "--json"], obj=base_context
+    )
+
+    # THEN assert it succeded
+    assert result.exit_code == 1
+    # THEN check that the proper information is displayed even if there where no files added
+    assert "Bundle date is required" in caplog.text
