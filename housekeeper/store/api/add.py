@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """This module handles adding things to the store"""
 
 import datetime as dt
@@ -61,6 +60,23 @@ class AddHandler(BaseHandler):
 
         version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
+
+    def add_file(
+        self,
+        file_path: Path,
+        bundle: models.Bundle,
+        to_archive: bool = False,
+        tags: List[str] = None,
+    ) -> models.File:
+        """Build a new file object and add it to the latest version of an existing bundle"""
+        version_obj = bundle.versions[0]
+        tags = tags or []
+        tag_objs = [tag_obj for tag_name, tag_obj in self._build_tags(tags).items()]
+        new_file = self.new_file(
+            path=str(file_path.absolute()), to_archive=to_archive, tags=tag_objs,
+        )
+        new_file.version = version_obj
+        return new_file
 
     def _build_tags(self, tag_names: List[str]) -> dict:
         """Build a list of tag objects."""
