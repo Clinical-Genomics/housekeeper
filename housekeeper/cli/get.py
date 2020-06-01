@@ -160,20 +160,32 @@ def bundle_cmd(context, bundle_name, bundle_id, json):
     console.print(get_bundles_table(result))
 
 
-@get.command()
-@click.argument("bundle")
+@get.command("version")
+@click.option("-b", "--bundle-name", help="Fetch all versions from a bundle")
+@click.option("-i", "--version-id", type=int, help="Fetch a specific version")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
+@click.option("-v", "--verbose", is_flag=True, help="print additional information")
 @click.pass_context
-def versions(context, bundle, json):
-    """Get versions from database"""
+def version_cmd(context, bundle_name, json, version_id, verbose):
+    """Get versions from database
+    """
     store = context.obj["store"]
-    bundle = store.bundle(name=bundle)
-    if not bundle:
-        LOG.info("Could not find bundle %s", bundle)
+    if not (bundle_name or version_id):
+        LOG.info("Please select a bundle or a version")
         return
+    if bundle_name:
+        bundle = store.bundle(name=bundle_name)
+        if not bundle:
+            LOG.info("Could not find bundle %s", bundle)
+            return
+        version_objs = bundle.versions
+
+    if version_id:
+        version_objs = [store.Version.get(version_id)]
+
     version_template = schema.VersionSchema()
     result = []
-    for version_obj in bundle.versions:
+    for version_obj in version_objs:
         bundle_obj = store.bundle(bundle_id=version_obj.bundle_id)
         res = version_template.dump(version_obj)
         res["bundle_name"] = bundle_obj.name
@@ -182,8 +194,14 @@ def versions(context, bundle, json):
     if json:
         click.echo(jsonlib.dumps(result))
         return
+
     console = Console()
     console.print(get_versions_table(result))
+    if not verbose:
+        return
+
+    for version_obj in version_objs:
+        context.invoke(files_cmd, version=version_obj.id)
 
 
 @get.command("files")
