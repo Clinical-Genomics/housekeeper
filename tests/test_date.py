@@ -66,11 +66,14 @@ def test_valid_date_str_no_value():
     assert isinstance(date_obj, datetime.datetime)
 
 
-def test_invalid_date_str():
-    """Test get a datetime object when date string is invalid"""
-    # GIVEN a datestring without separators
-    date_str = "20150510"
-    # WHEN fetching a date object
-    with pytest.raises(ValueError):
-        # THEN assert a value error is raised
-        get_date(date_str)
+def test_datetime_str():
+    """Test get a datetime object the string is a datetime str"""
+    # GIVEN a datestring directly from datetime
+    date = datetime.datetime.now()
+    date_str = str(date)
+
+    # WHEN converting the string to a datetime object
+    new_date = get_date(date_str)
+
+    # THEN assert the new date is the same as original
+    assert new_date == date
