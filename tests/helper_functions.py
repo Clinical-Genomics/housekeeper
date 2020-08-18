@@ -3,6 +3,7 @@
 import json
 from typing import Iterable, List
 
+from housekeeper.constants import LOGLEVELS
 from housekeeper.store import Store
 
 
@@ -15,9 +16,21 @@ class Helpers:
         return sum(1 for item in iter_obj)
 
     @staticmethod
-    def get_json(json_output: str) -> List:
+    def get_stdout(output: str) -> str:
+        """Strip log messages from a string"""
+        stripped = []
+        # Strip logging lines
+        for line in output.split("\n"):
+            if any(log_level in line for log_level in LOGLEVELS):
+                continue
+            stripped.append(line)
+        return "\n".join(stripped)
+
+    @staticmethod
+    def get_json(output: str) -> List:
         """Convert a string to json"""
-        return json.loads(json_output)
+        output = Helpers.get_stdout(output)
+        return json.loads(output)
 
     @staticmethod
     def add_bundle(store: Store, bundle: dict) -> None:

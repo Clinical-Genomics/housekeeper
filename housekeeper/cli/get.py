@@ -154,7 +154,7 @@ def bundle_cmd(context, bundle_name, bundle_id, json):
         result.append(template.dump(bundle_obj))
 
     if json:
-        click.echo(jsonlib.dumps(result, indent=4))
+        click.echo(jsonlib.dumps(result))
         return
     console = Console()
     console.print(get_bundles_table(result))
@@ -192,7 +192,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose):
         result.append(res)
 
     if json:
-        click.echo(jsonlib.dumps(result, indent=4))
+        click.echo(jsonlib.dumps(result))
         return
 
     console = Console()
@@ -223,7 +223,7 @@ def files_cmd(
         result.append(template.dump(file_obj))
 
     if json:
-        click.echo(jsonlib.dumps(result, indent=4))
+        click.echo(jsonlib.dumps(result))
         return
     console = Console()
     console.print(get_files_table(result, verbose=verbose))

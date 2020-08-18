@@ -271,8 +271,8 @@ def fixture_checksum(checksum_file) -> Path:
     return checksum_file.name.rstrip(".txt")
 
 
-@pytest.fixture
-def version(tmpdir):
+@pytest.fixture(scope="function", name="version")
+def fixture_version(tmpdir):
     """Return a version object"""
     file_path_1 = tmpdir.join("example.vcf.gz")
     file_path_1.write("content")

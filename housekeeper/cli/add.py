@@ -67,6 +67,7 @@ def bundle_cmd(context, bundle_data, json):
     LOG.info("Running add bundle")
     store = context.obj["store"]
     data = {}
+    # This is to preserve the behaviour of adding a bundle without providing all information
     if not json:
         data["name"] = bundle_data
         data["created_at"] = str(dt.datetime.now())
@@ -150,9 +151,6 @@ def version_cmd(context, bundle_name, created_at, json):
         data = load_json(bundle_name)
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
     validate_input(data, input_type="version")
-    from pprint import pprint as pp
-
-    pp(data)
 
     bundle_name = data["bundle_name"]
     bundle_obj = store.bundle(bundle_name)

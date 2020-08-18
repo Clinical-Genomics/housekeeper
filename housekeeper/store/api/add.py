@@ -3,7 +3,7 @@
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import List
+from typing import Dict, List, Tuple
 
 from housekeeper.store import models
 from housekeeper.store.api.base import BaseHandler
@@ -27,21 +27,23 @@ class AddHandler(BaseHandler):
         LOG.info("Created new bundle: %s", new_bundle.name)
         return new_bundle
 
-    def add_bundle(self, data: dict) -> (models.Bundle, models.Version):
+    def add_bundle(self, data: dict) -> Tuple[models.Bundle, models.Version]:
         """Build a new bundle version of files.
 
         The format of the input dict is defined in the `schema` module.
         """
         bundle_obj = self.bundle(data["name"])
-        if bundle_obj and self.version(bundle_obj.name, data["created"]):
+        if bundle_obj and self.version(bundle_obj.name, data.get["created_at"]):
             LOG.debug("version of bundle already added")
             return None
 
         if bundle_obj is None:
-            bundle_obj = self.new_bundle(name=data["name"], created_at=data["created"])
+            bundle_obj = self.new_bundle(
+                name=data["name"], created_at=data["created_at"]
+            )
 
         version_obj = self.new_version(
-            created_at=data["created"], expires_at=data.get("expires")
+            created_at=data["created_at"], expires_at=data.get("expires_at")
         )
 
         tag_names = set(
@@ -77,12 +79,12 @@ class AddHandler(BaseHandler):
 
     def add_version(self, data: dict, bundle: models.Bundle,) -> models.Version:
         """Build a new version object and add it to an existing bundle"""
-        if self.version(bundle.name, data["created"]):
+        if self.version(bundle.name, data["created_at"]):
             LOG.debug("version of bundle already added")
             return None
 
         version_obj = self.new_version(
-            created_at=data["created"], expires_at=data.get("expires")
+            created_at=data["created_at"], expires_at=data.get("expires_at")
         )
         version_obj.bundle = bundle
         return version_obj
@@ -104,8 +106,12 @@ class AddHandler(BaseHandler):
         new_file.version = version_obj
         return new_file
 
-    def _build_tags(self, tag_names: List[str]) -> dict:
-        """Build a list of tag objects."""
+    def _build_tags(self, tag_names: List[str]) -> Dict[str, models.Tag]:
+        """Build a list of tag objects.
+
+        Take a list of tags, if a tag does not exist create a new tag object.
+        Map the tag name to a tag object and return a list of those
+        """
         tags = {}
         for tag_name in tag_names:
             tag_obj = self.tag(tag_name)
@@ -122,13 +128,13 @@ class AddHandler(BaseHandler):
         to_archive: bool = False,
         tags: List[models.Tag] = None,
     ) -> models.File:
-        """Create a new file."""
+        """Create a new file object based on the information given."""
         new_file = self.File(
             path=path, checksum=checksum, to_archive=to_archive, tags=tags
         )
         return new_file
 
     def new_tag(self, name: str, category: str = None) -> models.Tag:
-        """Create a new tag."""
+        """Create a new tag object based on the information given."""
         new_tag = self.Tag(name=name, category=category)
         return new_tag

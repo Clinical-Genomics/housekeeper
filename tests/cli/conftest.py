@@ -15,14 +15,14 @@ def fixture_store(project_dir, db_uri):
     _store.drop_all()
 
 
-@pytest.fixture(name="cli_runner")
+@pytest.fixture(scope="function", name="cli_runner")
 def fixture_cli_runner():
     """Return a cli runner for testing Click"""
     runner = CliRunner()
     return runner
 
 
-@pytest.fixture(name="base_context")
+@pytest.fixture(scope="function", name="base_context")
 def fixture_base_context(db_uri, project_dir, store):
     """Return a context with initialized database"""
     _ctx = {
@@ -33,7 +33,7 @@ def fixture_base_context(db_uri, project_dir, store):
     return _ctx
 
 
-@pytest.fixture(name="populated_context")
+@pytest.fixture(scope="function", name="populated_context")
 def fixture_populated_context(db_uri, project_dir, populated_store):
     """Return a context with initialized database with some data"""
     _ctx = {
