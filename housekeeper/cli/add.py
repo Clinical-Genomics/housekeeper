@@ -48,8 +48,13 @@ def file_cmd(context, tags, archive, bundle_name, path):
         click.echo(click.style(f"unknown bundle: {bundle_name}", fg="red"))
         context.abort()
     version_obj = bundle_obj.versions[0]
+    path = Path(path)
+    if not path.exists():
+        click.echo(click.style(f"File {path} does not exist", fg="red"))
+        context.abort()
+
     new_file = store.new_file(
-        path=str(Path(path).absolute()),
+        path=str(path.absolute()),
         to_archive=archive,
         tags=[
             store.tag(tag_name) if store.tag(tag_name) else store.new_tag(tag_name)

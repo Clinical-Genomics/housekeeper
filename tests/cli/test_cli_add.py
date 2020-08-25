@@ -154,3 +154,20 @@ def test_add_file_existing_bundle(
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
     assert "new file added" in result.output
+
+
+def test_add_non_existing_bundle_file(populated_context, cli_runner, case_id):
+    """Test to add a file that does not exist"""
+    # GIVEN a context with a populated store and a cli runner
+    bundle_name = case_id
+    non_existing_file = "hello.mate"
+
+    # WHEN trying to add a non existing file to a bundle
+    result = cli_runner.invoke(
+        add.file_cmd, [bundle_name, non_existing_file], obj=populated_context
+    )
+
+    # THEN assert it fails
+    assert result.exit_code == 1
+    # THEN check that the proper information is displayed
+    assert f"File {non_existing_file} does not exist" in result.output
