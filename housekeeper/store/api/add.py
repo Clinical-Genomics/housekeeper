@@ -33,6 +33,7 @@ class AddHandler(BaseHandler):
         The format of the input dict is defined in the `schema` module.
         """
         bundle_obj = self.bundle(data["name"])
+        # These lines can be removed when decoupled from CG
         if bundle_obj and self.version(bundle_obj.name, data.get["created_at"]):
             LOG.debug("version of bundle already added")
             return None
@@ -80,7 +81,7 @@ class AddHandler(BaseHandler):
     def add_version(self, data: dict, bundle: models.Bundle,) -> models.Version:
         """Build a new version object and add it to an existing bundle"""
         if self.version(bundle.name, data["created_at"]):
-            LOG.debug("version of bundle already added")
+            LOG.info("version of bundle already added")
             return None
 
         version_obj = self.new_version(

@@ -119,9 +119,7 @@ def file_cmd(context, tags, archive, bundle_name, json, path):
     if json:
         data = load_json(path)
         validate_input(data, input_type="file")
-
     else:
-
         file_path = Path(data.get("path", path))
     if not file_path.exists():
         LOG.warning("File: %s does not exist", file_path)
@@ -149,27 +147,27 @@ def file_cmd(context, tags, archive, bundle_name, json, path):
 @click.pass_context
 def version_cmd(context, bundle_name, created_at, json):
     """Add a new version to a bundle."""
-    LOG.info("Running add bundle")
+    LOG.info("Running add version")
     store = context.obj["store"]
     data = {}
     if not json:
         data["bundle_name"] = bundle_name
         data["created_at"] = created_at
-
     else:
         data = load_json(bundle_name)
+        bundle_name = data["bundle_name"]
+
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
     validate_input(data, input_type="version")
 
-    bundle_name = data["bundle_name"]
     bundle_obj = store.bundle(bundle_name)
     if bundle_obj is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
 
-    data["created"] = get_date(data.get("created_at"))
+    data["created_at"] = get_date(data.get("created_at"))
     if "expires_at" in data:
-        data["expires"] = get_date(data["created_at"])
+        data["expires_at"] = get_date(data["expires_at"])
 
     new_version = store.add_version(data, bundle_obj)
     if not new_version:

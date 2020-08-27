@@ -11,6 +11,7 @@ import pytest
 import ruamel.yaml
 
 from housekeeper import include
+from housekeeper.date import get_date
 from housekeeper.store import Store, models
 
 from .helper_functions import Helpers
@@ -80,10 +81,16 @@ def fixture_family_data(family_tag_names, family_vcf) -> str:
     return {"tags": family_tag_names, "file": family_vcf}
 
 
+@pytest.fixture(scope="function", name="timestamp_string")
+def fixture_timestamp_string() -> str:
+    """Return a time stamp in str format"""
+    return "2020-05-01"
+
+
 @pytest.fixture(scope="function", name="timestamp")
-def fixture_timestamp() -> datetime.datetime:
+def fixture_timestamp(timestamp_string) -> datetime.datetime:
     """Return a time stamp in date time format"""
-    return datetime.datetime(2020, 5, 1)
+    return get_date(timestamp_string)
 
 
 @pytest.fixture(scope="function", name="later_timestamp")
@@ -114,10 +121,25 @@ def fixture_bundle_data(case_id, sample_data, family_data, timestamp) -> dict:
     return data
 
 
+@pytest.fixture(scope="function", name="empty_version_data")
+def fixture_empty_version_data(later_timestamp, case_id) -> dict:
+    """Return a dummy bundle"""
+    data = {"bundle_name": case_id, "created_at": later_timestamp, "files": []}
+    return data
+
+
 @pytest.fixture(scope="function", name="bundle_data_json")
 def fixture_bundle_data_json(bundle_data) -> dict:
     """Return a dummy bundle"""
     json_data = copy.deepcopy(bundle_data)
+    json_data["created_at"] = str(json_data.pop("created_at"))
+    return json.dumps(json_data)
+
+
+@pytest.fixture(scope="function", name="empty_version_data_json")
+def fixture_empty_version_data_json(empty_version_data) -> dict:
+    """Return a dummy bundle"""
+    json_data = copy.deepcopy(empty_version_data)
     json_data["created_at"] = str(json_data.pop("created_at"))
     return json.dumps(json_data)
 
