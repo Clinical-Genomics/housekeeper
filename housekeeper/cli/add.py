@@ -75,11 +75,16 @@ def bundle_cmd(context, bundle_data, json):
     else:
         data = load_json(bundle_data)
 
-    validate_input(data, input_type="bundle")
-    data["created"] = get_date(data.get("created_at"))
+    bundle_name = data["name"]
+    if store.bundle(bundle_name):
+        LOG.warning("bundle name %s already exists", bundle_name)
+        raise click.Abort
 
-    if "expires" in data:
-        data["expires"] = get_date(data["expires"])
+    validate_input(data, input_type="bundle")
+    data["created_at"] = get_date(data.get("created_at"))
+
+    if "expires_at" in data:
+        data["expires_at"] = get_date(data["expires_at"])
     if "files" not in data:
         data["files"] = []
 
@@ -88,7 +93,11 @@ def bundle_cmd(context, bundle_data, json):
         LOG.warning("bundle name %s already exists", bundle_name)
         raise click.Abort
 
-    new_bundle, new_version = store.add_bundle(data)
+    try:
+        new_bundle, new_version = store.add_bundle(data)
+    except FileNotFoundError as err:
+        LOG.warning("File %s does not exist", err)
+        raise click.Abort
     store.add_commit(new_bundle)
     new_version.bundle = new_bundle
     store.add_commit(new_version)

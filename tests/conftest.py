@@ -97,8 +97,7 @@ def fixture_bundle_data(case_id, sample_data, family_data, timestamp) -> dict:
     """Return a dummy bundle"""
     data = {
         "name": case_id,
-        "created": timestamp,
-        "expires": timestamp,
+        "created_at": timestamp,
         "files": [
             {
                 "path": str(sample_data["file"]),
@@ -119,8 +118,7 @@ def fixture_bundle_data(case_id, sample_data, family_data, timestamp) -> dict:
 def fixture_bundle_data_json(bundle_data) -> dict:
     """Return a dummy bundle"""
     json_data = copy.deepcopy(bundle_data)
-    json_data["created_at"] = str(json_data.pop("created"))
-    json_data["expires"] = str(json_data.pop("expires"))
+    json_data["created_at"] = str(json_data.pop("created_at"))
     return json.dumps(json_data)
 
 
@@ -131,8 +129,7 @@ def fixture_other_bundle(
     """Return a dummy bundle"""
     data = deepcopy(bundle_data)
     data["name"] = other_case_id
-    data["created"] = later_timestamp
-    data["expires"] = later_timestamp
+    data["created_at"] = later_timestamp
     data["files"][0]["path"] = str(second_sample_vcf)
     data["files"][1]["path"] = str(second_family_vcf)
     return data

@@ -24,13 +24,13 @@ def test_add_existing_bundle(populated_context, cli_runner, caplog):
     assert "already exists" in caplog.text
 
 
-def test_add_bundle(base_context, cli_runner, case_id, caplog):
-    """Test to add a new bundle"""
+def test_add_simple_bundle(base_context, cli_runner, case_id, caplog):
+    """Test to add a new bundle by only specifying bundle name"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a empty store and a cli runner
     bundle_name = case_id
 
-    # WHEN trying to add a bundle
+    # WHEN trying to add a bundle with only the bundle name
     result = cli_runner.invoke(bundle_cmd, [bundle_name], obj=base_context)
 
     # THEN assert it succeded
@@ -73,6 +73,32 @@ def test_add_bundle_json_no_files(base_context, cli_runner, bundle_data_json, ca
     assert result.exit_code == 0
     # THEN check that the proper information is displayed even if there where no files added
     assert "new bundle added" in caplog.text
+
+
+def test_add_bundle_non_existing_file(
+    base_context, cli_runner, bundle_data_json, caplog
+):
+    """Test to add a new bundle using json as input when some files does not exist.
+
+    The program should exit with a non zero exit code since a file is missing
+    """
+    caplog.set_level(logging.DEBUG)
+    # GIVEN a context with a empty store, a cli runner and a bundle in json format with non
+    # existing files
+    non_existing = "a_non_existing_file.txt"
+    bundle_data = json.loads(bundle_data_json)
+    bundle_data["files"][0]["path"] = non_existing
+    bundle_data_json = json.dumps(bundle_data)
+
+    # WHEN trying to add a bundle
+    result = cli_runner.invoke(
+        bundle_cmd, [bundle_data_json, "--json"], obj=base_context
+    )
+
+    # THEN assert it succeded
+    assert result.exit_code == 1
+    # THEN check that the proper information is displayed
+    assert f"File {non_existing} does not exist" in caplog.text
 
 
 def test_add_bundle_json_missing_data(
