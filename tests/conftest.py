@@ -75,10 +75,22 @@ def fixture_sample_data(sample_tag_names, sample_vcf) -> str:
     return {"tags": sample_tag_names, "file": sample_vcf}
 
 
+@pytest.fixture(scope="function", name="sample2_data")
+def fixture_sample2_data(sample_tag_names, second_sample_vcf) -> str:
+    """Return file and tags for sample"""
+    return {"tags": sample_tag_names, "file": second_sample_vcf}
+
+
 @pytest.fixture(scope="function", name="family_data")
 def fixture_family_data(family_tag_names, family_vcf) -> str:
     """Return file and tags for sample"""
     return {"tags": family_tag_names, "file": family_vcf}
+
+
+@pytest.fixture(scope="function", name="family2_data")
+def fixture_family2_data(family_tag_names, second_family_vcf) -> str:
+    """Return file and tags for sample"""
+    return {"tags": family_tag_names, "file": second_family_vcf}
 
 
 @pytest.fixture(scope="function", name="timestamp_string")
@@ -128,6 +140,25 @@ def fixture_empty_version_data(later_timestamp, case_id) -> dict:
     return data
 
 
+@pytest.fixture(scope="function", name="version_data")
+def fixture_version_data(empty_version_data, family2_data, sample2_data) -> dict:
+    """Return a dummy bundle"""
+    data = copy.deepcopy(empty_version_data)
+    data["files"] = [
+        {
+            "path": str(sample2_data["file"]),
+            "archive": False,
+            "tags": sample2_data["tags"],
+        },
+        {
+            "path": str(family2_data["file"]),
+            "archive": True,
+            "tags": family2_data["tags"],
+        },
+    ]
+    return data
+
+
 @pytest.fixture(scope="function", name="bundle_data_json")
 def fixture_bundle_data_json(bundle_data) -> dict:
     """Return a dummy bundle"""
@@ -140,6 +171,14 @@ def fixture_bundle_data_json(bundle_data) -> dict:
 def fixture_empty_version_data_json(empty_version_data) -> dict:
     """Return a dummy bundle"""
     json_data = copy.deepcopy(empty_version_data)
+    json_data["created_at"] = str(json_data.pop("created_at"))
+    return json.dumps(json_data)
+
+
+@pytest.fixture(scope="function", name="version_data_json")
+def fixture_version_data_json(version_data) -> dict:
+    """Return a dummy bundle"""
+    json_data = copy.deepcopy(version_data)
     json_data["created_at"] = str(json_data.pop("created_at"))
     return json.dumps(json_data)
 

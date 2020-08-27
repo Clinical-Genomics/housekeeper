@@ -46,13 +46,22 @@ class AddHandler(BaseHandler):
         version_obj = self.new_version(
             created_at=data["created_at"], expires_at=data.get("expires_at")
         )
+        self._add_files_to_version(data["files"], version_obj)
+
+        version_obj.bundle = bundle_obj
+        return bundle_obj, version_obj
+
+    def _add_files_to_version(
+        self, files: List[dict], version_obj: models.Version
+    ) -> None:
+        """Create file objects and the tags and add them to a version object"""
 
         tag_names = set(
-            tag_name for file_data in data["files"] for tag_name in file_data["tags"]
+            tag_name for file_data in files for tag_name in file_data["tags"]
         )
         tag_map = self._build_tags(tag_names)
 
-        for file_data in data["files"]:
+        for file_data in files:
             if isinstance(file_data["path"], str):
                 paths = [file_data["path"]]
             else:
@@ -66,9 +75,6 @@ class AddHandler(BaseHandler):
                     path, to_archive=file_data["archive"], tags=tags
                 )
                 version_obj.files.append(new_file)
-
-        version_obj.bundle = bundle_obj
-        return bundle_obj, version_obj
 
     def new_version(
         self, created_at: dt.datetime, expires_at: dt.datetime = None
@@ -87,6 +93,9 @@ class AddHandler(BaseHandler):
         version_obj = self.new_version(
             created_at=data["created_at"], expires_at=data.get("expires_at")
         )
+        if data.get("files"):
+            self._add_files_to_version(data["files"], version_obj)
+
         version_obj.bundle = bundle
         return version_obj
 
