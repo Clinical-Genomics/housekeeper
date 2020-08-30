@@ -127,7 +127,10 @@ class BaseActionHandler:
             from_path.link_to(to_path)
             file_obj.path = to_path.as_posix()
         except:
+            #Raise custom error
             raise
+
+
 
 
 class SessionHandler(BaseHandler):
@@ -155,7 +158,7 @@ class SessionHandler(BaseHandler):
             session.close()
 
 
-class ComplexActionHandler(SessionHandler, BaseActionHandler):
+class ActionHandler(SessionHandler, BaseActionHandler):
     """Class that handles logic to be executed within distinct session scope"""
 
     def include_version(
@@ -184,7 +187,7 @@ class ComplexActionHandler(SessionHandler, BaseActionHandler):
                         self.root,
                         new_version.bundle,
                         new_version.id,
-                        new_version.created_at,
+                        new_version.created_at.date(),
                     )
                     Path.mkdir(include_path, parents=True, exist_ok=True)
                     for file_obj in new_version.files:
@@ -213,7 +216,7 @@ class ComplexActionHandler(SessionHandler, BaseActionHandler):
                         self.root,
                         new_file.version.bundle,
                         new_file.version_id,
-                        new_file.version.created_at,
+                        new_file.version.created_at.date(),
                     )
                     self.include_file(
                         session=session, file_obj=new_file, include_path=include_path
@@ -229,4 +232,27 @@ class ComplexActionHandler(SessionHandler, BaseActionHandler):
                 or self.add_tag(session=session, name=name)
                 for name in tags
             ]
+
+    def delete_bundle(self, name:str):
+        with self.session_scope() as session:
+            bundle = self.get_bundle(session=session, name=name)
+            Path(self.root, bundle.name).rmdir()
+            session.delete(bundle)
+
+    def delete_version(self, version_id):
+        with self.session_scope() as session:
+            version = self.get_version(session=session, version_id=version_id)
+            Path(self.root, version.bundle.name, version.id, version.created_at.date()).rmdir()
+            session.delete(version)
+
+    def delete_file(self, file_id):
+        with self.session_scope() as session:
+            file = self.get_file(session=session, file_id=file_id)
+            if file.version.include == True:
+                Path(file.path).unlink()
+            session.delete(file)
+
+
+    
+
 

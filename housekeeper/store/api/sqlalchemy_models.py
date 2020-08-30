@@ -21,7 +21,7 @@ class Bundle(Base):
     __tablename__ = "bundle"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
+    name = Column(String(64), unique=True, nullable=False)
     created_at = Column(DateTime, default=dt.datetime.now)
     versions = relationship(
         "Version",
@@ -38,8 +38,8 @@ class Tag(Base):
     __tablename__ = "tag"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True, nullable=False)
-    category = Column(String)
+    name = Column(String(64), unique=True, nullable=False)
+    category = Column(String(64))
     created_at = Column(DateTime, default=dt.datetime.now)
     
     def __repr__(self):
@@ -57,8 +57,8 @@ class Version(Base):
     included_at = Column(DateTime)
     removed_at = Column(DateTime)
     archived_at = Column(DateTime)
-    archive_path = Column(String, unique=True)
-    archive_checksum = Column(String, unique=True)
+    archive_path = Column(String(256), unique=True)
+    archive_checksum = Column(String(256), unique=True)
     bundle_id = Column(ForeignKey("bundle.id", ondelete="CASCADE"), nullable=False)
     files = relationship("File", cascade="delete, save-update")
     tag = Column(String(64))
@@ -76,8 +76,8 @@ class File(Base):
     __tablename__ = "file"
 
     id = Column(Integer, primary_key=True)
-    path = Column(String, unique=True, nullable=False)
-    checksum = Column(String)
+    path = Column(String(256), unique=True, nullable=False)
+    checksum = Column(String(256))
     to_archive = Column(Boolean, default=False, nullable=False)
     version_id = Column(ForeignKey("version.id", ondelete="CASCADE"), nullable=False)
     tags = relationship("Tag", secondary="file_tag_link")
