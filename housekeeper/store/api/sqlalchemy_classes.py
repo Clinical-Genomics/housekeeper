@@ -110,7 +110,7 @@ class BaseActionHandler:
             # Raise custom error
             raise
 
-    def include_version(self, session, version_obj: Version):
+    def include_version(self, session, version_obj: Version) -> None:
         try:
             include_path = Path(
                 self.root,
@@ -150,7 +150,8 @@ class SessionWrapper:
 
 
 class ActionHandler(SessionWrapper, BaseActionHandler):
-    """Class that handles logic to be executed within distinct session scope"""
+    """Class that handles logic to be executed within distinct session scope
+    No objects are to be passed as arguments to these methods, since those objects """
 
     def add_include_version(
         self,
@@ -163,7 +164,7 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
 
         with self.session_scope() as session:
             # New version in session but not committed
-            new_version = self.add_version(
+            version_obj = self.add_version(
                 session=session,
                 bundle=bundle,
                 tag=tag,
@@ -173,41 +174,41 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
             )
             if include == True:
                 # Do linking logic (Raising exception here will rollback the scope, and version won't be added)
-                self.include_version(session=session, version_obj=new_version)
+                self.include_version(session=session, version_obj=version_obj)
 
             # If it made it here, session will commit, close, and connection recycled!
 
     def include_existing_version(self, version_id: int) -> None:
         with self.session_scope() as session:
-            version = self.get_version(session, version_id=version_id)
-            self.include_version(session=session, version_obj=version)
+            version_obj = self.get_version(session, version_id=version_id)
+            self.include_version(session=session, version_obj=version_obj)
 
     def add_file_to_version(self, version_id: int, path: Path, tags: list = []) -> None:
         with self.session_scope() as session:
-            new_file = self.add_file(
+            file_obj = self.add_file(
                 session=session,
                 version=self.get_version(session=session, version_id=version_id),
                 path=path,
                 tags=tags,
             )
-            if new_file.version.include == True:
+            if file_obj.version.include == True:
                 try:
                     include_path = Path(
                         self.root,
-                        new_file.version.bundle,
-                        new_file.version_id,
-                        new_file.version.created_at.date(),
+                        file_obj.version.bundle,
+                        file_obj.version_id,
+                        file_obj.version.created_at.date(),
                     )
                     self.include_file(
-                        session=session, file_obj=new_file, include_path=include_path
+                        session=session, file_obj=file_obj, include_path=include_path
                     )
                 except:
                     raise
 
     def add_tags_to_file(self, file_id: int, tags: list = []) -> None:
         with self.session_scope() as session:
-            update_file = self.get_file(session=session, file_id=file_id)
-            update_file.tags = update_file.tags + [
+            file_obj = self.get_file(session=session, file_id=file_id)
+            file_obj.tags = file_obj.tags + [
                 self.get_tag(session=session, name=name)
                 or self.add_tag(session=session, name=name)
                 for name in tags
@@ -221,11 +222,11 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
 
     def delete_version(self, version_id: int) -> None:
         with self.session_scope() as session:
-            version = self.get_version(session=session, version_id=version_id)
+            version_obj = self.get_version(session=session, version_id=version_id)
             Path(
-                self.root, version.bundle.name, version.id, version.created_at.date()
+                self.root, version_obj.bundle.name, version_obj.id, version_obj.created_at.date()
             ).rmdir()
-            session.delete(version)
+            session.delete(version_obj)
 
     def delete_file(self, file_id: int) -> None:
         with self.session_scope() as session:
@@ -316,7 +317,7 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
                 query = (
                     query.join(File.tags).filter(Tag.name.in_(tags)).group_by(File.id)
                 )
-            return query.one_or_none()
+            return query.first()
 
 
 class SessionHandler(SessionWrapper):
