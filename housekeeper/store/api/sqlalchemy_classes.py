@@ -1,5 +1,7 @@
 import datetime as dt
 from contextlib import contextmanager
+from pathlib import Path
+import shutil
 
 from sqlalchemy import orm, create_engine
 from sqlalchemy.orm import sessionmaker
@@ -18,7 +20,8 @@ class BaseHandler:
 
 
 class BaseActionHandler:
-    """Class that handles base logic that doesn't end the session scope"""
+    """Class that handles base logic that doesn't end the session scope
+    Session required as second argument for all methods """
 
     def add_bundle(self, session, name: str):
         new_bundle = Bundle(name=name)
@@ -40,6 +43,7 @@ class BaseActionHandler:
                 or self.add_bundle(session=session, name=bundle)
             ),
             tag=tag,
+            include=include,
         )
         new_version.files = [
             self.add_file(
@@ -53,10 +57,18 @@ class BaseActionHandler:
         session.add(new_version)
         return new_version
 
-    def add_file(self, session, version: Version, path: str, tags: list = []):
+    def add_file(
+        self,
+        session,
+        version: Version,
+        path: str,
+        tags: list = [],
+        to_archive: bool = False,
+    ):
         new_file = File(
             version=version,
             path=path,
+            to_archive=to_archive,
             tags=[
                 self.get_tag(session=session, name=name)
                 or self.add_tag(session=session, name=name)
@@ -76,23 +88,46 @@ class BaseActionHandler:
         return query.first()
 
     def get_version(
-        self, session, bundle: str, tag: str = "", created_at: dt.datetime = None
+        self,
+        session,
+        bundle: str = "",
+        tag: str = "",
+        created_at: dt.datetime = None,
+        version_id: int = None,
     ):
-        query = (
-            session.query(Version)
-            .join(Bundle)
-            .filter(Bundle.name.ilike(bundle))
-            .filter(Version.tag.ilike(f"%{tag}%"))
-        )
-        if created_at:
-            query = query.filter(Version.created_at == created_at)
+        if version_id:
+            query = session.query(Version).filter(Version.id == version_id)
+
         else:
-            query = query.order_by(Version.created_at)
+            query = (
+                session.query(Version)
+                .join(Bundle)
+                .filter(Bundle.name.ilike(f"%{bundle}%"))
+                .filter(Version.tag.ilike(f"%{tag}%"))
+            )
+            if created_at:
+                query = query.filter(Version.created_at == created_at)
+            else:
+                query = query.order_by(Version.created_at)
+
         return query.first()
 
     def get_tag(self, session, name):
         query = session.query(Tag).filter(Tag.name.ilike(name))
         return query.first()
+
+    def get_file(self, session, file_id):
+        query = session.query(File).filter(File.id == file_id)
+        return query.first()
+
+    def include_file(self, session, file_obj: File, include_path: Path):
+        from_path = Path(file_obj.path)
+        to_path = Path(include_path, from_path.name)
+        try:
+            from_path.link_to(to_path)
+            file_obj.path = to_path.as_posix()
+        except:
+            raise
 
 
 class SessionHandler(BaseHandler):
@@ -123,17 +158,13 @@ class SessionHandler(BaseHandler):
 class ComplexActionHandler(SessionHandler, BaseActionHandler):
     """Class that handles logic to be executed within distinct session scope"""
 
-    def link_path(self, **kwargs):
-        """Placeholder"""
-        return None
-
-    def include_store_version(
+    def include_version(
         self,
         bundle: str,
+        created_at: dt.datetime = dt.datetime.now(),
         include: bool = False,
         tag: str = None,
         files: list = [],
-        created_at: dt.datetime = dt.datetime.now(),
     ):
 
         with self.session_scope() as session:
@@ -148,15 +179,54 @@ class ComplexActionHandler(SessionHandler, BaseActionHandler):
             )
             if include == True:
                 # Do linking logic (Raising exception here will rollback the scope, and version won't be added)
-
-                for f in new_version.files:
-                    f.path = self.link_path(
-                        bundle=new_version.bundle,
-                        version_id=new_version.id,
-                        created_at=new_version.created_at,
-                        origin_path=f.path
+                try:
+                    include_path = Path(
+                        self.root,
+                        new_version.bundle,
+                        new_version.id,
+                        new_version.created_at,
                     )
-                
+                    Path.mkdir(include_path, parents=True, exist_ok=True)
+                    for file_obj in new_version.files:
+                        self.include_file(
+                            session=session,
+                            file_obj=file_obj,
+                            include_path=include_path,
+                        )
+                except:
+                    Path.rmdir(include_path)
+                    raise
 
             # If it made it here, session will commit, close, and connection recycled!
+
+    def add_file_to_version(self, version_id: int, path: Path, tags: list = []):
+        with self.session_scope() as session:
+            new_file = self.add_file(
+                session=session,
+                version=self.get_version(session=session, version_id=version_id),
+                path=path,
+                tags=tags,
+            )
+            if new_file.version.include == True:
+                try:
+                    include_path = Path(
+                        self.root,
+                        new_file.version.bundle,
+                        new_file.version_id,
+                        new_file.version.created_at,
+                    )
+                    self.include_file(
+                        session=session, file_obj=new_file, include_path=include_path
+                    )
+                except:
+                    raise
+
+    def add_tags_to_file(self, file_id: int, tags: list = []):
+        with self.session_scope() as session:
+            update_file = self.get_file(session=session, file_id=file_id)
+            update_file.tags = update_file.tags + [
+                self.get_tag(session=session, name=name)
+                or self.add_tag(session=session, name=name)
+                for name in tags
+            ]
 

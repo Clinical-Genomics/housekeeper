@@ -62,7 +62,7 @@ class Version(Base):
     bundle_id = Column(ForeignKey("bundle.id", ondelete="CASCADE"), nullable=False)
     files = relationship("File", cascade="delete, save-update")
     tag = Column(String(64))
-    included = Column(Boolean, default=False)
+    include = Column(Boolean, default=False)
     bundle = relationship("Bundle", primaryjoin=bundle_id == Bundle.id)
     
     def __repr__(self):
@@ -78,7 +78,7 @@ class File(Base):
     id = Column(Integer, primary_key=True)
     path = Column(String, unique=True, nullable=False)
     checksum = Column(String)
-    to_archive = Column(Boolean, default=False)
+    to_archive = Column(Boolean, default=False, nullable=False)
     version_id = Column(ForeignKey("version.id", ondelete="CASCADE"), nullable=False)
     tags = relationship("Tag", secondary="file_tag_link")
     version = relationship("Version", primaryjoin=version_id == Version.id)
