@@ -133,11 +133,11 @@ class BaseActionHandler:
 
 
 
-class SessionHandler(BaseHandler):
+class SessionHandler:
     def __init__(self, uri, root):
         self.engine = create_engine(uri, echo=False, poolclass=NullPool)
         self.root = root
-        super().__init__(uri, root)
+        super().__init__()
 
     @contextmanager
     def session_scope(self):
@@ -252,7 +252,12 @@ class ActionHandler(SessionHandler, BaseActionHandler):
 class HousekeeperAdapter(SessionHandler):
     def __init__(self, uri, root):
         self.session_handler = SessionHandler(uri=uri, root=root)
-        super().__init__()
+        super().__init__(uri, root)
+
+
+
+
+class HousekeeperAPI(HousekeeperAdapter, ActionHandler, BaseHandler):
 
     def init_db(self):
         self.Base.metadata.create_all(self.engine)
@@ -260,7 +265,5 @@ class HousekeeperAdapter(SessionHandler):
     def destroy_db(self):
         self.Base.metadata.drop_all(self.engine)
 
-class HousekeeperAPI(HousekeeperAdapter, ActionHandler):
-    pass
 
 
