@@ -32,10 +32,10 @@ class BaseActionHandler:
         self,
         session,
         bundle: str,
-        include: bool = False,
         tag: str = None,
-        files: list = [],
+        include: bool = False,
         created_at: dt.datetime = dt.datetime.now(),
+        files: list = [],
     ) -> Version:
         new_version = Version(
             bundle=(
@@ -44,6 +44,7 @@ class BaseActionHandler:
             ),
             tag=tag,
             include=include,
+            created_at=created_at
         )
         new_version.files = [
             self.add_file(
@@ -62,8 +63,8 @@ class BaseActionHandler:
         session,
         version: Version,
         path: str,
-        tags: list = [],
         to_archive: bool = False,
+        tags: list = [],
     ) -> File:
         new_file = File(
             version=version,
@@ -154,9 +155,9 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
     def add_include_version(
         self,
         bundle: str,
-        created_at: dt.datetime = dt.datetime.now(),
-        include: bool = False,
         tag: str = None,
+        include: bool = False,
+        created_at: dt.datetime = dt.datetime.now(),
         files: list = [],
     ) -> None:
 
@@ -165,10 +166,10 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
             new_version = self.add_version(
                 session=session,
                 bundle=bundle,
-                include=include,
                 tag=tag,
-                files=files,
+                include=include,
                 created_at=created_at,
+                files=files,
             )
             if include == True:
                 # Do linking logic (Raising exception here will rollback the scope, and version won't be added)
