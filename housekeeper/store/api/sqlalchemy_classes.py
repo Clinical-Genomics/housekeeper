@@ -2,6 +2,7 @@ import datetime as dt
 from contextlib import contextmanager
 from pathlib import Path
 import shutil
+import json
 
 from sqlalchemy import orm, create_engine
 from sqlalchemy.orm import sessionmaker
@@ -44,7 +45,7 @@ class BaseActionHandler:
             ),
             tag=tag,
             include=include,
-            created_at=created_at
+            created_at=created_at,
         )
         new_version.files = [
             self.add_file(
@@ -224,7 +225,10 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
         with self.session_scope() as session:
             version_obj = self.get_version(session=session, version_id=version_id)
             Path(
-                self.root, version_obj.bundle.name, version_obj.id, version_obj.created_at.date()
+                self.root,
+                version_obj.bundle.name,
+                version_obj.id,
+                version_obj.created_at.date(),
             ).rmdir()
             session.delete(version_obj)
 
@@ -248,12 +252,18 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
                 if tag in file_obj.tags:
                     file_obj.tags.remove(tag)
 
+    def add_tag_to_version(self, version_id, version_tag):
+        with self.session_scope() as session:
+            version_obj = self.get_version(session=session, version_id=version_id)
+            version_obj.tag = version_tag
+
+
     def find_version(
         self,
+        version_id: int = None,
         bundle: str = "",
         tag: str = "",
         created_at: dt.datetime = None,
-        version_id: int = None,
     ) -> Version:
         with self.session_scope() as session:
             if version_id:
@@ -269,7 +279,8 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
                     query = query.filter(Version.created_at == created_at)
                 else:
                     query = query.order_by(Version.created_at)
-            return query.first()
+            return json.loads(str(query.first()))
+
 
     def find_multiple_files(
         self,
@@ -293,36 +304,45 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
                 query = (
                     query.join(File.tags).filter(Tag.name.in_(tags)).group_by(File.id)
                 )
-            return query.all()
+            return json.loads(str(query.all()))
 
     def find_file(
         self,
+        file_id: int = None,
+        path: str = "",
         bundle: str = "",
         version_tag: str = "",
         created_at: dt.datetime = None,
         tags: list = [],
     ) -> File:
         with self.session_scope() as session:
-            query = (
-                session.query(File)
-                .join(File.version, Version.bundle)
-                .filter(Bundle.name.ilike(f"%{bundle}%"))
-                .filter(Version.tag.ilike(f"%{version_tag}%"))
-            )
-            if created_at:
-                query = query.filter(Version.created_at == created_at)
-            else:
-                query = query.order_by(Version.created_at)
-            if tags:
-                query = (
-                    query.join(File.tags).filter(Tag.name.in_(tags)).group_by(File.id)
-                )
-            return query.first()
 
-    def add_tag_to_version(self, version_id, version_tag):
+            if file_id:
+                query = session.query(File).filter(File.id == file_id)
+            elif path:
+                query = session.query(File).filter(File.path == path)
+            else:
+                query = (
+                    session.query(File)
+                    .join(File.version, Version.bundle)
+                    .filter(Bundle.name.ilike(f"%{bundle}%"))
+                    .filter(Version.tag.ilike(f"%{version_tag}%"))
+                )
+                if created_at:
+                    query = query.filter(Version.created_at == created_at)
+                else:
+                    query = query.order_by(Version.created_at)
+                if tags:
+                    query = (
+                        query.join(File.tags).filter(Tag.name.in_(tags)).group_by(File.id)
+                    )
+            return json.loads(str(query.first()))
+
+    def find_bundle(self, name: str):
         with self.session_scope() as session:
-            version_obj = self.get_version(session=session, version_id=version_id)
-            version_obj.tag = version_tag
+            bundle_obj = self.get_bundle(session=session, name=name)
+            return json.loads(str(bundle_obj))
+
 
 
 
