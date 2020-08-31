@@ -319,6 +319,12 @@ class ActionHandler(SessionWrapper, BaseActionHandler):
                 )
             return query.first()
 
+    def add_tag_to_version(self, version_id, version_tag):
+        with self.session_scope() as session:
+            version_obj = self.get_version(session=session, version_id=version_id)
+            version_obj.tag = version_tag
+
+
 
 class SessionHandler(SessionWrapper):
     def __init__(self, uri: str, root: Path):
