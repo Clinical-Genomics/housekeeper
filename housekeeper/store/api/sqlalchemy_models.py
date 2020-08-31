@@ -1,10 +1,18 @@
-
 import datetime as dt
 
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Boolean, orm, Table, UniqueConstraint
+from sqlalchemy import (
+    Column,
+    Integer,
+    String,
+    DateTime,
+    ForeignKey,
+    Boolean,
+    orm,
+    Table,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import relationship, joinedload, subqueryload
-
 
 
 Base = declarative_base()
@@ -13,7 +21,9 @@ file_tag_link = Table(
     "file_tag_link",
     Base.metadata,
     Column("file_id", Integer, ForeignKey("file.id"), nullable=False),
-    Column("tag_id", Integer, ForeignKey("tag.id"), nullable=False))
+    Column("tag_id", Integer, ForeignKey("tag.id"), nullable=False),
+)
+
 
 class Bundle(Base):
     """A general group of files."""
@@ -24,13 +34,17 @@ class Bundle(Base):
     name = Column(String(64), unique=True, nullable=False)
     created_at = Column(DateTime, default=dt.datetime.now)
     versions = relationship(
-        "Version",
-        order_by="-Version.created_at",
-        cascade="delete, save-update",
+        "Version", order_by="-Version.created_at", cascade="delete, save-update",
     )
-    
+
     def __repr__(self):
-        return f"<Bundle(id={self.id}, name='{self.name}', created_at='{self.created_at}')>"
+        return (
+            f"{{'id': {self.id}, "
+            f"'name': '{self.name}', "
+            f"'created_at': '{self.created_at}', "
+            f"'versions': {self.versions}}}"
+        ).replace("'", "\"")
+
 
 class Tag(Base):
     """Represents tags for bundles"""
@@ -41,11 +55,16 @@ class Tag(Base):
     name = Column(String(64), unique=True, nullable=False)
     category = Column(String(64))
     created_at = Column(DateTime, default=dt.datetime.now)
-    
-    def __repr__(self):
-        return f"<Tag(id={self.id}, name='{self.name}')>"
 
-    
+    def __repr__(self):
+        return (
+            f"{{'id': {self.id}, "
+            f"'name': '{self.name}', "
+            f"'category': '{self.category}', "
+            f"'created_at': '{self.created_at}'}}"
+        ).replace("'", "\"")
+
+
 class Version(Base):
     """Keeps track of versions"""
 
@@ -64,10 +83,22 @@ class Version(Base):
     tag = Column(String(64))
     include = Column(Boolean, default=False)
     bundle = relationship("Bundle", primaryjoin=bundle_id == Bundle.id)
-    
-    def __repr__(self):
-        return f"<Version(id={self.id}, tag='{self.tag}', bundle_id={self.bundle_id}, bundle='{self.bundle.name}', created_at='{self.created_at}')>"
 
+    def __repr__(self):
+        return (
+            f"{{'id': {self.id}, "
+            f"'created_at': '{self.created_at}', "
+            f"'expires_at': '{self.expires_at}', "
+            f"'included_at': '{self.included_at}', "
+            f"'removed_at': '{self.removed_at}', "
+            f"'archived_at': '{self.expires_at}', "
+            f"'archive_path': '{self.archive_path}', "
+            f"'bundle_id': {self.bundle_id}, "
+            f"'include': '{self.include}', "
+            f"'tag': '{self.tag}', "
+            f"'archive_checksum': '{self.archive_checksum}', "
+            f"'files': {self.files}}}"
+        ).replace("'", "\"")
 
 
 class File(Base):
@@ -82,10 +113,14 @@ class File(Base):
     version_id = Column(ForeignKey("version.id", ondelete="CASCADE"), nullable=False)
     tags = relationship("Tag", secondary="file_tag_link")
     version = relationship("Version", primaryjoin=version_id == Version.id)
-    
-    def __repr__(self):
-        return f"<File(id={self.id}, path='{self.path}', version='{self.version}', tags={self.tags})>"
-    
 
-    
-    
+    def __repr__(self):
+        return (
+            f"{{'id': {self.id}, "
+            f"'path': '{self.path}', "
+            f"'checksum': '{self.checksum}', "
+            f"'to_archive': '{self.to_archive}', "
+            f"'version_id': {self.version_id}, "
+            f"'tags': {self.tags}}}"
+        ).replace("'", "\"")
+
