@@ -134,7 +134,6 @@ class SessionWrapper:
     def __init__(self, uri: str, root: Path):
         self.engine = create_engine(uri, echo=False, poolclass=NullPool)
         self.root = root
-        super().__init__()
 
     @contextmanager
     def session_scope(self):
