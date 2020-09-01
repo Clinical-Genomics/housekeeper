@@ -24,7 +24,7 @@ class BaseActionHandler:
     """Class that handles base logic that doesn't end the session scope
     Session required as second argument for all methods """
 
-    def add_bundle(self, session, name: str) -> Bundle:
+    def add_bundle(self, session: Session, name: str) -> Bundle:
         new_bundle = Bundle(name=name)
         session.add(new_bundle)
         return new_bundle
@@ -358,4 +358,3 @@ class HousekeeperAPI(SessionHandler, ActionHandler, BaseHandler):
 
     def destroy_db(self):
         self.Base.metadata.drop_all(self.engine)
-
