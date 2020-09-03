@@ -13,7 +13,7 @@ def test_add_two_tags(populated_context, cli_runner):
     tag2 = "other-tag"
 
     # WHEN trying to add two tags to the an existing file
-    result = cli_runner.invoke(add.tag, [tag1, tag2], obj=populated_context)
+    result = cli_runner.invoke(add, ["tag", tag1, tag2], obj=populated_context)
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tags are logged
