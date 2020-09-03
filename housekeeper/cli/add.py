@@ -58,6 +58,7 @@ def add():
     """Add things to the store."""
 
 
+# Use json input in json option
 @add.command("bundle")
 @click.argument("bundle_data")
 @click.option("-j", "--json", is_flag=True, help="If input is in json format")

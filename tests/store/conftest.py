@@ -17,8 +17,7 @@ def fixture_minimal_bundle_obj(case_id, timestamp) -> models.Bundle:
 def bundle_data_json(bundle_data):
     """Fixture for bundle data in json format"""
     json_data = deepcopy(bundle_data)
-    json_data["created"] = json_data["created"].isoformat()
-    json_data["expires"] = json_data["expires"].isoformat()
+    json_data["created_at"] = json_data["created_at"].isoformat()
     return json_data
 
 
@@ -40,7 +39,7 @@ def fixture_second_bundle_data(
 ) -> dict:
     """Return a bundle similar to bundle_data with updated file paths"""
     second_bundle = deepcopy(bundle_data)
-    second_bundle["created"] = second_timestamp
+    second_bundle["created_at"] = second_timestamp
     second_bundle["files"][0]["path"] = str(second_sample_vcf)
     second_bundle["files"][1]["path"] = str(second_family_vcf)
     return second_bundle
@@ -54,11 +53,12 @@ def fixture_other_case() -> str:
 
 @pytest.fixture(scope="function", name="bundle_data_old")
 def bundle_data_old(
-    bundle_data, second_sample_vcf, second_family_vcf, old_timestamp
+    bundle_data, second_sample_vcf, second_family_vcf, old_timestamp, other_case
 ) -> dict:
     """Return info for a older bundle with different files and case id as bundle data"""
     _bundle = deepcopy(bundle_data)
-    _bundle["created"] = old_timestamp
+    _bundle["name"] = other_case
+    _bundle["created_at"] = old_timestamp
     _bundle["files"][0]["path"] = str(second_sample_vcf)
     _bundle["files"][1]["path"] = str(second_family_vcf)
     return _bundle

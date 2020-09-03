@@ -34,7 +34,7 @@ class AddHandler(BaseHandler):
         """
         bundle_obj = self.bundle(data["name"])
         # These lines can be removed when decoupled from CG
-        if bundle_obj and self.version(bundle_obj.name, data.get["created_at"]):
+        if bundle_obj and self.version(bundle_obj.name, data.get("created_at")):
             LOG.debug("version of bundle already added")
             return None
 
@@ -62,6 +62,7 @@ class AddHandler(BaseHandler):
         tag_map = self._build_tags(tag_names)
 
         for file_data in files:
+            # This if can be removed after decoupling
             if isinstance(file_data["path"], str):
                 paths = [file_data["path"]]
             else:
