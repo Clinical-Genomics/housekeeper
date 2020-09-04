@@ -45,7 +45,7 @@ def test_add_bundle_json(base_context, cli_runner, bundle_data_json, caplog):
     # GIVEN a context with a empty store, a cli runner and a bundle in json format
     # WHEN trying to add a bundle
     result = cli_runner.invoke(
-        bundle_cmd, [bundle_data_json, "--json"], obj=base_context
+        bundle_cmd, ["--json", bundle_data_json], obj=base_context
     )
 
     # THEN assert it succeded
@@ -66,7 +66,7 @@ def test_add_bundle_json_no_files(base_context, cli_runner, bundle_data_json, ca
 
     # WHEN trying to add a bundle
     result = cli_runner.invoke(
-        bundle_cmd, [bundle_data_json, "--json"], obj=base_context
+        bundle_cmd, ["--json", bundle_data_json], obj=base_context
     )
 
     # THEN assert it succeded
@@ -92,7 +92,7 @@ def test_add_bundle_non_existing_file(
 
     # WHEN trying to add a bundle
     result = cli_runner.invoke(
-        bundle_cmd, [bundle_data_json, "--json"], obj=base_context
+        bundle_cmd, ["--json", bundle_data_json], obj=base_context
     )
 
     # THEN assert it succeded
@@ -115,7 +115,7 @@ def test_add_bundle_json_missing_data(
 
     # WHEN trying to add a bundle
     result = cli_runner.invoke(
-        bundle_cmd, [bundle_data_json, "--json"], obj=base_context
+        bundle_cmd, ["--json", bundle_data_json], obj=base_context
     )
 
     # THEN assert it succeded

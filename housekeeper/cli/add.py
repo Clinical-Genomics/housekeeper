@@ -60,8 +60,8 @@ def add():
 
 # Use json input in json option
 @add.command("bundle")
-@click.argument("bundle_data")
-@click.option("-j", "--json", is_flag=True, help="If input is in json format")
+@click.argument("bundle_data", required=False)
+@click.option("-j", "--json", help="Input json string")
 @click.pass_context
 def bundle_cmd(context, bundle_data, json):
     """Add a new bundle."""
@@ -69,12 +69,18 @@ def bundle_cmd(context, bundle_data, json):
     store = context.obj["store"]
     data = {}
     # This is to preserve the behaviour of adding a bundle without providing all information
-    if not json:
+    if json:
+        if bundle_data:
+            LOG.error("Can not input both json and bundle_data")
+            return
+        data = load_json(json)
+
+    if bundle_data:
         data["name"] = bundle_data
         data["created_at"] = str(dt.datetime.now())
-
-    else:
-        data = load_json(bundle_data)
+    if not data:
+        LOG.error("No input provided")
+        return
 
     bundle_name = data["name"]
     if store.bundle(bundle_name):
