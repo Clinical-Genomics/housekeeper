@@ -89,7 +89,7 @@ def test_add_version_no_files_json(
 
     # WHEN trying to add the version
     result = cli_runner.invoke(
-        version_cmd, [empty_version_data_json, "--json"], obj=populated_context
+        version_cmd, ["--json", empty_version_data_json], obj=populated_context
     )
 
     # THEN assert it succeded
@@ -102,7 +102,7 @@ def test_add_version_no_files_json(
     assert len(bundle_obj.versions) == 2
 
 
-def test_add_version_woth_files_json(
+def test_add_version_with_files_json(
     populated_context, cli_runner, version_data_json, caplog
 ):
     """Test to add a new version with files to existing bundle using json as input"""
@@ -119,7 +119,7 @@ def test_add_version_woth_files_json(
 
     # WHEN trying to add the version
     result = cli_runner.invoke(
-        version_cmd, [version_data_json, "--json"], obj=populated_context
+        version_cmd, ["--json", version_data_json], obj=populated_context
     )
 
     # THEN assert it succeded

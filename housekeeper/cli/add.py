@@ -58,29 +58,26 @@ def add():
     """Add things to the store."""
 
 
-# Use json input in json option
 @add.command("bundle")
 @click.argument("bundle_data", required=False)
 @click.option("-j", "--json", help="Input json string")
 @click.pass_context
-def bundle_cmd(context, bundle_data, json):
+def bundle_cmd(context: click.Context, bundle_data: str, json: str):
     """Add a new bundle."""
     LOG.info("Running add bundle")
     store = context.obj["store"]
+    if not (bundle_data or json):
+        LOG.error("Please input json or bundle_data")
+        raise click.Abort
     data = {}
+    data["name"] = bundle_data
+    data["created_at"] = str(dt.datetime.now())
     # This is to preserve the behaviour of adding a bundle without providing all information
     if json:
         if bundle_data:
-            LOG.error("Can not input both json and bundle_data")
-            return
+            LOG.warning("Can not input both json and bundle_data")
+            raise click.Abort
         data = load_json(json)
-
-    if bundle_data:
-        data["name"] = bundle_data
-        data["created_at"] = str(dt.datetime.now())
-    if not data:
-        LOG.error("No input provided")
-        return
 
     bundle_name = data["name"]
     if store.bundle(bundle_name):
@@ -113,21 +110,28 @@ def bundle_cmd(context, bundle_data, json):
 
 @add.command("file")
 @click.option("-t", "--tag", "tags", multiple=True, help="tag to associate the file by")
-@click.option("-a", "--archive", is_flag=True, help="mark file to be archived")
 @click.option("-b", "--bundle-name", help="name of bundle that file should be added to")
-@click.option("-j", "--json", is_flag=True, help="If input is in json format")
-@click.argument("path")
+@click.option("-j", "--json", help="json formated input")
+@click.argument("path", required=False)
 @click.pass_context
-def file_cmd(context, tags, archive, bundle_name, json, path):
+def file_cmd(
+    context: click.Context, tags: List[str], bundle_name: str, json: str, path: str
+):
     """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
     store = context.obj["store"]
+    if not (path or json):
+        LOG.error("Please input json or path")
+        raise click.Abort
     data = {}
     if json:
-        data = load_json(path)
+        if path:
+            LOG.error("Can not input both json and path")
+            raise click.Abort
+        data = load_json(json)
         validate_input(data, input_type="file")
-    else:
-        file_path = Path(data.get("path", path))
+
+    file_path = Path(data.get("path", path))
     if not file_path.exists():
         LOG.warning("File: %s does not exist", file_path)
         raise click.Abort
@@ -140,28 +144,32 @@ def file_cmd(context, tags, archive, bundle_name, json, path):
 
     tags = data.get("tags", tags)
 
-    new_file = store.add_file(
-        file_path=file_path, bundle=bundle_obj, to_archive=archive, tags=tags
-    )
+    new_file = store.add_file(file_path=file_path, bundle=bundle_obj, tags=tags)
     store.add_commit(new_file)
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
 
 
 @add.command("version")
-@click.option("-j", "--json", is_flag=True, help="If input is in json format")
+@click.option("-j", "--json", help="Input in json format")
 @click.option("--created-at", help="Date when created")
-@click.argument("bundle_name")
+@click.argument("bundle_name", required=False)
 @click.pass_context
-def version_cmd(context, bundle_name, created_at, json):
+def version_cmd(context: click.Context, bundle_name: str, created_at: str, json: str):
     """Add a new version to a bundle."""
     LOG.info("Running add version")
     store = context.obj["store"]
+
+    if not (bundle_name or json):
+        LOG.error("Please input json or bundle name")
+        raise click.Abort
     data = {}
-    if not json:
-        data["bundle_name"] = bundle_name
-        data["created_at"] = created_at
-    else:
-        data = load_json(bundle_name)
+    data["bundle_name"] = bundle_name
+    data["created_at"] = created_at
+    if json:
+        if bundle_name:
+            LOG.error("Can not input both json and path")
+            raise click.Abort
+        data = load_json(json)
         bundle_name = data["bundle_name"]
 
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
@@ -187,10 +195,9 @@ def version_cmd(context, bundle_name, created_at, json):
 
 @add.command("tag")
 @click.argument("tags", nargs=-1)
-@click.option("-j", "--json", is_flag=True, help="If input is in json format")
 @click.option("-f", "--file-id", type=int)
 @click.pass_context
-def tag_cmd(context: click.Context, tags: List[str], json: bool, file_id: int):
+def tag_cmd(context: click.Context, tags: List[str], file_id: int):
     """Add tags ro housekeeper. Use `--file-id` to add tags to existing file"""
     LOG.info("Running add tag")
     store = context.obj["store"]
