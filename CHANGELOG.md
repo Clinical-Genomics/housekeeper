@@ -12,3 +12,7 @@ Please add a new candidate release at the top after changing the latest one. Fee
 ### Fixed
 
 ### Changed
+
+## [2.7.5]
+### Added
+- Automatic publish to pypi
