@@ -1,56 +1,15 @@
 """Module for adding via CLI"""
 import datetime as dt
-import json as jsonlib
 import logging
-from json.decoder import JSONDecodeError
 from pathlib import Path
 from typing import List
 
 import click
-from marshmallow.exceptions import ValidationError
 
 from housekeeper.date import get_date
-from housekeeper.store.api import schema as schemas
+from housekeeper.files import load_json, validate_input
 
 LOG = logging.getLogger(__name__)
-
-
-def load_json(json_str: str) -> dict:
-    """Load a json string"""
-    LOG.info("Loading json information")
-    try:
-        data = jsonlib.loads(json_str)
-    except JSONDecodeError as err:
-        LOG.warning("Something wrong in json string")
-        LOG.error(err)
-        raise click.Abort
-    LOG.info("Succesfull loading of JSON")
-    return data
-
-
-def validate_input(data: dict, input_type: str):
-    """Validate input with the marshmallow schemas"""
-    valid_schemas = {
-        "bundle": schemas.InputBundleSchema(),
-        "file": schemas.InputFileSchema(),
-        "version": schemas.InputVersionSchema(),
-    }
-    schema = valid_schemas.get(input_type)
-    if schema is None:
-        LOG.warning("Invalid input type %s", input_type)
-        raise ValueError()
-
-    LOG.info("Validating bundle schema")
-
-    formated_data = schema.dump(data)
-    try:
-        LOG.info("Validate marshmallow schema")
-        schema.load(formated_data)
-    except ValidationError as err:
-        LOG.warning("Input data does not follow the models")
-        LOG.error(err)
-        raise click.Abort
-    LOG.info("Input looks fine")
 
 
 @click.group()
