@@ -46,15 +46,8 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
     validate_input(data, input_type="bundle")
     data["created_at"] = get_date(data.get("created_at"))
 
-    if "expires_at" in data:
-        data["expires_at"] = get_date(data["expires_at"])
     if "files" not in data:
         data["files"] = []
-
-    bundle_name = data["name"]
-    if store.bundle(bundle_name):
-        LOG.warning("bundle name %s already exists", bundle_name)
-        raise click.Abort
 
     try:
         new_bundle, new_version = store.add_bundle(data)
@@ -73,9 +66,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
 @click.option("-j", "--json", help="json formated input")
 @click.argument("path", required=False)
 @click.pass_context
-def file_cmd(
-    context: click.Context, tags: List[str], bundle_name: str, json: str, path: str
-):
+def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: str, path: str):
     """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
     store = context.obj["store"]
