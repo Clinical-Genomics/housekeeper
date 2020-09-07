@@ -10,7 +10,7 @@ from setuptools import find_packages, setup
 NAME = "housekeeper"
 DESCRIPTION = "Housekeeper takes care of files"
 AUTHOR = "Robin Andeer"
-EMAIL = "robin.andeer@scilifelab.se"
+EMAIL = "mans.magnusson@scilifelab.se"
 URL = "https://github.com/Clinical-Genomics/housekeeper"
 
 HERE = os.path.abspath(os.path.dirname(__file__))
