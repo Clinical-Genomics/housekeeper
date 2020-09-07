@@ -198,7 +198,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 @click.option("-f", "--file-id", type=int)
 @click.pass_context
 def tag_cmd(context: click.Context, tags: List[str], file_id: int):
-    """Add tags ro housekeeper. Use `--file-id` to add tags to existing file"""
+    """Add tags to housekeeper. Use `--file-id` to add tags to existing file"""
     LOG.info("Running add tag")
     store = context.obj["store"]
     file_obj = None
