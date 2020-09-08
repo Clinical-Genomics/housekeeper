@@ -18,38 +18,13 @@ def get():
     """Get info from database"""
 
 
-@get.command("tag")
-@click.option("-j", "--json", is_flag=True, help="Output to json format")
-@click.option("-n", "--name", multiple=True, help="Specify a tag name")
-@click.pass_context
-def tag_cmd(context, json, name):
-    """Get the tags from database"""
-    store = context.obj["store"]
-    LOG.info("Fetch tags")
-    tag_objs = store.tags()
-    template = schema.TagSchema()
-    result = []
-    for tag_obj in tag_objs:
-        if name and (tag_obj.name not in name):
-            continue
-        LOG.debug("Use tag %s", tag_obj.name)
-        result.append(template.dump(tag_obj))
-    if not result:
-        LOG.info("Could not find any of the specified tags [%s]", ", ".join(name))
-        return
-    if json:
-        click.echo(jsonlib.dumps(result))
-        return
-    console = Console()
-    console.print(get_tags_table(result))
-
-
-@get.command("bundles")
+@get.command("bundle")
 @click.option("-n", "--bundle-name", help="Search for a bundle with name")
 @click.option("-i", "--bundle-id", type=int, help="Search for a bundle with bundle id")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
+@click.option("-v", "--verbose", is_flag=True, help="List files from latest version")
 @click.pass_context
-def bundle_cmd(context, bundle_name, bundle_id, json):
+def bundle_cmd(context, bundle_name, bundle_id, json, verbose):
     """Get bundle from database"""
     store = context.obj["store"]
     bundle_objs = store.bundles()
@@ -68,6 +43,10 @@ def bundle_cmd(context, bundle_name, bundle_id, json):
         return
     console = Console()
     console.print(get_bundles_table(result))
+    if verbose:
+        for bundle in bundle_objs:
+            version_obj = bundle.versions[0]
+            context.invoke(version_cmd, version_id=version_obj.id, verbose=True)
 
 
 @get.command("version")
@@ -110,10 +89,10 @@ def version_cmd(context, bundle_name, json, version_id, verbose):
         return
 
     for version_obj in version_objs:
-        context.invoke(files_cmd, version=version_obj.id)
+        context.invoke(files_cmd, version=version_obj.id, verbose=True)
 
 
-@get.command("files")
+@get.command("file")
 @click.option("-t", "--tag", "tags", multiple=True, help="filter by file tag")
 @click.option("-v", "--version", type=int, help="filter by version of the bundle")
 @click.option("-V", "--verbose", is_flag=True, help="print additional information")
@@ -134,3 +113,29 @@ def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str
         return
     console = Console()
     console.print(get_files_table(result, verbose=verbose))
+
+
+@get.command("tag")
+@click.option("-j", "--json", is_flag=True, help="Output to json format")
+@click.option("-n", "--name", multiple=True, help="Specify a tag name")
+@click.pass_context
+def tag_cmd(context, json, name):
+    """Get the tags from database"""
+    store = context.obj["store"]
+    LOG.info("Fetch tags")
+    tag_objs = store.tags()
+    template = schema.TagSchema()
+    result = []
+    for tag_obj in tag_objs:
+        if name and (tag_obj.name not in name):
+            continue
+        LOG.debug("Use tag %s", tag_obj.name)
+        result.append(template.dump(tag_obj))
+    if not result:
+        LOG.info("Could not find any of the specified tags [%s]", ", ".join(name))
+        return
+    if json:
+        click.echo(jsonlib.dumps(result))
+        return
+    console = Console()
+    console.print(get_tags_table(result))
