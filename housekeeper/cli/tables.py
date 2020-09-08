@@ -9,6 +9,7 @@ from rich.table import Table
 def get_tags_table(rows: List[dict]) -> Table:
     """Return a tag table"""
     table = Table(show_header=True, header_style="bold magenta")
+    table.title = "[not italic]:bookmark:[/] Tags table [not italic]:bookmark:[/]"
     table.add_column("ID")
     table.add_column("Name")
     table.add_column("Category")
@@ -26,6 +27,7 @@ def get_tags_table(rows: List[dict]) -> Table:
 def get_files_table(rows: List[dict], verbose=False) -> Table:
     """Return a tag table"""
     table = Table(show_header=True, header_style="bold magenta")
+    table.title = "[not italic]:scroll:[/] Files table [not italic]:scroll:[/]"
     table.add_column("ID")
     table.add_column("File name")
     table.add_column("Tags")
@@ -52,6 +54,7 @@ def get_files_table(rows: List[dict], verbose=False) -> Table:
 def get_bundles_table(rows: List[dict]) -> Table:
     """Return a bundles table"""
     table = Table(show_header=True, header_style="bold magenta")
+    table.title = "[not italic]:package:[/] Bundle table [not italic]:package:[/]"
     table.add_column("ID")
     table.add_column("Bundle name")
     table.add_column("Version IDs")
@@ -70,6 +73,7 @@ def get_bundles_table(rows: List[dict]) -> Table:
 def get_versions_table(rows: List[dict]) -> Table:
     """Return a versions table"""
     table = Table(show_header=True, header_style="bold magenta")
+    table.title = "[not italic]:closed_book:[/] Version table [not italic]:closed_book:[/]"
     table.add_column("ID")
     table.add_column("Bundle name")
     table.add_column("Nr files")
