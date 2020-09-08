@@ -12,10 +12,22 @@ EMPTY_STR = ""
 LOG = logging.getLogger(__name__)
 
 
-def include_version(
-    global_root: str, version_obj: models.Version, hardlink: bool = True
-):
-    """Include files in existing bundle version."""
+def link_file(file_path: Path, new_path: Path, hardlink: bool = True) -> None:
+    """Create a link for a file"""
+    if hardlink:
+        LOG.debug("Creating hardlink")
+        os.link(file_path.resolve(), new_path)
+    else:
+        LOG.debug("Creating softlink")
+        new_path.symlink_to(file_path)
+    LOG.info("linked file: %s -> %s", file_path, new_path)
+
+
+def include_version(global_root: str, version_obj: models.Version, hardlink: bool = True):
+    """Include files in existing bundle version.
+
+    Including a file means to link them into a folder in the root directory
+    """
     global_root_dir = Path(global_root)
     if version_obj.included_at:
         raise VersionIncludedError(f"version included on {version_obj.included_at}")
@@ -29,15 +41,11 @@ def include_version(
         # hardlink file to the internal structure
         file_obj_path = Path(file_obj.path)
         new_path = version_root_dir / file_obj_path.name
-        if hardlink:
-            os.link(file_obj_path.resolve(), new_path)
-        else:
-            os.symlink(file_obj_path.resolve(), new_path)
-        LOG.info("linked file: %s -> %s", file_obj.path, new_path)
+        link_file(file_path=file_obj_path, new_path=new_path, hardlink=hardlink)
         file_obj.path = str(new_path).replace(f"{global_root_dir}/", EMPTY_STR, 1)
 
 
-def checksum(path):
+def checksum(path: Path) -> str:
     """Calculcate checksum for a file."""
     hasher = hashlib.sha1()
     with open(path, "rb") as stream:

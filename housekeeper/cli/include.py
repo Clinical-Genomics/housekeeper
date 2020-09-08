@@ -21,29 +21,35 @@ def include(context: click.Context, bundle_name: str, version: int):
     """
     LOG.info("Running include")
     store = context.obj["store"]
+    if not (version or bundle_name):
+        LOG.warning("Please use bundle name or version ID")
+        return
+
     if version:
         LOG.info("Use version %s", version)
         version_obj = store.Version.get(version)
         if version_obj is None:
             LOG.warning("version not found")
-    else:
-        if not bundle_name:
-            LOG.warning("Please specify bundle or version")
-            return
+        raise click.Abort
 
+    if bundle_name:
         bundle_obj = store.bundle(bundle_name)
         if bundle_obj is None:
             LOG.warning("bundle %s not found", bundle_name)
+            raise click.Abort
+
         if len(bundle_obj.versions) == 0:
             LOG.error("Could not find any versions for bundle %s", bundle_name)
             raise click.Abort
+
+        LOG.info("Including latest version for %s", bundle_name)
         version_obj = bundle_obj.versions[0]
 
     try:
         include_version(context.obj["root"], version_obj)
     except VersionIncludedError as error:
-        click.echo(click.style(error.message, fg="red"))
-        context.abort()
+        LOG.warning(error.message)
+        raise click.Abort
 
     version_obj.included_at = dt.datetime.now()
     store.commit()

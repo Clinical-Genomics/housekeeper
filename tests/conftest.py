@@ -10,7 +10,6 @@ from typing import List
 import pytest
 import ruamel.yaml
 
-from housekeeper import include
 from housekeeper.date import get_date
 from housekeeper.store import Store, models
 
@@ -235,9 +234,15 @@ def fixture_vcf_tag_obj(vcf_tag_name: str, timestamp: datetime.datetime) -> str:
 
 
 @pytest.fixture(scope="function", name="bundle_obj")
-def fixture_bundle_obj(bundle_data: dict, store: Store) -> str:
+def fixture_bundle_obj(bundle_data: dict, store: Store) -> models.Bundle:
     """Return a bundle object"""
     return store.add_bundle(bundle_data)[0]
+
+
+@pytest.fixture(scope="function", name="version_obj")
+def fixture_version_obj(bundle_data: dict, store: Store) -> models.Version:
+    """Return a version object"""
+    return store.add_bundle(bundle_data)[1]
 
 
 # dir fixtures
@@ -325,30 +330,6 @@ def fixture_checksum_file(fixtures_dir: Path) -> Path:
 def fixture_checksum(checksum_file: Path) -> Path:
     """Return the checksum for checksum test file"""
     return checksum_file.name.rstrip(".txt")
-
-
-@pytest.fixture(scope="function", name="version")
-def fixture_version(tmpdir: Path) -> models.Version:
-    """Return a version object"""
-    file_path_1 = tmpdir.join("example.vcf.gz")
-    file_path_1.write("content")
-    file_path_1_checksum = include.checksum(file_path_1)
-    file_path_2 = tmpdir.join("example2.txt")
-    file_path_2.write("content")
-    bundle_obj = models.Bundle(name="privatefox")
-    version_obj = models.Version(created_at=datetime.datetime.now(), bundle=bundle_obj)
-    version_obj.files.append(
-        models.File(
-            path=file_path_1,
-            to_archive=True,
-            tags=[models.Tag(name="vcf-gz")],
-            checksum=file_path_1_checksum,
-        ),
-    )
-    version_obj.files.append(
-        models.File(path=file_path_2, to_archive=False, tags=[models.Tag(name="tmp")])
-    )
-    return version_obj
 
 
 @pytest.fixture(scope="function", name="helpers")
