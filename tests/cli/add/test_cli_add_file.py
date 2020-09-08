@@ -1,5 +1,4 @@
 """Tests foe adding files via CLI"""
-import json
 import logging
 from pathlib import Path
 

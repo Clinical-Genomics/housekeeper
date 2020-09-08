@@ -4,6 +4,19 @@ import logging
 from housekeeper.cli.add import tag_cmd
 
 
+def test_add_tags_no_args(populated_context, cli_runner, caplog):
+    """Test to add a two tags to the database"""
+    # GIVEN a context with a populated store, and a cli runner
+    caplog.set_level(logging.DEBUG)
+    # GIVEN that there is no tag input
+    # WHEN trying to add two tags to the an existing file
+    result = cli_runner.invoke(tag_cmd, [], obj=populated_context)
+    # THEN assert it has a zero exit status
+    assert result.exit_code == 1
+    # THEN check that the correct information is logged
+    assert "No tags provided" in caplog.text
+
+
 def test_add_two_tags(populated_context, cli_runner, caplog):
     """Test to add a two tags to the database"""
     # GIVEN a context with a populated store, and a cli runner
@@ -33,9 +46,7 @@ def test_add_existing_tag_existing_file(populated_context, cli_runner, caplog):
     tag = file_obj.tags[0].name
 
     # WHEN trying to add the existing tag to the file
-    result = cli_runner.invoke(
-        tag_cmd, [tag, "-f", str(file_id)], obj=populated_context
-    )
+    result = cli_runner.invoke(tag_cmd, [tag, "-f", str(file_id)], obj=populated_context)
     # THEN assert it has a non zero exit status
     assert result.exit_code == 0
     # THEN check that it communicates that the tag existed
@@ -55,9 +66,7 @@ def test_add_tag_existing_file(populated_context, cli_runner, caplog):
     tag = "new-tag"
 
     # WHEN trying to add a tag to the existing file
-    result = cli_runner.invoke(
-        tag_cmd, [tag, "-f", str(file_id)], obj=populated_context
-    )
+    result = cli_runner.invoke(tag_cmd, [tag, "-f", str(file_id)], obj=populated_context)
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tag is displayed in the output

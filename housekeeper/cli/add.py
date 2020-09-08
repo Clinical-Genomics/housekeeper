@@ -12,6 +12,20 @@ from housekeeper.files import load_json, validate_input
 LOG = logging.getLogger(__name__)
 
 
+def validate_args(arg: str, json: str, arg_name: str) -> None:
+    """Check if input is valid
+
+    One of the arguments has to be specified. Both arguments are not allowed
+    """
+    if not (arg or json):
+        LOG.error("Please input json or %s", arg_name)
+        raise click.Abort
+
+    if arg and json:
+        LOG.warning("Can not input both json and %s", arg_name)
+        raise click.Abort
+
+
 @click.group()
 def add():
     """Add things to the store."""
@@ -25,17 +39,14 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
     """Add a new bundle."""
     LOG.info("Running add bundle")
     store = context.obj["store"]
-    if not (bundle_name or json):
-        LOG.error("Please input json or bundle_name")
-        raise click.Abort
+
+    validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
+
     data = {}
     data["name"] = bundle_name
     data["created_at"] = str(dt.datetime.now())
     # This is to preserve the behaviour of adding a bundle without providing all information
     if json:
-        if bundle_name:
-            LOG.warning("Can not input both json and bundle_name")
-            raise click.Abort
         data = load_json(json)
 
     bundle_name = data["name"]
@@ -70,14 +81,10 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
     """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
     store = context.obj["store"]
-    if not (path or json):
-        LOG.error("Please input json or path")
-        raise click.Abort
+    validate_args(arg=path, json=json, arg_name="path")
+
     data = {}
     if json:
-        if path:
-            LOG.error("Can not input both json and path")
-            raise click.Abort
         data = load_json(json)
         validate_input(data, input_type="file")
 
@@ -109,16 +116,12 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
     LOG.info("Running add version")
     store = context.obj["store"]
 
-    if not (bundle_name or json):
-        LOG.error("Please input json or bundle name")
-        raise click.Abort
+    validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
+
     data = {}
     data["bundle_name"] = bundle_name
     data["created_at"] = created_at
     if json:
-        if bundle_name:
-            LOG.error("Can not input both json and path")
-            raise click.Abort
         data = load_json(json)
         bundle_name = data["bundle_name"]
 
@@ -131,8 +134,6 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
         raise click.Abort
 
     data["created_at"] = get_date(data.get("created_at"))
-    if "expires_at" in data:
-        data["expires_at"] = get_date(data["expires_at"])
 
     new_version = store.add_version(data, bundle_obj)
     if not new_version:
@@ -154,7 +155,7 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
     file_obj = None
     if len(tags) == 0:
         LOG.warning("No tags provided")
-        return
+        raise click.Abort
 
     if file_id:
         file_obj = store.file_(file_id)
