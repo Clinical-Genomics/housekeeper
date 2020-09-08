@@ -71,7 +71,3 @@ def test_get_tags_json(cli_runner: Context, base_context: CliRunner, caplog):
 
     # THEN assert it exits without problems
     assert res.exit_code == 0
-    # THEN assert the tags where output in json format
-    tag_output = json.loads(res.output)
-    tag_names = set([tag["name"] for tag in tag_output])
-    assert tag_names == set(tags)
