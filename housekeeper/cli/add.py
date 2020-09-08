@@ -169,6 +169,7 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
         if not tag_obj:
             LOG.info("%s: tag created", tag_name)
             tag_obj = store.new_tag(tag_name)
+            store.add_commit(tag_obj)
 
         if not file_obj:
             continue

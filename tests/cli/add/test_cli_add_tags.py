@@ -24,14 +24,19 @@ def test_add_two_tags(populated_context, cli_runner, caplog):
     # GIVEN two new tags
     tag1 = "new-tag"
     tag2 = "other-tag"
+
     # WHEN trying to add two tags to the an existing file
     result = cli_runner.invoke(tag_cmd, [tag1, tag2], obj=populated_context)
+
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tags are logged
     assert tag1 in caplog.text
     # THEN check that the tags are logged
     assert tag2 in caplog.text
+    # THEN assert that the tags are added to the data base
+    db_tags = set([tag.name for tag in populated_context["store"].tags()])
+    assert db_tags.intersection(set([tag1, tag2]))
 
 
 def test_add_existing_tag_existing_file(populated_context, cli_runner, caplog):
