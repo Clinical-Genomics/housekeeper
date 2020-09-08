@@ -2,7 +2,9 @@
 from pathlib import Path
 from typing import List
 
+import os
 import click
+
 
 
 @click.group()
@@ -51,6 +53,9 @@ def file_cmd(context, tags, archive, bundle_name, path):
     path = Path(path)
     if not path.exists():
         click.echo(click.style(f"File {path} does not exist", fg="red"))
+        context.abort()
+    if os.path.isdir(path):
+        click.echo(click.style(f"{path} is a directory", fg="red"))
         context.abort()
 
     new_file = store.new_file(

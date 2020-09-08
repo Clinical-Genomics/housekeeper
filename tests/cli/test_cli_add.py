@@ -1,5 +1,6 @@
 """Tests for adding via CLI"""
 
+import os
 from housekeeper.cli import add
 
 # tests adding tags
@@ -171,3 +172,20 @@ def test_add_non_existing_bundle_file(populated_context, cli_runner, case_id):
     assert result.exit_code == 1
     # THEN check that the proper information is displayed
     assert f"File {non_existing_file} does not exist" in result.output
+
+
+def test_add_directory(populated_context, cli_runner, case_id, fixtures_dir):
+    """Test to add a directory, this is not allowed"""
+    # GIVEN a context with a populated store and a cli runner
+    bundle_name = case_id
+
+    # WHEN trying to add a directory to a bundle
+    result = cli_runner.invoke(
+        add.file_cmd, [bundle_name, fixtures_dir.as_posix()], obj=populated_context
+    )
+
+    # THEN assert it fails
+    print(result)
+    assert result.exit_code == 1
+    # THEN check that the proper information is displayed
+    assert f"{fixtures_dir} is a directory" in result.output
