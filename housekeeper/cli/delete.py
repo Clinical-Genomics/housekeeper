@@ -1,8 +1,12 @@
 """Module for deleting via CLI"""
+
+import logging
 import shutil
 from pathlib import Path
 
 import click
+
+LOG = logging.getLogger(__name__)
 
 
 @click.group()
@@ -15,25 +19,73 @@ def delete():
 @click.argument("bundle_name")
 @click.pass_context
 def bundle_cmd(context, yes, bundle_name):
-    """Delete the latest bundle version."""
+    """Delete a empty bundle, that is a bundle without versions"""
     store = context.obj["store"]
     bundle_obj = store.bundle(bundle_name)
     if bundle_obj is None:
-        click.echo(click.style("bundle not found", fg="red"))
-        context.abort()
-    version_obj = bundle_obj.versions[0]
+        LOG.warning("bundle %s not found", bundle_name)
+        raise click.Abort
+
+    if bundle_obj.versions:
+        LOG.warning("Bundle has versions, can not delete bundle")
+        raise click.Abort
+
+    question = f"Remove bundle {bundle_obj.name} from database?"
+    if not (yes or click.confirm(question)):
+        raise click.Abort
+
+    bundle_obj.delete()
+    store.commit()
+    LOG.info("Bundle deleted: %s", bundle_obj.name)
+
+
+@delete.command("version")
+@click.option("-b", "--bundle-name", help="Fetch all versions from a bundle")
+@click.option("-i", "--version-id", type=int, help="Fetch a specific version")
+@click.option("-y", "--yes", is_flag=True, help="skip checks")
+@click.pass_context
+def version_cmd(context, bundle_name, version_id, yes):
+    """Delete a version from database"""
+    store = context.obj["store"]
+    if not (bundle_name or version_id):
+        LOG.info("Please select a bundle or a version")
+        raise click.Abort
+
+    if bundle_name:
+        bundle_obj = store.bundle(name=bundle_name)
+        if not bundle_obj:
+            LOG.info("Could not find bundle %s", bundle_name)
+            return
+        if len(bundle_obj.versions) == 0:
+            LOG.warning("Could not find versions for bundle %s", bundle_name)
+            return
+        LOG.info("Deleting the latest version of bundle %s", bundle_name)
+        version_obj = bundle_obj.versions[0]
+
+    if version_id:
+        version = store.version(version_id=version_id)
+        if not version:
+            LOG.warning("Could not find version %s", version_id)
+            raise click.Abort
+        bundle_obj = store.bundle(bundle_id=version.bundle_id)
+        for ver in bundle_obj.versions:
+            if ver.id == version_id:
+                version_obj = ver
+
     if version_obj.included_at:
         question = f"remove bundle version from file system and database: {version_obj.full_path}"
     else:
         question = f"remove bundle version from database: {version_obj.created_at.date()}"
+
     if not (yes or click.confirm(question)):
-        context.abort()
+        raise click.Abort
 
     if version_obj.included_at:
         shutil.rmtree(version_obj.full_path, ignore_errors=True)
+
     version_obj.delete()
     store.commit()
-    click.echo(f"version deleted: {version_obj.full_path}")
+    LOG.info("version deleted: %s", version_obj.full_path)
 
 
 @delete.command("files")
@@ -50,14 +102,14 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     store = context.obj["store"]
     file_objs = []
     if not (tag or bundle_name):
-        click.echo("Please specify a bundle or a tag")
-        context.abort()
+        LOG.infor("Please specify a bundle or a tag")
+        raise click.Abort
 
     if bundle_name:
         bundle_obj = store.bundle(bundle_name)
         if bundle_obj is None:
-            click.echo(click.style("bundle not found", fg="red"))
-            context.abort()
+            LOG.warning("Bundle not found")
+        raise click.Abort
 
     query = store.files_before(bundle=bundle_name, tags=tag, before=before)
 
@@ -80,11 +132,11 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
             continue
 
     if nr_files == 0:
-        click.echo(click.style("no files found", fg="red"))
-        context.abort()
+        LOG.warning("no files found")
+        raise click.Abort
 
     if not (yes or click.confirm(f"Are you sure you want to delete {len(file_objs)} files?")):
-        context.abort()
+        raise click.Abort
 
     for file_obj in file_objs:
         if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
@@ -93,7 +145,7 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
                 file_obj_path.unlink()
             file_obj.delete()
             store.commit()
-            click.echo(f"{file_obj.full_path} deleted")
+            LOG.info("%s deleted", file_obj.full_path)
 
 
 @delete.command("file")
@@ -105,8 +157,8 @@ def file_cmd(context, yes, file_id):
     store = context.obj["store"]
     file_obj = store.File.get(file_id)
     if not file_obj:
-        click.echo(click.style("file not found", fg="red"))
-        context.abort()
+        LOG.info("file not found")
+        raise click.Abort
 
     if file_obj.is_included:
         question = f"remove file from file system and database: {file_obj.full_path}"
@@ -119,4 +171,4 @@ def file_cmd(context, yes, file_id):
 
         file_obj.delete()
         store.commit()
-        click.echo("file deleted")
+        LOG.info("file deleted")

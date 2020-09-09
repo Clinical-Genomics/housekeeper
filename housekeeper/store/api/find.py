@@ -32,8 +32,14 @@ class FindHandler(BaseHandler):
         LOG.info("Fetching bundle with name: %s", name)
         return self.Bundle.filter_by(name=name).first()
 
-    def version(self, bundle: str, date: dt.datetime) -> models.Version:
+    def version(
+        self, bundle: str = None, date: dt.datetime = None, version_id: int = None
+    ) -> models.Version:
         """Fetch a version from the store."""
+        if version_id:
+            LOG.info("Fetching version with id: %s", version_id)
+            return self.Version.get(version_id)
+
         return (
             self.Version.query.join(models.Version.bundle)
             .filter(models.Bundle.name == bundle, models.Version.created_at == date)
@@ -44,9 +50,7 @@ class FindHandler(BaseHandler):
         """Fetch a version from the store."""
         query = self.Version.query
         if bundle:
-            query = query.join(models.Version.bundle).filter(
-                models.Bundle.name == bundle
-            )
+            query = query.join(models.Version.bundle).filter(models.Bundle.name == bundle)
         return query
 
     def tag(self, name: str) -> models.Tag:
@@ -62,12 +66,7 @@ class FindHandler(BaseHandler):
         return self.File.get(file_id)
 
     def files(
-        self,
-        *,
-        bundle: str = None,
-        tags: List[str] = None,
-        version: int = None,
-        path: str = None
+        self, *, bundle: str = None, tags: List[str] = None, version: int = None, path: str = None
     ) -> Iterable[models.File]:
         """Fetch files from the store."""
         query = self.File.query
@@ -107,9 +106,7 @@ class FindHandler(BaseHandler):
                 before_dt = get_date(before)
             except ValueError:
                 before_dt = get_date(before, "%Y-%m-%d %H:%M:%S")
-            query = query.join(models.Version).filter(
-                models.Version.created_at < before_dt
-            )
+            query = query.join(models.Version).filter(models.Version.created_at < before_dt)
 
         return query
 
@@ -117,7 +114,5 @@ class FindHandler(BaseHandler):
     def files_ondisk(file_objs: models.File) -> set:
         """Returns a list of files that are on disk."""
 
-        files_on_disk = {
-            file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file()
-        }
+        files_on_disk = {file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file()}
         return files_on_disk

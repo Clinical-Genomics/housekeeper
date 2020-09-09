@@ -69,7 +69,11 @@ def version_cmd(context, bundle_name, json, version_id, verbose):
         version_objs = bundle.versions
 
     if version_id:
-        version_objs = [store.Version.get(version_id)]
+        version = store.Version.get(version_id)
+        if not version:
+            LOG.warning("Could not find version %s", version_id)
+            raise click.Abort
+        version_objs = [version]
 
     version_template = schema.VersionSchema()
     result = []
