@@ -23,7 +23,7 @@ def include(context: click.Context, bundle_name: str, version_id: int):
     store = context.obj["store"]
     if not (version_id or bundle_name):
         LOG.warning("Please use bundle name or version-id")
-        return
+        raise click.Abort
 
     if version_id:
         LOG.info("Use version %s", version_id)
