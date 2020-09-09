@@ -28,6 +28,7 @@ def include_version(global_root: str, version_obj: models.Version, hardlink: boo
 
     Including a file means to link them into a folder in the root directory
     """
+    LOG.info("Use global root path %s", global_root)
     global_root_dir = Path(global_root)
     if version_obj.included_at:
         raise VersionIncludedError(f"version included on {version_obj.included_at}")
