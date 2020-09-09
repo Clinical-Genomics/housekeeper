@@ -102,14 +102,14 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     store = context.obj["store"]
     file_objs = []
     if not (tag or bundle_name):
-        LOG.infor("Please specify a bundle or a tag")
+        LOG.info("Please specify a bundle or a tag")
         raise click.Abort
 
     if bundle_name:
         bundle_obj = store.bundle(bundle_name)
         if bundle_obj is None:
             LOG.warning("Bundle not found")
-        raise click.Abort
+            raise click.Abort
 
     query = store.files_before(bundle=bundle_name, tags=tag, before=before)
 

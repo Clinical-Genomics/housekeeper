@@ -1,13 +1,14 @@
 """Tests for delete CLI functions"""
-
+import logging
 from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
 
 
-def test_delete_non_existing_bundle(base_context: Context, cli_runner: CliRunner):
+def test_delete_non_existing_bundle(base_context: Context, cli_runner: CliRunner, caplog):
     """Test to delete a non existing bundle"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a store and a cli runner
     # GIVEN a case name that does not exist
     case_name = "hello"
@@ -19,27 +20,42 @@ def test_delete_non_existing_bundle(base_context: Context, cli_runner: CliRunner
     # THEN assert it exits non zero
     assert result.exit_code == 1
     # THEN it should communicate that the bundle was not found
-    assert "bundle not found" in result.output
+    assert f"bundle {case_name} not found" in caplog.text
 
 
-def test_delete_existing_bundle_with_confirmation(
-    populated_context: Context, cli_runner: CliRunner, case_id: str
+def test_delete_existing_bundle_with_version(
+    populated_context: Context, cli_runner: CliRunner, case_id: str, caplog
 ):
-    """Test to delete an existing bundle"""
+    """Test to delete an existing bundle with versions"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a store and a cli runner
+    store = populated_context["store"]
+    # GIVEN a bundle with versions
+    bundle_obj = store.bundle(name=case_id)
+    assert len(bundle_obj.versions) > 0
 
     # WHEN trying to delete a bundle
     result = cli_runner.invoke(delete.bundle_cmd, [case_id], obj=populated_context)
+
     # THEN it should ask if you are sure
-    assert "remove bundle version from" in result.output
+    assert "Bundle has versions, can not delete bundle" in caplog.text
 
 
-def test_delete_existing_bundle_no_confirmation(populated_context, cli_runner, case_id):
+def test_delete_existing_bundle_no_versions_no_confirmation(
+    populated_context: Context, cli_runner: CliRunner, case_id: str, caplog
+):
     """Test to delete an existing bundle without confirmation"""
+    caplog.set_level(logging.DEBUG)
     # GIVEN a context with a store and a cli runner
+    store = populated_context["store"]
+    # GIVEN a bundle without versions
+    cli_runner.invoke(delete.version_cmd, ["-b", case_id], obj=populated_context, input="Yes")
+    bundle_obj = store.bundle(name=case_id)
+    assert len(bundle_obj.versions) == 0
+
     # WHEN trying to delete a bundle
     result = cli_runner.invoke(delete.bundle_cmd, [case_id], obj=populated_context, input="Yes")
     # THEN assert it exits non zero
     assert result.exit_code == 0
     # THEN it should communicate that it was deleted
-    assert "version deleted:" in result.output
+    assert "Bundle deleted" in caplog.text
