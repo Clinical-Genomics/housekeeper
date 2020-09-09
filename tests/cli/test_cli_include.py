@@ -33,7 +33,7 @@ def test_include_files_creates_version_specific_bundle_dir(
 ):
     """Test to include the files of a version for a bundle_name
 
-    The bundle should not exist before and after command is run it should have been created
+    The version bundle should not exist before and after command is run it should have been created
     """
     # GIVEN a context that is populated
     store = populated_context["store"]
@@ -51,3 +51,33 @@ def test_include_files_creates_version_specific_bundle_dir(
 
     # THEN assert that the version path was created
     assert version_path.exists()
+
+
+def test_include_files_adds_version_specific_files(
+    populated_context: Context, cli_runner: CliRunner
+):
+    """Test to include the files of a version for a bundle_name
+
+    The files should have been hard linked after command has been run
+    """
+    # GIVEN a context that is populated
+    store = populated_context["store"]
+    bundle_obj = store.Bundle.query.first()
+    version_obj = bundle_obj.versions[0]
+    bundle_name = bundle_obj.name
+    # GIVEN that the latest version of the bundle is not included
+    assert version_obj.included_at is None
+    # GIVEN that no version specific folder has been created since version is not included
+    version_path = populated_context["root"] / bundle_obj.name / str(version_obj.created_at.date())
+    assert not version_path.exists()
+
+    # WHEN running the include files command
+    result = cli_runner.invoke(include, [bundle_name], obj=populated_context)
+
+    # THEN assert that files are included in the folder
+    files_included = []
+    for file_path in version_path.iterdir():
+        files_included.append(file_path)
+
+    assert files_included
+    assert len(files_included) == len(version_obj.files)
