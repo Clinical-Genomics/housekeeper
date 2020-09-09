@@ -10,11 +10,11 @@ def delete():
     """Delete things in the database."""
 
 
-@delete.command()
+@delete.command("bundle")
 @click.option("-y", "--yes", is_flag=True, help="skip checks")
 @click.argument("bundle_name")
 @click.pass_context
-def bundle(context, yes, bundle_name):
+def bundle_cmd(context, yes, bundle_name):
     """Delete the latest bundle version."""
     store = context.obj["store"]
     bundle_obj = store.bundle(bundle_name)
@@ -25,9 +25,7 @@ def bundle(context, yes, bundle_name):
     if version_obj.included_at:
         question = f"remove bundle version from file system and database: {version_obj.full_path}"
     else:
-        question = (
-            f"remove bundle version from database: {version_obj.created_at.date()}"
-        )
+        question = f"remove bundle version from database: {version_obj.created_at.date()}"
     if not (yes or click.confirm(question)):
         context.abort()
 
@@ -38,24 +36,16 @@ def bundle(context, yes, bundle_name):
     click.echo(f"version deleted: {version_obj.full_path}")
 
 
-@delete.command()
+@delete.command("files")
 @click.option("--yes", is_flag=True, help="skip checks")
 @click.option("-t", "--tag", multiple=True, help="file tag")
 @click.option("-b", "--bundle-name", help="bundle name")
 @click.option("-a", "--before", help="version created before...")
-@click.option(
-    "-n", "--notondisk", is_flag=True, help="rm db entry from files not on disk"
-)
-@click.option(
-    "-l", "--list-files", is_flag=True, help="lists files that will be deleted"
-)
-@click.option(
-    "-L", "--list-files-verbose", is_flag=True, help="lists additional information"
-)
+@click.option("-n", "--notondisk", is_flag=True, help="rm db entry from files not on disk")
+@click.option("-l", "--list-files", is_flag=True, help="lists files that will be deleted")
+@click.option("-L", "--list-files-verbose", is_flag=True, help="lists additional information")
 @click.pass_context
-def files(
-    context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose
-):
+def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose):
     """Delete files based on tags."""
     store = context.obj["store"]
     file_objs = []
@@ -93,19 +83,13 @@ def files(
         click.echo(click.style("no files found", fg="red"))
         context.abort()
 
-    if not (
-        yes or click.confirm(f"Are you sure you want to delete {len(file_objs)} files?")
-    ):
+    if not (yes or click.confirm(f"Are you sure you want to delete {len(file_objs)} files?")):
         context.abort()
 
     for file_obj in file_objs:
-        if yes or click.confirm(
-            f"remove file from disk and database: {file_obj.full_path}"
-        ):
+        if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
             file_obj_path = Path(file_obj.full_path)
-            if file_obj.is_included and (
-                file_obj_path.exists() or file_obj_path.is_symlink()
-            ):
+            if file_obj.is_included and (file_obj_path.exists() or file_obj_path.is_symlink()):
                 file_obj_path.unlink()
             file_obj.delete()
             store.commit()
