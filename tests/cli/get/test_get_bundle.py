@@ -1,5 +1,5 @@
 """Tests for adding via CLI"""
-
+from pathlib import Path
 from housekeeper.cli.get import bundle_cmd
 
 
@@ -19,6 +19,23 @@ def test_get_existing_bundle_name(populated_context, cli_runner, helpers):
 
     # THEN assert that the bundle was written to terminal
     assert bundle_name in output
+
+
+def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
+    """Test to fetch an existing bundle based on name with verbose information"""
+    # GIVEN a context with a populated store and a cli runner
+    store = populated_context["store"]
+    # GIVEN a existing bundle
+    bundle_obj = store.Bundle.query.first()
+    assert bundle_obj
+    bundle_name = bundle_obj.name
+
+    # WHEN trying to fetch the bundle based on bundle name
+    output = helpers.get_stdout(
+        cli_runner.invoke(bundle_cmd, ["-n", bundle_name, "-v"], obj=populated_context).output
+    )
+    # THEN assert that the files are printed
+    assert "Files table" in output
 
 
 def test_get_non_existing_bundle_name(base_context, cli_runner, helpers, case_id):
@@ -50,9 +67,7 @@ def test_get_non_existing_bundle_populated_store(
 
     # WHEN trying to fetch the non existing bundle
     output = helpers.get_stdout(
-        cli_runner.invoke(
-            bundle_cmd, ["-n", other_case_id], obj=populated_context
-        ).output
+        cli_runner.invoke(bundle_cmd, ["-n", other_case_id], obj=populated_context).output
     )
 
     # THEN assert that no bundle was written to terminal
@@ -69,9 +84,7 @@ def test_get_existing_bundle_id(populated_context, cli_runner, helpers):
 
     # WHEN trying to fetch a bundle based on bundle id
     json_bundles = helpers.get_json(
-        cli_runner.invoke(
-            bundle_cmd, ["-i", bundle_id, "--json"], obj=populated_context
-        ).output
+        cli_runner.invoke(bundle_cmd, ["-i", bundle_id, "--json"], obj=populated_context).output
     )
 
     # THEN assert that the bundle was printed to screen
@@ -89,9 +102,7 @@ def test_get_bundle_json(populated_context, cli_runner, helpers):
 
     # WHEN fetching the bundle in json format
     json_bundles = helpers.get_json(
-        cli_runner.invoke(
-            bundle_cmd, ["-i", bundle_id, "--json"], obj=populated_context
-        ).output
+        cli_runner.invoke(bundle_cmd, ["-i", bundle_id, "--json"], obj=populated_context).output
     )
 
     # THEN assert that the output is a list of bundles
@@ -100,9 +111,7 @@ def test_get_bundle_json(populated_context, cli_runner, helpers):
     assert isinstance(json_bundles[0], dict)
 
 
-def test_get_bundles_multiple_bundles(
-    populated_context, cli_runner, helpers, other_bundle
-):
+def test_get_bundles_multiple_bundles(populated_context, cli_runner, helpers, other_bundle):
     """Test to get all bundles when there are more than one bundle"""
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
