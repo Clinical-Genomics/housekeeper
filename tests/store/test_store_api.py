@@ -1,9 +1,5 @@
 """Tests for the store api"""
 import datetime
-import tempfile
-from copy import deepcopy
-
-from housekeeper.include import include_version
 
 
 def test_fetch_bundles(populated_store, bundle_data_old):
@@ -40,9 +36,7 @@ def test_fetch_past_files(populated_store, bundle_data_old, timestamp, old_times
     assert len(query.all()) == 2
 
 
-def test_fetch_no_files_before_oldest(
-    populated_store, bundle_data_old, old_timestamp, timestamp
-):
+def test_fetch_no_files_before_oldest(populated_store, bundle_data_old, old_timestamp, timestamp):
     """
     test fetch files where no files are older than before date
     """
@@ -58,34 +52,3 @@ def test_fetch_no_files_before_oldest(
 
     # THEN assert no files where that old
     assert len(query.all()) == 0
-
-
-def test_delete_notondisk(store, project_dir, bundle_data):
-    """
-    test deletion of files that are not on disk
-    """
-    with tempfile.NamedTemporaryFile(delete=True) as file1:
-
-        bundle_data_notondisk = deepcopy(bundle_data)
-        bundle_data_notondisk["files"][0]["path"] = file1.name
-        bundle_data_notondisk["files"][1]["path"] = bundle_data_notondisk["files"][1][
-            "path"
-        ].replace(".vcf", ".2.vcf")
-        bundle_data_notondisk["name"] = "angrybird"
-
-        bundle_obj, version_obj = store.add_bundle(data=bundle_data)
-        store.add_commit(bundle_obj)
-        include_version(project_dir, version_obj, hardlink=False)
-        bundle_obj_notondisk, version_obj_notondisk = store.add_bundle(
-            data=bundle_data_notondisk
-        )
-        store.add_commit(bundle_obj_notondisk)
-        include_version(project_dir, version_obj_notondisk, hardlink=False)
-
-    query = store.files_before()
-
-    assert len(query.all()) == 4
-
-    files_notondisk = set(query) - store.files_ondisk(query)
-
-    assert len(files_notondisk) == 1
