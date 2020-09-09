@@ -64,7 +64,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose):
     if bundle_name:
         bundle = store.bundle(name=bundle_name)
         if not bundle:
-            LOG.info("Could not find bundle %s", bundle)
+            LOG.info("Could not find bundle %s", bundle_name)
             return
         version_objs = bundle.versions
 
