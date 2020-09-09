@@ -39,7 +39,7 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose):
         result.append(template.dump(bundle_obj))
 
     if json:
-        click.echo(jsonlib.dumps(result))
+        click.echo(jsonlib.dumps(result, indent=4, sort_keys=True))
         return
     console = Console()
     console.print(get_bundles_table(result))
