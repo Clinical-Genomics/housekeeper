@@ -45,6 +45,9 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose):
     console.print(get_bundles_table(result))
     if verbose:
         for bundle in bundle_objs:
+            if len(bundle.versions) == 0:
+                LOG.info("No versions found for bundle %s", bundle.name)
+                return
             version_obj = bundle.versions[0]
             context.invoke(version_cmd, version_id=version_obj.id, verbose=True)
 
