@@ -19,13 +19,13 @@ def get():
 
 
 @get.command("bundle")
-@click.option("-n", "--bundle-name", help="Search for a bundle with name")
+@click.argument("bundle-name", required=False)
 @click.option("-i", "--bundle-id", type=int, help="Search for a bundle with bundle id")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-v", "--verbose", is_flag=True, help="List files from latest version")
 @click.pass_context
 def bundle_cmd(context, bundle_name, bundle_id, json, verbose):
-    """Get bundle from database"""
+    """Get bundle information from database"""
     store = context.obj["store"]
     bundle_objs = store.bundles()
     if bundle_name or bundle_id:

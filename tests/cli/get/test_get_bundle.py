@@ -14,7 +14,7 @@ def test_get_existing_bundle_name(populated_context, cli_runner, helpers):
 
     # WHEN trying to fetch the bundle based on bundle name
     output = helpers.get_stdout(
-        cli_runner.invoke(bundle_cmd, ["-n", bundle_name], obj=populated_context).output
+        cli_runner.invoke(bundle_cmd, [bundle_name], obj=populated_context).output
     )
 
     # THEN assert that the bundle was written to terminal
@@ -32,7 +32,7 @@ def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
 
     # WHEN trying to fetch the bundle based on bundle name
     output = helpers.get_stdout(
-        cli_runner.invoke(bundle_cmd, ["-n", bundle_name, "-v"], obj=populated_context).output
+        cli_runner.invoke(bundle_cmd, [bundle_name, "-v"], obj=populated_context).output
     )
     # THEN assert that the files are printed
     assert "Files table" in output
@@ -46,9 +46,7 @@ def test_get_non_existing_bundle_name(base_context, cli_runner, helpers, case_id
     assert helpers.count_iterable(store.bundles()) == 0
 
     # WHEN trying to fetch the bundle based on bundle name
-    output = helpers.get_stdout(
-        cli_runner.invoke(bundle_cmd, ["-n", case_id], obj=base_context).output
-    )
+    output = helpers.get_stdout(cli_runner.invoke(bundle_cmd, [case_id], obj=base_context).output)
 
     # THEN assert that no bundle was written to terminal
     assert case_id not in output
@@ -67,7 +65,7 @@ def test_get_non_existing_bundle_populated_store(
 
     # WHEN trying to fetch the non existing bundle
     output = helpers.get_stdout(
-        cli_runner.invoke(bundle_cmd, ["-n", other_case_id], obj=populated_context).output
+        cli_runner.invoke(bundle_cmd, [other_case_id], obj=populated_context).output
     )
 
     # THEN assert that no bundle was written to terminal
