@@ -33,6 +33,7 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose):
         bundle_objs = [bundle_obj] if bundle_obj else []
     if not bundle_objs:
         LOG.info("Could not find any bundles")
+        return
     template = schema.BundleSchema()
     result = []
     for bundle_obj in bundle_objs:
