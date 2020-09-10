@@ -31,22 +31,14 @@ def get_files_table(rows: List[dict], verbose=False) -> Table:
     table.add_column("ID")
     table.add_column("File name")
     table.add_column("Tags")
-    if verbose:
-        table.add_column("Archive")
     for file_obj in rows:
         file_tags = ", ".join(tag["name"] for tag in file_obj["tags"])
         file_path = Path(file_obj["path"])
         file_name = file_path.name
         if verbose:
-            file_name = str(file_path.resolve())
-            table.add_row(
-                str(file_obj["id"]),
-                file_name,
-                file_tags,
-                str(file_obj["archive"]),
-            )
-        else:
-            table.add_row(str(file_obj["id"]), file_name, file_tags)
+            file_name = file_obj["full_path"]
+
+        table.add_row(str(file_obj["id"]), file_name, file_tags)
 
     return table
 

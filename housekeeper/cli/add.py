@@ -1,6 +1,7 @@
 """Module for adding via CLI"""
 import datetime as dt
 import logging
+from logging import Logger
 from pathlib import Path
 from typing import List
 
@@ -9,7 +10,7 @@ import click
 from housekeeper.date import get_date
 from housekeeper.files import load_json, validate_input
 
-LOG = logging.getLogger(__name__)
+LOG: Logger = logging.getLogger(__name__)
 
 
 def validate_args(arg: str, json: str, arg_name: str) -> None:

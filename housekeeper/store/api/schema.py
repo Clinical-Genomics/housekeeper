@@ -14,9 +14,7 @@ class BaseSchema(ma.Schema):
     @ma.post_dump
     def remove_skip_values(self, data):
         """Remove values that are null in db"""
-        return {
-            key: value for key, value in data.items() if value not in self.SKIP_VALUES
-        }
+        return {key: value for key, value in data.items() if value not in self.SKIP_VALUES}
 
 
 class TagSchema(ma.Schema):
@@ -25,9 +23,7 @@ class TagSchema(ma.Schema):
     """
 
     id = ma.fields.Int()
-    name = ma.fields.Str(
-        required=True, error_messages={"required": "Tag name is required."}
-    )
+    name = ma.fields.Str(required=True, error_messages={"required": "Tag name is required."})
     category = ma.fields.Str()
     created_at = ma.fields.DateTime()
 
@@ -38,8 +34,9 @@ class FileSchema(ma.Schema):
     """
 
     id = ma.fields.Int()
-    path = ma.fields.Str(
-        required=True, error_messages={"required": "File path is required."}
+    path = ma.fields.Str(required=True, error_messages={"required": "File path is required."})
+    full_path = ma.fields.Str(
+        required=True, error_messages={"required": "Full file path is required."}
     )
     archive = ma.fields.Boolean(default=False)
     tags = ma.fields.List(ma.fields.Nested(TagSchema), required=True)
@@ -52,12 +49,8 @@ class InputFileSchema(ma.Schema):
     This is used for files that are add via json in the CLI
     """
 
-    path = ma.fields.Str(
-        required=True, error_messages={"required": "File path is required."}
-    )
-    bundle = ma.fields.Str(
-        required=True, error_messages={"required": "Bundle name is required."}
-    )
+    path = ma.fields.Str(required=True, error_messages={"required": "File path is required."})
+    bundle = ma.fields.Str(required=True, error_messages={"required": "Bundle name is required."})
     archive = ma.fields.Boolean(default=False)
     tags = ma.fields.List(ma.fields.Str, required=False)
 
@@ -105,9 +98,7 @@ class BundleSchema(ma.Schema):
     """
 
     id = ma.fields.Int()
-    name = ma.fields.Str(
-        required=True, error_messages={"required": "Bundle name is required."}
-    )
+    name = ma.fields.Str(required=True, error_messages={"required": "Bundle name is required."})
     created_at = ma.fields.DateTime(
         required=True, error_messages={"required": "Bundle date is required."}
     )
@@ -122,9 +113,7 @@ class InputBundleSchema(ma.Schema):
     Used when adding bundle via CLI
     """
 
-    name = ma.fields.Str(
-        required=True, error_messages={"required": "Bundle name is required."}
-    )
+    name = ma.fields.Str(required=True, error_messages={"required": "Bundle name is required."})
     created_at = ma.fields.Str(
         required=True, error_messages={"required": "Bundle date is required."}
     )
