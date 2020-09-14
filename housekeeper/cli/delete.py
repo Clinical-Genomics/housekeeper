@@ -27,7 +27,7 @@ def bundle_cmd(context, yes, bundle_name):
         raise click.Abort
 
     if bundle_obj.versions:
-        LOG.warning("Bundle has versions, can not delete bundle")
+        LOG.warning("Can not delete bundle, please remove all versions first")
         raise click.Abort
 
     question = f"Remove bundle {bundle_obj.name} from database?"
