@@ -38,27 +38,21 @@ class AddHandler(BaseHandler):
             LOG.debug("version of bundle already added")
             return None
 
+        created_at = data.get("created_at", data.get("created"))
+        expires_at = data.get("expires_at", data.get("expires"))
         if bundle_obj is None:
-            bundle_obj = self.new_bundle(
-                name=data["name"], created_at=data["created_at"]
-            )
+            bundle_obj = self.new_bundle(name=data["name"], created_at=created_at)
 
-        version_obj = self.new_version(
-            created_at=data["created_at"], expires_at=data.get("expires_at")
-        )
+        version_obj = self.new_version(created_at=created_at, expires_at=expires_at)
         self._add_files_to_version(data["files"], version_obj)
 
         version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
 
-    def _add_files_to_version(
-        self, files: List[dict], version_obj: models.Version
-    ) -> None:
+    def _add_files_to_version(self, files: List[dict], version_obj: models.Version) -> None:
         """Create file objects and the tags and add them to a version object"""
 
-        tag_names = set(
-            tag_name for file_data in files for tag_name in file_data["tags"]
-        )
+        tag_names = set(tag_name for file_data in files for tag_name in file_data["tags"])
         tag_map = self._build_tags(tag_names)
 
         for file_data in files:
@@ -72,9 +66,7 @@ class AddHandler(BaseHandler):
                 if not Path(path).exists():
                     raise FileNotFoundError(path)
                 tags = [tag_map[tag_name] for tag_name in file_data["tags"]]
-                new_file = self.new_file(
-                    path, to_archive=file_data["archive"], tags=tags
-                )
+                new_file = self.new_file(path, to_archive=file_data["archive"], tags=tags)
                 version_obj.files.append(new_file)
 
     def new_version(
@@ -85,14 +77,19 @@ class AddHandler(BaseHandler):
         new_version = self.Version(created_at=created_at, expires_at=expires_at)
         return new_version
 
-    def add_version(self, data: dict, bundle: models.Bundle,) -> models.Version:
+    def add_version(
+        self,
+        data: dict,
+        bundle: models.Bundle,
+    ) -> models.Version:
         """Build a new version object and add it to an existing bundle"""
-        if self.version(bundle.name, data["created_at"]):
+        created_at = data.get("created_at", data.get("created"))
+        if self.version(bundle.name, created_at):
             LOG.info("version of bundle already added")
             return None
 
         version_obj = self.new_version(
-            created_at=data["created_at"], expires_at=data.get("expires_at")
+            created_at=created_at, expires_at=data.get("expires_at", data.get("expires"))
         )
         if data.get("files"):
             self._add_files_to_version(data["files"], version_obj)
@@ -112,7 +109,9 @@ class AddHandler(BaseHandler):
         tags = tags or []
         tag_objs = [tag_obj for tag_name, tag_obj in self._build_tags(tags).items()]
         new_file = self.new_file(
-            path=str(file_path.absolute()), to_archive=to_archive, tags=tag_objs,
+            path=str(file_path.absolute()),
+            to_archive=to_archive,
+            tags=tag_objs,
         )
         new_file.version = version_obj
         return new_file
@@ -140,9 +139,7 @@ class AddHandler(BaseHandler):
         tags: List[models.Tag] = None,
     ) -> models.File:
         """Create a new file object based on the information given."""
-        new_file = self.File(
-            path=path, checksum=checksum, to_archive=to_archive, tags=tags
-        )
+        new_file = self.File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
         return new_file
 
     def new_tag(self, name: str, category: str = None) -> models.Tag:
