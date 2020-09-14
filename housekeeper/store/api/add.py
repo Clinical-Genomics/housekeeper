@@ -34,12 +34,12 @@ class AddHandler(BaseHandler):
         """
         bundle_obj = self.bundle(data["name"])
         # These lines can be removed when decoupled from CG
-        if bundle_obj and self.version(bundle_obj.name, data.get("created_at")):
+        created_at = data.get("created_at", data.get("created"))
+        expires_at = data.get("expires_at", data.get("expires"))
+        if bundle_obj and self.version(bundle_obj.name, created_at):
             LOG.debug("version of bundle already added")
             return None
 
-        created_at = data.get("created_at", data.get("created"))
-        expires_at = data.get("expires_at", data.get("expires"))
         if bundle_obj is None:
             bundle_obj = self.new_bundle(name=data["name"], created_at=created_at)
 
