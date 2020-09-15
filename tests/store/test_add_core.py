@@ -50,7 +50,7 @@ def test_create_bundle_obj(store, bundle_data):
     # THEN the bundle should have correct name
     assert bundle_obj.name == bundle_data["name"]
     # THEN the bundle should have correct creation time
-    assert bundle_obj.created_at == bundle_data["created"]
+    assert bundle_obj.created_at == bundle_data["created_at"]
     # THEN assert that a version was added
     assert len(bundle_obj.versions) == 1
     # THEN assert that all files where added to the bundle

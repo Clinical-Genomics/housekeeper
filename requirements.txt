@@ -4,5 +4,4 @@ coloredlogs
 marshmallow
 ruamel.yaml
 SQLAlchemy
-
-
+rich

@@ -1,11 +1,16 @@
 """Module to parse dates"""
 import datetime
+import logging
 import re
 
+DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
+DATETIME_FORMAT_DATE = "%Y-%m-%d %H:%M:%S"
 SPACE = " "
 DASH = "-"
 DOT = "."
 FWD_SLASH = "/"
+
+LOG = logging.getLogger(__name__)
 
 
 def match_date(date):
@@ -39,6 +44,7 @@ def get_date(date, date_format=None):
         Returns:
             date_obj(datetime.datetime)
     """
+    LOG.info("Trying to parse date string %s", date)
     if not date:
         return datetime.datetime.now()
 
@@ -47,6 +53,15 @@ def get_date(date, date_format=None):
 
     if not match_date(date):
         raise ValueError("Date %s is invalid" % date)
+
+    # Try datetimes own format
+    try:
+        return datetime.datetime.strptime(date, DATETIME_FORMAT)
+    except ValueError:
+        try:
+            return datetime.datetime.strptime(date, DATETIME_FORMAT_DATE)
+        except ValueError:
+            LOG.info("Date is not in std format")
 
     for separator in [DASH, SPACE, DOT, FWD_SLASH]:
         splited_date = date.split(separator)

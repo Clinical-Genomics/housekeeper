@@ -1,13 +1,7 @@
-# -*- coding: utf-8 -*-
+"""
+Tests for store add functionality
+"""
 from housekeeper.store.api import schema
-
-
-def test_schema_with_valid_input(bundle_data_json):
-    # GIVEN valid input for a new bundle
-    # WHEN validating it with the schema specs
-    errors = schema.BundleSchema().validate(bundle_data_json)
-    # THEN it should not report any errors
-    assert errors == {}
 
 
 def test_schema_with_invalid_input(bundle_data_json):

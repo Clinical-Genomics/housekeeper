@@ -51,6 +51,7 @@ _DEVELOP/
 # Editors
 *.sublime-workspace
 .tm_properties
+.idea
 
 # project files should be version controlled, unless a significant
 # proportion of contributors will probably not be using SublimeText

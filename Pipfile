@@ -6,7 +6,7 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 pytest-mock = "*"
-
+pre-commit = "*"
 
 [packages]
 alchy = "*"
@@ -16,6 +16,7 @@ marshmallow = "*"
 "ruamel.yaml" = "*"
 SQLAlchemy = "*"
 pytest-cov = "*"
+rich = "*"
 
 [requires]
 python_version = "3.7"
