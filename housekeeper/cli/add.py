@@ -72,10 +72,19 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
     LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
 
+@add.command("include-bundle")
+@click.argument("bundle_name", required=False)
+@click.option("-j", "--json", help="Input json string")
+@click.pass_context
+def include_bundle_cmd(context: click.Context, bundle_name: str, json: str):
+    """Attempt to include bundle version at creation"""
+    pass
+
+
 @add.command("file")
 @click.option("-t", "--tag", "tags", multiple=True, help="tag to associate the file by")
 @click.option("-b", "--bundle-name", help="name of bundle that file should be added to")
-@click.option("-j", "--json", help="json formated input")
+@click.option("-j", "--json", help="json formatted input")
 @click.argument("path", required=False)
 @click.pass_context
 def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: str, path: str):
@@ -103,6 +112,7 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
     tags = data.get("tags", tags)
 
     new_file = store.add_file(file_path=file_path, bundle=bundle_obj, tags=tags)
+    # TODO: If version is included, also include the file
     store.add_commit(new_file)
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
 

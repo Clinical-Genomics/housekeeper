@@ -2,6 +2,7 @@
 
 import datetime as dt
 from pathlib import Path
+import json
 
 import alchy
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, orm, types
@@ -33,6 +34,16 @@ class Bundle(Model):
         order_by="-Version.created_at",
         cascade="delete, save-update",
     )
+
+    def __repr__(self):
+        return json.dumps(
+            {
+                "id": f"{self.id}",
+                "name": f"{self.name}",
+                "created_at": f"{self.created_at}",
+                "versions": f"{self.version}",
+            }
+        )
 
 
 class Version(Model):
@@ -66,6 +77,16 @@ class Version(Model):
         """Returns the full path of the bundle"""
         return Path(self.app_root) / self.bundle.name / str(self.created_at.date())
 
+    def __repr__(self):
+        return json.dumps(
+            {
+                "id": f"{self.id}",
+                "created_at": f"{self.created_at}",
+                "files": f"[{self.files}]",
+                "bundle_id": f"{self.bundle_id}",
+            }
+        )
+
 
 class File(Model):
 
@@ -95,6 +116,16 @@ class File(Model):
         """Check if the file is included in Housekeeper."""
         return str(self.app_root) in self.full_path
 
+    def __repr__(self):
+        return json.dumps(
+            {
+                "id": f"{self.id}",
+                "path": f"{self.path}",
+                "tags": f"{self.tags}",
+                "version_id": f"{self.version_id}",
+            }
+        )
+
 
 class Tag(Model):
 
@@ -106,3 +137,6 @@ class Tag(Model):
     name = Column(types.String(64), unique=True, nullable=False)
     category = Column(types.String(64))
     created_at = Column(types.DateTime, default=dt.datetime.now)
+
+    def __repr__(self):
+        return json.dumps(self.name)
