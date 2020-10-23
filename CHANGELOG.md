@@ -6,6 +6,17 @@ About changelog [here](https://keepachangelog.com/en/1.0.0/)
 
 Please add a new candidate release at the top after changing the latest one. Feel free to copy paste from the "squash and commit" box that gets generated when creating PRs
 
+## [x.x.x]
+
+### Added
+### Changed
+### Fixed
+
+## [3.0.1]
+
+### Changed
+- Removed weird clean flowcell scripts from scripts/ folder 
+
 ## [3.0]
 ### Changed
 - Reworks the CLI for complete API functionality
