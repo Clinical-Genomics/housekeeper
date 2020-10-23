@@ -12,6 +12,14 @@ Please add a new candidate release at the top after changing the latest one. Fee
 ### Changed
 ### Fixed
 
+## [3.1.0]
+
+### Added
+
+- Adds Dockerfile
+- Add workflow for automatic publish to docker-hub
+- Add __main__ script to run housekeeper without installing 
+
 ## [3.0.1]
 
 ### Changed
