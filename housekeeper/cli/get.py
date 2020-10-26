@@ -105,9 +105,10 @@ def version_cmd(context, bundle_name, json, version_id, verbose):
 @click.option("-v", "--version", type=int, help="filter by version of the bundle")
 @click.option("-V", "--verbose", is_flag=True, help="print additional information")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
+@click.option("-c", "--compact", is_flag=True, help="Print a compact view")
 @click.argument("bundle", required=False)
 @click.pass_context
-def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str, json: bool):
+def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str, json: bool, compact: bool):
     """Get files from database"""
     store = context.obj["store"]
     file_objs = store.files(bundle=bundle, tags=tags, version=version)
@@ -115,12 +116,11 @@ def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str
     result = []
     for file_obj in file_objs:
         result.append(template.dump(file_obj))
-
     if json:
         click.echo(jsonlib.dumps(result))
         return
     console = Console()
-    console.print(get_files_table(result, verbose=verbose))
+    console.print(get_files_table(result, verbose=verbose, compact=compact))
 
 
 @get.command("tag")

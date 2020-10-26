@@ -1,5 +1,5 @@
 """Code for building tables that are displayed in the terminal"""
-
+import re
 from pathlib import Path
 from typing import List
 
@@ -24,13 +24,15 @@ def get_tags_table(rows: List[dict]) -> Table:
     return table
 
 
-def get_files_table(rows: List[dict], verbose=False) -> Table:
+def get_files_table(rows: List[dict], verbose=False, compact=False) -> Table:
     """Return a tag table"""
     table = Table(show_header=True, header_style="bold magenta")
     table.title = "[not italic]:scroll:[/] Files table [not italic]:scroll:[/]"
     table.add_column("ID")
     table.add_column("File name")
     table.add_column("Tags")
+    if compact:
+        rows = squash_names(rows)
     for i, file_obj in enumerate(rows, 1):
         file_tags = ", ".join(tag["name"] for tag in file_obj["tags"])
         file_path = Path(file_obj["path"])
@@ -87,3 +89,73 @@ def get_versions_table(rows: List[dict]) -> Table:
             version_obj["expires_at"].split("T")[0] if version_obj["expires_at"] else "",
         )
     return table
+
+    """If subsequent elements (filenames) in 'list_of_files' end in an integer- And that integer is
+    following the previous- those are squashed when displayed.
+    Example:
+
+        ["asdf1.txt", "asdf2.txt"] becomes asdf[1-2].txt'
+    """
+
+def squash_names(list_of_files):
+    """If subsequent elements (filenames) in 'list_of_files' end in an integer- And that integer is
+    following the previous- those are squashed when displayed.
+    Example:
+
+        ["asdf1.txt", "asdf2.txt"] becomes asdf[1-2].txt'
+    """
+    list_of_squashed = []
+    tag_list = []
+    if list_of_files == []:
+        return list_of_squashed
+    head, *tail = list_of_files
+    (previous_file, previous_counter, previous_suffix) = _get_suffix(head["path"])
+    squash = [previous_counter]
+    previous_hkjson = head
+    for hk_json in tail+[{'path':""}]:  # Add padding for final iteration
+        (filename, counter, suffix) = _get_suffix(hk_json["path"])
+        if counter == str(_to_int(previous_counter) + 1) and (previous_file == filename):
+            squash = squash+[counter]
+            tag_list = tag_list +(hk_json["tags"])
+        else:
+            if len(squash) == 1: # only previous element in list
+                list_of_squashed.append(previous_hkjson)
+                squash = [counter]
+            else:
+                squashed_path = previous_file+"["+squash[0]+"-"+squash[-1]+"]"+previous_suffix
+                previous_hkjson["path"]=squashed_path
+                previous_hkjson["tags"]= remove_duplicates(sorted(tag_list,key =lambda i:i["id"]))
+                previous_hkjson["id"]="-"
+                list_of_squashed.append(previous_hkjson)
+                squash = [counter]
+                tag_list = []
+        previous_counter = counter
+        previous_suffix = suffix
+        previous_file = filename
+        previous_hkjson = hk_json
+    return list_of_squashed
+
+
+def remove_duplicates(tag_list):
+    """Remove duoplicate elements from `tag_list`"""
+    no_duplicates = []
+    for i in tag_list:
+       if i not in no_duplicates:
+          no_duplicates.append(i)
+    return no_duplicates
+
+
+def _get_suffix(filename):
+    """Split a filename if ending with an integer before suffix"""
+    parsed = re.split('(\d+)\.', filename)
+    if len(parsed) == 3:
+        return (parsed[0], parsed[1],"."+ parsed[2])
+    return (filename, "", "")
+
+
+def _to_int(string):
+    """Cast to int, empty string becomes 0"""
+    if string == "":
+        return 0
+    return int(string)
+
