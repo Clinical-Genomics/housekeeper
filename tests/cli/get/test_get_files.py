@@ -1,7 +1,7 @@
 """Tests for cli get file functionality"""
 from pathlib import Path
-
 from housekeeper.cli.get import files_cmd
+from housekeeper.cli.tables import squash_names
 
 
 def test_get_files_no_files(base_context, cli_runner, helpers):
@@ -118,3 +118,27 @@ def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_n
 
     # THEN assert that all files where fetched
     assert len(json_bundles) == nr_tag_files
+
+
+def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_name, helpers):
+    """Test to get all files from a populated store in human friendly format, subsequent names concatenated"""
+    # GIVEN a context with a populated store and a cli runner
+    # GIVEN a store with some files 
+    store = populated_context_subsequent["store"]
+    nr_files = helpers.count_iterable(store.files())
+
+    # WHEN calling `squash_names` on list of files
+    vcf_list = [store.files()[0], store.files()[1], store.files()[2]]
+    squashed = squash_names(vcf_list)
+
+    # WHEN fetching all files in compact view
+    result = cli_runner.invoke(files_cmd, ["--compact"], obj=populated_context_subsequent)
+
+    # THEN assert that the file names displayed are squashed
+    squashed_names = Path(squashed[1]["path"]).name
+    assert squashed_names in result.output
+    # THEN assert fewer lines than database entries are displayed
+    assert len(squashed) < nr_files
+
+    
+
