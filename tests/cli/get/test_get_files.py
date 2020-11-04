@@ -122,23 +122,13 @@ def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_n
 
 def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_name, helpers):
     """Test to get all files from a populated store in human friendly format, subsequent names concatenated"""
-    # GIVEN a context with a populated store and a cli runner
-    # GIVEN a store with some files
-    store = populated_context_subsequent["store"]
-    nr_files = helpers.count_iterable(store.files())
+    # GIVEN an example result file list
+    file_list = [{'path': 'family.vcf', 'full_path': 'tests/family.vcf', 'tags': [], 'id': 7},
+                 {'path': 'family.2.vcf', 'full_path': '/tests/family.2.vcf', 'tags': [], 'id': 8},
+                 {'path': 'family.3.vcf', 'full_path': '/tests/family.3.vcf', 'tags': [], 'id': 9}]
 
     # WHEN calling `squash_names` on list of files
-    vcf_list = [store.files()[0], store.files()[1], store.files()[2]]
-    squashed = squash_names(vcf_list)
-
-    # WHEN fetching all files in compact view
-    result = cli_runner.invoke(files_cmd, ["--compact"], obj=populated_context_subsequent)
+    squashed = squash_names(file_list)
 
     # THEN assert that the file names displayed are squashed
-    squashed_names = Path(squashed[1]["path"]).name
-    assert squashed_names in result.output
-    # THEN assert fewer lines than database entries are displayed
-    assert len(squashed) < nr_files
-
-
-
+    assert len(squashed) < len(file_list)
