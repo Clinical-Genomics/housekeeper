@@ -123,7 +123,7 @@ def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_n
 def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_name, helpers):
     """Test to get all files from a populated store in human friendly format, subsequent names concatenated"""
     # GIVEN a context with a populated store and a cli runner
-    # GIVEN a store with some files 
+    # GIVEN a store with some files
     store = populated_context_subsequent["store"]
     nr_files = helpers.count_iterable(store.files())
 
@@ -140,5 +140,5 @@ def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_
     # THEN assert fewer lines than database entries are displayed
     assert len(squashed) < nr_files
 
-    
+
 
