@@ -90,12 +90,6 @@ def get_versions_table(rows: List[dict]) -> Table:
         )
     return table
 
-    """If subsequent elements (filenames) in 'list_of_files' end in an integer- And that integer is
-    following the previous- those are squashed when displayed.
-    Example:
-
-        ["asdf1.txt", "asdf2.txt"] becomes asdf[1-2].txt'
-    """
 
 def squash_names(list_of_files):
     """If subsequent elements (filenames) in 'list_of_files' end in an integer- And that integer is
