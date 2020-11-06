@@ -9,6 +9,12 @@ Please add a new candidate release at the top after changing the latest one. Fee
 ## [x.x.x]
 
 ### Added
+### Changed
+### Fixed
+
+## [3.2.0]
+
+### Added
 - Adds option `--compact` or `-c` to concatenate filenames with subsequent integer name suffixes
 ### Changed
 ### Fixed
@@ -19,12 +25,12 @@ Please add a new candidate release at the top after changing the latest one. Fee
 
 - Adds Dockerfile
 - Add workflow for automatic publish to docker-hub
-- Add __main__ script to run housekeeper without installing 
+- Add __main__ script to run housekeeper without installing
 
 ## [3.0.1]
 
 ### Changed
-- Removed weird clean flowcell scripts from scripts/ folder 
+- Removed weird clean flowcell scripts from scripts/ folder
 
 ## [3.0]
 ### Changed
