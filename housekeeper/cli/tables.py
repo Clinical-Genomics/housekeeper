@@ -44,7 +44,6 @@ def get_files_table(rows: List[dict], verbose=False, compact=False) -> Table:
             table.add_row(str(file_obj["id"]), f"[yellow]{file_name}[/yellow]", file_tags)
         else:
             table.add_row(str(file_obj["id"]), f"[blue]{file_name}[/blue]", file_tags)
-
     return table
 
 
@@ -136,6 +135,7 @@ def squash_names(list_of_files: List[dict]) -> List[dict]:
                     previous_file + "[" + squash[0] + "-" + squash[-1] + "]" + previous_suffix
                 )
                 previous_hkjson["path"] = squashed_path
+                previous_hkjson["full_path"] = squashed_path
                 previous_hkjson["tags"] = remove_duplicates(sorted(tag_list, key=lambda i: i["id"]))
                 previous_hkjson["id"] = "-"
                 list_of_squashed.append(previous_hkjson)
@@ -150,12 +150,10 @@ def squash_names(list_of_files: List[dict]) -> List[dict]:
 
 def remove_duplicates(tag_list: List[dict]) -> List[dict]:
     """Remove duoplicate elements from `tag_list`"""
-    print("tag_list: {}".format(tag_list))
     no_duplicates = []
     for i in tag_list:
         if i not in no_duplicates:
             no_duplicates.append(i)
-    print("no_duplicates: {}".format(no_duplicates))
     return no_duplicates
 
 
