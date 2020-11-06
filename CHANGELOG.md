@@ -9,6 +9,7 @@ Please add a new candidate release at the top after changing the latest one. Fee
 ## [x.x.x]
 
 ### Added
+- Adds option `--compact` or `-c` to concatenate filenames with subsequent integer name suffixes
 ### Changed
 ### Fixed
 

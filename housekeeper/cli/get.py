@@ -23,8 +23,9 @@ def get():
 @click.option("-i", "--bundle-id", type=int, help="Search for a bundle with bundle id")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-v", "--verbose", is_flag=True, help="List files from latest version")
+@click.option("-c", "--compact", is_flag=True, help="print compact filenames IFF verobe flag present")
 @click.pass_context
-def bundle_cmd(context, bundle_name, bundle_id, json, verbose):
+def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     """Get bundle information from database"""
     store = context.obj["store"]
     bundle_objs = store.bundles()
@@ -50,7 +51,7 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose):
                 LOG.info("No versions found for bundle %s", bundle.name)
                 return
             version_obj = bundle.versions[0]
-            context.invoke(version_cmd, version_id=version_obj.id, verbose=True)
+            context.invoke(version_cmd, version_id=version_obj.id, verbose=True, compact=compact)
 
 
 @get.command("version")
@@ -58,8 +59,9 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose):
 @click.option("-i", "--version-id", type=int, help="Fetch a specific version")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-v", "--verbose", is_flag=True, help="print additional information")
+@click.option("-c", "--compact", is_flag=True, help="print compact filenames IFF verobe flag present")
 @click.pass_context
-def version_cmd(context, bundle_name, json, version_id, verbose):
+def version_cmd(context, bundle_name, json, version_id, verbose, compact):
     """Get versions from database"""
     store = context.obj["store"]
     if not (bundle_name or version_id):
@@ -97,7 +99,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose):
         return
 
     for version_obj in version_objs:
-        context.invoke(files_cmd, version=version_obj.id, verbose=True)
+        context.invoke(files_cmd, version=version_obj.id, verbose=True, compact=compact)
 
 
 @get.command("file")
@@ -105,9 +107,10 @@ def version_cmd(context, bundle_name, json, version_id, verbose):
 @click.option("-v", "--version", type=int, help="filter by version of the bundle")
 @click.option("-V", "--verbose", is_flag=True, help="print additional information")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
+@click.option("-c", "--compact", is_flag=True, help="print compact filenames")
 @click.argument("bundle", required=False)
 @click.pass_context
-def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str, json: bool):
+def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str, json: bool, compact: bool):
     """Get files from database"""
     store = context.obj["store"]
     file_objs = store.files(bundle=bundle, tags=tags, version=version)
@@ -115,12 +118,11 @@ def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str
     result = []
     for file_obj in file_objs:
         result.append(template.dump(file_obj))
-
     if json:
         click.echo(jsonlib.dumps(result))
         return
     console = Console()
-    console.print(get_files_table(result, verbose=verbose))
+    console.print(get_files_table(result, verbose=verbose, compact=compact))
 
 
 @get.command("tag")

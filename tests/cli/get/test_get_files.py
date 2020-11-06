@@ -1,7 +1,7 @@
 """Tests for cli get file functionality"""
 from pathlib import Path
-
 from housekeeper.cli.get import files_cmd
+from housekeeper.cli.tables import squash_names, _get_suffix
 
 
 def test_get_files_no_files(base_context, cli_runner, helpers):
@@ -118,3 +118,38 @@ def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_n
 
     # THEN assert that all files where fetched
     assert len(json_bundles) == nr_tag_files
+
+
+def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_name, helpers):
+    """Test to get all files from a populated store in human friendly format, subsequent names concatenated"""
+    # GIVEN an example result file list
+    file_list = [{'path': 'family.vcf', 'full_path': 'tests/family.vcf', 'tags': [], 'id': 7},
+                 {'path': 'family.2.vcf', 'full_path': '/tests/family.2.vcf', 'tags': [], 'id': 8},
+                 {'path': 'family.3.vcf', 'full_path': '/tests/family.3.vcf', 'tags': [], 'id': 9}]
+
+    # WHEN calling `squash_names` on list of files
+    squashed = squash_names(file_list)
+
+    # THEN assert that the file names displayed are squashed
+    assert len(squashed) < len(file_list)
+
+
+def test_get_suffix():
+    # GIVEN
+    dont_split_name1 = "asdf2.asdf.vcf"
+    dont_split_name2 = "1123"
+    dont_split_name3 = "asdf.vcf"
+    dont_split_name4 = "asdf_2.asdf.vcf"
+
+    split_name1 = "asdf1.png"
+    split_name2 = "asdf8A8_7777_asdf_8.png"
+
+    # THEN assert filename parsing *does not* split name into (prefix, integer, suffix)
+    assert (dont_split_name1, '', '') == _get_suffix(dont_split_name1)
+    assert (dont_split_name2, '', '') == _get_suffix(dont_split_name2)
+    assert (dont_split_name3, '', '') == _get_suffix(dont_split_name3)
+    assert (dont_split_name4, '', '') == _get_suffix(dont_split_name4)
+
+    # THEN assert filename parsing *does* split name into (prefix, integer, suffix)
+    assert (split_name1, '', '') != _get_suffix(split_name1)
+    assert (split_name2, '', '') != _get_suffix(split_name2)

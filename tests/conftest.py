@@ -83,6 +83,11 @@ def fixture_family2_data(family_tag_names: List[str], second_family_vcf: Path) -
     """Return file and tags for sample"""
     return {"tags": family_tag_names, "file": second_family_vcf}
 
+@pytest.fixture(scope="function", name="family3_data")
+def fixture_family3_data(family_tag_names: List[str], third_family_vcf: Path) -> dict:
+    """Return file and tags for sample"""
+    return {"tags": family_tag_names, "file": third_family_vcf}
+
 
 @pytest.fixture(scope="function", name="timestamp_string")
 def fixture_timestamp_string() -> str:
@@ -318,6 +323,12 @@ def fixture_second_sample_vcf(vcf_dir: Path) -> Path:
 def fixture_second_family_vcf(vcf_dir: Path) -> Path:
     """Return the path to a vcf file"""
     return vcf_dir / "family.2.vcf"
+
+
+@pytest.fixture(scope="function", name="third_family_vcf")
+def fixture_third_family_vcf(vcf_dir: Path) -> Path:
+    """Return the path to a vcf file"""
+    return vcf_dir / "family.3.vcf"
 
 
 @pytest.fixture(scope="function", name="checksum_file")
