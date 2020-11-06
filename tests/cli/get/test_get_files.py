@@ -1,7 +1,7 @@
 """Tests for cli get file functionality"""
 from pathlib import Path
 from housekeeper.cli.get import files_cmd
-from housekeeper.cli.tables import squash_names
+from housekeeper.cli.tables import squash_names, _get_suffix
 
 
 def test_get_files_no_files(base_context, cli_runner, helpers):
@@ -132,3 +132,24 @@ def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_
 
     # THEN assert that the file names displayed are squashed
     assert len(squashed) < len(file_list)
+
+
+def test_get_suffix():
+    # GIVEN
+    dont_split_name1 = "asdf2.asdf.vcf"
+    dont_split_name2 = "1123"
+    dont_split_name3 = "asdf.vcf"
+    dont_split_name4 = "asdf_2.asdf.vcf"
+
+    split_name1 = "asdf1.png"
+    split_name2 = "asdf8A8_7777_asdf_8.png"
+
+    # THEN assert filename parsing *does not* split name into (prefix, integer, suffix)
+    assert (dont_split_name1, '', '') == _get_suffix(dont_split_name1)
+    assert (dont_split_name2, '', '') == _get_suffix(dont_split_name2)
+    assert (dont_split_name3, '', '') == _get_suffix(dont_split_name3)
+    assert (dont_split_name4, '', '') == _get_suffix(dont_split_name4)
+
+    # THEN assert filename parsing *does* split name into (prefix, integer, suffix)
+    assert (split_name1, '', '') != _get_suffix(split_name1)
+    assert (split_name2, '', '') != _get_suffix(split_name2)
