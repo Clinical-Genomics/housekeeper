@@ -19,15 +19,9 @@ RUN useradd --create-home worker
 USER worker
 WORKDIR /home/worker
 
-# Based on https://pythonspeed.com/articles/pipenv-docker/
-RUN pip install --user micropipenv pymysql cryptography
-# Update the path for micropipenv
-ENV PATH="/home/worker/.local/bin:${PATH}"
 
 # Copy the lockfile to temporary directory. This will be deleted
-COPY --chown=worker:worker Pipfile.lock /tmp/
-# Generate reqs with locked dependencies for deterministic build
-RUN cd /tmp && micropipenv requirements > requirements.txt
+COPY --chown=worker:worker requirements.txt /tmp/
 # Install deps
 RUN pip install --user -r /tmp/requirements.txt
 # Copy package
