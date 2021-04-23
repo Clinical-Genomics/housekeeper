@@ -10,7 +10,7 @@ LABEL about.license="MIT License (MIT)"
 LABEL about.tags="files,database"
 LABEL maintainer="Måns Magusson <mans.magnusson@scilifelab.se>"
 
-RUN pip install -U pip
+RUN pip install --no-cache-dir -U pip
 # Avoid running as root for security reasons
 # More about that: https://pythonspeed.com/articles/root-capabilities-docker-security/
 # Solution inspired from
@@ -23,11 +23,11 @@ WORKDIR /home/worker
 # Copy the lockfile to temporary directory. This will be deleted
 COPY --chown=worker:worker requirements.txt /tmp/
 # Install deps
-RUN pip install --user -r /tmp/requirements.txt
+RUN pip install --no-cache-dir --user -r /tmp/requirements.txt
 # Copy package
 COPY --chown=worker:worker . /tmp/housekeeper
 # Install package
-RUN pip install /tmp/housekeeper
+RUN pip install --no-cache-dir /tmp/housekeeper
 
 ENTRYPOINT ["housekeeper"]
 CMD ["--help"]
