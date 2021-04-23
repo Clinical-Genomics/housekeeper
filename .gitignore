@@ -72,6 +72,10 @@ alembic.ini
 *.mod.yaml
 meta.yaml
 
+# Environement stuff
+
+venv
+
 # Local files
 local/
 

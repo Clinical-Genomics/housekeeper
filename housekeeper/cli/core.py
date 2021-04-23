@@ -24,8 +24,8 @@ def base(context, config, database, root, log_level):
     """Housekeeper - Access your files!"""
     coloredlogs.install(level=log_level)
     context.obj = ruamel.yaml.safe_load(config) if config else {}
-    db_path = database if database else context.obj.get("database")
-    root_path = context.obj["root"] = root if root else context.obj.get("root")
+    db_path = database or context.obj.get("database")
+    root_path = context.obj["root"] = root or context.obj.get("root")
     if not db_path:
         LOG.error("Please point to a database")
         raise click.Abort
