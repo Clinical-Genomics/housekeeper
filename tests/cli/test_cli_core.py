@@ -117,7 +117,7 @@ def test_force_override_existing_database(cli_runner, db_path, base_context, cap
     assert db_path.exists()
 
     # WHEN intitializing and overriding existing db
-    result = cli_runner.invoke(init_command, ["--force"], obj=base_context)
+    cli_runner.invoke(init_command, ["--force"], obj=base_context)
 
     # THEN it should communicate success
     assert "Success!" in caplog.text
