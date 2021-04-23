@@ -12,6 +12,13 @@ Please add a new candidate release at the top after changing the latest one. Fee
 ### Changed
 ### Fixed
 
+## [3.2.1]
+
+### Changed
+- Replace ruamel.yaml with pyyaml for consistency in prod environment
+- Deleted unused Pipfile and Pipfile.lock since they trigger dependabots
+
+
 ## [3.2.0]
 
 ### Added

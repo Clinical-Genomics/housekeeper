@@ -2,6 +2,6 @@ Alchy
 Click<7
 coloredlogs
 marshmallow
-ruamel.yaml
+pyyaml
 SQLAlchemy
 rich

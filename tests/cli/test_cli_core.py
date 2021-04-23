@@ -1,4 +1,5 @@
 """Tests for the core cli"""
+import logging
 
 import housekeeper
 from housekeeper.cli.core import base
@@ -79,8 +80,9 @@ def test_init_database_no_specified_root_dir(cli_runner, db_uri):
     assert "Please specify a root dir" in result.output
 
 
-def test_init_existing_database(cli_runner, base_context, db_path):
+def test_init_existing_database(cli_runner, base_context, db_path, caplog):
     """Test to initialise a housekeeper instance when db already exists"""
+    caplog.set_level(logging.INFO)
     # GIVEN the uri to an initialised database, a project dir and a cli runner
     assert db_path.exists()
 
@@ -90,11 +92,12 @@ def test_init_existing_database(cli_runner, base_context, db_path):
     # THEN a controlled exit should be made
     assert result.exit_code == 1
     # THEN it should communicate that the database exists
-    assert "Database already exists" in result.output
+    assert "Database already exists" in caplog.text
 
 
-def test_override_existing_database(cli_runner, db_path, base_context):
+def test_override_existing_database(cli_runner, db_path, base_context, caplog):
     """Test init housekeeper database and overwrite existing one"""
+    caplog.set_level(logging.INFO)
     # GIVEN the uri to an initialised database, a project dir and a cli runner
     assert db_path.exists()
 
@@ -104,16 +107,17 @@ def test_override_existing_database(cli_runner, db_path, base_context):
     # THEN it should communicate that the database exists
     assert "Delete existing tables?" in result.output
     # THEN it should communicate success
-    assert "Success!" in result.output
+    assert "Success!" in caplog.text
 
 
-def test_force_override_existing_database(cli_runner, db_path, base_context):
+def test_force_override_existing_database(cli_runner, db_path, base_context, caplog):
     """Test init housekeeper database and overwrite existing one"""
+    caplog.set_level(logging.INFO)
     # GIVEN the uri to an initialised database, a project dir and a cli runner
     assert db_path.exists()
 
     # WHEN intitializing and overriding existing db
-    result = cli_runner.invoke(init_command, ["--force"], obj=base_context)
+    cli_runner.invoke(init_command, ["--force"], obj=base_context)
 
     # THEN it should communicate success
-    assert "Success!" in result.output
+    assert "Success!" in caplog.text

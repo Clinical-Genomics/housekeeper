@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import List
 
 import pytest
-import ruamel.yaml
+import yaml
 
 from housekeeper.date import get_date
 from housekeeper.store import Store, models
@@ -297,7 +297,7 @@ def fixture_config_file(config_dir: Path, configs: dict) -> Path:
     """Create a config file and return the path to it"""
     conf_path = config_dir / "config.json"
     with open(conf_path, "w") as out_file:
-        out_file.write(ruamel.yaml.safe_dump(configs))
+        yaml.dump(configs, out_file)
     return conf_path
 
 
