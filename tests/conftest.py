@@ -298,8 +298,6 @@ def fixture_config_file(config_dir: Path, configs: dict) -> Path:
     conf_path = config_dir / "config.json"
     with open(conf_path, "w") as out_file:
         yaml.dump(configs, out_file)
-    print(configs)
-    print(conf_path)
     return conf_path
 
 
