@@ -8,16 +8,16 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.6, 3.7]
+        python-version: ["3.7"]
 
     steps:
 
     # Check out Housekeeper code
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2.6.0
 
     # Set up python
     - name: Set up Python ${{ matrix.python-version}}
-      uses: actions/setup-python@v1
+      uses: actions/setup-python@v4.3.1
       with:
         python-version: ${{ matrix.python-version}}
 
