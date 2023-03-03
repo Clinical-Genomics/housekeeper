@@ -7,9 +7,11 @@ from pathlib import Path
 from typing import Iterable, List
 
 from sqlalchemy import func as sqlalchemy_func
+from sqlalchemy.orm import Query
 
 from housekeeper.date import get_date
 from housekeeper.store import models
+from housekeeper.store.bundle_filters import apply_bundle_filter, BundleFilters
 
 from .base import BaseHandler
 
@@ -24,13 +26,26 @@ class FindHandler(BaseHandler):
         LOG.info("Fetching all bundles")
         return self.Bundle.query
 
+    def _get_bundle_query(self) -> Query:
+        """Return bundle query."""
+        return self.Bundle.query
+
     def bundle(self, name: str = None, bundle_id: int = None) -> models.Bundle:
         """Fetch a bundle from the store."""
         if bundle_id:
             LOG.info("Fetching bundle with id: %s", bundle_id)
-            return self.Bundle.get(bundle_id)
+            return apply_bundle_filter(
+                bundles=self._get_bundle_query(),
+                functions=[BundleFilters.get_bundle_by_id],
+                bundle_id=bundle_id,
+            ).first()
+
         LOG.info("Fetching bundle with name: %s", name)
-        return self.Bundle.filter_by(name=name).first()
+        return apply_bundle_filter(
+            bundles=self._get_bundle_query(),
+            functions=[BundleFilters.get_bundle_by_name],
+            bundle_name=name,
+        ).first()
 
     def version(
         self, bundle: str = None, date: dt.datetime = None, version_id: int = None
