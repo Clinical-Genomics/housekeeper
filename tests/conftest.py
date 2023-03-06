@@ -352,7 +352,7 @@ def fixture_helpers() -> Helpers:
 # Store fixtures
 
 
-@pytest.yield_fixture(scope="function", name="store")
+@pytest.fixture(scope="function", name="store")
 def fixture_store(project_dir: Path) -> Store:
     """Return a store setup with all tables"""
     _store = Store(uri="sqlite:///", root=str(project_dir))
@@ -361,7 +361,7 @@ def fixture_store(project_dir: Path) -> Store:
     _store.drop_all()
 
 
-@pytest.yield_fixture(scope="function", name="populated_store")
+@pytest.fixture(scope="function", name="populated_store")
 def fixture_populated_store(store: Store, bundle_data: dict, helpers: Helpers) -> Store:
     """Returns a populated store"""
     helpers.add_bundle(store, bundle_data)

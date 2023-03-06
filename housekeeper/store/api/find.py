@@ -36,14 +36,14 @@ class FindHandler(BaseHandler):
             LOG.info("Fetching bundle with id: %s", bundle_id)
             return apply_bundle_filter(
                 bundles=self._get_bundle_query(),
-                functions=[BundleFilters.get_bundle_by_id],
+                filter_functions=[BundleFilters.FILTER_BY_ID],
                 bundle_id=bundle_id,
             ).first()
 
         LOG.info("Fetching bundle with name: %s", name)
         return apply_bundle_filter(
             bundles=self._get_bundle_query(),
-            functions=[BundleFilters.get_bundle_by_name],
+            filter_functions=[BundleFilters.FILTER_BY_NAME],
             bundle_name=name,
         ).first()
 
