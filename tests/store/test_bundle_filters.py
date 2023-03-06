@@ -4,7 +4,7 @@ from housekeeper.store.models import Bundle
 from housekeeper.store.bundle_filters import filter_bundle_by_name, filter_bundle_by_id
 
 
-def test_filter_bundles_by_id(populated_store: Store):
+def test_filter_bundles_by_id_returns_the_correct_bundle(populated_store: Store):
     """Test getting collaboration by internal_id."""
 
     # GIVEN a store with a bundle
@@ -20,12 +20,12 @@ def test_filter_bundles_by_id(populated_store: Store):
     ).first()
 
     # THEN a bundle should be returned
-    assert bundle
+    assert isinstance(bundle, Bundle)
 
     # THEN the id should match
     assert bundle.id == bundle_id
 
-def test_filter_bundles_by_name(populated_store: Store):
+def test_filter_bundles_by_name_returns_the_correct_bundle(populated_store: Store):
     """Test getting bundle by name."""
 
     # GIVEN a store with a bundle
@@ -41,7 +41,7 @@ def test_filter_bundles_by_name(populated_store: Store):
     ).first()
 
     # THEN a bundle should be returned
-    assert bundle
+    assert isinstance(bundle, Bundle)
 
     # THEN the name should match
     assert bundle.name == bundle_name
