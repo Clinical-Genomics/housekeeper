@@ -1,35 +1,20 @@
 # Deployment guide
 This includes instructions for deploying Houskeeper in the Clinical Genomics :hospital: setting. General instructions for deployment is in the [development guide][development-guide]
 
-## Branch model
-
-Housekeeper if following the [GitHub flow][gh-flow] branching model which means that every time a PR is merged to master a new release is created.
-
-## Requirements
-
-- `bumpversion`, install with `pip install bumpversion`
-
 ## Steps
+When all tests done and successful and PR is approved by codeowners, follow these steps:
 
-1. Check in the PR if the change is a minor, mayor or patch: ![Version][pr-version]
-1. Make sure you are on `master` (`git checkout master`) and bump version according to step 1, example: `bumpversion minor`
-1. Push the commit: `git push`
-1. Push the tag: `git push --tags`
-1. First deploy on stage so log into hasta and run:
+1. Select "Squash and merge" to merge branch into default branch (master/main).
+2. Append version increment value `( major | minor | patch )` in the commit message to specify what kind of release is to be created.
+3. Review the details and merge the branch into master.
+4. Deploy in stage on Hasta:
     - `us`
-    - `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-housekeeper-stage.sh master`
-1. Deploy in productions by running the following commands:
+    - `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-stage.sh -e S_main -t housekeeper -b master`
+5. Deploy in production by running the following commands:
     - `down`
     - `up`
-    - `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-housekeeper-prod.sh`
-1. Take a screen shot that includes the name of the environment and publish it as a comment on the PR: ![Deployed][confirm-deploy]
-1. Great job :whale2:
+    - `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-prod.sh -e P_main -t housekeeper -b master`
+6. Take a screenshot or copy log text and post as a comment on the PR. Screenshot should include environment and that it succeeded.
+7. Great job :whale2:
 
-
-
-
-
-[pr-version]: docs/img/version.png
-[confirm-deploy]: docs/img/confirm_deploy.png
 [development-guide]: http://www.clinicalgenomics.se/development/publish/prod/
-[gh-flow]: http://www.clinicalgenomics.se/development/dev/models/#rolling-release-github-flow
