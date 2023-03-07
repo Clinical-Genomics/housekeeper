@@ -13,7 +13,8 @@ def filter_version_by_name_and_bundle_date(version_bundles: Query, bundle_name: 
 
 class VersionBundleFilters(Enum):
     """Define Version filter functions."""
-    FILTER_BY_NAME_AND_DATE: Callable = filter_version_by_name_and_bundle_date
+    FILTER_BY_DATE_AND_NAME: Callable = filter_version_by_name_and_bundle_date
+
 
 def apply_version_bundle_filter(
     version_bundles: Query,
