@@ -76,13 +76,6 @@ class FindHandler(BaseHandler):
             bundle_name=bundle,
         ).first()
 
-    def versions(self, bundle: str) -> List:
-        """Fetch a version from the store."""
-        query = self.Version.query
-        if bundle:
-            query = query.join(Version.bundle).filter(Bundle.name == bundle)
-        return query
-
     def tag(self, name: str) -> Tag:
         """Fetch a tag from the database."""
         return self.Tag.filter_by(name=name).first()
