@@ -10,6 +10,7 @@ from sqlalchemy import func as sqlalchemy_func
 from sqlalchemy.orm import Query
 
 from housekeeper.date import get_date
+from housekeeper.store.file_filters import FileFilters, apply_file_filters
 from housekeeper.store.models import Bundle, File, Tag, Version
 from housekeeper.store.bundle_filters import apply_bundle_filter, BundleFilters
 
@@ -29,6 +30,10 @@ class FindHandler(BaseHandler):
     def _get_bundle_query(self) -> Query:
         """Return bundle query."""
         return self.Bundle.query
+
+    def _get_file_query(self) -> Query:
+        """Return file query."""
+        return self.File.query
 
     def bundle(self, name: str = None, bundle_id: int = None) -> Bundle:
         """Fetch a bundle from the store."""
@@ -78,7 +83,11 @@ class FindHandler(BaseHandler):
 
     def file_(self, file_id: int):
         """Get a file by record id."""
-        return self.File.get(file_id)
+        return apply_file_filters(
+            files=self._get_file_query(),
+            filter_functions=[FileFilters.FILTER_BY_ID],
+            file_id=file_id,
+        ).first()
 
     def files(
         self, *, bundle: str = None, tags: List[str] = None, version: int = None, path: str = None
