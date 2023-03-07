@@ -1,6 +1,6 @@
 from enum import Enum
 from typing import Callable, List, Optional
-from alchy import Query
+from sqlalchemy.orm import Query
 import datetime as dt
 
 from housekeeper.store.models import Bundle, Version
