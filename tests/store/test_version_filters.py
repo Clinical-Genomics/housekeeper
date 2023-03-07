@@ -1,9 +1,9 @@
-
+from housekeeper.store.api.core import Store
 from housekeeper.store.models import Version
 from housekeeper.store.version_filters import filter_version_by_id
 
 
-def test_filter_version_by_id_returns_the_correct_version(populated_store):
+def test_filter_version_by_id_returns_the_correct_version(populated_store: Store):
     """Test getting version by version ID."""
 
     # GIVEN a store with a version
@@ -25,7 +25,7 @@ def test_filter_version_by_id_returns_the_correct_version(populated_store):
     assert filtered_version.id == version_id
 
 
-def test_filter_version_by_id_with_invalid_id_returns_empty_query(populated_store):
+def test_filter_version_by_id_with_invalid_id_returns_empty_query(populated_store: Store):
     """Test that an empty result is returned when using an invalid version ID."""
 
     # GIVEN a store with some versions
@@ -42,7 +42,7 @@ def test_filter_version_by_id_with_invalid_id_returns_empty_query(populated_stor
     assert filtered_versions_query.count() == 0
 
 
-def test_filter_version_by_id_with_empty_query_returns_empty_query(populated_store):
+def test_filter_version_by_id_with_empty_query_returns_empty_query(populated_store: Store):
     """Test that the function returns an empty result when given an empty query."""
 
     # GIVEN an empty query
