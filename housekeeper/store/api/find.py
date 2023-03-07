@@ -24,7 +24,7 @@ class FindHandler(BaseHandler):
     def bundles(self):
         """Fetch bundles."""
         LOG.info("Fetching all bundles")
-        return self.Bundle.query
+        return _get_bundle_query()
 
     def _get_bundle_query(self) -> Query:
         """Return bundle query."""
