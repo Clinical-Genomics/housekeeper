@@ -126,7 +126,7 @@ class FindHandler(BaseHandler):
         return query
 
     @staticmethod
-    def files_ondisk(file_objs: File) -> set:
+    def files_ondisk(file_objs: File) -> Set[File]:
         """Returns a list of files that are on disk."""
 
         files_on_disk = {file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file()}
