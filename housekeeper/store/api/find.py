@@ -24,7 +24,7 @@ class FindHandler(BaseHandler):
     def bundles(self):
         """Fetch bundles."""
         LOG.info("Fetching all bundles")
-        return _get_bundle_query()
+        return self._get_bundle_query()
 
     def _get_bundle_query(self) -> Query:
         """Return bundle query."""
@@ -33,14 +33,14 @@ class FindHandler(BaseHandler):
     def bundle(self, name: str = None, bundle_id: int = None) -> Bundle:
         """Fetch a bundle from the store."""
         if bundle_id:
-            LOG.info("Fetching bundle with id: %s", bundle_id)
+            LOG.info(f"Fetching bundle with id: {bundle_id}")
             return apply_bundle_filter(
                 bundles=self._get_bundle_query(),
                 filter_functions=[BundleFilters.FILTER_BY_ID],
                 bundle_id=bundle_id,
             ).first()
 
-        LOG.info("Fetching bundle with name: %s", name)
+        LOG.info(f"Fetching bundle with name: {name}")
         return apply_bundle_filter(
             bundles=self._get_bundle_query(),
             filter_functions=[BundleFilters.FILTER_BY_NAME],
@@ -52,7 +52,7 @@ class FindHandler(BaseHandler):
     ) -> Version:
         """Fetch a version from the store."""
         if version_id:
-            LOG.info("Fetching version with id: %s", version_id)
+            LOG.info(f"Fetching version with id: {version_id}")
             return self.Version.get(version_id)
 
         return (
@@ -86,13 +86,14 @@ class FindHandler(BaseHandler):
         """Fetch files from the store."""
         query = self.File.query
         if bundle:
-            LOG.info("Fetching files from bundle %s", bundle)
+            LOG.info(f"Fetching files from bundle {bundle}")
             query = query.join(self.File.version, self.Version.bundle).filter(
                 self.Bundle.name == bundle
             )
 
         if tags:
-            LOG.info("Fetching files with tags in [%s]", ",".join(tags))
+            formatted_tags = ",".join(tags)
+            LOG.info(f"Fetching files with tags in [{formatted_tags}]")
             # require records to match ALL tags
             query = (
                 query.join(self.File.tags)
@@ -102,11 +103,11 @@ class FindHandler(BaseHandler):
             )
 
         if version:
-            LOG.info("Fetching files from version %s", version)
+            LOG.info(f"Fetching files from version {version}")
             query = query.join(self.File.version).filter(self.Version.id == version)
 
         if path:
-            LOG.info("Fetching files with path %s", path)
+            LOG.info(f"Fetching files with path {path}")
             query = query.filter_by(path=path)
 
         return query
