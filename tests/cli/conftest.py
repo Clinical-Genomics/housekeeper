@@ -8,7 +8,7 @@ from housekeeper.store import Store
 from tests.helper_functions import Helpers
 
 
-@pytest.yield_fixture(scope="function", name="store")
+@pytest.fixture(scope="function", name="store")
 def fixture_store(project_dir, db_uri):
     """Override the store fixture to get a controlled db path"""
     _store = Store(uri=db_uri, root=str(project_dir))
@@ -47,7 +47,7 @@ def fixture_populated_context(db_uri, project_dir, populated_store):
 
 
 
-@pytest.yield_fixture(scope="function", name="populated_store_subsequent")
+@pytest.fixture(scope="function", name="populated_store_subsequent")
 def fixture_populated_store_subsequent(store: Store, bundle_data_subsequent: dict, helpers: Helpers) -> Store:
     """Returns a populated store"""
     helpers.add_bundle(store, bundle_data_subsequent)

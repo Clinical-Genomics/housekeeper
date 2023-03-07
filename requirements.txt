@@ -3,5 +3,5 @@ Click<7
 coloredlogs
 marshmallow
 pyyaml
-SQLAlchemy
+SQLAlchemy<1.4
 rich
