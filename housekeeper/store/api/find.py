@@ -4,7 +4,7 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable, List, Set
 
 from sqlalchemy import func as sqlalchemy_func
 from sqlalchemy.orm import Query
