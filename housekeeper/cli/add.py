@@ -43,9 +43,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data = {}
-    data["name"] = bundle_name
-    data["created_at"] = str(dt.datetime.now())
+    data: Dict = {"name": bundle_name, "created_at": str(dt.datetime.now())}
     # This is to preserve the behaviour of adding a bundle without providing all information
     if json:
         data = load_json(json)
@@ -75,7 +73,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
 @add.command("file")
 @click.option("-t", "--tag", "tags", multiple=True, help="tag to associate the file by")
 @click.option("-b", "--bundle-name", help="name of bundle that file should be added to")
-@click.option("-j", "--json", help="json formated input")
+@click.option("-j", "--json", help="json formatted input")
 @click.argument("path", required=False)
 @click.pass_context
 def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: str, path: str):
@@ -119,9 +117,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data = {}
-    data["bundle_name"] = bundle_name
-    data["created_at"] = created_at
+    data = {"bundle_name": bundle_name, "created_at": created_at}
     if json:
         data = load_json(json)
         bundle_name = data["bundle_name"]
