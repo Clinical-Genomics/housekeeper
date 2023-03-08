@@ -3,7 +3,7 @@ import datetime as dt
 import logging
 from logging import Logger
 from pathlib import Path
-from typing import List
+from typing import List, Dict
 
 import click
 
