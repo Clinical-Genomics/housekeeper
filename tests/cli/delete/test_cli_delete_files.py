@@ -67,8 +67,8 @@ def test_delete_existing_bundle_no_confirmation(
     assert bundle_obj
     case_id = bundle_obj.name
     # GIVEN the bundle files
-    query = store.files_before(bundle=case_id, tags=())
-    nr_files = query.count()
+    files = store.files_before(bundle=case_id, tags=[])
+    nr_files = len(files)
     assert nr_files > 0
 
     # WHEN trying to delete a bundle without requiring confirmation

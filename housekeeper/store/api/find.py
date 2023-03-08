@@ -123,7 +123,7 @@ class FindHandler(BaseHandler):
 
     def files_before(
         self, *, bundle: str = None, tags: List[str] = None, before: str = None
-    ) -> File:
+    ) -> List[File]:
         """Fetch files before date from store"""
         query = self.files(tags=tags, bundle=bundle)
         if before:
@@ -133,7 +133,7 @@ class FindHandler(BaseHandler):
                 before_dt = get_date(before, "%Y-%m-%d %H:%M:%S")
             query = query.join(Version).filter(Version.created_at < before_dt)
 
-        return query
+        return query.all()
 
     @staticmethod
     def files_not_on_disk(files: List[File]) -> Set[File]:

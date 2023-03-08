@@ -99,17 +99,17 @@ def version_cmd(context, bundle_name, version_id, yes):
 @click.pass_context
 def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose):
     """Delete files based on tags."""
-    store = context.obj["store"]
 
     validate_delete_options(tag=tag, bundle_name=bundle_name)
 
+    store = context.obj["store"]
     bundle = store.bundle(bundle_name)
 
     if not bundle:
         LOG.warning("Bundle not found")
         raise click.Abort
 
-    files = store.files_before(bundle=bundle_name, tags=tag, before=before).all()
+    files = store.files_before(bundle=bundle_name, tags=tag, before=before)
 
     if notondisk:
         files = store.files_not_on_disk(files)
