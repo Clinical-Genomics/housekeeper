@@ -136,8 +136,10 @@ class FindHandler(BaseHandler):
         return query
 
     @staticmethod
-    def files_ondisk(file_objs: File) -> Set[File]:
-        """Returns a list of files that are on disk."""
+    def files_not_on_disk(files: List[File]) -> Set[File]:
+        """Return set of files that are not on disk."""
+        if not files:
+            return
 
-        files_on_disk = {file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file()}
-        return files_on_disk
+        files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
+        return files_not_on_disk

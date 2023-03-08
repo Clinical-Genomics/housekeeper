@@ -18,7 +18,7 @@ def test_delete_files_non_specified(base_context: Context, cli_runner: CliRunner
     # THEN assert it exits non zero
     assert result.exit_code == 1
     # THEN HAL9000 should interfere
-    assert "Please specify a bundle or a tag" in caplog.text
+    assert "Please specify" in caplog.text
 
 
 def test_delete_files_non_existing_bundle(

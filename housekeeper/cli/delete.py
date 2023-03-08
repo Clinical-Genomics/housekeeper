@@ -100,53 +100,68 @@ def version_cmd(context, bundle_name, version_id, yes):
 def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose):
     """Delete files based on tags."""
     store = context.obj["store"]
-    file_objs = []
-    if not (tag or bundle_name):
-        LOG.info("Please specify a bundle or a tag")
+
+    validate_delete_options(tag=tag, bundle_name=bundle_name)
+
+    bundle = store.bundle(bundle_name)
+
+    if not bundle:
+        LOG.warning("Bundle not found")
         raise click.Abort
 
-    if bundle_name:
-        bundle_obj = store.bundle(bundle_name)
-        if bundle_obj is None:
-            LOG.warning("Bundle not found")
-            raise click.Abort
-
-    query = store.files_before(bundle=bundle_name, tags=tag, before=before)
+    files = store.files_before(bundle=bundle_name, tags=tag, before=before).all()
 
     if notondisk:
-        file_objs = set(query) - store.files_ondisk(query)
-    else:
-        file_objs = query.all()
+        files = store.files_not_on_disk(files)
 
-    nr_files = 0
-    for nr_files, file_obj in enumerate(file_objs, 1):
-        if list_files_verbose:
-            tags = ", ".join(tag.name for tag in file_obj.tags)
-            click.echo(
-                f"{click.style(str(file_obj.id), fg='blue')} | {file_obj.full_path} | "
-                f"{click.style(tags, fg='yellow')}"
-            )
-        elif list_files:
-            click.echo(file_obj.full_path)
-        else:
-            continue
-
-    if nr_files == 0:
-        LOG.warning("no files found")
+    if not files:
+        LOG.warning("No files found")
         raise click.Abort
 
-    if not (yes or click.confirm(f"Are you sure you want to delete {len(file_objs)} files?")):
+    if list_files_verbose:
+        list_files_verbosely(files)
+
+    elif list_files:
+        list_files_with_full_path(files)
+
+    if not (yes or click.confirm(f"Are you sure you want to delete {len(files)} files?")):
         raise click.Abort
 
-    for file_obj in file_objs:
+    for file_obj in files:
         if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
-            file_obj_path = Path(file_obj.full_path)
-            if file_obj.is_included and (file_obj_path.exists() or file_obj_path.is_symlink()):
-                file_obj_path.unlink()
-            file_obj.delete()
-            store.commit()
-            LOG.info("%s deleted", file_obj.full_path)
+            delete_file(file_obj, store)
 
+def validate_delete_options(tag: str, bundle_name: str):
+    """Validate delete options."""
+    if not (tag or bundle_name):
+        missing_option ="bundle" if not bundle_name else "tag"
+        LOG.info(f"Please specify a {missing_option}")
+        raise click.Abort
+
+def list_files_verbosely(files):
+    """List files verbosely."""
+    for file in files:
+        tags = ", ".join(tag.name for tag in file.tags)
+        click.echo(
+            f"{click.style(str(file.id), fg='blue')} | {file.full_path} | "
+            f"{click.style(tags, fg='yellow')}"
+        )
+
+def list_files_with_full_path(files):
+    for file in files:
+        click.echo(file.full_path)
+
+def delete_file(file, store):
+    file_obj_path = Path(file.full_path)
+    if file_should_be_unlinked(file):
+        file_obj_path.unlink()
+    file.delete()
+    store.commit()
+    LOG.info("%s deleted", file.full_path)
+
+def file_should_be_unlinked(file):
+    file_path = Path(file.full_path)
+    return file.is_included and (file_path.exists() or file_path.is_symlink())
 
 @delete.command("file")
 @click.option("-y", "--yes", is_flag=True, help="skip checks")
