@@ -66,6 +66,6 @@ def bundle_data_old(
 
 
 @pytest.fixture(scope="function", name="time_stamp_now")
-def fixture_other_case() -> str:
+def time_stamp_now() -> dt.datetime:
     """Time stamp now"""
     return dt.datetime.now()
