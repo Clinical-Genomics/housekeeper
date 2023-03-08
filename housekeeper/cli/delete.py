@@ -103,11 +103,9 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     validate_delete_options(tag=tag, bundle_name=bundle_name)
 
     store = context.obj["store"]
-    bundle = store.bundle(bundle_name)
 
-    if not bundle:
-        LOG.warning("Bundle not found")
-        raise click.Abort
+    if bundle_name:
+        validate_bundle_exists(store, bundle_name)
 
     files = store.files_before(bundle=bundle_name, tags=tag, before=before)
 
@@ -134,8 +132,13 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
 def validate_delete_options(tag: str, bundle_name: str):
     """Validate delete options."""
     if not (tag or bundle_name):
-        missing_option ="bundle" if not bundle_name else "tag"
-        LOG.info(f"Please specify a {missing_option}")
+        LOG.info(f"Please specify a bundle or a tag")
+        raise click.Abort
+
+def validate_bundle_exists(store, bundle_name: str):
+    """Validate bundle exists."""
+    if not store.bundle(name=bundle_name):
+        LOG.warning(f"Bundle {bundle_name} not found")
         raise click.Abort
 
 def list_files_verbosely(files):
