@@ -13,6 +13,8 @@ from housekeeper.date import get_date
 from housekeeper.store.file_filters import FileFilters, apply_file_filters
 from housekeeper.store.models import Bundle, File, Tag, Version
 from housekeeper.store.bundle_filters import apply_bundle_filter, BundleFilters
+from housekeeper.store.version_filters import apply_version_filter, VersionFilters
+from housekeeper.store.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
 
 from .base import BaseHandler
 
@@ -34,6 +36,14 @@ class FindHandler(BaseHandler):
     def _get_file_query(self) -> Query:
         """Return file query."""
         return self.File.query
+
+    def _get_version_query(self) -> Query:
+        """Return version query."""
+        return self.Version.query
+
+    def _get_version_bundle_query(self) -> Query:
+        """Return version bundle query."""
+        return self.Version.query.join(Version.bundle)
 
     def bundle(self, name: str = None, bundle_id: int = None) -> Bundle:
         """Fetch a bundle from the store."""
@@ -58,20 +68,18 @@ class FindHandler(BaseHandler):
         """Fetch a version from the store."""
         if version_id:
             LOG.info(f"Fetching version with id: {version_id}")
-            return self.Version.get(version_id)
+            return apply_version_filter(
+                versions=self._get_version_query(),
+                filter_functions=[VersionFilters.FILTER_BY_ID],
+                version_id=version_id,
+            ).first()
 
-        return (
-            self.Version.query.join(Version.bundle)
-            .filter(Bundle.name == bundle, Version.created_at == date)
-            .first()
-        )
-
-    def versions(self, bundle: str) -> List:
-        """Fetch a version from the store."""
-        query = self.Version.query
-        if bundle:
-            query = query.join(Version.bundle).filter(Bundle.name == bundle)
-        return query
+        return apply_version_bundle_filter(
+            version_bundles=self._get_bundle_query(),
+            filter_functions=[VersionBundleFilters.FILTER_BY_DATE_AND_NAME],
+            version_date=date,
+            bundle_name=bundle,
+        ).first()
 
     def tag(self, name: str) -> Tag:
         """Fetch a tag from the database."""
