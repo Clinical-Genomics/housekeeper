@@ -90,7 +90,7 @@ class FindHandler(BaseHandler):
         ).first()
 
     def files(
-        self, *, bundle: str = None, tags: List[str] = None, version: int = None, path: str = None
+        self, *, bundle: str = None, tags: List[str] = None, version: int = None
     ) -> Iterable[File]:
         """Fetch files from the store."""
         query = self.File.query
@@ -114,10 +114,6 @@ class FindHandler(BaseHandler):
         if version:
             LOG.info(f"Fetching files from version {version}")
             query = query.join(self.File.version).filter(self.Version.id == version)
-
-        if path:
-            LOG.info(f"Fetching files with path {path}")
-            query = query.filter_by(path=path)
 
         return query
 
