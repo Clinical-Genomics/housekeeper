@@ -1,6 +1,7 @@
 """Fixture for the Store tests"""
 import datetime
 from copy import deepcopy
+import datetime as dt
 
 import pytest
 
@@ -62,3 +63,9 @@ def bundle_data_old(
     _bundle["files"][0]["path"] = str(second_sample_vcf)
     _bundle["files"][1]["path"] = str(second_family_vcf)
     return _bundle
+
+
+@pytest.fixture(scope="function", name="time_stamp_now")
+def fixture_other_case() -> str:
+    """Time stamp now"""
+    return dt.datetime.now()

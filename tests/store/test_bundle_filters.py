@@ -1,8 +1,13 @@
+from sqlalchemy.orm import Query
 
 from housekeeper.store import Store
 from housekeeper.store.models import Bundle
 from housekeeper.store.bundle_filters import filter_bundle_by_name, filter_bundle_by_id
 
+
+def test_get_bundle_query_returns_query_object(populated_store: Store):
+    result = populated_store._get_bundle_query()
+    assert isinstance(result, Query)
 
 def test_filter_bundles_by_id_returns_the_correct_bundle(populated_store: Store):
     """Test getting collaboration by internal_id."""

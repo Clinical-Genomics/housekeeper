@@ -1,20 +1,27 @@
+from sqlalchemy.orm import Query
+
 from housekeeper.store.api.core import Store
 from housekeeper.store.models import Version
 from housekeeper.store.version_filters import filter_version_by_id
+
+
+def test_get_version_query_returns_query_object(populated_store: Store):
+    result = populated_store._get_version_query()
+    assert isinstance(result, Query)
 
 
 def test_filter_version_by_id_returns_the_correct_version(populated_store: Store):
     """Test getting version by version ID."""
 
     # GIVEN a store with a version
-    version: Version = populated_store.session.query(Version).first()
+    version: Version = populated_store._get_version_query().first()
     assert version
 
     version_id: int = version.id
 
     # WHEN retrieving the version by ID
     filtered_version: Version = filter_version_by_id(
-        versions=populated_store.session.query(Version),
+        versions=populated_store._get_version_query(),
         version_id=version_id,
     ).first()
 
@@ -28,15 +35,15 @@ def test_filter_version_by_id_returns_the_correct_version(populated_store: Store
 def test_filter_version_by_id_with_invalid_id_returns_empty_query(populated_store: Store):
     """Test that an empty result is returned when using an invalid version ID."""
 
-    # GIVEN a store with some versions
-    versions_query = populated_store.session.query(Version)
+    # GIVEN a store with versions
+    versions_query = populated_store._get_version_query()
     assert versions_query.count() > 0
 
     # GIVEN an invalid id that doesn't exist in the store
-    invalid_version_id = versions_query.order_by(Version.id.desc()).first().id + 1
+    non_existing_version_id = versions_query.order_by(Version.id.desc()).first().id + 1
 
     # WHEN filtering the versions by the invalid ID
-    filtered_versions_query = filter_version_by_id(versions_query, invalid_version_id)
+    filtered_versions_query = filter_version_by_id(versions_query, non_existing_version_id)
 
     # THEN the filtered query should be empty
     assert filtered_versions_query.count() == 0
