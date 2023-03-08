@@ -34,7 +34,7 @@ def test_delete_files_non_existing_bundle(
     # THEN assert it exits non zero
     assert result.exit_code == 1
     # THEN it should communicate that the bundle was not found
-    assert "Bundle not found" in caplog.text
+    assert f"Bundle {case_id} not found" in caplog.text
 
 
 def test_delete_existing_bundle_with_confirmation(

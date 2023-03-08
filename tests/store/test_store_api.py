@@ -2,7 +2,7 @@
 import datetime
 
 
-def test_fetch_bundles(populated_store, bundle_data_old):
+def test_fetch_bundles(populated_store, bundle_data_old, time_stamp_now):
     """
     test fetch all files when two bundles are added
     """
@@ -12,7 +12,7 @@ def test_fetch_bundles(populated_store, bundle_data_old):
     store.add_commit(bundle_old_obj)
 
     # WHEN fetching all files in the database
-    files = store.files_before(before="2020-05-04")
+    files = store.files_before(before_date=time_stamp_now)
 
     # THEN all four files should be fetched
     assert len(files) == 4
@@ -30,7 +30,7 @@ def test_fetch_past_files(populated_store, bundle_data_old, timestamp, old_times
     # WHEN fetching all files before the oldest date
     date = old_timestamp + datetime.timedelta(days=10)
     assert old_timestamp < date < timestamp
-    files = store.files_before(before=str(date))
+    files = store.files_before(before_date=date)
 
     # THEN assert only files from the old bundle was found
     assert len(files) == 2
@@ -48,7 +48,7 @@ def test_fetch_no_files_before_oldest(populated_store, bundle_data_old, old_time
     # WHEN fetching all files before the oldest date
     date = old_timestamp - datetime.timedelta(days=10)
     assert date < old_timestamp < timestamp
-    files = store.files_before(before=str(date))
+    files = store.files_before(before_date=date)
 
     # THEN assert no files where that old
     assert len(files) == 0

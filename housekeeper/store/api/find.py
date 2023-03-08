@@ -98,25 +98,26 @@ class FindHandler(BaseHandler):
         ).first()
 
     def files(
-        self, *, bundle: str = None, tags: List[str] = None, version: int = None
+        self, bundle: str = None, tags: List[str] = None, version: int = None
     ) -> Iterable[File]:
         """Fetch files from the store."""
-        query = self.File.query
+        query = self._get_file_query()
         if bundle:
             LOG.info(f"Fetching files from bundle {bundle}")
-            query = query.join(self.File.version, self.Version.bundle).filter(
-                self.Bundle.name == bundle
+            query = apply_bundle_filter(
+                bundles=query.join(self.File.version, self.Version.bundle),
+                filter_functions=[BundleFilters.FILTER_BY_NAME],
+                bundle_name=bundle,
             )
 
         if tags:
             formatted_tags = ",".join(tags)
             LOG.info(f"Fetching files with tags in [{formatted_tags}]")
-            # require records to match ALL tags
-            query = (
-                query.join(self.File.tags)
-                .filter(self.Tag.name.in_(tags))
-                .group_by(File.id)
-                .having(sqlalchemy_func.count(Tag.name) == len(tags))
+
+            query = apply_file_filters(
+                files=query,
+                filter_functions=[FileFilters.FILTER_BY_TAGS],
+                tags=tags,
             )
 
         if version:
@@ -126,17 +127,16 @@ class FindHandler(BaseHandler):
         return query
 
     def files_before(
-        self, *, bundle: str = None, tags: List[str] = None, before: str = None
+        self, bundle: str = None, tags: List[str] = None, before_date: dt.datetime = None
     ) -> List[File]:
         """Fetch files before date from store"""
         query = self.files(tags=tags, bundle=bundle)
-        if before:
-            try:
-                before_dt = get_date(before)
-            except ValueError:
-                before_dt = get_date(before, "%Y-%m-%d %H:%M:%S")
-            query = query.join(Version).filter(Version.created_at < before_dt)
-
+        if before_date:
+            query = apply_version_filter(
+                versions=query.join(Version),
+                filter_functions=[VersionFilters.FILTER_BY_DATE],
+                before_date=before_date,
+            )
         return query.all()
 
     @staticmethod

@@ -1,7 +1,7 @@
 
 from housekeeper.store import Store
 from housekeeper.store.models import File
-from housekeeper.store.file_filters import filter_file_by_id
+from housekeeper.store.file_filters import filter_files_by_id
 
 
 def test_filter_files_by_id_returns_the_correct_file(populated_store: Store):
@@ -14,7 +14,7 @@ def test_filter_files_by_id_returns_the_correct_file(populated_store: Store):
     file_id: int = file.id
 
     # WHEN retrieving the file by id
-    file: File = filter_file_by_id(
+    file: File = filter_files_by_id(
         files=populated_store._get_file_query(),
         file_id=file_id,
     ).first()

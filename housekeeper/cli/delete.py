@@ -6,6 +6,8 @@ from pathlib import Path
 
 import click
 
+from housekeeper.date import get_date
+
 LOG = logging.getLogger(__name__)
 
 
@@ -101,13 +103,13 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     """Delete files based on tags."""
 
     validate_delete_options(tag=tag, bundle_name=bundle_name)
-
+    before_date = parse_date(before) if before else None
     store = context.obj["store"]
 
     if bundle_name:
         validate_bundle_exists(store, bundle_name)
 
-    files = store.files_before(bundle=bundle_name, tags=tag, before=before)
+    files = store.files_before(bundle=bundle_name, tags=tag, before_date=before_date)
 
     if notondisk:
         files = store.files_not_on_disk(files)
@@ -165,6 +167,13 @@ def delete_file(file, store):
 def file_should_be_unlinked(file):
     file_path = Path(file.full_path)
     return file.is_included and (file_path.exists() or file_path.is_symlink())
+
+def parse_date(date: str):
+    """Attempt to parse date in two different formats."""
+    try:
+        return get_date(date)
+    except ValueError:
+        return get_date(date, "%Y-%m-%d %H:%M:%S")
 
 @delete.command("file")
 @click.option("-y", "--yes", is_flag=True, help="skip checks")
