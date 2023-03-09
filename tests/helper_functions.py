@@ -1,5 +1,6 @@
 """Class with helper functions to use in tests"""
 
+import datetime as dt
 import json
 from typing import Iterable, List
 
@@ -37,3 +38,36 @@ class Helpers:
         """Add and commit bundle to housekeeper store"""
         bundle_obj, _ = store.add_bundle(bundle)
         store.add_commit(bundle_obj)
+
+    @staticmethod
+    def create_bundle_data(case_id: str, sample_data: dict, family_data: dict, created_at: dt.datetime = None) -> dict:
+        """
+        Create a new bundle_data dictionary with the given parameters.
+
+        :param case_id: The name of the bundle.
+        :param sample_data: A dictionary with information about the sample file.
+        :param family_data: A dictionary with information about the family file.
+        :param created_at: The timestamp when the bundle was created (optional).
+        :return: A dictionary representing the bundle data.
+        """
+        if created_at is None:
+            created_at = dt.datetime.now()
+
+        data = {
+            "name": case_id,
+            "created_at": created_at,
+            "files": [
+                {
+                    "path": str(sample_data["file"]),
+                    "archive": False,
+                    "tags": sample_data["tags"],
+                },
+                {
+                    "path": str(family_data["file"]),
+                    "archive": True,
+                    "tags": family_data["tags"],
+                },
+            ],
+        }
+
+        return data
