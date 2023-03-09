@@ -70,7 +70,7 @@ class FindHandler(BaseHandler):
             ).first()
 
         return apply_version_bundle_filter(
-            version_bundles=self._get_bundle_query(),
+            version_bundles=self._get_version_bundle_query(),
             filter_functions=[VersionBundleFilters.FILTER_BY_DATE_AND_NAME],
             version_date=date,
             bundle_name=bundle,
