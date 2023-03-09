@@ -106,10 +106,8 @@ class FindHandler(BaseHandler):
         query = self._get_file_query()
         if bundle:
             LOG.info(f"Fetching files from bundle {bundle}")
-            query = apply_bundle_filter(
-                bundles=query.join(self.File.version, self.Version.bundle),
-                filter_functions=[BundleFilters.FILTER_BY_NAME],
-                bundle_name=bundle,
+            query = query.join(self.File.version, self.Version.bundle).filter(
+                self.Bundle.name == bundle
             )
 
         if tags:
