@@ -2,6 +2,7 @@
 
 import datetime as dt
 import json
+from pathlib import Path
 from typing import Iterable, List
 
 from housekeeper.constants import LOGLEVELS
@@ -40,34 +41,24 @@ class Helpers:
         store.add_commit(bundle_obj)
 
     @staticmethod
-    def create_bundle_data(case_id: str, sample_data: dict, family_data: dict, created_at: dt.datetime = None) -> dict:
+    def create_bundle_data(case_id: str, files: List[dict], created_at: dt.datetime = None) -> dict:
         """
         Create a new bundle_data dictionary with the given parameters.
 
         :param case_id: The name of the bundle.
-        :param sample_data: A dictionary with information about the sample file.
-        :param family_data: A dictionary with information about the family file.
+        :param files: A list of dictionaries representing file data.
         :param created_at: The timestamp when the bundle was created (optional).
         :return: A dictionary representing the bundle data.
         """
         if created_at is None:
             created_at = dt.datetime.now()
 
+        files = [{"path": str(file_data["file"]), "archive": True, "tags": file_data["tags"]} for file_data in files]
+
         data = {
             "name": case_id,
             "created_at": created_at,
-            "files": [
-                {
-                    "path": str(sample_data["file"]),
-                    "archive": False,
-                    "tags": sample_data["tags"],
-                },
-                {
-                    "path": str(family_data["file"]),
-                    "archive": True,
-                    "tags": family_data["tags"],
-                },
-            ],
+            "files": files,
         }
 
         return data

@@ -117,7 +117,7 @@ def fixture_bundle_data(
     case_id: str, sample_data: dict, family_data: dict, timestamp: datetime.datetime, helpers: Helpers
 ) -> dict:
     """Return a dummy bundle"""
-    data = helpers.create_bundle_data(case_id=case_id, sample_data=sample_data, family_data=family_data, created_at=timestamp)
+    data = helpers.create_bundle_data(case_id=case_id, files=[family_data, sample_data], created_at=timestamp)
     return data
 
 
