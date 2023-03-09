@@ -2,8 +2,8 @@ import datetime as dt
 from sqlalchemy.orm import Query
 
 from housekeeper.store.api.core import Store
-from housekeeper.store.models import Bundle, Version
-from housekeeper.store.version_bundle_filters import filter_version_by_name_and_bundle_date
+from housekeeper.store.models import Version
+from housekeeper.store.filters.version_bundle_filters import filter_version_by_name_and_bundle_date
 
 
 def test_filter_version_by_name_and_bundle_date_returns_the_correct_version(populated_store: Store):

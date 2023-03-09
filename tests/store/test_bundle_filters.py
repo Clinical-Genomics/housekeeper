@@ -2,7 +2,7 @@ from sqlalchemy.orm import Query
 
 from housekeeper.store import Store
 from housekeeper.store.models import Bundle
-from housekeeper.store.bundle_filters import filter_bundle_by_name, filter_bundle_by_id
+from housekeeper.store.filters.bundle_filters import filter_bundle_by_name, filter_bundle_by_id
 
 
 def test_get_bundle_query_returns_query_object(populated_store: Store):

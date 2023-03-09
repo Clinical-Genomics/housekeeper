@@ -5,16 +5,14 @@ import datetime as dt
 import logging
 from pathlib import Path
 from typing import Iterable, List, Set
-
-from sqlalchemy import func as sqlalchemy_func
 from sqlalchemy.orm import Query
+from housekeeper.store.filters.file_tags_filters import FileTagFilters, apply_file_tag_filters
 
-from housekeeper.date import get_date
-from housekeeper.store.file_filters import FileFilters, apply_file_filters
 from housekeeper.store.models import Bundle, File, Tag, Version
-from housekeeper.store.bundle_filters import apply_bundle_filter, BundleFilters
-from housekeeper.store.version_filters import apply_version_filter, VersionFilters
-from housekeeper.store.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
+from housekeeper.store.filters.file_filters import FileFilters, apply_file_filters
+from housekeeper.store.filters.bundle_filters import apply_bundle_filter, BundleFilters
+from housekeeper.store.filters.version_filters import apply_version_filter, VersionFilters
+from housekeeper.store.filters.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
 
 from .base import BaseHandler
 
@@ -44,6 +42,10 @@ class FindHandler(BaseHandler):
     def _get_version_bundle_query(self) -> Query:
         """Return version bundle query."""
         return self.Version.query.join(Version.bundle)
+
+    def _get_file_tag_query(self) -> Query:
+        """Return file tag query."""
+        return self.File.query.join(File.tags)
 
     def bundle(self, name: str = None, bundle_id: int = None) -> Bundle:
         """Fetch a bundle from the store."""
@@ -114,9 +116,9 @@ class FindHandler(BaseHandler):
             formatted_tags = ",".join(tags)
             LOG.info(f"Fetching files with tags in [{formatted_tags}]")
 
-            query = apply_file_filters(
-                files=query,
-                filter_functions=[FileFilters.FILTER_BY_TAGS],
+            query = apply_file_tag_filters(
+                files_tags=query.join(File.tags),
+                filter_functions=[FileTagFilters.FILTER_FILES_BY_TAGS],
                 tags=tags,
             )
 

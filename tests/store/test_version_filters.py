@@ -2,7 +2,7 @@ from sqlalchemy.orm import Query
 
 from housekeeper.store.api.core import Store
 from housekeeper.store.models import Version
-from housekeeper.store.version_filters import filter_version_by_id
+from housekeeper.store.filters.version_filters import filter_version_by_id
 
 
 def test_get_version_query_returns_query_object(populated_store: Store):
