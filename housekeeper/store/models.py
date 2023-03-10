@@ -84,14 +84,14 @@ class File(Model):
     app_root = None
 
     @property
-    def full_path(self):
+    def full_path(self) -> str:
         """Return the full path to the file."""
         if Path(self.path).is_absolute():
             return self.path
         return str(self.app_root / self.path)
 
     @property
-    def is_included(self):
+    def is_included(self) -> bool:
         """Check if the file is included in Housekeeper."""
         return str(self.app_root) in self.full_path
 
