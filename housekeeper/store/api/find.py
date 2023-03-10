@@ -82,6 +82,11 @@ class FindHandler(BaseHandler):
 
     def tags(self) -> List:
         """Fetch all tags from the database."""
+        LOG.info("Fetching all tags")
+        return self._get_tag_query()
+
+    def _get_tag_query(self) -> Query:
+        """Return tag query."""
         return self.Tag.query
 
     def file_(self, file_id: int):
