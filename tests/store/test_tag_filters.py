@@ -9,7 +9,6 @@ def test_filter_tag_by_name_returns_correct_tag(populated_store: Store, sample_t
 
     # GIVEN a store with tags
     tags: Query = populated_store._get_tag_query()
-    # tag: Tag = populated_store.session.query(Tag).first()
     assert tags.count() > 0
 
     # WHEN retrieving the tag by name
