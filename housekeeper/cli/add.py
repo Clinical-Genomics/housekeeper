@@ -117,7 +117,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data = {"bundle_name": bundle_name, "created_at": created_at}
+    data: Dict = {"bundle_name": bundle_name, "created_at": created_at}
     if json:
         data = load_json(json)
         bundle_name = data["bundle_name"]

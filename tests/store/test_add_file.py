@@ -5,7 +5,7 @@ from housekeeper.store import models
 
 def test_add_file(populated_store, second_family_vcf, family_tag_names):
     """Test to create a file with the add file method"""
-    # GIVEN a store polulated with a bundle
+    # GIVEN a store populated with a bundle
     bundle_obj = populated_store.Bundle.query.first()
     # GIVEN some information about a file
     file_path = second_family_vcf
@@ -28,7 +28,7 @@ def test_add_file(populated_store, second_family_vcf, family_tag_names):
 
 def test_add_file_no_tags(populated_store, second_family_vcf):
     """Test to create a file with the add file method without tags"""
-    # GIVEN a store polulated with a bundle
+    # GIVEN a store populated with a bundle
     bundle_obj = populated_store.Bundle.query.first()
     # GIVEN some information about a file
     file_path = second_family_vcf

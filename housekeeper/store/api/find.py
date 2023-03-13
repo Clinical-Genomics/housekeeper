@@ -78,7 +78,7 @@ class FindHandler(BaseHandler):
         ).first()
 
     def tag(self, tag_name: str = None) -> Tag:
-        """Fetch a tag from the database."""
+        """Return a tag from the database."""
         if tag_name:
             LOG.info(f"Fetching tag with name: {tag_name}")
             return apply_tag_filter(
@@ -87,10 +87,7 @@ class FindHandler(BaseHandler):
                 tag_name=tag_name,
             ).first()
 
-        return apply_tag_filter(
-            tags=self._get_tag_query(),
-            filter_functions=[TagFilters.FILTER_BY_NAME],
-        ).first()
+        return self._get_tag_query().first()
 
     def tags(self) -> List:
         """Fetch all tags from the database."""
