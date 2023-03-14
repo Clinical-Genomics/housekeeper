@@ -15,6 +15,7 @@ from housekeeper.store import Store, models
 
 from .helper_functions import Helpers
 
+
 # basic fixtures
 
 
@@ -34,6 +35,7 @@ def fixture_family_tag_name() -> str:
 def fixture_sample_tag_name() -> str:
     """Return a tag named 'sample'."""
     return "sample"
+
 
 @pytest.fixture(scope="function", name="non_existent_tag_name")
 def fixture_non_existent_tag_name() -> str:
@@ -88,6 +90,7 @@ def fixture_family2_data(family_tag_names: List[str], second_family_vcf: Path) -
     """Return file and tags for sample."""
     return {"tags": family_tag_names, "file": second_family_vcf}
 
+
 @pytest.fixture(scope="function", name="family3_data")
 def fixture_family3_data(family_tag_names: List[str], third_family_vcf: Path) -> dict:
     """Return file and tags for sample."""
@@ -114,7 +117,7 @@ def fixture_later_timestamp() -> datetime.datetime:
 
 @pytest.fixture(scope="function", name="bundle_data")
 def fixture_bundle_data(
-    case_id: str, sample_data: dict, family_data: dict, timestamp: datetime.datetime
+        case_id: str, sample_data: dict, family_data: dict, timestamp: datetime.datetime
 ) -> dict:
     """Return a dummy bundle."""
     data = {
@@ -188,11 +191,11 @@ def fixture_version_data_json(version_data: dict) -> str:
 
 @pytest.fixture(scope="function", name="other_bundle")
 def fixture_other_bundle(
-    bundle_data: dict,
-    other_case_id: str,
-    later_timestamp: datetime.datetime,
-    second_sample_vcf: Path,
-    second_family_vcf: Path,
+        bundle_data: dict,
+        other_case_id: str,
+        later_timestamp: datetime.datetime,
+        second_sample_vcf: Path,
+        second_family_vcf: Path,
 ) -> dict:
     """Return a dummy bundle."""
     data = deepcopy(bundle_data)
