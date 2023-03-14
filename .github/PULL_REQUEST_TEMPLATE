@@ -1,15 +1,16 @@
-# Summary
+## Description
 
-- This pr solves **this**
-- And adresses **that**
+### Added
 
-## This
+-
 
-More details on why this was solved and how
+### Changed
 
-## That
+-
 
-How was **that** adressed
+### Fixed
+
+-
 
 ## Testing
 
@@ -17,7 +18,7 @@ How was **that** adressed
 
 - [ ] ssh to hasta (depending on type of change)
 - [ ] install on stage:
-`bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-housekeeper-stage.sh [THIS-BRANCH-NAME]`
+```bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-stage.sh -e S_main -t housekeeper -b YOURBRANCH```
 
 ### How to test
 - [ ] login to ...
