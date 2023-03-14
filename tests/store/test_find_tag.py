@@ -8,7 +8,7 @@ def test_tag_with_tag_name(populated_store: Store, sample_tag_name: str):
     # GIVEN a populated store and a tag name
 
     # WHEN retrieving a tag from Store
-    test_tag = populated_store.get_tag(tag_name=sample_tag_name)
+    test_tag = populated_store.tag(tag_name=sample_tag_name)
 
     # THEN a tag should be returned
     assert isinstance(test_tag, Tag)
@@ -22,7 +22,7 @@ def test_tag_without_tag_name(populated_store: Store):
     # GIVEN a populated store
 
     # WHEN retrieving a tag from Store
-    test_tag = populated_store.get_tag()
+    test_tag = populated_store.tag()
 
     # THEN a tag should be returned
     assert test_tag is None
