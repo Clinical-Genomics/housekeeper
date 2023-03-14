@@ -14,15 +14,19 @@ def test_filter_tag_by_name_returns_correct_tag(populated_store: Store, sample_t
     assert sample_tag_name in all_tag_names
 
     # WHEN retrieving the tag by name
-    tag: Tag = filter_tag_by_name(
+    tag_query: Tag = filter_tag_by_name(
         tags=all_tags,
         tag_name=sample_tag_name,
-    ).first()
+    )
+    tag: Tag = tag_query.first()
 
-    # THEN a tag should be returned
+    # THEN the returned object is a Query
+    assert isinstance(tag_query, Query)
+
+    # THEN the object in the query is a Tag
     assert isinstance(tag, Tag)
 
-    # THEN the name should match
+    # THEN the tag name should match the input tag name
     assert tag.name == sample_tag_name
 
 
@@ -34,13 +38,14 @@ def test_filter_tag_by_name_non_existent_tag(populated_store: Store, non_existen
     assert non_existent_tag_name not in all_tag_names
 
     # WHEN retrieving the tag by name
-    tags: Query = filter_tag_by_name(
+    tag_query: Query = filter_tag_by_name(
         tags=all_tags,
         tag_name=non_existent_tag_name,
     )
+    assert isinstance(tag_query, Query)
 
     # THEN the retrieved query is empty
-    assert tags.count() == 0
+    assert tag_query.count() == 0
 
 
 def test_filter_tag_by_name_with_none_tag_name(populated_store: Store):
@@ -48,13 +53,14 @@ def test_filter_tag_by_name_with_none_tag_name(populated_store: Store):
     # GIVEN a populated store
 
     # WHEN trying to retrieve a tag with None as name
-    tags: Query = filter_tag_by_name(
+    tag_query: Query = filter_tag_by_name(
         tags=populated_store._get_tag_query(),
         tag_name=None,
     )
+    assert isinstance(tag_query, Query)
 
     # THEN the retrieved query is empty
-    assert tags.count() == 0
+    assert tag_query.count() == 0
 
 
 def test_apply_tag_filter_without_tag_name(populated_store: Store):
@@ -62,10 +68,11 @@ def test_apply_tag_filter_without_tag_name(populated_store: Store):
     # GIVEN a populated store
 
     # WHEN trying to retrieve a tag with None as name
-    tags: Query = apply_tag_filter(
+    tag_query: Query = apply_tag_filter(
         tags=populated_store._get_tag_query(),
         filter_functions=[TagFilter.FILTER_BY_NAME],
     )
+    assert isinstance(tag_query, Query)
 
     # THEN the retrieved query is empty
-    assert tags.count() == 0
+    assert tag_query.count() == 0
