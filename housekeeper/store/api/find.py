@@ -87,8 +87,6 @@ class FindHandler(BaseHandler):
                 tag_name=tag_name,
             ).first()
 
-        return self._get_tag_query().first()
-
     def get_all_tags(self) -> List:
         """Fetch all tags from the database."""
         LOG.info("Fetching all tags")

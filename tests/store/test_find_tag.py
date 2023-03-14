@@ -18,11 +18,11 @@ def test_tag_with_tag_name(populated_store: Store, sample_tag_name: str):
 
 
 def test_tag_without_tag_name(populated_store: Store):
-    """Test fetching a tag from database without specifying a tag name."""
+    """Test fetching a tag from database without specifying a tag name returns None."""
     # GIVEN a populated store
 
     # WHEN retrieving a tag from Store
     test_tag = populated_store.tag()
 
     # THEN a tag should be returned
-    assert isinstance(test_tag, Tag)
+    assert test_tag is None
