@@ -1,6 +1,6 @@
 from housekeeper.store import Store
 from housekeeper.store.models import Tag
-from housekeeper.store.tag_filters import filter_tag_by_name, TagFilters, apply_tag_filter
+from housekeeper.store.tag_filters import filter_tag_by_name, TagFilter, apply_tag_filter
 from sqlalchemy.orm import Query
 from typing import List
 
@@ -64,7 +64,7 @@ def test_apply_tag_filter_without_tag_name(populated_store: Store):
     # WHEN trying to retrieve a tag with None as name
     tags: Query = apply_tag_filter(
         tags=populated_store._get_tag_query(),
-        filter_functions=[TagFilters.FILTER_BY_NAME],
+        filter_functions=[TagFilter.FILTER_BY_NAME],
     )
 
     # THEN the retrieved query is empty

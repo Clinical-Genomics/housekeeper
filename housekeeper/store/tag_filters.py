@@ -9,7 +9,7 @@ def filter_tag_by_name(tags: Query, tag_name: str) -> Query:
     return tags.filter(Tag.name == tag_name)
 
 
-class TagFilters(Enum):
+class TagFilter(Enum):
     """Define Tag filter functions."""
     FILTER_BY_NAME: Callable = filter_tag_by_name
 

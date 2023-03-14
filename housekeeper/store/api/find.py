@@ -12,7 +12,7 @@ from sqlalchemy.orm import Query
 from housekeeper.date import get_date
 from housekeeper.store.models import Bundle, File, Tag, Version
 from housekeeper.store.bundle_filters import apply_bundle_filter, BundleFilters
-from housekeeper.store.tag_filters import apply_tag_filter, TagFilters
+from housekeeper.store.tag_filters import apply_tag_filter, TagFilter
 from housekeeper.store.version_filters import apply_version_filter, VersionFilters
 from housekeeper.store.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
 
@@ -83,7 +83,7 @@ class FindHandler(BaseHandler):
             LOG.info(f"Fetching tag with name: {tag_name}")
             return apply_tag_filter(
                 tags=self._get_tag_query(),
-                filter_functions=[TagFilters.FILTER_BY_NAME],
+                filter_functions=[TagFilter.FILTER_BY_NAME],
                 tag_name=tag_name,
             ).first()
 
