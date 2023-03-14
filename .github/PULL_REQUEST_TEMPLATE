@@ -18,7 +18,7 @@
 
 - [ ] ssh to hasta (depending on type of change)
 - [ ] install on stage:
-`bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-stage.sh -e S_main -t housekeeper -b YOURBRANCH`
+```bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-stage.sh -e S_main -t housekeeper -b YOURBRANCH```
 
 ### How to test
 - [ ] login to ...
