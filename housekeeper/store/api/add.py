@@ -19,7 +19,7 @@ class AddHandler(BaseHandler):
         super().__init__()
         AddHandler.version = FindHandler.version
         AddHandler.bundle = FindHandler.bundle
-        AddHandler.tag = FindHandler.tag
+        AddHandler.tag = FindHandler.get_tag
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
         """Create a new file bundle."""

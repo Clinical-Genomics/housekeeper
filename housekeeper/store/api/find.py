@@ -77,7 +77,7 @@ class FindHandler(BaseHandler):
             bundle_name=bundle,
         ).first()
 
-    def tag(self, tag_name: str = None) -> Tag:
+    def get_tag(self, tag_name: str = None) -> Tag:
         """Return a tag from the database."""
         if tag_name:
             LOG.info(f"Fetching tag with name: {tag_name}")
