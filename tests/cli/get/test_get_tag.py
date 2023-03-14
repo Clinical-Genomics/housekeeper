@@ -30,7 +30,7 @@ def test_get_tags(cli_runner: Context, base_context: CliRunner, caplog):
     # GIVEN a database with some tags
     tags = ["tag1", "tag2", "tag3"]
     cli_runner.invoke(add_tags, tags, obj=base_context)
-    tag_objs = base_context["store"].tags()
+    tag_objs = base_context["store"].get_all_tags()
     assert tag_objs
 
     # WHEN getting all tags
@@ -63,7 +63,7 @@ def test_get_tags_json(cli_runner: Context, base_context: CliRunner, caplog):
     # GIVEN a database with some tags
     tags = ["tag1", "tag2", "tag3"]
     cli_runner.invoke(add_tags, tags, obj=base_context)
-    tag_objs = base_context["store"].tags()
+    tag_objs = base_context["store"].get_all_tags()
     assert tag_objs
 
     # WHEN getting all tags
