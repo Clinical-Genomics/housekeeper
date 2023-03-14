@@ -37,7 +37,7 @@ def fixture_sample_tag_name() -> str:
 
 @pytest.fixture(scope="function", name="non_existent_tag_name")
 def fixture_non_existent_tag_name() -> str:
-    """Return a non-existent tag name"""
+    """Return a non-existent tag name."""
     return "not_a_tag_name"
 
 
