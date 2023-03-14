@@ -133,7 +133,7 @@ def tag_cmd(context, json, name):
     """Get the tags from database"""
     store = context.obj["store"]
     LOG.info("Fetch tags")
-    tag_objs = store.get_all_tags()
+    tag_objs = store.get_tags()
     template = schema.TagSchema()
     result = []
     for tag_obj in tag_objs:

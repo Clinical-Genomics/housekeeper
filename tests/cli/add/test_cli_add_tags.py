@@ -35,7 +35,7 @@ def test_add_two_tags(populated_context, cli_runner, caplog):
     # THEN check that the tags are logged
     assert tag2 in caplog.text
     # THEN assert that the tags are added to the data base
-    db_tags = set([tag.name for tag in populated_context["store"].get_all_tags()])
+    db_tags = set([tag.name for tag in populated_context["store"].get_tags()])
     assert db_tags.intersection(set([tag1, tag2]))
 
 
