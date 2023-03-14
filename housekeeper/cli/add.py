@@ -161,7 +161,7 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
             raise click.Abort
 
     for tag_name in tags:
-        tag_obj = store.tag(tag_name)
+        tag_obj = store.get_tag(tag_name)
 
         if not tag_obj:
             LOG.info("%s: tag created", tag_name)
