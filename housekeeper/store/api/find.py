@@ -95,8 +95,8 @@ class FindHandler(BaseHandler):
         """Return a tag query."""
         return self.Tag.query
 
-    def file_(self, file_id: int):
-        """Get a file by record id."""
+    def file_(self, file_id: int) -> File:
+        """Returns a file by record id."""
         return self.File.get(file_id)
 
     def files(
