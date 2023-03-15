@@ -12,6 +12,7 @@ from sqlalchemy.orm import Query
 from housekeeper.date import get_date
 from housekeeper.store.models import Bundle, File, Tag, Version
 from housekeeper.store.bundle_filters import apply_bundle_filter, BundleFilters
+from housekeeper.store.tag_filters import apply_tag_filter, TagFilter
 from housekeeper.store.version_filters import apply_version_filter, VersionFilters
 from housekeeper.store.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
 
@@ -76,16 +77,26 @@ class FindHandler(BaseHandler):
             bundle_name=bundle,
         ).first()
 
-    def tag(self, name: str) -> Tag:
-        """Fetch a tag from the database."""
-        return self.Tag.filter_by(name=name).first()
+    def get_tag(self, tag_name: str = None) -> Tag:
+        """Return a tag from the database."""
+        LOG.info(f"Fetching tag with name: {tag_name}")
+        return apply_tag_filter(
+            tags=self._get_tag_query(),
+            filter_functions=[TagFilter.FILTER_BY_NAME],
+            tag_name=tag_name,
+        ).first()
 
-    def tags(self) -> List:
-        """Fetch all tags from the database."""
+    def get_tags(self) -> Query:
+        """Return all tags from the database."""
+        LOG.info("Fetching all tags")
+        return self._get_tag_query()
+
+    def _get_tag_query(self) -> Query:
+        """Return a tag query."""
         return self.Tag.query
 
-    def file_(self, file_id: int):
-        """Get a file by record id."""
+    def file_(self, file_id: int) -> File:
+        """Returns a file by record id."""
         return self.File.get(file_id)
 
     def files(
