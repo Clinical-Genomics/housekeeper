@@ -12,7 +12,8 @@ def test_add_file(populated_store: Store, second_family_vcf: Path, family_tag_na
     # GIVEN the path and the tags for a file
 
     # GIVEN a store populated with a bundle
-    bundle: Bundle = populated_store.Bundle.query.first()
+    bundle: Bundle = populated_store.bundles().first()
+    assert isinstance(bundle, Bundle)
 
     # WHEN using the add file method to create a new file object
     new_file: File = populated_store.add_file(
@@ -34,7 +35,8 @@ def test_add_file_no_tags(populated_store: Store, second_family_vcf: Path):
     # GIVEN a path for a file
 
     # GIVEN a store populated with a bundle
-    bundle: Bundle = populated_store.Bundle.query.first()
+    bundle: Bundle = populated_store.bundles().first()
+    assert isinstance(bundle, Bundle)
 
     # WHEN using the add file method to create a new file object
     new_file = populated_store.add_file(file_path=second_family_vcf, bundle=bundle)
