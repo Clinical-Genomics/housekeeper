@@ -1,9 +1,9 @@
 name: Publish to PyPI and Docker
 
 on:
- push:
-  tags:
-   - '*'
+  release:
+    types:
+      - created
 
 jobs:
  build-n-publish:
