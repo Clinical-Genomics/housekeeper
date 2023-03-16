@@ -51,7 +51,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
         data = load_json(json)
 
     bundle_name = data["name"]
-    if store.bundle(bundle_name):
+    if store.get_bundle_by_name(bundle_name=bundle_name):
         LOG.warning("bundle name %s already exists", bundle_name)
         raise click.Abort
 
@@ -95,7 +95,7 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
         raise click.Abort
 
     bundle_name = data.get("bundle", bundle_name)
-    bundle_obj = store.bundle(bundle_name)
+    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
     if bundle_obj is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
@@ -129,7 +129,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
     validate_input(data, input_type="version")
 
-    bundle_obj = store.bundle(bundle_name)
+    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
     if bundle_obj is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort

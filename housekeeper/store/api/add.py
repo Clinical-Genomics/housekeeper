@@ -18,7 +18,7 @@ class AddHandler(BaseHandler):
     def __init__(self):
         super().__init__()
         AddHandler.version = FindHandler.version
-        AddHandler.bundle = FindHandler.bundle
+        AddHandler.get_bundle_by_name = FindHandler.get_bundle_by_name
         AddHandler.tag = FindHandler.tag
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
@@ -32,7 +32,7 @@ class AddHandler(BaseHandler):
 
         The format of the input dict is defined in the `schema` module.
         """
-        bundle_obj = self.bundle(data["name"])
+        bundle_obj = self.get_bundle_by_name(bundle_name=data["name"])
         # These lines can be removed when decoupled from CG
         created_at = data.get("created_at", data.get("created"))
         expires_at = data.get("expires_at", data.get("expires"))

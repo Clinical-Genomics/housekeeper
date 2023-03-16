@@ -23,7 +23,7 @@ def delete():
 def bundle_cmd(context, yes, bundle_name):
     """Delete a empty bundle, that is a bundle without versions"""
     store = context.obj["store"]
-    bundle_obj = store.bundle(bundle_name)
+    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
     if bundle_obj is None:
         LOG.warning("bundle %s not found", bundle_name)
         raise click.Abort
@@ -54,7 +54,7 @@ def version_cmd(context, bundle_name, version_id, yes):
         raise click.Abort
 
     if bundle_name:
-        bundle_obj = store.bundle(name=bundle_name)
+        bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
         if not bundle_obj:
             LOG.info("Could not find bundle %s", bundle_name)
             return
@@ -69,7 +69,7 @@ def version_cmd(context, bundle_name, version_id, yes):
         if not version:
             LOG.warning("Could not find version %s", version_id)
             raise click.Abort
-        bundle_obj = store.bundle(bundle_id=version.bundle_id)
+        bundle_obj = store.get_bundle_by_id(bundle_id=version.bundle_id)
         for ver in bundle_obj.versions:
             if ver.id == version_id:
                 version_obj = ver
@@ -112,7 +112,7 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     files = store.files_before(bundle=bundle_name, tags=tag, before_date=before_date)
 
     if notondisk:
-        files = store.files_not_on_disk(files)
+        files = store.get_files_not_on_disk(files)
 
     if not files:
         LOG.warning("No files found")
@@ -139,7 +139,7 @@ def validate_delete_options(tag: str, bundle_name: str):
 
 def validate_bundle_exists(store, bundle_name: str):
     """Validate bundle exists."""
-    if not store.bundle(name=bundle_name):
+    if not store.get_bundle_by_name(bundle_name=bundle_name):
         LOG.warning(f"Bundle {bundle_name} not found")
         raise click.Abort
 

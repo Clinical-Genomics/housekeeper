@@ -10,7 +10,7 @@ def test_filter_version_by_name_and_bundle_date_returns_the_correct_version(popu
     """Test getting version by bundle name and date."""
 
     # GIVEN a store with a version
-    version_bundles_query: Query =populated_store._get_version_bundle_query()
+    version_bundles_query: Query =populated_store._get_join_version_bundle_query()
     assert version_bundles_query.count() > 0
 
     # GIVEN a bundle name and creation date
@@ -19,7 +19,7 @@ def test_filter_version_by_name_and_bundle_date_returns_the_correct_version(popu
 
     # WHEN filtering the version bundles by the given name and date
     filtered_version: Version = filter_version_by_name_and_bundle_date(
-        version_bundles=populated_store._get_version_bundle_query(),
+        version_bundles=populated_store._get_join_version_bundle_query(),
         bundle_name=bundle_name,
         version_date=version_date,
     ).first()
@@ -41,7 +41,7 @@ def test_filter_version_by_name_and_bundle_date_with_nonexistent_data_returns_em
 
     # WHEN filtering the versions by the nonexistent bundle name and version date
     filtered_version: Version = filter_version_by_name_and_bundle_date(
-        version_bundles=populated_store._get_version_bundle_query(),
+        version_bundles=populated_store._get_join_version_bundle_query(),
         bundle_name=nonexistent_bundle_name,
         version_date=time_stamp_now,
     )

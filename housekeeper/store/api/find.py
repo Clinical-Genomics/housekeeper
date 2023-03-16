@@ -39,29 +39,30 @@ class FindHandler(BaseHandler):
         """Return version query."""
         return self.Version.query
 
-    def _get_version_bundle_query(self) -> Query:
+    def _get_join_version_bundle_query(self) -> Query:
         """Return version bundle query."""
         return self.Version.query.join(Version.bundle)
 
-    def _get_file_tag_query(self) -> Query:
+    def _get_join_file_tag_query(self) -> Query:
         """Return file tag query."""
         return self.File.query.join(File.tags)
 
-    def bundle(self, name: str = None, bundle_id: int = None) -> Bundle:
-        """Fetch a bundle from the store."""
-        if bundle_id:
-            LOG.info(f"Fetching bundle with id: {bundle_id}")
-            return apply_bundle_filter(
-                bundles=self._get_bundle_query(),
-                filter_functions=[BundleFilters.FILTER_BY_ID],
-                bundle_id=bundle_id,
-            ).first()
-
-        LOG.info(f"Fetching bundle with name: {name}")
+    def get_bundle_by_id(self, bundle_id: int) -> Bundle:
+        """Fetch a bundle by id from the store."""
+        LOG.info(f"Fetching bundle with id: {bundle_id}")
+        return apply_bundle_filter(
+            bundles=self._get_bundle_query(),
+            filter_functions=[BundleFilters.FILTER_BY_ID],
+            bundle_id=bundle_id,
+        ).first()
+     
+    def get_bundle_by_name(self, bundle_name: str) -> Bundle:
+        """Get a bundle by name from the store."""
+        LOG.info(f"Fetching bundle with name: {bundle_name}")
         return apply_bundle_filter(
             bundles=self._get_bundle_query(),
             filter_functions=[BundleFilters.FILTER_BY_NAME],
-            bundle_name=name,
+            bundle_name=bundle_name,
         ).first()
 
     def version(
@@ -77,7 +78,7 @@ class FindHandler(BaseHandler):
             ).first()
 
         return apply_version_bundle_filter(
-            version_bundles=self._get_version_bundle_query(),
+            version_bundles=self._get_join_version_bundle_query(),
             filter_functions=[VersionBundleFilters.FILTER_BY_DATE_AND_NAME],
             version_date=date,
             bundle_name=bundle,
@@ -146,7 +147,7 @@ class FindHandler(BaseHandler):
         return query.all()
 
     @staticmethod
-    def files_not_on_disk(files: List[File]) -> Set[File]:
+    def get_files_not_on_disk(files: List[File]) -> Set[File]:
         """Return set of files that are not on disk."""
         if not files:
             return

@@ -33,7 +33,7 @@ def include(context: click.Context, bundle_name: str, version_id: int):
             raise click.Abort
 
     if bundle_name:
-        bundle_obj = store.bundle(bundle_name)
+        bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
         if bundle_obj is None:
             LOG.warning("bundle %s not found", bundle_name)
             raise click.Abort

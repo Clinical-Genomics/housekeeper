@@ -61,7 +61,7 @@ def test_get_non_existing_bundle_populated_store(
     # GIVEN a non empty store
     assert helpers.count_iterable(store.bundles()) > 0
     # GIVEN a bundle name that does not exist in database
-    assert store.bundle(name=other_case_id) is None
+    assert store.get_bundle_by_name(bundle_name=other_case_id) is None
 
     # WHEN trying to fetch the non existing bundle
     output = helpers.get_stdout(

@@ -56,7 +56,7 @@ def test_get_version_non_existing_bundle_name(
     store = populated_context["store"]
     # GIVEN a non existing bundle name
     bundle_name = "hello"
-    assert not store.bundle(name=bundle_name)
+    assert not store.get_bundle_by_name(bundle_name=bundle_name)
 
     # WHEN running the include files command
     cli_runner.invoke(version_cmd, ["-b", bundle_name], obj=populated_context)

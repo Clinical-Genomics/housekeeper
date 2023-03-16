@@ -35,7 +35,7 @@ def test_add_version_non_existing_bundle(populated_context: Context, cli_runner:
     store = populated_context["store"]
     # GIVEN a non existing bundle
     bundle_name = "non_existing"
-    bundle_obj = store.bundle(bundle_name)
+    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
     assert not bundle_obj
 
     # WHEN trying to add a version to a non existing bundle
@@ -114,7 +114,7 @@ def test_add_version_no_files_json(
     store = populated_context["store"]
     version_data = json.loads(empty_version_data_json)
     # GIVEN a bundle with one version
-    bundle_obj = store.bundle(version_data["bundle_name"])
+    bundle_obj = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
     assert bundle_obj
     assert len(bundle_obj.versions) == 1
     # GIVEN version information without files, in json format
@@ -131,7 +131,7 @@ def test_add_version_no_files_json(
     assert f"added to bundle {version_data['bundle_name']}" in caplog.text
     assert "new version" in caplog.text
     # THEN assert that the version was added
-    bundle_obj = store.bundle(version_data["bundle_name"])
+    bundle_obj = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
     assert len(bundle_obj.versions) == 2
 
 
@@ -144,7 +144,7 @@ def test_add_version_with_files_json(
     store = populated_context["store"]
     version_data = json.loads(version_data_json)
     # GIVEN a bundle with one version
-    bundle_obj = store.bundle(version_data["bundle_name"])
+    bundle_obj = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
     assert bundle_obj
     assert len(bundle_obj.versions) == 1
     # GIVEN version information without files, in json format
@@ -159,7 +159,7 @@ def test_add_version_with_files_json(
     assert f"added to bundle {version_data['bundle_name']}" in caplog.text
     assert "new version" in caplog.text
     # THEN assert that the files where added to the version was added
-    bundle_obj = store.bundle(version_data["bundle_name"])
+    bundle_obj = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
     for version_obj in bundle_obj.versions:
         assert len(version_obj.files) == 2
 

@@ -29,9 +29,15 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     """Get bundle information from database"""
     store = context.obj["store"]
     bundle_objs = store.bundles()
-    if bundle_name or bundle_id:
-        bundle_obj = store.bundle(name=bundle_name, bundle_id=bundle_id)
+
+    if bundle_name:
+        bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
         bundle_objs = [bundle_obj] if bundle_obj else []
+    
+    if bundle_id:
+        bundle_obj = store.get_bundle_by_id(bundle_id=bundle_id)
+        bundle_objs = [bundle_obj] if bundle_obj else []
+
     if not bundle_objs:
         LOG.info("Could not find any bundles")
         return
@@ -68,7 +74,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
         LOG.info("Please select a bundle or a version")
         return
     if bundle_name:
-        bundle = store.bundle(name=bundle_name)
+        bundle = store.get_bundle_by_name(bundle_name=bundle_name)
         if not bundle:
             LOG.info("Could not find bundle %s", bundle_name)
             return
@@ -84,7 +90,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
     version_template = schema.VersionSchema()
     result = []
     for version_obj in version_objs:
-        bundle_obj = store.bundle(bundle_id=version_obj.bundle_id)
+        bundle_obj = store.get_bundle_by_id(bundle_id=version_obj.bundle_id)
         res = version_template.dump(version_obj)
         res["bundle_name"] = bundle_obj.name
         result.append(res)
@@ -116,8 +122,8 @@ def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str
     file_objs = store.files(bundle=bundle, tags=tags, version=version)
     template = schema.FileSchema()
     result = []
-    for file_obj in file_objs:
-        result.append(template.dump(file_obj))
+    for file in file_objs:
+        result.append(template.dump(file))
     if json:
         click.echo(jsonlib.dumps(result))
         return

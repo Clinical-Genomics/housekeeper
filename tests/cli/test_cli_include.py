@@ -165,7 +165,7 @@ def test_include_non_existing_bundle(
     # GIVEN context and a bundle_name that does not exist
     store = base_context["store"]
     bundle_name = "hello"
-    assert not store.bundle(name=bundle_name)
+    assert not store.get_bundle_by_name(bundle_name=bundle_name)
 
     # WHEN running the include files specifying bundle without versions
     result = cli_runner.invoke(include, [bundle_name], obj=base_context)
@@ -191,7 +191,7 @@ def test_include_bundle_without_version(
     new_bundle = store.new_bundle(name=bundle_name, created_at=timestamp)
     store.add_commit(new_bundle)
 
-    bundle_obj = store.bundle(name=bundle_name)
+    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
     assert len(bundle_obj.versions) == 0
 
     # WHEN running the include files specifying bundle without versions
