@@ -35,8 +35,8 @@ def test_add_version_non_existing_bundle(populated_context: Context, cli_runner:
     store = populated_context["store"]
     # GIVEN a non existing bundle
     bundle_name = "non_existing"
-    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
-    assert not bundle_obj
+    bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+    assert not bundle
 
     # WHEN trying to add a version to a non existing bundle
     result = cli_runner.invoke(version_cmd, [bundle_name], obj=populated_context)
@@ -56,10 +56,10 @@ def test_add_version_existing_bundle(populated_context: Context, cli_runner: Cli
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle_obj = store.Bundle.query.first()
-    assert bundle_obj
+    bundle = store.Bundle.query.first()
+    assert bundle
     # GIVEN the name of a existing bundle
-    bundle_name = bundle_obj.name
+    bundle_name = bundle.name
 
     # WHEN trying to add a version to an existing bundle
     result = cli_runner.invoke(version_cmd, [bundle_name], obj=populated_context)
@@ -82,9 +82,9 @@ def test_add_version_existing_bundle_same_date(
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle_obj = store.Bundle.query.first()
-    assert bundle_obj
-    bundle_name = bundle_obj.name
+    bundle = store.Bundle.query.first()
+    assert bundle
+    bundle_name = bundle.name
 
     # WHEN trying to add a version to an existing bundle
     result = cli_runner.invoke(
@@ -114,9 +114,9 @@ def test_add_version_no_files_json(
     store = populated_context["store"]
     version_data = json.loads(empty_version_data_json)
     # GIVEN a bundle with one version
-    bundle_obj = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
-    assert bundle_obj
-    assert len(bundle_obj.versions) == 1
+    bundle = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
+    assert bundle
+    assert len(bundle.versions) == 1
     # GIVEN version information without files, in json format
     assert version_data["files"] == []
 
@@ -131,8 +131,8 @@ def test_add_version_no_files_json(
     assert f"added to bundle {version_data['bundle_name']}" in caplog.text
     assert "new version" in caplog.text
     # THEN assert that the version was added
-    bundle_obj = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
-    assert len(bundle_obj.versions) == 2
+    bundle = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
+    assert len(bundle.versions) == 2
 
 
 def test_add_version_with_files_json(
@@ -144,9 +144,9 @@ def test_add_version_with_files_json(
     store = populated_context["store"]
     version_data = json.loads(version_data_json)
     # GIVEN a bundle with one version
-    bundle_obj = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
-    assert bundle_obj
-    assert len(bundle_obj.versions) == 1
+    bundle = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
+    assert bundle
+    assert len(bundle.versions) == 1
     # GIVEN version information without files, in json format
     assert version_data["files"] != []
 
@@ -159,8 +159,8 @@ def test_add_version_with_files_json(
     assert f"added to bundle {version_data['bundle_name']}" in caplog.text
     assert "new version" in caplog.text
     # THEN assert that the files where added to the version was added
-    bundle_obj = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
-    for version_obj in bundle_obj.versions:
+    bundle = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
+    for version_obj in bundle.versions:
         assert len(version_obj.files) == 2
 
 

@@ -23,22 +23,22 @@ def delete():
 def bundle_cmd(context, yes, bundle_name):
     """Delete a empty bundle, that is a bundle without versions"""
     store = context.obj["store"]
-    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
-    if bundle_obj is None:
+    bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+    if bundle is None:
         LOG.warning("bundle %s not found", bundle_name)
         raise click.Abort
 
-    if bundle_obj.versions:
+    if bundle.versions:
         LOG.warning("Can not delete bundle, please remove all versions first")
         raise click.Abort
 
-    question = f"Remove bundle {bundle_obj.name} from database?"
+    question = f"Remove bundle {bundle.name} from database?"
     if not (yes or click.confirm(question)):
         raise click.Abort
 
-    bundle_obj.delete()
+    bundle.delete()
     store.commit()
-    LOG.info("Bundle deleted: %s", bundle_obj.name)
+    LOG.info("Bundle deleted: %s", bundle.name)
 
 
 @delete.command("version")
@@ -54,23 +54,23 @@ def version_cmd(context, bundle_name, version_id, yes):
         raise click.Abort
 
     if bundle_name:
-        bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
-        if not bundle_obj:
+        bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+        if not bundle:
             LOG.info("Could not find bundle %s", bundle_name)
             return
-        if len(bundle_obj.versions) == 0:
+        if len(bundle.versions) == 0:
             LOG.warning("Could not find versions for bundle %s", bundle_name)
             return
         LOG.info("Deleting the latest version of bundle %s", bundle_name)
-        version_obj = bundle_obj.versions[0]
+        version_obj = bundle.versions[0]
 
     if version_id:
         version = store.version(version_id=version_id)
         if not version:
             LOG.warning("Could not find version %s", version_id)
             raise click.Abort
-        bundle_obj = store.get_bundle_by_id(bundle_id=version.bundle_id)
-        for ver in bundle_obj.versions:
+        bundle = store.get_bundle_by_id(bundle_id=version.bundle_id)
+        for ver in bundle.versions:
             if ver.id == version_id:
                 version_obj = ver
 

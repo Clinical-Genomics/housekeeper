@@ -28,23 +28,23 @@ def get():
 def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     """Get bundle information from database"""
     store = context.obj["store"]
-    bundle_objs = store.bundles()
+    bundles = store.bundles()
 
     if bundle_name:
-        bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
-        bundle_objs = [bundle_obj] if bundle_obj else []
+        bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+        bundles = [bundle] if bundle else []
     
     if bundle_id:
-        bundle_obj = store.get_bundle_by_id(bundle_id=bundle_id)
-        bundle_objs = [bundle_obj] if bundle_obj else []
+        bundle = store.get_bundle_by_id(bundle_id=bundle_id)
+        bundles = [bundle] if bundle else []
 
-    if not bundle_objs:
+    if not bundles:
         LOG.info("Could not find any bundles")
         return
     template = schema.BundleSchema()
     result = []
-    for bundle_obj in bundle_objs:
-        result.append(template.dump(bundle_obj))
+    for bundle in bundles:
+        result.append(template.dump(bundle))
 
     if json:
         click.echo(jsonlib.dumps(result, indent=4, sort_keys=True))
@@ -52,7 +52,7 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     console = Console()
     console.print(get_bundles_table(result))
     if verbose:
-        for bundle in bundle_objs:
+        for bundle in bundles:
             if len(bundle.versions) == 0:
                 LOG.info("No versions found for bundle %s", bundle.name)
                 return
@@ -90,9 +90,9 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
     version_template = schema.VersionSchema()
     result = []
     for version_obj in version_objs:
-        bundle_obj = store.get_bundle_by_id(bundle_id=version_obj.bundle_id)
+        bundle = store.get_bundle_by_id(bundle_id=version_obj.bundle_id)
         res = version_template.dump(version_obj)
-        res["bundle_name"] = bundle_obj.name
+        res["bundle_name"] = bundle.name
         result.append(res)
 
     if json:

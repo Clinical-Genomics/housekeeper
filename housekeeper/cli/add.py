@@ -95,14 +95,14 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
         raise click.Abort
 
     bundle_name = data.get("bundle", bundle_name)
-    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
-    if bundle_obj is None:
+    bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+    if bundle is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
 
     tags = data.get("tags", tags)
 
-    new_file = store.add_file(file_path=file_path, bundle=bundle_obj, tags=tags)
+    new_file = store.add_file(file_path=file_path, bundle=bundle, tags=tags)
     store.add_commit(new_file)
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
 
@@ -129,20 +129,20 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
     validate_input(data, input_type="version")
 
-    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
-    if bundle_obj is None:
+    bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+    if bundle is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
 
     data["created_at"] = get_date(data.get("created_at"))
 
-    new_version = store.add_version(data, bundle_obj)
+    new_version = store.add_version(data, bundle)
     if not new_version:
         LOG.warning("Seems like version already exists for the bundle")
         raise click.Abort
 
     store.add_commit(new_version)
-    LOG.info("new version (%s) added to bundle %s", new_version.id, bundle_obj.name)
+    LOG.info("new version (%s) added to bundle %s", new_version.id, bundle.name)
 
 
 @add.command("tag")

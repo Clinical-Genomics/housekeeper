@@ -15,12 +15,12 @@ def test_include_files_creates_bundle_dir(populated_context: Context, cli_runner
     """
     # GIVEN a context that is populated
     store = populated_context["store"]
-    bundle_obj = store.Bundle.query.first()
-    bundle_name = bundle_obj.name
+    bundle = store.Bundle.query.first()
+    bundle_name = bundle.name
     # GIVEN that the latest version of the bundle is not included
-    assert bundle_obj.versions[0].included_at is None
+    assert bundle.versions[0].included_at is None
     # GIVEN that no folder has been created since case is not included
-    bundle_path = populated_context["root"] / bundle_obj.name
+    bundle_path = populated_context["root"] / bundle.name
     assert not bundle_path.exists()
 
     # WHEN running the include files command
@@ -39,13 +39,13 @@ def test_include_files_creates_version_specific_bundle_dir(
     """
     # GIVEN a context that is populated
     store = populated_context["store"]
-    bundle_obj = store.Bundle.query.first()
-    version_obj = bundle_obj.versions[0]
-    bundle_name = bundle_obj.name
+    bundle = store.Bundle.query.first()
+    version_obj = bundle.versions[0]
+    bundle_name = bundle.name
     # GIVEN that the latest version of the bundle is not included
     assert version_obj.included_at is None
     # GIVEN that no version specific folder has been created since version is not included
-    version_path = populated_context["root"] / bundle_obj.name / str(version_obj.created_at.date())
+    version_path = populated_context["root"] / bundle.name / str(version_obj.created_at.date())
     assert not version_path.exists()
 
     # WHEN running the include files command
@@ -64,13 +64,13 @@ def test_include_files_adds_version_specific_files(
     """
     # GIVEN a context that is populated
     store = populated_context["store"]
-    bundle_obj = store.Bundle.query.first()
-    version_obj = bundle_obj.versions[0]
-    bundle_name = bundle_obj.name
+    bundle = store.Bundle.query.first()
+    version_obj = bundle.versions[0]
+    bundle_name = bundle.name
     # GIVEN that the latest version of the bundle is not included
     assert version_obj.included_at is None
     # GIVEN that no version specific folder has been created since version is not included
-    version_path = populated_context["root"] / bundle_obj.name / str(version_obj.created_at.date())
+    version_path = populated_context["root"] / bundle.name / str(version_obj.created_at.date())
     assert not version_path.exists()
 
     # WHEN running the include files command
@@ -92,13 +92,13 @@ def test_include_files_specific_version(populated_context: Context, cli_runner: 
     """
     # GIVEN a context that is populated
     store = populated_context["store"]
-    bundle_obj = store.Bundle.query.first()
-    version_obj = bundle_obj.versions[0]
+    bundle = store.Bundle.query.first()
+    version_obj = bundle.versions[0]
     version_id = version_obj.id
     # GIVEN that the latest version of the bundle is not included
     assert version_obj.included_at is None
     # GIVEN that no version specific folder has been created since version is not included
-    version_path = populated_context["root"] / bundle_obj.name / str(version_obj.created_at.date())
+    version_path = populated_context["root"] / bundle.name / str(version_obj.created_at.date())
     assert not version_path.exists()
 
     # WHEN running the include files command
@@ -191,8 +191,8 @@ def test_include_bundle_without_version(
     new_bundle = store.new_bundle(name=bundle_name, created_at=timestamp)
     store.add_commit(new_bundle)
 
-    bundle_obj = store.get_bundle_by_name(bundle_name=bundle_name)
-    assert len(bundle_obj.versions) == 0
+    bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+    assert len(bundle.versions) == 0
 
     # WHEN running the include files specifying bundle without versions
     result = cli_runner.invoke(include, [bundle_name], obj=base_context)
