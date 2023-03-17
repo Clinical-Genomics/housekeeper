@@ -12,7 +12,7 @@ from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
 from housekeeper.store.filters.bundle_filters import apply_bundle_filter, BundleFilters
 from housekeeper.store.filters.version_filters import apply_version_filter, VersionFilters
 from housekeeper.store.filters.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
-from housekeeper.store.filters.file_tags_filters import FileTagFilters, apply_file_tag_filter
+from housekeeper.store.filters.file_tags_filters import FileTagFilter, apply_file_tag_filter
 
 from .base import BaseHandler
 
@@ -140,7 +140,7 @@ class FindHandler(BaseHandler):
 
             query = apply_file_tag_filter(
                 files_tags=query.join(File.tags),
-                filter_functions=[FileTagFilters.FILTER_FILES_BY_TAGS],
+                filter_functions=[FileTagFilter.FILTER_FILES_BY_TAGS],
                 tags=tags,
             )
 
