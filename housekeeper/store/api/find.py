@@ -4,7 +4,7 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import Iterable, List, Set
+from typing import List, Set
 from sqlalchemy.orm import Query
 
 from housekeeper.store.models import Bundle, File, Tag, Version
@@ -13,6 +13,7 @@ from housekeeper.store.filters.bundle_filters import apply_bundle_filter, Bundle
 from housekeeper.store.filters.version_filters import apply_version_filter, VersionFilters
 from housekeeper.store.filters.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
 from housekeeper.store.filters.file_tags_filters import FileTagFilter, apply_file_tag_filter
+from housekeeper.store.tag_filters import TagFilter, apply_tag_filter
 
 from .base import BaseHandler
 
