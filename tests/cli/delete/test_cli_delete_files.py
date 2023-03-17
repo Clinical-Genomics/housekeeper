@@ -67,7 +67,7 @@ def test_delete_existing_bundle_no_confirmation(
     assert bundle_obj
     case_id = bundle_obj.name
     # GIVEN the bundle files
-    files = store.files_before(bundle=case_id, tags=[])
+    files = store.get_files_before(bundle=case_id, tags=[])
     nr_files = len(files)
     assert nr_files > 0
 

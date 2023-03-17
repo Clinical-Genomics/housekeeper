@@ -53,7 +53,7 @@ def test_filter_version_by_id_with_empty_query_returns_empty_query(populated_sto
     """Test that the function returns an empty result when given an empty query."""
 
     # GIVEN an empty query
-    empty_query = populated_store.session.query(Version).filter(False)
+    empty_query = populated_store._get_version_query().filter(False)
     assert empty_query.count() == 0
 
     # WHEN filtering the empty query by an ID

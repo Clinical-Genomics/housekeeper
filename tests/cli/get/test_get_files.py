@@ -9,7 +9,7 @@ def test_get_files_no_files(base_context, cli_runner, helpers):
     # GIVEN a context with a populated store and a cli runner
     store = base_context["store"]
     # GIVEN a store without files
-    assert helpers.count_iterable(store.files()) == 0
+    assert helpers.count_iterable(store.get_files()) == 0
 
     # WHEN fetching all files by not specifying any file
     json_bundles = helpers.get_json(
@@ -27,7 +27,7 @@ def test_get_files_json(populated_context, cli_runner, helpers):
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a store with some files
-    nr_files = helpers.count_iterable(store.files())
+    nr_files = helpers.count_iterable(store.get_files())
     assert nr_files > 0
 
     # WHEN fetching all files by not specifying any file
@@ -45,7 +45,7 @@ def test_get_files(populated_context, cli_runner):
     # GIVEN a store with some files
     store = populated_context["store"]
     # GIVEN a file name
-    file_obj = store.files().first()
+    file_obj = store.get_files().first()
     file_name = Path(file_obj.path).name
 
     # WHEN fetching all files by not specifying any file
@@ -62,7 +62,7 @@ def test_get_files_tag(populated_context, cli_runner, helpers, vcf_tag_name):
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a store with some files that are tagged
-    nr_files = helpers.count_iterable(store.files(tags=[vcf_tag_name]))
+    nr_files = helpers.count_iterable(store.get_files(tags=[vcf_tag_name]))
     assert nr_files > 0
 
     # WHEN fetching all files by not specifying any file
@@ -83,7 +83,7 @@ def test_get_files_multiple_tags(
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a store with some files that are tagged
-    nr_files = helpers.count_iterable(store.files(tags=[vcf_tag_name, family_tag_name]))
+    nr_files = helpers.count_iterable(store.get_files(tags=[vcf_tag_name, family_tag_name]))
     assert nr_files > 0
 
     # WHEN fetching all files by not specifying any file
@@ -104,8 +104,8 @@ def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_n
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a store with some files that are tagged
-    total_nr_files = helpers.count_iterable(store.files())
-    nr_tag_files = helpers.count_iterable(store.files(tags=[family_tag_name]))
+    total_nr_files = helpers.count_iterable(store.get_files())
+    nr_tag_files = helpers.count_iterable(store.get_files(tags=[family_tag_name]))
     # GIVEN a tag that only fetches a subset of the files
     assert nr_tag_files < total_nr_files
 

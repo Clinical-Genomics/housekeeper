@@ -13,7 +13,7 @@ def test_filter_bundles_by_id_returns_the_correct_bundle(populated_store: Store)
     """Test getting collaboration by internal_id."""
 
     # GIVEN a store with a bundle
-    bundle: Bundle = populated_store.session.query(Bundle).first()
+    bundle: Bundle = populated_store._get_bundle_query().first()
     assert bundle
 
     bundle_id: int = bundle.id
@@ -34,7 +34,7 @@ def test_filter_bundles_by_name_returns_the_correct_bundle(populated_store: Stor
     """Test getting bundle by name."""
 
     # GIVEN a store with a bundle
-    bundle: Bundle = populated_store.session.query(Bundle).first()
+    bundle: Bundle = populated_store._get_bundle_query().first()
     assert bundle
 
     bundle_name: str = bundle.name

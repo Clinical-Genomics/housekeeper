@@ -159,7 +159,7 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
         raise click.Abort
 
     if file_id:
-        file_obj = store.file_(file_id)
+        file_obj = store.get_file_by_id(file_id)
         if not file_obj:
             LOG.warning("unable to find file with id %s", file_id)
             raise click.Abort

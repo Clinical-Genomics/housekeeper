@@ -27,7 +27,7 @@ def apply_version_filter(
     version_id: Optional[int] = None,
     before_date: Optional[datetime] = None,
 ) -> Query:
-    """Apply filtering functions and return filtered results."""
+    """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:
         versions: Query = filter_function(
             versions=versions,

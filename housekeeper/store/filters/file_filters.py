@@ -10,17 +10,17 @@ def filter_files_by_id(files: Query, file_id: int, **kwargs) -> Query:
     return files.filter(File.id == file_id)
 
 
-class FileFilters(Enum):
+class FileFilter(Enum):
     """Define File filter functions."""
     FILTER_BY_ID: Callable = filter_files_by_id
 
 
-def apply_file_filters(
+def apply_file_filter(
     files: Query,
     filter_functions: List[Callable],
     file_id: Optional[int] = None,
 ) -> Query:
-    """Apply filtering functions and return filtered results."""
+    """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:
         files: Query = filter_function(
             files=files,

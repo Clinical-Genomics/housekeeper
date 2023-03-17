@@ -1,5 +1,9 @@
 """Tests for the store api"""
 import datetime
+from typing import List
+
+from housekeeper.store.models import File
+
 
 
 def test_fetch_bundles(populated_store, bundle_data_old, time_stamp_now):
@@ -12,7 +16,7 @@ def test_fetch_bundles(populated_store, bundle_data_old, time_stamp_now):
     store.add_commit(bundle_old_obj)
 
     # WHEN fetching all files in the database
-    files = store.files_before(before_date=time_stamp_now)
+    files = store.get_files_before(before_date=time_stamp_now)
 
     # THEN all four files should be fetched
     assert len(files) == 4
@@ -30,13 +34,16 @@ def test_fetch_past_files(populated_store, bundle_data_old, timestamp, old_times
     # WHEN fetching all files before the oldest date
     date = old_timestamp + datetime.timedelta(days=10)
     assert old_timestamp < date < timestamp
-    files = store.files_before(before_date=date)
+    files: List[File] = store.get_files_before(before_date=date)
+
+    # THEN a list of Files is returned
+    assert isinstance(files[0], File)
 
     # THEN assert only files from the old bundle was found
     assert len(files) == 2
 
 
-def test_fetch_no_files_before_oldest(populated_store, bundle_data_old, old_timestamp, timestamp):
+def test_fetch_no_get_files_before_oldest(populated_store, bundle_data_old, old_timestamp, timestamp):
     """
     test fetch files where no files are older than before date
     """
@@ -48,7 +55,7 @@ def test_fetch_no_files_before_oldest(populated_store, bundle_data_old, old_time
     # WHEN fetching all files before the oldest date
     date = old_timestamp - datetime.timedelta(days=10)
     assert date < old_timestamp < timestamp
-    files = store.files_before(before_date=date)
+    files: List[File] = store.get_files_before(before_date=date)
 
     # THEN assert no files where that old
     assert len(files) == 0

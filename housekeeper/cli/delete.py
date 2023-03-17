@@ -109,7 +109,7 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     if bundle_name:
         validate_bundle_exists(store, bundle_name)
 
-    files = store.files_before(bundle=bundle_name, tags=tag, before_date=before_date)
+    files = store.get_files_before(bundle=bundle_name, tags=tag, before_date=before_date)
 
     if notondisk:
         files = store.get_files_not_on_disk(files)

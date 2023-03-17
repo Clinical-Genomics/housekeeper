@@ -6,13 +6,13 @@ import logging
 from pathlib import Path
 from typing import Iterable, List, Set
 from sqlalchemy.orm import Query
-from housekeeper.store.filters.file_tags_filters import FileTagFilters, apply_file_tag_filters
 
 from housekeeper.store.models import Bundle, File, Tag, Version
-from housekeeper.store.filters.file_filters import FileFilters, apply_file_filters
+from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
 from housekeeper.store.filters.bundle_filters import apply_bundle_filter, BundleFilters
 from housekeeper.store.filters.version_filters import apply_version_filter, VersionFilters
 from housekeeper.store.filters.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
+from housekeeper.store.filters.file_tags_filters import FileTagFilters, apply_file_tag_filter
 
 from .base import BaseHandler
 
@@ -46,6 +46,9 @@ class FindHandler(BaseHandler):
     def _get_join_file_tag_query(self) -> Query:
         """Return file tag query."""
         return self.File.query.join(File.tags)
+
+    def _get_join_version_query(self, query: Query):
+        return query.join(Version)
 
     def get_bundle_by_id(self, bundle_id: int) -> Bundle:
         """Fetch a bundle by id from the store."""
@@ -92,18 +95,27 @@ class FindHandler(BaseHandler):
         """Fetch all tags from the database."""
         return self.Tag.query
 
-    def file_(self, file_id: int):
+    def get_file_by_id(self, file_id: int):
         """Get a file by record id."""
-        return apply_file_filters(
+        return apply_file_filter(
             files=self._get_file_query(),
-            filter_functions=[FileFilters.FILTER_BY_ID],
+            filter_functions=[FileFilter.FILTER_BY_ID],
             file_id=file_id,
         ).first()
 
-    def files(
-        self, bundle: str = None, tags: List[str] = None, version: int = None
-    ) -> Iterable[File]:
-        """Fetch files from the store."""
+    def get_files(
+        self, bundle: str = None, tags: List[str] = None, version: int = None   
+    ) -> Query:
+        """Fetches files from the store based on the specified filters.
+
+        Args:
+            bundle (str, optional): Name of the bundle to fetch files from.
+            tags (List[str], optional): List of tags to filter files by.
+            version (int, optional): ID of the version to fetch files from.
+
+        Returns:
+            Query: A query that match the specified filters.
+        """
         query = self._get_file_query()
         if bundle:
             LOG.info(f"Fetching files from bundle {bundle}")
@@ -117,7 +129,7 @@ class FindHandler(BaseHandler):
             formatted_tags = ",".join(tags)
             LOG.info(f"Fetching files with tags in [{formatted_tags}]")
 
-            query = apply_file_tag_filters(
+            query = apply_file_tag_filter(
                 files_tags=query.join(File.tags),
                 filter_functions=[FileTagFilters.FILTER_FILES_BY_TAGS],
                 tags=tags,
@@ -133,14 +145,14 @@ class FindHandler(BaseHandler):
 
         return query
 
-    def files_before(
+    def get_files_before(
         self, bundle: str = None, tags: List[str] = None, before_date: dt.datetime = None
     ) -> List[File]:
         """Fetch files before date from store"""
-        query = self.files(tags=tags, bundle=bundle)
+        query = self.get_files(tags=tags, bundle=bundle)
         if before_date:
             query = apply_version_filter(
-                versions=query.join(Version),
+                versions=self._get_join_version_query(query),
                 filter_functions=[VersionFilters.FILTER_BY_DATE],
                 before_date=before_date,
             )

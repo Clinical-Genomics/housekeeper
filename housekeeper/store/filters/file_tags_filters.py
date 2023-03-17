@@ -15,13 +15,13 @@ class FileTagFilters(Enum):
     FILTER_FILES_BY_TAGS: Callable = filter_files_by_tags
 
 
-def apply_file_tag_filters(
+def apply_file_tag_filter(
     files_tags: Query,
     filter_functions: List[Callable],
     file_id: Optional[int] = None,
     tags: Optional[List[str]] = None,
 ) -> Query:
-    """Apply filtering functions and return filtered results."""
+    """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:
         files_tags: Query = filter_function(
             files_tags=files_tags,

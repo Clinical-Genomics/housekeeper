@@ -119,7 +119,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
 def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str, json: bool, compact: bool):
     """Get files from database"""
     store = context.obj["store"]
-    file_objs = store.files(bundle=bundle, tags=tags, version=version)
+    file_objs = store.get_files(bundle=bundle, tags=tags, version=version)
     template = schema.FileSchema()
     result = []
     for file in file_objs:
