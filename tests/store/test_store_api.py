@@ -6,9 +6,9 @@ from housekeeper.store.models import File
 
 
 
-def test_fetch_bundles(populated_store, bundle_data_old, time_stamp_now):
+def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     """
-    test fetch all files when two bundles are added
+    Test return all files when two bundles are added.
     """
     store = populated_store
     # GIVEN a store with two bundles and two files in each bundle

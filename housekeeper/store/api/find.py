@@ -169,7 +169,7 @@ class FindHandler(BaseHandler):
         return query.all()
 
     @staticmethod
-    def get_files_not_on_disk(files: List[File]) -> Set[File]:
+    def get_files_not_on_disk(files: List[File]) -> List[File]:
         """Return set of files that are not on disk."""
         if not files:
             return

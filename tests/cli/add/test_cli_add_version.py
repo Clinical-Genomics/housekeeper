@@ -6,6 +6,7 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli.add import version_cmd
+from housekeeper.store.models import Bundle
 
 
 def test_add_version_non_input(populated_context: Context, cli_runner: CliRunner, caplog):
@@ -57,7 +58,8 @@ def test_add_version_existing_bundle(populated_context: Context, cli_runner: Cli
     store = populated_context["store"]
     # GIVEN a existing bundle
     bundle = store.Bundle.query.first()
-    assert bundle
+    assert isinstance(bundle, Bundle)
+
     # GIVEN the name of a existing bundle
     bundle_name = bundle.name
 
@@ -83,7 +85,7 @@ def test_add_version_existing_bundle_same_date(
     store = populated_context["store"]
     # GIVEN a existing bundle
     bundle = store.Bundle.query.first()
-    assert bundle
+    assert isinstance(bundle, Bundle)
     bundle_name = bundle.name
 
     # WHEN trying to add a version to an existing bundle
@@ -115,7 +117,7 @@ def test_add_version_no_files_json(
     version_data = json.loads(empty_version_data_json)
     # GIVEN a bundle with one version
     bundle = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
-    assert bundle
+    assert isinstance(bundle, Bundle)
     assert len(bundle.versions) == 1
     # GIVEN version information without files, in json format
     assert version_data["files"] == []
@@ -145,7 +147,7 @@ def test_add_version_with_files_json(
     version_data = json.loads(version_data_json)
     # GIVEN a bundle with one version
     bundle = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
-    assert bundle
+    assert isinstance(bundle, Bundle)
     assert len(bundle.versions) == 1
     # GIVEN version information without files, in json format
     assert version_data["files"] != []
