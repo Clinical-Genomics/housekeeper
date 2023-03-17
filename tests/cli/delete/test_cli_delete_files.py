@@ -63,11 +63,11 @@ def test_delete_existing_bundle_no_confirmation(
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle_obj = store.Bundle.query.first()
+    bundle_obj = store._get_bundle_query().first()
     assert bundle_obj
     case_id = bundle_obj.name
     # GIVEN the bundle files
-    files = store.get_files_before(bundle=case_id, tags=[])
+    files = store.get_files_before(bundle_name=case_id, tags=[])
     nr_files = len(files)
     assert nr_files > 0
 

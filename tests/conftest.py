@@ -20,7 +20,7 @@ from .helper_functions import Helpers
 
 @pytest.fixture(scope="function", name="helpers")
 def fixture_helpers() -> Helpers:
-    """Return a test helper object"""
+    """Return a test helper object."""
     return Helpers()
 
 
@@ -124,7 +124,7 @@ def fixture_later_timestamp() -> datetime.datetime:
 def fixture_bundle_data(
     case_id: str, sample_data: dict, family_data: dict, timestamp: datetime.datetime, helpers: Helpers
 ) -> dict:
-    """Return a dummy bundle"""
+    """Return a bundle."""
     data = helpers.create_bundle_data(case_id=case_id, files=[family_data, sample_data], created_at=timestamp)
     return data
 

@@ -68,7 +68,7 @@ def fixture_populated_context_subsequent(db_uri, project_dir, populated_store_su
 def fixture_bundle_data_subsequent(
         case_id: str, family_data: dict, family2_data: dict, family3_data: dict, timestamp: datetime.datetime
 ) -> dict:
-    """Return a dummy bundle"""
+    """Return a bundle."""
     data = {
         "name": case_id,
         "created_at": timestamp,

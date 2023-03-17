@@ -156,10 +156,10 @@ class FindHandler(BaseHandler):
         return query
 
     def get_files_before(
-        self, bundle: str = None, tags: List[str] = None, before_date: dt.datetime = None
+        self, bundle_name: str = None, tags: List[str] = None, before_date: dt.datetime = None
     ) -> List[File]:
         """Fetch files before date from store"""
-        query = self.get_files(tags=tags, bundle=bundle)
+        query = self.get_files(tags=tags, bundle=bundle_name)
         if before_date:
             query = apply_version_filter(
                 versions=self._get_join_version_query(query),

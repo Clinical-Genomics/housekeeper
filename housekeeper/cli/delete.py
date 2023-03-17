@@ -7,6 +7,8 @@ from pathlib import Path
 import click
 
 from housekeeper.date import get_date
+from housekeeper.store.api.core import Store
+from housekeeper.store.models import File
 
 LOG = logging.getLogger(__name__)
 
@@ -21,7 +23,7 @@ def delete():
 @click.argument("bundle_name")
 @click.pass_context
 def bundle_cmd(context, yes, bundle_name):
-    """Delete a empty bundle, that is a bundle without versions"""
+    """Delete a empty bundle, that is a bundle without versions."""
     store = context.obj["store"]
     bundle = store.get_bundle_by_name(bundle_name=bundle_name)
     if bundle is None:
@@ -107,29 +109,29 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     store = context.obj["store"]
 
     if bundle_name:
-        validate_bundle_exists(store, bundle_name)
+        validate_bundle_exists(store=store, bundle_name=bundle_name)
 
-    files = store.get_files_before(bundle=bundle_name, tags=tag, before_date=before_date)
+    files = store.get_files_before(bundle_name=bundle_name, tags=tag, before_date=before_date)
 
     if notondisk:
-        files = store.get_files_not_on_disk(files)
+        files = store.get_files_not_on_disk(files=files)
 
     if not files:
         LOG.warning("No files found")
         raise click.Abort
 
     if list_files_verbose:
-        list_files_verbosely(files)
+        list_files_verbosely(files=files)
 
     elif list_files:
-        list_files_with_full_path(files)
+        list_files_with_full_path(files=files)
 
     if not (yes or click.confirm(f"Are you sure you want to delete {len(files)} files?")):
         raise click.Abort
 
-    for file_obj in files:
-        if yes or click.confirm(f"remove file from disk and database: {file_obj.full_path}"):
-            delete_file(file_obj, store)
+    for file in files:
+        if yes or click.confirm(f"remove file from disk and database: {file.full_path}"):
+            delete_file(file=file, store=store)
 
 def validate_delete_options(tag: str, bundle_name: str):
     """Validate delete options."""
@@ -137,7 +139,7 @@ def validate_delete_options(tag: str, bundle_name: str):
         LOG.info(f"Please specify a bundle or a tag")
         raise click.Abort
 
-def validate_bundle_exists(store, bundle_name: str):
+def validate_bundle_exists(store: Store, bundle_name: str):
     """Validate bundle exists."""
     if not store.get_bundle_by_name(bundle_name=bundle_name):
         LOG.warning(f"Bundle {bundle_name} not found")
@@ -156,24 +158,25 @@ def list_files_with_full_path(files):
     for file in files:
         click.echo(file.full_path)
 
-def delete_file(file, store):
-    file_obj_path = Path(file.full_path)
+def delete_file(file: File, store: Store):
+    file_path = Path(file.full_path)
     if file_should_be_unlinked(file):
-        file_obj_path.unlink()
+        file_path.unlink()
     file.delete()
     store.commit()
-    LOG.info("%s deleted", file.full_path)
+    LOG.info(f"{file.full_path} deleted")
 
-def file_should_be_unlinked(file):
+def file_should_be_unlinked(file: File):
+    """Check if file should be unlinked."""
     file_path = Path(file.full_path)
     return file.is_included and (file_path.exists() or file_path.is_symlink())
 
 def parse_date(date: str):
     """Attempt to parse date in two different formats."""
     try:
-        return get_date(date)
+        return get_date(date=date)
     except ValueError:
-        return get_date(date, "%Y-%m-%d %H:%M:%S")
+        return get_date(date=date, date_format="%Y-%m-%d %H:%M:%S")
 
 @delete.command("file")
 @click.option("-y", "--yes", is_flag=True, help="skip checks")
@@ -182,20 +185,20 @@ def parse_date(date: str):
 def file_cmd(context, yes, file_id):
     """Delete a file."""
     store = context.obj["store"]
-    file_obj = store.File.get(file_id)
-    if not file_obj:
+    file = store.get_file_by_id(file_id=file_id)
+    if not file:
         LOG.info("file not found")
         raise click.Abort
 
-    if file_obj.is_included:
-        question = f"remove file from file system and database: {file_obj.full_path}"
+    if file.is_included:
+        question = f"remove file from file system and database: {file.full_path}"
     else:
-        question = f"remove file from database: {file_obj.full_path}"
+        question = f"remove file from database: {file.full_path}"
 
     if yes or click.confirm(question):
-        if file_obj.is_included and Path(file_obj.full_path).exists():
-            Path(file_obj.full_path).unlink()
+        if file.is_included and Path(file.full_path).exists():
+            Path(file.full_path).unlink()
 
-        file_obj.delete()
+        file.delete()
         store.commit()
         LOG.info("file deleted")

@@ -152,16 +152,16 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
     """Add tags to housekeeper. Use `--file-id` to add tags to existing file"""
     LOG.info("Running add tag")
     store: Store = context.obj["store"]
-    file_obj = None
+    file = None
     if len(tags) == 0:
         LOG.warning("No tags provided")
         raise click.Abort
 
     if file_id:
-        file_obj = store.get_file_by_id(file_id)
+        file = store.get_file_by_id(file_id=file_id)
 
-        if not file_obj:
-            LOG.warning("unable to find file with id %s", file_id)
+        if not file:
+            LOG.warning(f"unable to find file with id: {file_id}")
             raise click.Abort
 
     tag_name: str
@@ -173,19 +173,19 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
             tag: Tag = store.new_tag(tag_name)
             store.add_commit(tag)
 
-        if not file_obj:
+        if not file:
             continue
 
-        if tag in file_obj.tags:
+        if tag in file.tags:
             LOG.info("%s: tag already added", tag_name)
             continue
 
-        file_obj.tags.append(tag)
+        file.tags.append(tag)
 
     store.commit()
 
-    if not file_obj:
+    if not file:
         return
 
-    all_tags: Generator = (tag.name for tag in file_obj.tags)
+    all_tags: Generator = (tag.name for tag in file.tags)
     LOG.info("file tags: %s", ", ".join(all_tags))
