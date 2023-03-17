@@ -14,6 +14,7 @@ def test_filter_bundles_by_id_returns_the_correct_bundle(populated_store: Store)
 
     # GIVEN a store with a bundle
     bundle: Bundle = populated_store._get_bundle_query().first()
+    assert isinstance(bundle, Bundle)
     assert bundle
 
     bundle_id: int = bundle.id
@@ -35,6 +36,7 @@ def test_filter_bundles_by_name_returns_the_correct_bundle(populated_store: Stor
 
     # GIVEN a store with a bundle
     bundle: Bundle = populated_store._get_bundle_query().first()
+    assert isinstance(bundle, Bundle)
     assert bundle
 
     bundle_name: str = bundle.name

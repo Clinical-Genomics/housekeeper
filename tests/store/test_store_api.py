@@ -22,7 +22,7 @@ def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     assert len(files) == 4
 
 
-def test_fetch_past_files(populated_store, bundle_data_old, timestamp, old_timestamp):
+def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timestamp):
     """
     test fetch files where not all files are older than before date
     """
@@ -43,9 +43,9 @@ def test_fetch_past_files(populated_store, bundle_data_old, timestamp, old_times
     assert len(files) == 2
 
 
-def test_fetch_no_get_files_before_oldest(populated_store, bundle_data_old, old_timestamp, timestamp):
+def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_timestamp, timestamp):
     """
-    test fetch files where no files are older than before date
+    Test get files where no files are older than before date.
     """
     store = populated_store
     # GIVEN a store with two bundles and two files in each bundle

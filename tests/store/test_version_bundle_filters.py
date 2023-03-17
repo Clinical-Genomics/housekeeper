@@ -11,6 +11,7 @@ def test_filter_version_by_name_and_bundle_date_returns_the_correct_version(popu
 
     # GIVEN a store with a version
     version_bundles_query: Query =populated_store._get_join_version_bundle_query()
+    assert isinstance(version_bundles_query, Query)
     assert version_bundles_query.count() > 0
 
     # GIVEN a bundle name and creation date
