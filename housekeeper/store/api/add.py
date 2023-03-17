@@ -19,7 +19,7 @@ class AddHandler(BaseHandler):
         super().__init__()
         AddHandler.version = FindHandler.version
         AddHandler.get_bundle_by_name = FindHandler.get_bundle_by_name
-        AddHandler.tag = FindHandler.tag
+        AddHandler.get_tag = FindHandler.get_tag
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
         """Create a new file bundle."""
@@ -124,7 +124,7 @@ class AddHandler(BaseHandler):
         """
         tags = {}
         for tag_name in tag_names:
-            tag_obj = self.tag(tag_name)
+            tag_obj = self.get_tag(tag_name)
             if tag_obj is None:
                 LOG.debug("create new tag: %s", tag_name)
                 tag_obj = self.new_tag(tag_name)

@@ -39,10 +39,10 @@ def validate_input(data: dict, input_type: str):
 
     LOG.info("Validating bundle schema")
 
-    formated_data = schema.dump(data)
+    formatted_data = schema.dump(data)
     try:
         LOG.info("Validate marshmallow schema")
-        schema.load(formated_data)
+        schema.load(formatted_data)
     except ValidationError as err:
         LOG.warning("Input data does not follow the models")
         LOG.error(err)

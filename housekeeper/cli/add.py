@@ -3,12 +3,14 @@ import datetime as dt
 import logging
 from logging import Logger
 from pathlib import Path
-from typing import List
+from typing import List, Dict, Generator
 
 import click
 
 from housekeeper.date import get_date
 from housekeeper.files import load_json, validate_input
+from housekeeper.store import Store
+from housekeeper.store.models import Bundle, Version, File, Tag
 
 LOG: Logger = logging.getLogger(__name__)
 
@@ -39,16 +41,14 @@ def add():
 def bundle_cmd(context: click.Context, bundle_name: str, json: str):
     """Add a new bundle."""
     LOG.info("Running add bundle")
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data = {}
-    data["name"] = bundle_name
-    data["created_at"] = str(dt.datetime.now())
+    data: Dict = {"name": bundle_name, "created_at": str(dt.datetime.now())}
     # This is to preserve the behaviour of adding a bundle without providing all information
     if json:
-        data = load_json(json)
+        data: Dict = load_json(json)
 
     bundle_name = data["name"]
     if store.get_bundle_by_name(bundle_name=bundle_name):
@@ -67,7 +67,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
         LOG.warning("File %s does not exist", err)
         raise click.Abort
     store.add_commit(new_bundle)
-    new_version.bundle = new_bundle
+    new_version.bundle: Bundle = new_bundle
     store.add_commit(new_version)
     LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
@@ -75,18 +75,18 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
 @add.command("file")
 @click.option("-t", "--tag", "tags", multiple=True, help="tag to associate the file by")
 @click.option("-b", "--bundle-name", help="name of bundle that file should be added to")
-@click.option("-j", "--json", help="json formated input")
+@click.option("-j", "--json", help="json formatted input")
 @click.argument("path", required=False)
 @click.pass_context
 def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: str, path: str):
     """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     validate_args(arg=path, json=json, arg_name="path")
 
-    data = {}
+    data: Dict = {}
     if json:
-        data = load_json(json)
+        data: Dict = load_json(json)
         validate_input(data, input_type="file")
 
     file_path = Path(data.get("path", path))
@@ -96,6 +96,7 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
 
     bundle_name = data.get("bundle", bundle_name)
     bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+
     if bundle is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
@@ -119,11 +120,9 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data = {}
-    data["bundle_name"] = bundle_name
-    data["created_at"] = created_at
+    data: Dict = {"bundle_name": bundle_name, "created_at": created_at}
     if json:
-        data = load_json(json)
+        data: Dict = load_json(json)
         bundle_name = data["bundle_name"]
 
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
@@ -135,8 +134,8 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
         raise click.Abort
 
     data["created_at"] = get_date(data.get("created_at"))
-
     new_version = store.add_version(data, bundle)
+
     if not new_version:
         LOG.warning("Seems like version already exists for the bundle")
         raise click.Abort
@@ -152,7 +151,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 def tag_cmd(context: click.Context, tags: List[str], file_id: int):
     """Add tags to housekeeper. Use `--file-id` to add tags to existing file"""
     LOG.info("Running add tag")
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     file_obj = None
     if len(tags) == 0:
         LOG.warning("No tags provided")
@@ -160,31 +159,33 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
 
     if file_id:
         file_obj = store.get_file_by_id(file_id)
+
         if not file_obj:
             LOG.warning("unable to find file with id %s", file_id)
             raise click.Abort
 
+    tag_name: str
     for tag_name in tags:
-        tag_obj = store.tag(tag_name)
+        tag: Tag = store.get_tag(tag_name)
 
-        if not tag_obj:
+        if not tag:
             LOG.info("%s: tag created", tag_name)
-            tag_obj = store.new_tag(tag_name)
-            store.add_commit(tag_obj)
+            tag: Tag = store.new_tag(tag_name)
+            store.add_commit(tag)
 
         if not file_obj:
             continue
 
-        if tag_obj in file_obj.tags:
+        if tag in file_obj.tags:
             LOG.info("%s: tag already added", tag_name)
             continue
 
-        file_obj.tags.append(tag_obj)
+        file_obj.tags.append(tag)
 
     store.commit()
 
     if not file_obj:
         return
 
-    all_tags = (tag.name for tag in file_obj.tags)
+    all_tags: Generator = (tag.name for tag in file_obj.tags)
     LOG.info("file tags: %s", ", ".join(all_tags))

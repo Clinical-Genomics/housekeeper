@@ -87,12 +87,22 @@ class FindHandler(BaseHandler):
             bundle_name=bundle,
         ).first()
 
-    def tag(self, name: str) -> Tag:
-        """Fetch a tag from the database."""
-        return self.Tag.filter_by(name=name).first()
+    def get_tag(self, tag_name: str = None) -> Tag:
+        """Return a tag from the database."""
+        LOG.info(f"Fetching tag with name: {tag_name}")
+        return apply_tag_filter(
+            tags=self._get_tag_query(),
+            filter_functions=[TagFilter.FILTER_BY_NAME],
+            tag_name=tag_name,
+        ).first()
 
-    def tags(self) -> List:
-        """Fetch all tags from the database."""
+    def get_tags(self) -> Query:
+        """Return all tags from the database."""
+        LOG.info("Fetching all tags")
+        return self._get_tag_query()
+
+    def _get_tag_query(self) -> Query:
+        """Return a tag query."""
         return self.Tag.query
 
     def get_file_by_id(self, file_id: int):
@@ -107,7 +117,6 @@ class FindHandler(BaseHandler):
         self, bundle: str = None, tags: List[str] = None, version: int = None   
     ) -> Query:
         """Fetches files from the store based on the specified filters.
-
         Args:
             bundle (str, optional): Name of the bundle to fetch files from.
             tags (List[str], optional): List of tags to filter files by.
