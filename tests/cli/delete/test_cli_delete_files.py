@@ -7,7 +7,9 @@ from click.testing import CliRunner
 from housekeeper.cli import delete
 
 
-def test_delete_files_non_specified(base_context: Context, cli_runner: CliRunner, caplog):
+def test_delete_files_non_specified(
+    base_context: Context, cli_runner: CliRunner, caplog
+):
     """Test to delete files without specifying bundle name or tag"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a store and a cli runner
@@ -29,7 +31,9 @@ def test_delete_files_non_existing_bundle(
     # GIVEN a context with a store and a cli runner
 
     # WHEN trying to delete a bundle
-    result = cli_runner.invoke(delete.files_cmd, ["--bundle-name", case_id], obj=base_context)
+    result = cli_runner.invoke(
+        delete.files_cmd, ["--bundle-name", case_id], obj=base_context
+    )
 
     # THEN assert it exits non zero
     assert result.exit_code == 1
@@ -50,7 +54,9 @@ def test_delete_existing_bundle_with_confirmation(
     case_id = bundle_obj.name
 
     # WHEN trying to delete files without specifying bundle name or tag
-    result = cli_runner.invoke(delete.files_cmd, ["--bundle-name", case_id], obj=populated_context)
+    result = cli_runner.invoke(
+        delete.files_cmd, ["--bundle-name", case_id], obj=populated_context
+    )
     # THEN it should ask if you are sure
     assert "Are you sure you want to delete" in result.output
 
@@ -67,11 +73,13 @@ def test_delete_existing_bundle_no_confirmation(
     assert bundle_obj
     case_id = bundle_obj.name
     # GIVEN the bundle files
-    files = store.get_files_before(bundle_name=case_id, tags=[])
+    files = store.get_files_before(bundle_name=case_id, tag_names=[])
     nr_files = len(files)
     assert nr_files > 0
 
     # WHEN trying to delete a bundle without requiring confirmation
-    cli_runner.invoke(delete.files_cmd, ["--bundle-name", case_id, "--yes"], obj=populated_context)
+    cli_runner.invoke(
+        delete.files_cmd, ["--bundle-name", case_id, "--yes"], obj=populated_context
+    )
     # THEN the bundle should have been removed
     assert "deleted" in caplog.text

@@ -5,7 +5,6 @@ from typing import List
 from housekeeper.store.models import File
 
 
-
 def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     """
     Test return all files when two bundles are added.
@@ -43,7 +42,9 @@ def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timesta
     assert len(files) == 2
 
 
-def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_timestamp, timestamp):
+def test_get_no_get_files_before_oldest(
+    populated_store, bundle_data_old, old_timestamp, timestamp
+):
     """
     Test get files where no files are older than before date.
     """

@@ -79,7 +79,9 @@ def version_cmd(context, bundle_name, version_id, yes):
     if version_obj.included_at:
         question = f"remove bundle version from file system and database: {version_obj.full_path}"
     else:
-        question = f"remove bundle version from database: {version_obj.created_at.date()}"
+        question = (
+            f"remove bundle version from database: {version_obj.created_at.date()}"
+        )
 
     if not (yes or click.confirm(question)):
         raise click.Abort
@@ -97,11 +99,19 @@ def version_cmd(context, bundle_name, version_id, yes):
 @click.option("-t", "--tag", multiple=True, help="file tag")
 @click.option("-b", "--bundle-name", help="bundle name")
 @click.option("-a", "--before", help="version created before...")
-@click.option("-n", "--notondisk", is_flag=True, help="rm db entry from files not on disk")
-@click.option("-l", "--list-files", is_flag=True, help="lists files that will be deleted")
-@click.option("-L", "--list-files-verbose", is_flag=True, help="lists additional information")
+@click.option(
+    "-n", "--notondisk", is_flag=True, help="rm db entry from files not on disk"
+)
+@click.option(
+    "-l", "--list-files", is_flag=True, help="lists files that will be deleted"
+)
+@click.option(
+    "-L", "--list-files-verbose", is_flag=True, help="lists additional information"
+)
 @click.pass_context
-def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose):
+def files_cmd(
+    context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose
+):
     """Delete files based on tags."""
 
     validate_delete_options(tag=tag, bundle_name=bundle_name)
@@ -111,7 +121,9 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     if bundle_name:
         validate_bundle_exists(store=store, bundle_name=bundle_name)
 
-    files = store.get_files_before(bundle_name=bundle_name, tags=tag, before_date=before_date)
+    files = store.get_files_before(
+        bundle_name=bundle_name, tag_names=tag, before_date=before_date
+    )
 
     if notondisk:
         files = store.get_files_not_on_disk(files=files)
@@ -126,12 +138,17 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     elif list_files:
         list_files_with_full_path(files=files)
 
-    if not (yes or click.confirm(f"Are you sure you want to delete {len(files)} files?")):
+    if not (
+        yes or click.confirm(f"Are you sure you want to delete {len(files)} files?")
+    ):
         raise click.Abort
 
     for file in files:
-        if yes or click.confirm(f"remove file from disk and database: {file.full_path}"):
+        if yes or click.confirm(
+            f"remove file from disk and database: {file.full_path}"
+        ):
             delete_file(file=file, store=store)
+
 
 def validate_delete_options(tag: str, bundle_name: str):
     """Validate delete options."""
@@ -139,11 +156,13 @@ def validate_delete_options(tag: str, bundle_name: str):
         LOG.info(f"Please specify a bundle or a tag")
         raise click.Abort
 
+
 def validate_bundle_exists(store: Store, bundle_name: str):
     """Validate bundle exists."""
     if not store.get_bundle_by_name(bundle_name=bundle_name):
         LOG.warning(f"Bundle {bundle_name} not found")
         raise click.Abort
+
 
 def list_files_verbosely(files):
     """List files verbosely."""
@@ -154,9 +173,11 @@ def list_files_verbosely(files):
             f"{click.style(tags, fg='yellow')}"
         )
 
+
 def list_files_with_full_path(files):
     for file in files:
         click.echo(file.full_path)
+
 
 def delete_file(file: File, store: Store):
     file_path = Path(file.full_path)
@@ -166,10 +187,12 @@ def delete_file(file: File, store: Store):
     store.commit()
     LOG.info(f"{file.full_path} deleted")
 
+
 def file_should_be_unlinked(file: File):
     """Check if file should be unlinked."""
     file_path = Path(file.full_path)
     return file.is_included and (file_path.exists() or file_path.is_symlink())
+
 
 def parse_date(date: str):
     """Attempt to parse date in two different formats."""
@@ -177,6 +200,7 @@ def parse_date(date: str):
         return get_date(date=date)
     except ValueError:
         return get_date(date=date, date_format="%Y-%m-%d %H:%M:%S")
+
 
 @delete.command("file")
 @click.option("-y", "--yes", is_flag=True, help="skip checks")

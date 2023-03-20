@@ -125,42 +125,45 @@ class FindHandler(BaseHandler):
         ).first()
 
     def get_files(
-        self, bundle: str = None, tags: List[str] = None, version: int = None
+        self,
+        bundle_name: str = None,
+        tag_names: List[str] = None,
+        version_id: int = None,
     ) -> Query:
         """Fetches files from the store based on the specified filters.
         Args:
-            bundle (str, optional): Name of the bundle to fetch files from.
-            tags (List[str], optional): List of tags to filter files by.
-            version (int, optional): ID of the version to fetch files from.
+            bundle_name (str, optional): Name of the bundle to fetch files from.
+            tag_names (List[str], optional): List of tags to filter files by.
+            version_id (int, optional): ID of the version to fetch files from.
 
         Returns:
             Query: A query that match the specified filters.
         """
         query = self._get_file_query()
-        if bundle:
-            LOG.info(f"Fetching files from bundle {bundle}")
+        if bundle_name:
+            LOG.info(f"Fetching files from bundle {bundle_name}")
             query = apply_bundle_filter(
                 bundles=query.join(self.File.version, self.Version.bundle),
                 filter_functions=[BundleFilters.FILTER_BY_NAME],
-                bundle_name=bundle,
+                bundle_name=bundle_name,
             )
 
-        if tags:
-            formatted_tags = ",".join(tags)
+        if tag_names:
+            formatted_tags = ",".join(tag_names)
             LOG.info(f"Fetching files with tags in [{formatted_tags}]")
 
             query = apply_file_tag_filter(
                 files_tags=query.join(File.tags),
                 filter_functions=[FileTagFilter.FILTER_FILES_BY_TAGS],
-                tags=tags,
+                tag_names=tag_names,
             )
 
-        if version:
-            LOG.info(f"Fetching files from version {version}")
+        if version_id:
+            LOG.info(f"Fetching files from version {version_id}")
             query = apply_version_filter(
                 versions=query.join(self.File.version),
                 filter_functions=[VersionFilters.FILTER_BY_ID],
-                version_id=version,
+                version_id=version_id,
             )
 
         return query
@@ -168,11 +171,11 @@ class FindHandler(BaseHandler):
     def get_files_before(
         self,
         bundle_name: str = None,
-        tags: List[str] = None,
+        tag_names: List[str] = None,
         before_date: dt.datetime = None,
     ) -> List[File]:
         """Return files before a specific date from store."""
-        query = self.get_files(tags=tags, bundle=bundle_name)
+        query = self.get_files(tag_names=tag_names, bundle_name=bundle_name)
         if before_date:
             query = apply_version_filter(
                 versions=self._get_join_version_query(query),

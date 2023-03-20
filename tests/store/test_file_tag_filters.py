@@ -14,7 +14,7 @@ def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
     # WHEN filtering files by tags
     filtered_files_query = filter_files_by_tags(
         files_tags=populated_store._get_join_file_tag_query(),
-        tags=tag_names,
+        tag_names=tag_names,
     )
 
     filtered_files: List[File] = filtered_files_query.all()
@@ -30,15 +30,13 @@ def test_filter_files_by_tags_returns_empty_list_when_no_files_match_tags(
     """Test filtering files by tags when no files match the given tags."""
 
     # GIVEN a store with files
-    file: File = populated_store._get_file_query().first()
-
     # create a tag that does not exist in any files in the store
     tag_name = "nonexistent_tag"
 
     # WHEN filtering files by the nonexistent tag
     filtered_files_query = filter_files_by_tags(
         files_tags=populated_store._get_join_file_tag_query(),
-        tags=[tag_name],
+        tag_names=[tag_name],
     )
 
     # THEN the filtered files list should be empty
