@@ -5,14 +5,24 @@ import datetime as dt
 import logging
 from pathlib import Path
 from typing import List, Set
+
 from sqlalchemy.orm import Query
 
-from housekeeper.store.models import Bundle, File, Tag, Version
+from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
 from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
-from housekeeper.store.filters.bundle_filters import apply_bundle_filter, BundleFilters
-from housekeeper.store.filters.version_filters import apply_version_filter, VersionFilters
-from housekeeper.store.filters.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
-from housekeeper.store.filters.file_tags_filters import FileTagFilter, apply_file_tag_filter
+from housekeeper.store.filters.file_tags_filters import (
+    FileTagFilter,
+    apply_file_tag_filter,
+)
+from housekeeper.store.filters.version_bundle_filters import (
+    VersionBundleFilters,
+    apply_version_bundle_filter,
+)
+from housekeeper.store.filters.version_filters import (
+    VersionFilters,
+    apply_version_filter,
+)
+from housekeeper.store.models import Bundle, File, Tag, Version
 from housekeeper.store.tag_filters import TagFilter, apply_tag_filter
 
 from .base import BaseHandler
@@ -59,7 +69,7 @@ class FindHandler(BaseHandler):
             filter_functions=[BundleFilters.FILTER_BY_ID],
             bundle_id=bundle_id,
         ).first()
-     
+
     def get_bundle_by_name(self, bundle_name: str) -> Bundle:
         """Get a bundle by name from the store."""
         LOG.info(f"Fetching bundle with name: {bundle_name}")
@@ -115,7 +125,7 @@ class FindHandler(BaseHandler):
         ).first()
 
     def get_files(
-        self, bundle: str = None, tags: List[str] = None, version: int = None   
+        self, bundle: str = None, tags: List[str] = None, version: int = None
     ) -> Query:
         """Fetches files from the store based on the specified filters.
         Args:
@@ -132,7 +142,7 @@ class FindHandler(BaseHandler):
             query = apply_bundle_filter(
                 bundles=query.join(self.File.version, self.Version.bundle),
                 filter_functions=[BundleFilters.FILTER_BY_NAME],
-                bundle_name=bundle
+                bundle_name=bundle,
             )
 
         if tags:
@@ -156,9 +166,12 @@ class FindHandler(BaseHandler):
         return query
 
     def get_files_before(
-        self, bundle_name: str = None, tags: List[str] = None, before_date: dt.datetime = None
+        self,
+        bundle_name: str = None,
+        tags: List[str] = None,
+        before_date: dt.datetime = None,
     ) -> List[File]:
-        """Fetch files before date from store"""
+        """Return files before a specific date from store."""
         query = self.get_files(tags=tags, bundle=bundle_name)
         if before_date:
             query = apply_version_filter(

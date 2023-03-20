@@ -9,7 +9,9 @@ from housekeeper.cli.add import version_cmd
 from housekeeper.store.models import Bundle
 
 
-def test_add_version_non_input(populated_context: Context, cli_runner: CliRunner, caplog):
+def test_add_version_non_input(
+    populated_context: Context, cli_runner: CliRunner, caplog
+):
     """Test to add a version to a bundle without providing input
 
     The CLI should exit with non zero since nothing is defined
@@ -26,7 +28,9 @@ def test_add_version_non_input(populated_context: Context, cli_runner: CliRunner
     assert "Please input json or bundle_name" in caplog.text
 
 
-def test_add_version_non_existing_bundle(populated_context: Context, cli_runner: CliRunner, caplog):
+def test_add_version_non_existing_bundle(
+    populated_context: Context, cli_runner: CliRunner, caplog
+):
     """Test to add a version to a non existing bundle
 
     The CLI should exit with non zero since the bundle does not exist
@@ -36,7 +40,7 @@ def test_add_version_non_existing_bundle(populated_context: Context, cli_runner:
     store = populated_context["store"]
     # GIVEN a non existing bundle
     bundle_name = "non_existing"
-    bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+    bundle: Bundle = store.get_bundle_by_name(bundle_name=bundle_name)
     assert not bundle
 
     # WHEN trying to add a version to a non existing bundle
@@ -48,7 +52,9 @@ def test_add_version_non_existing_bundle(populated_context: Context, cli_runner:
     assert f"unknown bundle: {bundle_name}" in caplog.text
 
 
-def test_add_version_existing_bundle(populated_context: Context, cli_runner: CliRunner, caplog):
+def test_add_version_existing_bundle(
+    populated_context: Context, cli_runner: CliRunner, caplog
+):
     """Test to add a version to a existing bundle
 
     The functionality should work as expected since the bundle exists
@@ -57,11 +63,11 @@ def test_add_version_existing_bundle(populated_context: Context, cli_runner: Cli
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle = store.Bundle.query.first()
+    bundle: Bundle = store.Bundle.query.first()
     assert isinstance(bundle, Bundle)
 
     # GIVEN the name of a existing bundle
-    bundle_name = bundle.name
+    bundle_name: str = bundle.name
 
     # WHEN trying to add a version to an existing bundle
     result = cli_runner.invoke(version_cmd, [bundle_name], obj=populated_context)
@@ -84,9 +90,9 @@ def test_add_version_existing_bundle_same_date(
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle = store.Bundle.query.first()
+    bundle: Bundle = store.Bundle.query.first()
     assert isinstance(bundle, Bundle)
-    bundle_name = bundle.name
+    bundle_name: str = bundle.name
 
     # WHEN trying to add a version to an existing bundle
     result = cli_runner.invoke(
@@ -153,7 +159,9 @@ def test_add_version_with_files_json(
     assert version_data["files"] != []
 
     # WHEN trying to add the version
-    result = cli_runner.invoke(version_cmd, ["--json", version_data_json], obj=populated_context)
+    result = cli_runner.invoke(
+        version_cmd, ["--json", version_data_json], obj=populated_context
+    )
 
     # THEN assert it succeded
     assert result.exit_code == 0

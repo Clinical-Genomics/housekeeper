@@ -1,6 +1,3 @@
-
-
-
 from typing import List
 from housekeeper.store.api.core import Store
 from housekeeper.store.filters.file_tags_filters import filter_files_by_tags
@@ -23,12 +20,13 @@ def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
     filtered_files: List[File] = filtered_files_query.all()
 
     # THEN each file should have all the requested tags
-    for file in filtered_files:
-        assert all(
-            tag.name in tag_names for tag in file.tags
-        )
+    for filtered_file in filtered_files:
+        assert all(tag.name in tag_names for tag in filtered_file.tags)
 
-def test_filter_files_by_tags_returns_empty_list_when_no_files_match_tags(populated_store: Store):
+
+def test_filter_files_by_tags_returns_empty_list_when_no_files_match_tags(
+    populated_store: Store,
+):
     """Test filtering files by tags when no files match the given tags."""
 
     # GIVEN a store with files
@@ -43,7 +41,5 @@ def test_filter_files_by_tags_returns_empty_list_when_no_files_match_tags(popula
         tags=[tag_name],
     )
 
-    filtered_files: List[File] = filtered_files_query.all()
-
     # THEN the filtered files list should be empty
-    assert len(filtered_files) == 0
+    assert len(filtered_files_query.all()) == 0
