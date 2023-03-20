@@ -54,7 +54,7 @@ def test_include_files_creates_version_specific_bundle_dir(
     assert not version_path.exists()
 
     # WHEN running the include files command
-    result = cli_runner.invoke(include, [bundle_name], obj=populated_context)
+    cli_runner.invoke(include, [bundle_name], obj=populated_context)
 
     # THEN assert that the version path was created
     assert version_path.exists()
@@ -81,7 +81,7 @@ def test_include_files_adds_version_specific_files(
     assert not version_path.exists()
 
     # WHEN running the include files command
-    result = cli_runner.invoke(include, [bundle_name], obj=populated_context)
+    cli_runner.invoke(include, [bundle_name], obj=populated_context)
 
     # THEN assert that files are included in the folder
     files_included = []
@@ -113,9 +113,7 @@ def test_include_files_specific_version(
     assert not version_path.exists()
 
     # WHEN running the include files command
-    result = cli_runner.invoke(
-        include, ["--version-id", version_id], obj=populated_context
-    )
+    cli_runner.invoke(include, ["--version-id", version_id], obj=populated_context)
 
     # THEN assert that the folder was created
     assert version_path.exists()

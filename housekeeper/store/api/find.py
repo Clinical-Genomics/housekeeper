@@ -4,7 +4,7 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import List, Set
+from typing import List, Optional, Set
 
 from sqlalchemy.orm import Query
 
@@ -186,9 +186,9 @@ class FindHandler(BaseHandler):
 
     @staticmethod
     def get_files_not_on_disk(files: List[File]) -> List[File]:
-        """Return set of files that are not on disk."""
+        """Return list of files that are not on disk."""
         if not files:
-            return
+            []
 
         files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
         return files_not_on_disk

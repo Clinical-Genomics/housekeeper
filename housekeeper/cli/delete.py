@@ -153,7 +153,7 @@ def files_cmd(
 def validate_delete_options(tag: str, bundle_name: str):
     """Validate delete options."""
     if not (tag or bundle_name):
-        LOG.info(f"Please specify a bundle or a tag")
+        LOG.info("Please specify a bundle or a tag")
         raise click.Abort
 
 
