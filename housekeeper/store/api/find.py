@@ -19,7 +19,7 @@ from housekeeper.store.filters.version_bundle_filters import (
     apply_version_bundle_filter,
 )
 from housekeeper.store.filters.version_filters import (
-    VersionFilters,
+    VersionFilter,
     apply_version_filter,
 )
 from housekeeper.store.models import Bundle, File, Tag, Version
@@ -79,23 +79,23 @@ class FindHandler(BaseHandler):
             bundle_name=bundle_name,
         ).first()
 
-    def version(
-        self, bundle: str = None, date: dt.datetime = None, version_id: int = None
+    def get_version_by_date_and_bundle_name(
+        self, version_date: dt.datetime, bundle_name: str
     ) -> Version:
-        """Fetch a version from the store."""
-        if version_id:
-            LOG.info(f"Fetching version with id: {version_id}")
-            return apply_version_filter(
-                versions=self._get_version_query(),
-                filter_functions=[VersionFilters.FILTER_BY_ID],
-                version_id=version_id,
-            ).first()
-
         return apply_version_bundle_filter(
             version_bundles=self._get_join_version_bundle_query(),
             filter_functions=[VersionBundleFilters.FILTER_BY_DATE_AND_NAME],
-            version_date=date,
-            bundle_name=bundle,
+            version_date=version_date,
+            bundle_name=bundle_name,
+        ).first()
+
+    def get_version_by_id(self, version_id: int) -> Version:
+        """Fetch a version from the store."""
+        LOG.info(f"Fetching version with id: {version_id}")
+        return apply_version_filter(
+            versions=self._get_version_query(),
+            filter_functions=[VersionFilter.FILTER_BY_ID],
+            version_id=version_id,
         ).first()
 
     def get_tag(self, tag_name: str = None) -> Tag:
@@ -162,7 +162,7 @@ class FindHandler(BaseHandler):
             LOG.info(f"Fetching files from version {version_id}")
             query = apply_version_filter(
                 versions=query.join(self.File.version),
-                filter_functions=[VersionFilters.FILTER_BY_ID],
+                filter_functions=[VersionFilter.FILTER_BY_ID],
                 version_id=version_id,
             )
 
@@ -179,7 +179,7 @@ class FindHandler(BaseHandler):
         if before_date:
             query = apply_version_filter(
                 versions=self._get_join_version_query(query),
-                filter_functions=[VersionFilters.FILTER_BY_DATE],
+                filter_functions=[VersionFilter.FILTER_BY_DATE],
                 before_date=before_date,
             )
         return query.all()

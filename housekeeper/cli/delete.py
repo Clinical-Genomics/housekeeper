@@ -67,7 +67,7 @@ def version_cmd(context, bundle_name, version_id, yes):
         version_obj = bundle.versions[0]
 
     if version_id:
-        version = store.version(version_id=version_id)
+        version = store.get_version_by_id(version_id=version_id)
         if not version:
             LOG.warning("Could not find version %s", version_id)
             raise click.Abort

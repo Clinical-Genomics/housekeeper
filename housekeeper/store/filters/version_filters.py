@@ -15,8 +15,9 @@ def filter_version_by_date(versions: Query, before_date: datetime, **kwargs) -> 
     return versions.filter(Version.created_at < before_date)
 
 
-class VersionFilters(Enum):
+class VersionFilter(Enum):
     """Define Version filter functions."""
+
     FILTER_BY_ID: Callable = filter_version_by_id
     FILTER_BY_DATE: Callable = filter_version_by_date
 
@@ -30,8 +31,6 @@ def apply_version_filter(
     """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:
         versions: Query = filter_function(
-            versions=versions,
-            version_id=version_id,
-            before_date=before_date
+            versions=versions, version_id=version_id, before_date=before_date
         )
     return versions
