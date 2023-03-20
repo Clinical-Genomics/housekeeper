@@ -129,12 +129,14 @@ class FindHandler(BaseHandler):
         bundle_name: str = None,
         tag_names: List[str] = None,
         version_id: int = None,
+        path: str = None,
     ) -> Query:
         """Fetches files from the store based on the specified filters.
         Args:
             bundle_name (str, optional): Name of the bundle to fetch files from.
             tag_names (List[str], optional): List of tags to filter files by.
             version_id (int, optional): ID of the version to fetch files from.
+            path (str, optional): Path to the file to fetch.
 
         Returns:
             Query: A query that match the specified filters.
@@ -164,6 +166,14 @@ class FindHandler(BaseHandler):
                 versions=query.join(self.File.version),
                 filter_functions=[VersionFilter.FILTER_BY_ID],
                 version_id=version_id,
+            )
+
+        if path:
+            LOG.info(f"Fetching file with path {path}")
+            query = apply_file_filter(
+                files=query,
+                filter_functions=[FileFilter.FILTER_BY_PATH],
+                path=path,
             )
 
         return query
