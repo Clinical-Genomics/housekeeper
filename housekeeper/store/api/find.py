@@ -129,7 +129,7 @@ class FindHandler(BaseHandler):
         bundle_name: str = None,
         tag_names: List[str] = None,
         version_id: int = None,
-        path: str = None,
+        file_path: str = None,
     ) -> Query:
         """Fetches files from the store based on the specified filters.
         Args:
@@ -168,12 +168,12 @@ class FindHandler(BaseHandler):
                 version_id=version_id,
             )
 
-        if path:
-            LOG.info(f"Fetching file with path {path}")
+        if file_path:
+            LOG.info(f"Fetching file with path {file_path}")
             query = apply_file_filter(
                 files=query,
                 filter_functions=[FileFilter.FILTER_BY_PATH],
-                file_path=path,
+                file_path=file_path,
             )
 
         return query
