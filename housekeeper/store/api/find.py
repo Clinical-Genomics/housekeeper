@@ -70,7 +70,7 @@ class FindHandler(BaseHandler):
         """Fetch a version from the store."""
         LOG.info(f"Fetching version with id: {version_id}")
         return apply_version_filter(
-            versions=self._get_query(table=Version)(),
+            versions=self._get_query(table=Version),
             filter_functions=[VersionFilter.FILTER_BY_ID],
             version_id=version_id,
         ).first()
