@@ -1,6 +1,6 @@
 """Tests for adding via CLI"""
-from pathlib import Path
 from housekeeper.cli.get import bundle_cmd
+from housekeeper.store.models import Bundle
 
 
 def test_get_existing_bundle_name(populated_context, cli_runner, helpers):
@@ -26,7 +26,7 @@ def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle_obj = store._get_bundle_query().first()
+    bundle_obj = store._get_query(table=Bundle).first()
     assert bundle_obj
     bundle_name = bundle_obj.name
 

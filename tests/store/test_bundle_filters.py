@@ -2,18 +2,22 @@ from sqlalchemy.orm import Query
 
 from housekeeper.store import Store
 from housekeeper.store.models import Bundle
-from housekeeper.store.filters.bundle_filters import filter_bundle_by_name, filter_bundle_by_id
+from housekeeper.store.filters.bundle_filters import (
+    filter_bundle_by_name,
+    filter_bundle_by_id,
+)
 
 
-def test_get_bundle_query_returns_query_object(populated_store: Store):
-    result = populated_store._get_bundle_query()
+def test_get_query_returns_query_object(populated_store: Store):
+    result = populated_store._get_query(table=Bundle)
     assert isinstance(result, Query)
+
 
 def test_filter_bundles_by_id_returns_the_correct_bundle(populated_store: Store):
     """Test getting collaboration by internal_id."""
 
     # GIVEN a store with a bundle
-    bundle: Bundle = populated_store._get_bundle_query().first()
+    bundle: Bundle = populated_store._get_query(table=Bundle).first()
     assert isinstance(bundle, Bundle)
     assert bundle
 
@@ -21,7 +25,7 @@ def test_filter_bundles_by_id_returns_the_correct_bundle(populated_store: Store)
 
     # WHEN retrieving the bundle by id
     bundle: Bundle = filter_bundle_by_id(
-        bundles=populated_store._get_bundle_query(),
+        bundles=populated_store._get_query(table=Bundle),
         bundle_id=bundle_id,
     ).first()
 
@@ -31,11 +35,12 @@ def test_filter_bundles_by_id_returns_the_correct_bundle(populated_store: Store)
     # THEN the id should match
     assert bundle.id == bundle_id
 
+
 def test_filter_bundles_by_name_returns_the_correct_bundle(populated_store: Store):
     """Test getting bundle by name."""
 
     # GIVEN a store with a bundle
-    bundle: Bundle = populated_store._get_bundle_query().first()
+    bundle: Bundle = populated_store._get_query(table=Bundle).first()
     assert isinstance(bundle, Bundle)
     assert bundle
 
@@ -43,7 +48,7 @@ def test_filter_bundles_by_name_returns_the_correct_bundle(populated_store: Stor
 
     # WHEN retrieving the bundle by name
     bundle: Bundle = filter_bundle_by_name(
-        bundles=populated_store._get_bundle_query(),
+        bundles=populated_store._get_query(table=Bundle),
         bundle_name=bundle_name,
     ).first()
 

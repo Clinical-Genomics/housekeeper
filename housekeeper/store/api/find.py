@@ -36,36 +36,13 @@ class FindHandler(BaseHandler):
     def bundles(self):
         """Fetch bundles."""
         LOG.info("Fetching all bundles")
-        return self._get_bundle_query()
-
-    def _get_bundle_query(self) -> Query:
-        """Return bundle query."""
-        return self.Bundle.query
-
-    def _get_file_query(self) -> Query:
-        """Return file query."""
-        return self.File.query
-
-    def _get_version_query(self) -> Query:
-        """Return version query."""
-        return self.Version.query
-
-    def _get_join_version_bundle_query(self) -> Query:
-        """Return version bundle query."""
-        return self.Version.query.join(Version.bundle)
-
-    def _get_join_file_tag_query(self) -> Query:
-        """Return file tag query."""
-        return self.File.query.join(File.tags)
-
-    def _get_join_version_query(self, query: Query):
-        return query.join(Version)
+        return self._get_query(table=Bundle)
 
     def get_bundle_by_id(self, bundle_id: int) -> Bundle:
         """Fetch a bundle by id from the store."""
         LOG.info(f"Fetching bundle with id: {bundle_id}")
         return apply_bundle_filter(
-            bundles=self._get_bundle_query(),
+            bundles=self._get_query(table=Bundle),
             filter_functions=[BundleFilters.FILTER_BY_ID],
             bundle_id=bundle_id,
         ).first()
@@ -74,7 +51,7 @@ class FindHandler(BaseHandler):
         """Get a bundle by name from the store."""
         LOG.info(f"Fetching bundle with name: {bundle_name}")
         return apply_bundle_filter(
-            bundles=self._get_bundle_query(),
+            bundles=self._get_query(table=Bundle),
             filter_functions=[BundleFilters.FILTER_BY_NAME],
             bundle_name=bundle_name,
         ).first()
@@ -93,7 +70,7 @@ class FindHandler(BaseHandler):
         """Fetch a version from the store."""
         LOG.info(f"Fetching version with id: {version_id}")
         return apply_version_filter(
-            versions=self._get_version_query(),
+            versions=self._get_query(table=Version)(),
             filter_functions=[VersionFilter.FILTER_BY_ID],
             version_id=version_id,
         ).first()
@@ -102,7 +79,7 @@ class FindHandler(BaseHandler):
         """Return a tag from the database."""
         LOG.info(f"Fetching tag with name: {tag_name}")
         return apply_tag_filter(
-            tags=self._get_tag_query(),
+            tags=self._get_query(table=Tag),
             filter_functions=[TagFilter.FILTER_BY_NAME],
             tag_name=tag_name,
         ).first()
@@ -110,7 +87,7 @@ class FindHandler(BaseHandler):
     def get_tags(self) -> Query:
         """Return all tags from the database."""
         LOG.info("Fetching all tags")
-        return self._get_tag_query()
+        return self._get_query(table=Tag)
 
     def _get_tag_query(self) -> Query:
         """Return a tag query."""
@@ -119,7 +96,7 @@ class FindHandler(BaseHandler):
     def get_file_by_id(self, file_id: int):
         """Get a file by record id."""
         return apply_file_filter(
-            files=self._get_file_query(),
+            files=self._get_query(table=File),
             filter_functions=[FileFilter.FILTER_BY_ID],
             file_id=file_id,
         ).first()
@@ -141,7 +118,7 @@ class FindHandler(BaseHandler):
         Returns:
             Query: A query that match the specified filters.
         """
-        query = self._get_file_query()
+        query = self._get_query(table=File)
         if bundle_name:
             LOG.info(f"Fetching files from bundle {bundle_name}")
             query = apply_bundle_filter(

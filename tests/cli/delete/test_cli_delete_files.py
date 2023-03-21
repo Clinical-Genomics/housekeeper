@@ -5,6 +5,7 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
+from housekeeper.store.models import Bundle
 
 
 def test_delete_files_non_specified(
@@ -69,7 +70,7 @@ def test_delete_existing_bundle_no_confirmation(
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle_obj = store._get_bundle_query().first()
+    bundle_obj = store._get_query(table=Bundle).first()
     assert bundle_obj
     case_id = bundle_obj.name
     # GIVEN the bundle files
