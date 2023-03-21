@@ -10,9 +10,9 @@ def filter_files_by_id(files: Query, file_id: int, **kwargs) -> Query:
     return files.filter(File.id == file_id)
 
 
-def filter_files_by_path(files: Query, path: str, **kwargs) -> Query:
+def filter_files_by_path(files: Query, file_path: str, **kwargs) -> Query:
     """Filter files by path."""
-    return files.filter(File.path == path)
+    return files.filter(File.path == file_path)
 
 
 class FileFilter(Enum):

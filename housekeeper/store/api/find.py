@@ -173,7 +173,7 @@ class FindHandler(BaseHandler):
             query = apply_file_filter(
                 files=query,
                 filter_functions=[FileFilter.FILTER_BY_PATH],
-                path=path,
+                file_path=path,
             )
 
         return query
