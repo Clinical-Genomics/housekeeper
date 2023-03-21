@@ -4,17 +4,26 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import Iterable, List, Set
+from typing import List, Optional, Set
 
-from sqlalchemy import func as sqlalchemy_func
 from sqlalchemy.orm import Query
 
-from housekeeper.date import get_date
+from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
+from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
+from housekeeper.store.filters.file_tags_filters import (
+    FileTagFilter,
+    apply_file_tag_filter,
+)
+from housekeeper.store.filters.version_bundle_filters import (
+    VersionBundleFilters,
+    apply_version_bundle_filter,
+)
+from housekeeper.store.filters.version_filters import (
+    VersionFilter,
+    apply_version_filter,
+)
 from housekeeper.store.models import Bundle, File, Tag, Version
-from housekeeper.store.bundle_filters import apply_bundle_filter, BundleFilters
-from housekeeper.store.tag_filters import apply_tag_filter, TagFilter
-from housekeeper.store.version_filters import apply_version_filter, VersionFilters
-from housekeeper.store.version_bundle_filters import apply_version_bundle_filter, VersionBundleFilters
+from housekeeper.store.tag_filters import TagFilter, apply_tag_filter
 
 from .base import BaseHandler
 
@@ -33,48 +42,60 @@ class FindHandler(BaseHandler):
         """Return bundle query."""
         return self.Bundle.query
 
+    def _get_file_query(self) -> Query:
+        """Return file query."""
+        return self.File.query
+
     def _get_version_query(self) -> Query:
         """Return version query."""
         return self.Version.query
 
-    def _get_version_bundle_query(self) -> Query:
+    def _get_join_version_bundle_query(self) -> Query:
         """Return version bundle query."""
         return self.Version.query.join(Version.bundle)
 
-    def bundle(self, name: str = None, bundle_id: int = None) -> Bundle:
-        """Fetch a bundle from the store."""
-        if bundle_id:
-            LOG.info(f"Fetching bundle with id: {bundle_id}")
-            return apply_bundle_filter(
-                bundles=self._get_bundle_query(),
-                filter_functions=[BundleFilters.FILTER_BY_ID],
-                bundle_id=bundle_id,
-            ).first()
+    def _get_join_file_tag_query(self) -> Query:
+        """Return file tag query."""
+        return self.File.query.join(File.tags)
 
-        LOG.info(f"Fetching bundle with name: {name}")
+    def _get_join_version_query(self, query: Query):
+        return query.join(Version)
+
+    def get_bundle_by_id(self, bundle_id: int) -> Bundle:
+        """Fetch a bundle by id from the store."""
+        LOG.info(f"Fetching bundle with id: {bundle_id}")
+        return apply_bundle_filter(
+            bundles=self._get_bundle_query(),
+            filter_functions=[BundleFilters.FILTER_BY_ID],
+            bundle_id=bundle_id,
+        ).first()
+
+    def get_bundle_by_name(self, bundle_name: str) -> Bundle:
+        """Get a bundle by name from the store."""
+        LOG.info(f"Fetching bundle with name: {bundle_name}")
         return apply_bundle_filter(
             bundles=self._get_bundle_query(),
             filter_functions=[BundleFilters.FILTER_BY_NAME],
-            bundle_name=name,
+            bundle_name=bundle_name,
         ).first()
 
-    def version(
-        self, bundle: str = None, date: dt.datetime = None, version_id: int = None
+    def get_version_by_date_and_bundle_name(
+        self, version_date: dt.datetime, bundle_name: str
     ) -> Version:
-        """Fetch a version from the store."""
-        if version_id:
-            LOG.info(f"Fetching version with id: {version_id}")
-            return apply_version_filter(
-                versions=self._get_version_query(),
-                filter_functions=[VersionFilters.FILTER_BY_ID],
-                version_id=version_id,
-            ).first()
-
         return apply_version_bundle_filter(
-            version_bundles=self._get_version_bundle_query(),
+            version_bundles=self._get_join_version_bundle_query(),
             filter_functions=[VersionBundleFilters.FILTER_BY_DATE_AND_NAME],
-            version_date=date,
-            bundle_name=bundle,
+            version_date=version_date,
+            bundle_name=bundle_name,
+        ).first()
+
+    def get_version_by_id(self, version_id: int) -> Version:
+        """Fetch a version from the store."""
+        LOG.info(f"Fetching version with id: {version_id}")
+        return apply_version_filter(
+            versions=self._get_version_query(),
+            filter_functions=[VersionFilter.FILTER_BY_ID],
+            version_id=version_id,
         ).first()
 
     def get_tag(self, tag_name: str = None) -> Tag:
@@ -95,59 +116,89 @@ class FindHandler(BaseHandler):
         """Return a tag query."""
         return self.Tag.query
 
-    def file_(self, file_id: int) -> File:
-        """Returns a file by record id."""
-        return self.File.get(file_id)
+    def get_file_by_id(self, file_id: int):
+        """Get a file by record id."""
+        return apply_file_filter(
+            files=self._get_file_query(),
+            filter_functions=[FileFilter.FILTER_BY_ID],
+            file_id=file_id,
+        ).first()
 
-    def files(
-        self, *, bundle: str = None, tags: List[str] = None, version: int = None, path: str = None
-    ) -> Iterable[File]:
-        """Fetch files from the store."""
-        query = self.File.query
-        if bundle:
-            LOG.info(f"Fetching files from bundle {bundle}")
-            query = query.join(self.File.version, self.Version.bundle).filter(
-                self.Bundle.name == bundle
+    def get_files(
+        self,
+        bundle_name: str = None,
+        tag_names: List[str] = None,
+        version_id: int = None,
+        file_path: str = None,
+    ) -> Query:
+        """Fetches files from the store based on the specified filters.
+        Args:
+            bundle_name (str, optional): Name of the bundle to fetch files from.
+            tag_names (List[str], optional): List of tags to filter files by.
+            version_id (int, optional): ID of the version to fetch files from.
+            path (str, optional): Path to the file to fetch.
+
+        Returns:
+            Query: A query that match the specified filters.
+        """
+        query = self._get_file_query()
+        if bundle_name:
+            LOG.info(f"Fetching files from bundle {bundle_name}")
+            query = apply_bundle_filter(
+                bundles=query.join(self.File.version, self.Version.bundle),
+                filter_functions=[BundleFilters.FILTER_BY_NAME],
+                bundle_name=bundle_name,
             )
 
-        if tags:
-            formatted_tags = ",".join(tags)
+        if tag_names:
+            formatted_tags = ",".join(tag_names)
             LOG.info(f"Fetching files with tags in [{formatted_tags}]")
-            # require records to match ALL tags
-            query = (
-                query.join(self.File.tags)
-                .filter(self.Tag.name.in_(tags))
-                .group_by(File.id)
-                .having(sqlalchemy_func.count(Tag.name) == len(tags))
+
+            query = apply_file_tag_filter(
+                files_tags=query.join(File.tags),
+                filter_functions=[FileTagFilter.FILTER_FILES_BY_TAGS],
+                tag_names=tag_names,
             )
 
-        if version:
-            LOG.info(f"Fetching files from version {version}")
-            query = query.join(self.File.version).filter(self.Version.id == version)
+        if version_id:
+            LOG.info(f"Fetching files from version {version_id}")
+            query = apply_version_filter(
+                versions=query.join(self.File.version),
+                filter_functions=[VersionFilter.FILTER_BY_ID],
+                version_id=version_id,
+            )
 
-        if path:
-            LOG.info(f"Fetching files with path {path}")
-            query = query.filter_by(path=path)
-
-        return query
-
-    def files_before(
-        self, *, bundle: str = None, tags: List[str] = None, before: str = None
-    ) -> File:
-        """Fetch files before date from store"""
-        query = self.files(tags=tags, bundle=bundle)
-        if before:
-            try:
-                before_dt = get_date(before)
-            except ValueError:
-                before_dt = get_date(before, "%Y-%m-%d %H:%M:%S")
-            query = query.join(Version).filter(Version.created_at < before_dt)
+        if file_path:
+            LOG.info(f"Fetching file with path {file_path}")
+            query = apply_file_filter(
+                files=query,
+                filter_functions=[FileFilter.FILTER_BY_PATH],
+                file_path=file_path,
+            )
 
         return query
+
+    def get_files_before(
+        self,
+        bundle_name: str = None,
+        tag_names: List[str] = None,
+        before_date: dt.datetime = None,
+    ) -> List[File]:
+        """Return files before a specific date from store."""
+        query = self.get_files(tag_names=tag_names, bundle_name=bundle_name)
+        if before_date:
+            query = apply_version_filter(
+                versions=self._get_join_version_query(query),
+                filter_functions=[VersionFilter.FILTER_BY_DATE],
+                before_date=before_date,
+            )
+        return query.all()
 
     @staticmethod
-    def files_ondisk(file_objs: File) -> Set[File]:
-        """Returns a list of files that are on disk."""
+    def get_files_not_on_disk(files: List[File]) -> List[File]:
+        """Return list of files that are not on disk."""
+        if not files:
+            return []
 
-        files_on_disk = {file_obj for file_obj in file_objs if Path(file_obj.full_path).is_file()}
-        return files_on_disk
+        files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
+        return files_not_on_disk

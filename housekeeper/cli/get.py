@@ -8,7 +8,12 @@ from rich.console import Console
 
 from housekeeper.store.api import schema
 
-from .tables import get_bundles_table, get_files_table, get_tags_table, get_versions_table
+from .tables import (
+    get_bundles_table,
+    get_files_table,
+    get_tags_table,
+    get_versions_table,
+)
 
 LOG = logging.getLogger(__name__)
 
@@ -23,22 +28,33 @@ def get():
 @click.option("-i", "--bundle-id", type=int, help="Search for a bundle with bundle id")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-v", "--verbose", is_flag=True, help="List files from latest version")
-@click.option("-c", "--compact", is_flag=True, help="print compact filenames IFF verobe flag present")
+@click.option(
+    "-c",
+    "--compact",
+    is_flag=True,
+    help="print compact filenames IFF verobe flag present",
+)
 @click.pass_context
 def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     """Get bundle information from database"""
     store = context.obj["store"]
-    bundle_objs = store.bundles()
-    if bundle_name or bundle_id:
-        bundle_obj = store.bundle(name=bundle_name, bundle_id=bundle_id)
-        bundle_objs = [bundle_obj] if bundle_obj else []
-    if not bundle_objs:
+    bundles = store.bundles()
+
+    if bundle_name:
+        bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+        bundles = [bundle] if bundle else []
+
+    if bundle_id:
+        bundle = store.get_bundle_by_id(bundle_id=bundle_id)
+        bundles = [bundle] if bundle else []
+
+    if not bundles:
         LOG.info("Could not find any bundles")
         return
     template = schema.BundleSchema()
     result = []
-    for bundle_obj in bundle_objs:
-        result.append(template.dump(bundle_obj))
+    for bundle in bundles:
+        result.append(template.dump(bundle))
 
     if json:
         click.echo(jsonlib.dumps(result, indent=4, sort_keys=True))
@@ -46,12 +62,14 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     console = Console()
     console.print(get_bundles_table(result))
     if verbose:
-        for bundle in bundle_objs:
+        for bundle in bundles:
             if len(bundle.versions) == 0:
                 LOG.info("No versions found for bundle %s", bundle.name)
                 return
             version_obj = bundle.versions[0]
-            context.invoke(version_cmd, version_id=version_obj.id, verbose=True, compact=compact)
+            context.invoke(
+                version_cmd, version_id=version_obj.id, verbose=True, compact=compact
+            )
 
 
 @get.command("version")
@@ -59,7 +77,12 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
 @click.option("-i", "--version-id", type=int, help="Fetch a specific version")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-v", "--verbose", is_flag=True, help="print additional information")
-@click.option("-c", "--compact", is_flag=True, help="print compact filenames IFF verobe flag present")
+@click.option(
+    "-c",
+    "--compact",
+    is_flag=True,
+    help="print compact filenames IFF verobe flag present",
+)
 @click.pass_context
 def version_cmd(context, bundle_name, json, version_id, verbose, compact):
     """Get versions from database"""
@@ -68,7 +91,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
         LOG.info("Please select a bundle or a version")
         return
     if bundle_name:
-        bundle = store.bundle(name=bundle_name)
+        bundle = store.get_bundle_by_name(bundle_name=bundle_name)
         if not bundle:
             LOG.info("Could not find bundle %s", bundle_name)
             return
@@ -84,9 +107,9 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
     version_template = schema.VersionSchema()
     result = []
     for version_obj in version_objs:
-        bundle_obj = store.bundle(bundle_id=version_obj.bundle_id)
+        bundle = store.get_bundle_by_id(bundle_id=version_obj.bundle_id)
         res = version_template.dump(version_obj)
-        res["bundle_name"] = bundle_obj.name
+        res["bundle_name"] = bundle.name
         result.append(res)
 
     if json:
@@ -99,25 +122,39 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
         return
 
     for version_obj in version_objs:
-        context.invoke(files_cmd, version=version_obj.id, verbose=True, compact=compact)
+        context.invoke(
+            files_cmd, version_id=version_obj.id, verbose=True, compact=compact
+        )
 
 
 @get.command("file")
-@click.option("-t", "--tag", "tags", multiple=True, help="filter by file tag")
-@click.option("-v", "--version", type=int, help="filter by version of the bundle")
+@click.option("-t", "--tag", "tag_names", multiple=True, help="filter by file tag")
+@click.option(
+    "-v", "--version", "version_id", type=int, help="filter by version of the bundle"
+)
 @click.option("-V", "--verbose", is_flag=True, help="print additional information")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-c", "--compact", is_flag=True, help="print compact filenames")
 @click.argument("bundle", required=False)
 @click.pass_context
-def files_cmd(context, tags: List[str], version: int, verbose: bool, bundle: str, json: bool, compact: bool):
+def files_cmd(
+    context,
+    tag_names: List[str],
+    version_id: int,
+    verbose: bool,
+    bundle: str,
+    json: bool,
+    compact: bool,
+):
     """Get files from database"""
     store = context.obj["store"]
-    file_objs = store.files(bundle=bundle, tags=tags, version=version)
+    file_objs = store.get_files(
+        bundle_name=bundle, tag_names=tag_names, version_id=version_id
+    )
     template = schema.FileSchema()
     result = []
-    for file_obj in file_objs:
-        result.append(template.dump(file_obj))
+    for file in file_objs:
+        result.append(template.dump(file))
     if json:
         click.echo(jsonlib.dumps(result))
         return

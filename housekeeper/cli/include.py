@@ -33,17 +33,17 @@ def include(context: click.Context, bundle_name: str, version_id: int):
             raise click.Abort
 
     if bundle_name:
-        bundle_obj = store.bundle(bundle_name)
-        if bundle_obj is None:
+        bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+        if bundle is None:
             LOG.warning("bundle %s not found", bundle_name)
             raise click.Abort
 
-        if len(bundle_obj.versions) == 0:
+        if len(bundle.versions) == 0:
             LOG.error("Could not find any versions for bundle %s", bundle_name)
             raise click.Abort
 
         LOG.info("Including latest version for %s", bundle_name)
-        version_obj = bundle_obj.versions[0]
+        version_obj = bundle.versions[0]
 
     try:
         include_version(context.obj["root"], version_obj)

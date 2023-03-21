@@ -2,7 +2,7 @@ from sqlalchemy.orm import Query
 
 from housekeeper.store import Store
 from housekeeper.store.models import Bundle
-from housekeeper.store.bundle_filters import filter_bundle_by_name, filter_bundle_by_id
+from housekeeper.store.filters.bundle_filters import filter_bundle_by_name, filter_bundle_by_id
 
 
 def test_get_bundle_query_returns_query_object(populated_store: Store):
@@ -13,7 +13,8 @@ def test_filter_bundles_by_id_returns_the_correct_bundle(populated_store: Store)
     """Test getting collaboration by internal_id."""
 
     # GIVEN a store with a bundle
-    bundle: Bundle = populated_store.session.query(Bundle).first()
+    bundle: Bundle = populated_store._get_bundle_query().first()
+    assert isinstance(bundle, Bundle)
     assert bundle
 
     bundle_id: int = bundle.id
@@ -34,7 +35,8 @@ def test_filter_bundles_by_name_returns_the_correct_bundle(populated_store: Stor
     """Test getting bundle by name."""
 
     # GIVEN a store with a bundle
-    bundle: Bundle = populated_store.session.query(Bundle).first()
+    bundle: Bundle = populated_store._get_bundle_query().first()
+    assert isinstance(bundle, Bundle)
     assert bundle
 
     bundle_name: str = bundle.name

@@ -18,7 +18,7 @@ class AddHandler(BaseHandler):
     def __init__(self):
         super().__init__()
         AddHandler.version = FindHandler.version
-        AddHandler.bundle = FindHandler.bundle
+        AddHandler.get_bundle_by_name = FindHandler.get_bundle_by_name
         AddHandler.get_tag = FindHandler.get_tag
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
@@ -32,11 +32,13 @@ class AddHandler(BaseHandler):
 
         The format of the input dict is defined in the `schema` module.
         """
-        bundle_obj = self.bundle(data["name"])
+        bundle_obj = self.get_bundle_by_name(bundle_name=data["name"])
         # These lines can be removed when decoupled from CG
         created_at = data.get("created_at", data.get("created"))
         expires_at = data.get("expires_at", data.get("expires"))
-        if bundle_obj and self.version(bundle_obj.name, created_at):
+        if bundle_obj and self.get_version_by_date_and_bundle_name(
+            version_date=created_at, bundle_name=bundle_obj.name
+        ):
             LOG.debug("version of bundle already added")
             return None
 
@@ -49,10 +51,14 @@ class AddHandler(BaseHandler):
         version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
 
-    def _add_files_to_version(self, files: List[dict], version_obj: models.Version) -> None:
+    def _add_files_to_version(
+        self, files: List[dict], version_obj: models.Version
+    ) -> None:
         """Create file objects and the tags and add them to a version object"""
 
-        tag_names = set(tag_name for file_data in files for tag_name in file_data["tags"])
+        tag_names = set(
+            tag_name for file_data in files for tag_name in file_data["tags"]
+        )
         tag_map = self._build_tags(tag_names)
 
         for file_data in files:
@@ -66,7 +72,9 @@ class AddHandler(BaseHandler):
                 if not Path(path).exists():
                     raise FileNotFoundError(path)
                 tags = [tag_map[tag_name] for tag_name in file_data["tags"]]
-                new_file = self.new_file(path, to_archive=file_data["archive"], tags=tags)
+                new_file = self.new_file(
+                    path, to_archive=file_data["archive"], tags=tags
+                )
                 version_obj.files.append(new_file)
 
     def new_version(
@@ -84,12 +92,15 @@ class AddHandler(BaseHandler):
     ) -> models.Version:
         """Build a new version object and add it to an existing bundle"""
         created_at = data.get("created_at", data.get("created"))
-        if self.version(bundle.name, created_at):
+        if self.get_version_by_date_and_bundle_name(
+            version_date=created_at, bundle_name=bundle.name
+        ):
             LOG.info("version of bundle already added")
             return None
 
         version_obj = self.new_version(
-            created_at=created_at, expires_at=data.get("expires_at", data.get("expires"))
+            created_at=created_at,
+            expires_at=data.get("expires_at", data.get("expires")),
         )
         if data.get("files"):
             self._add_files_to_version(data["files"], version_obj)
@@ -139,7 +150,9 @@ class AddHandler(BaseHandler):
         tags: List[models.Tag] = None,
     ) -> models.File:
         """Create a new file object based on the information given."""
-        new_file = self.File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
+        new_file = self.File(
+            path=path, checksum=checksum, to_archive=to_archive, tags=tags
+        )
         return new_file
 
     def new_tag(self, name: str, category: str = None) -> models.Tag:

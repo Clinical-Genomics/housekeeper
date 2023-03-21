@@ -12,7 +12,7 @@ def test_delete_non_existing_bundle(base_context: Context, cli_runner: CliRunner
     # GIVEN a context with a store and a cli runner
     # GIVEN a case name that does not exist
     case_name = "hello"
-    assert not base_context["store"].bundle(name=case_name)
+    assert not base_context["store"].get_bundle_by_name(bundle_name=case_name)
 
     # WHEN trying to delete a non existing bundle
     result = cli_runner.invoke(delete.bundle_cmd, [case_name], obj=base_context)
@@ -31,7 +31,7 @@ def test_delete_existing_bundle_with_version(
     # GIVEN a context with a store and a cli runner
     store = populated_context["store"]
     # GIVEN a bundle with versions
-    bundle_obj = store.bundle(name=case_id)
+    bundle_obj = store.get_bundle_by_name(bundle_name=case_id)
     assert len(bundle_obj.versions) > 0
 
     # WHEN trying to delete a bundle
@@ -50,7 +50,7 @@ def test_delete_existing_bundle_no_versions_no_confirmation(
     store = populated_context["store"]
     # GIVEN a bundle without versions
     cli_runner.invoke(delete.version_cmd, ["-b", case_id], obj=populated_context, input="Yes")
-    bundle_obj = store.bundle(name=case_id)
+    bundle_obj = store.get_bundle_by_name(bundle_name=case_id)
     assert len(bundle_obj.versions) == 0
 
     # WHEN trying to delete a bundle
@@ -68,7 +68,7 @@ def test_delete_existing_bundle_no_versions_with_confirmation(
     store = populated_context["store"]
     # GIVEN a bundle without versions
     cli_runner.invoke(delete.version_cmd, ["-b", case_id], obj=populated_context, input="Yes")
-    bundle_obj = store.bundle(name=case_id)
+    bundle_obj = store.get_bundle_by_name(bundle_name=case_id)
     assert len(bundle_obj.versions) == 0
 
     # WHEN trying to delete a bundle

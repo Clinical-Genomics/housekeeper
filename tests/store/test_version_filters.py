@@ -2,7 +2,7 @@ from sqlalchemy.orm import Query
 
 from housekeeper.store.api.core import Store
 from housekeeper.store.models import Version
-from housekeeper.store.version_filters import filter_version_by_id
+from housekeeper.store.filters.version_filters import filter_version_by_id
 
 
 def test_get_version_query_returns_query_object(populated_store: Store):
@@ -53,7 +53,7 @@ def test_filter_version_by_id_with_empty_query_returns_empty_query(populated_sto
     """Test that the function returns an empty result when given an empty query."""
 
     # GIVEN an empty query
-    empty_query = populated_store.session.query(Version).filter(False)
+    empty_query = populated_store._get_version_query().filter(False)
     assert empty_query.count() == 0
 
     # WHEN filtering the empty query by an ID

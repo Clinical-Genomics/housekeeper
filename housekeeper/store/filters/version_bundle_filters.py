@@ -22,7 +22,7 @@ def apply_version_bundle_filter(
     bundle_name: Optional[str] = None,
     version_date: Optional[dt.datetime] = None,
 ) -> Query:
-    """Apply filtering functions and return filtered results."""
+    """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:
         version_bundles: Query = filter_function(
             version_bundles=version_bundles,

@@ -26,7 +26,7 @@ def apply_bundle_filter(
     bundle_name: Optional[str] = None,
     bundle_id: Optional[int] = None,
 ) -> Query:
-    """Apply filtering functions and return filtered results."""
+    """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:
         bundles: Query = filter_function(
             bundles=bundles,

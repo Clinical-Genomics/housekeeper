@@ -51,7 +51,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
         data: Dict = load_json(json)
 
     bundle_name = data["name"]
-    if store.bundle(bundle_name):
+    if store.get_bundle_by_name(bundle_name=bundle_name):
         LOG.warning("bundle name %s already exists", bundle_name)
         raise click.Abort
 
@@ -95,7 +95,8 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
         raise click.Abort
 
     bundle_name = data.get("bundle", bundle_name)
-    bundle = store.bundle(bundle_name)
+    bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+
     if bundle is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
@@ -127,20 +128,20 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
     validate_input(data, input_type="version")
 
-    bundle_obj = store.bundle(bundle_name)
-    if bundle_obj is None:
+    bundle = store.get_bundle_by_name(bundle_name=bundle_name)
+    if bundle is None:
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
 
     data["created_at"] = get_date(data.get("created_at"))
+    new_version = store.add_version(data, bundle)
 
-    new_version: Version = store.add_version(data, bundle_obj)
     if not new_version:
         LOG.warning("Seems like version already exists for the bundle")
         raise click.Abort
 
     store.add_commit(new_version)
-    LOG.info("new version (%s) added to bundle %s", new_version.id, bundle_obj.name)
+    LOG.info("new version (%s) added to bundle %s", new_version.id, bundle.name)
 
 
 @add.command("tag")
@@ -151,15 +152,16 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
     """Add tags to housekeeper. Use `--file-id` to add tags to existing file"""
     LOG.info("Running add tag")
     store: Store = context.obj["store"]
-    file_obj = None
+    file = None
     if len(tags) == 0:
         LOG.warning("No tags provided")
         raise click.Abort
 
     if file_id:
-        file_obj: File = store.file_(file_id)
-        if not file_obj:
-            LOG.warning("unable to find file with id %s", file_id)
+        file = store.get_file_by_id(file_id=file_id)
+
+        if not file:
+            LOG.warning(f"unable to find file with id: {file_id}")
             raise click.Abort
 
     tag_name: str
@@ -171,19 +173,19 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
             tag: Tag = store.new_tag(tag_name)
             store.add_commit(tag)
 
-        if not file_obj:
+        if not file:
             continue
 
-        if tag in file_obj.tags:
+        if tag in file.tags:
             LOG.info("%s: tag already added", tag_name)
             continue
 
-        file_obj.tags.append(tag)
+        file.tags.append(tag)
 
     store.commit()
 
-    if not file_obj:
+    if not file:
         return
 
-    all_tags: Generator = (tag.name for tag in file_obj.tags)
+    all_tags: Generator = (tag.name for tag in file.tags)
     LOG.info("file tags: %s", ", ".join(all_tags))
