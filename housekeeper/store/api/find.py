@@ -198,7 +198,7 @@ class FindHandler(BaseHandler):
     def get_files_not_on_disk(files: List[File]) -> List[File]:
         """Return list of files that are not on disk."""
         if not files:
-            []
+            return []
 
         files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
         return files_not_on_disk

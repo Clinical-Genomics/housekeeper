@@ -57,7 +57,7 @@ def test_filter_files_by_path_returns_the_correct_file(populated_store: Store):
     # WHEN retrieving the file by path
     file_query: Query = filter_files_by_path(
         files=files,
-        path=file.path,
+        file_path=file.path,
     )
 
     # THEN a file should be returned
