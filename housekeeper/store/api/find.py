@@ -23,7 +23,7 @@ from housekeeper.store.filters.version_filters import (
     apply_version_filter,
 )
 from housekeeper.store.models import Bundle, File, Tag, Version
-from housekeeper.store.tag_filters import TagFilter, apply_tag_filter
+from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
 
 from .base import BaseHandler
 
