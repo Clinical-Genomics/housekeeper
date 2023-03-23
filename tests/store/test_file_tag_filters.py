@@ -8,7 +8,7 @@ def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
     """Test filtering files by tags."""
 
     # GIVEN a store with files
-    file: File = populated_store._get_file_query().first()
+    file: File = populated_store._get_query(table=File).first()
     tag_names: List[str] = [tag.name for tag in file.tags]
 
     # WHEN filtering files by tags
