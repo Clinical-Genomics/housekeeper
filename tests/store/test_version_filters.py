@@ -46,7 +46,7 @@ def test_filter_version_by_id_with_invalid_id_returns_empty_query(
 
     # WHEN filtering the versions by the invalid ID
     filtered_versions_query = filter_version_by_id(
-        versions_query, non_existing_version_id
+        versions=versions_query, version_id=non_existing_version_id
     )
 
     # THEN the filtered query should be empty
@@ -63,7 +63,7 @@ def test_filter_version_by_id_with_empty_query_returns_empty_query(
     assert empty_query.count() == 0
 
     # WHEN filtering the empty query by an ID
-    filtered_query = filter_version_by_id(empty_query, 1)
+    filtered_query = filter_version_by_id(versions=empty_query, version_id=1)
 
     # THEN the filtered query should still be empty
     assert filtered_query.count() == 0

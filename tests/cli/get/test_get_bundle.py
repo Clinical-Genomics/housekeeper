@@ -5,12 +5,15 @@ from housekeeper.store.models import Bundle
 
 def test_get_existing_bundle_name(populated_context, cli_runner, helpers):
     """Test to fetch an existing bundle based on name"""
+
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
+
     # GIVEN a existing bundle
-    bundle_obj = store.Bundle.query.first()
-    assert bundle_obj
-    bundle_name = bundle_obj.name
+    bundle: Bundle = store._get_query(table=Bundle).first()
+    assert bundle
+
+    bundle_name = bundle.name
 
     # WHEN trying to fetch the bundle based on bundle name
     output = helpers.get_stdout(
@@ -23,12 +26,14 @@ def test_get_existing_bundle_name(populated_context, cli_runner, helpers):
 
 def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
     """Test to fetch an existing bundle based on name with verbose information"""
+
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
+
     # GIVEN a existing bundle
-    bundle_obj = store._get_query(table=Bundle).first()
-    assert bundle_obj
-    bundle_name = bundle_obj.name
+    bundle: Bundle = store._get_query(table=Bundle).first()
+    assert bundle
+    bundle_name = bundle.name
 
     # WHEN trying to fetch the bundle based on bundle name
     output = helpers.get_stdout(
@@ -40,8 +45,10 @@ def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
 
 def test_get_non_existing_bundle_name(base_context, cli_runner, helpers, case_id):
     """Test to fetch a non existing bundle based on name when store is empty"""
+
     # GIVEN a context with a empty store and a cli runner
     store = base_context["store"]
+
     # GIVEN that there are no bundles
     assert helpers.count_iterable(store.bundles()) == 0
 
@@ -60,8 +67,10 @@ def test_get_non_existing_bundle_populated_store(
     """Test to fetch a non existing bundle based on name when bundles exists"""
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
+
     # GIVEN a non empty store
     assert helpers.count_iterable(store.bundles()) > 0
+
     # GIVEN a bundle name that does not exist in database
     assert store.get_bundle_by_name(bundle_name=other_case_id) is None
 
@@ -78,9 +87,10 @@ def test_get_existing_bundle_id(populated_context, cli_runner, helpers):
     """Test to fetch an existing bundle based on bundle id"""
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
+
     # GIVEN a existing bundle
-    bundle_obj = store.Bundle.query.first()
-    bundle_id = bundle_obj.id
+    bundle = store.Bundle.query.first()
+    bundle_id = bundle.id
 
     # WHEN trying to fetch a bundle based on bundle id
     json_bundles = helpers.get_json(
@@ -96,11 +106,13 @@ def test_get_existing_bundle_id(populated_context, cli_runner, helpers):
 
 def test_get_bundle_json(populated_context, cli_runner, helpers):
     """Test to fetch a bundle in json format"""
+
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
+
     # GIVEN a existing bundle
-    bundle_obj = store.Bundle.query.first()
-    bundle_id = bundle_obj.id
+    bundle = store.Bundle.query.first()
+    bundle_id = bundle.id
 
     # WHEN fetching the bundle in json format
     json_bundles = helpers.get_json(
@@ -111,6 +123,7 @@ def test_get_bundle_json(populated_context, cli_runner, helpers):
 
     # THEN assert that the output is a list of bundles
     assert isinstance(json_bundles, list)
+
     # THEN assert that the bundles are dictionaries
     assert isinstance(json_bundles[0], dict)
 
@@ -119,9 +132,11 @@ def test_get_bundles_multiple_bundles(
     populated_context, cli_runner, helpers, other_bundle
 ):
     """Test to get all bundles when there are more than one bundle"""
+
     # GIVEN a context with a populated store and a cli runner
     store = populated_context["store"]
     helpers.add_bundle(store, other_bundle)
+
     # GIVEN a store with more than one bundles
     nr_bundles = helpers.count_iterable(store.bundles())
     assert nr_bundles > 1
@@ -137,8 +152,10 @@ def test_get_bundles_multiple_bundles(
 
 def test_get_bundles_no_bundle(base_context, cli_runner, helpers):
     """Test to get all bundles when there are no bundles"""
+
     # GIVEN a context with a populated store and a cli runner
     store = base_context["store"]
+
     # GIVEN a store without bundles
     assert helpers.count_iterable(store.bundles()) == 0
 
@@ -149,5 +166,6 @@ def test_get_bundles_no_bundle(base_context, cli_runner, helpers):
 
     # THEN assert that we still get a list
     assert isinstance(json_bundles, list)
+
     # THEN assert that no bundles where fetched
     assert len(json_bundles) == 0
