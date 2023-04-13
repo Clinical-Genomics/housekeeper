@@ -18,6 +18,7 @@ from .helper_functions import Helpers
 
 # basic fixtures
 
+
 @pytest.fixture(scope="function", name="helpers")
 def fixture_helpers() -> Helpers:
     """Return a test helper object."""
@@ -122,22 +123,32 @@ def fixture_later_timestamp() -> datetime.datetime:
 
 @pytest.fixture(scope="function", name="bundle_data")
 def fixture_bundle_data(
-    case_id: str, sample_data: dict, family_data: dict, timestamp: datetime.datetime, helpers: Helpers
+    case_id: str,
+    sample_data: dict,
+    family_data: dict,
+    timestamp: datetime.datetime,
+    helpers: Helpers,
 ) -> dict:
     """Return a bundle."""
-    data = helpers.create_bundle_data(case_id=case_id, files=[family_data, sample_data], created_at=timestamp)
+    data = helpers.create_bundle_data(
+        case_id=case_id, files=[family_data, sample_data], created_at=timestamp
+    )
     return data
 
 
 @pytest.fixture(scope="function", name="empty_version_data")
-def fixture_empty_version_data(later_timestamp: datetime.datetime, case_id: str) -> dict:
+def fixture_empty_version_data(
+    later_timestamp: datetime.datetime, case_id: str
+) -> dict:
     """Return a dummy bundle."""
     data = {"bundle_name": case_id, "created_at": later_timestamp, "files": []}
     return data
 
 
 @pytest.fixture(scope="function", name="version_data")
-def fixture_version_data(empty_version_data: dict, family2_data: dict, sample2_data: dict) -> dict:
+def fixture_version_data(
+    empty_version_data: dict, family2_data: dict, sample2_data: dict
+) -> dict:
     """Return a dummy bundle."""
     data = copy.deepcopy(empty_version_data)
     data["files"] = [
@@ -181,11 +192,11 @@ def fixture_version_data_json(version_data: dict) -> str:
 
 @pytest.fixture(scope="function", name="other_bundle")
 def fixture_other_bundle(
-        bundle_data: dict,
-        other_case_id: str,
-        later_timestamp: datetime.datetime,
-        second_sample_vcf: Path,
-        second_family_vcf: Path,
+    bundle_data: dict,
+    other_case_id: str,
+    later_timestamp: datetime.datetime,
+    second_sample_vcf: Path,
+    second_family_vcf: Path,
 ) -> dict:
     """Return a dummy bundle."""
     data = deepcopy(bundle_data)
@@ -239,13 +250,13 @@ def fixture_vcf_tag_obj(vcf_tag_name: str, timestamp: datetime.datetime) -> str:
 @pytest.fixture(scope="function", name="bundle_obj")
 def fixture_bundle_obj(bundle_data: dict, store: Store) -> models.Bundle:
     """Return a bundle object."""
-    return store.add_bundle(bundle_data)[0]
+    return store.create_bundle_and_version(bundle_data)[0]
 
 
 @pytest.fixture(scope="function", name="version_obj")
 def fixture_version_obj(bundle_data: dict, store: Store) -> models.Version:
     """Return a version object."""
-    return store.add_bundle(bundle_data)[1]
+    return store.create_bundle_and_version(bundle_data)[1]
 
 
 # dir fixtures
@@ -345,6 +356,7 @@ def fixture_checksum(checksum_file: Path) -> Path:
 def fixture_helpers() -> Helpers:
     """Return a test helper object."""
     return Helpers()
+
 
 # Store fixtures
 

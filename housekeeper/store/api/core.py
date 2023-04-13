@@ -7,13 +7,15 @@ from pathlib import Path
 import alchy
 
 from housekeeper.store import models
-from housekeeper.store.api.add import AddHandler
-from housekeeper.store.api.find import FindHandler
+from housekeeper.store.api.crud.create import CreateHandler
+from housekeeper.store.api.crud.read import ReadHandler
+from housekeeper.store.api.crud.update import UpdateHandler
+from housekeeper.store.api.crud.delete import DeleteHandler
 
 LOG = logging.getLogger(__name__)
 
 
-class CoreHandler(FindHandler, AddHandler):
+class CoreHandler(ReadHandler, CreateHandler, UpdateHandler, DeleteHandler):
     """Aggregating class for the store api handlers"""
 
 

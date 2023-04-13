@@ -205,7 +205,7 @@ def test_include_bundle_without_version(
     store = base_context["store"]
     bundle_name = "hello"
 
-    new_bundle = store.new_bundle(name=bundle_name, created_at=timestamp)
+    new_bundle = store.create_bundle(name=bundle_name, created_at=timestamp)
     store.add_commit(new_bundle)
 
     bundle = store.get_bundle_by_name(bundle_name=bundle_name)

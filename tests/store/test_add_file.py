@@ -7,16 +7,18 @@ from pathlib import Path
 from typing import List
 
 
-def test_add_file(populated_store: Store, second_family_vcf: Path, family_tag_names: List[str]):
+def test_add_file(
+    populated_store: Store, second_family_vcf: Path, family_tag_names: List[str]
+):
     """Test to create a file with the add file method"""
     # GIVEN the path and the tags for a file
 
     # GIVEN a store populated with a bundle
-    bundle: Bundle = populated_store.bundles().first()
+    bundle: Bundle = populated_store.get_bundles().first()
     assert isinstance(bundle, Bundle)
 
     # WHEN using the add file method to create a new file object
-    new_file: File = populated_store.add_file(
+    new_file: File = populated_store.update_latest_bundle_with_files(
         file_path=second_family_vcf, bundle=bundle, tags=family_tag_names
     )
 
@@ -35,11 +37,13 @@ def test_add_file_no_tags(populated_store: Store, second_family_vcf: Path):
     # GIVEN a path for a file
 
     # GIVEN a store populated with a bundle
-    bundle: Bundle = populated_store.bundles().first()
+    bundle: Bundle = populated_store.get_bundles().first()
     assert isinstance(bundle, Bundle)
 
     # WHEN using the add file method to create a new file object
-    new_file = populated_store.add_file(file_path=second_family_vcf, bundle=bundle)
+    new_file = populated_store.update_latest_bundle_with_files(
+        file_path=second_family_vcf, bundle=bundle
+    )
 
     # THEN assert that the no tags where added to the file
     assert len(new_file.tags) == 0

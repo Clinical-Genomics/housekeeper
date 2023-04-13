@@ -9,7 +9,7 @@ def test_create_tag_obj(store, vcf_tag_name):
     """Test to create a tag object"""
     # GIVEN a store and a tag name
     # WHEN creating a tag
-    new_tag = store.new_tag(vcf_tag_name)
+    new_tag = store.create_tag(vcf_tag_name)
     # THEN assert a tag object was created
     assert isinstance(new_tag, models.Tag)
     assert new_tag.name == vcf_tag_name
@@ -33,7 +33,7 @@ def test_create_version_obj(store, timestamp):
     """Test to create a version object"""
     # GIVEN a store and a time stamp
     # WHEN creating a version
-    new_version = store.new_version(created_at=timestamp, expires_at=timestamp)
+    new_version = store.create_version(created_at=timestamp, expires_at=timestamp)
     # THEN assert a version object was created
     assert isinstance(new_version, models.Version)
     assert new_version.created_at == timestamp
@@ -46,7 +46,7 @@ def test_create_bundle_obj(store, bundle_data):
     """Test to create a bundle object"""
     # GIVEN some bundle information
     # WHEN adding the new bundle
-    bundle_obj = store.add_bundle(bundle_data)[0]
+    bundle_obj = store.create_bundle_and_version(bundle_data)[0]
     # THEN the bundle should have correct name
     assert bundle_obj.name == bundle_data["name"]
     # THEN the bundle should have correct creation time
@@ -84,7 +84,7 @@ def test_add_bundle_twice(populated_store, bundle_data):
     # GIVEN a store ppopulated with a bundle
     assert store.Bundle.query.count() > 0
     # WHEN adding the same bundle again
-    new_bundle = store.add_bundle(bundle_data)
+    new_bundle = store.create_bundle_and_version(bundle_data)
     # THEN it should return None
     assert new_bundle is None
 
@@ -96,7 +96,7 @@ def test_add_two_versions_of_bundle(populated_store, second_bundle_data):
     assert store.Bundle.query.count() > 0
 
     # WHEN adding the modified bundle to the database
-    new_bundle_obj = store.add_bundle(second_bundle_data)[0]
+    new_bundle_obj = store.create_bundle_and_version(second_bundle_data)[0]
     store.add_commit(new_bundle_obj)
 
     # THEN there should still be one bundle

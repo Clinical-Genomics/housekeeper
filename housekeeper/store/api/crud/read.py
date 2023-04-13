@@ -4,8 +4,8 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import List, Optional, Set
-
+from typing import List, Optional, Set, Type
+from alchy import ModelBase
 from sqlalchemy.orm import Query
 
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
@@ -25,15 +25,31 @@ from housekeeper.store.filters.version_filters import (
 from housekeeper.store.models import Bundle, File, Tag, Version
 from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
 
-from .base import BaseHandler
+from housekeeper.store.api.base import BaseHandler
 
 LOG = logging.getLogger(__name__)
 
 
-class FindHandler(BaseHandler):
+class ReadHandler(BaseHandler):
     """Handler for searching the database"""
 
-    def bundles(self):
+    @staticmethod
+    def _get_query(table: Type[ModelBase]) -> Query:
+        """Return a query for the given table."""
+        return table.query
+
+    def _get_join_version_bundle_query(self) -> Query:
+        """Return version bundle query."""
+        return self.Version.query.join(Version.bundle)
+
+    def _get_join_file_tag_query(self) -> Query:
+        """Return file tag query."""
+        return self.File.query.join(File.tags)
+
+    def _get_join_version_query(self, query: Query):
+        return query.join(Version)
+
+    def get_bundles(self):
         """Fetch bundles."""
         LOG.info("Fetching all bundles")
         return self._get_query(table=Bundle)

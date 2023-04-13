@@ -38,7 +38,7 @@ def get():
 def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     """Get bundle information from database"""
     store = context.obj["store"]
-    bundles = store.bundles()
+    bundles = store.get_bundles()
 
     if bundle_name:
         bundle = store.get_bundle_by_name(bundle_name=bundle_name)

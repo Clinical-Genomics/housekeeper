@@ -62,7 +62,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
         data["files"] = []
 
     try:
-        new_bundle, new_version = store.add_bundle(data)
+        new_bundle, new_version = store.create_bundle_and_version(data)
     except FileNotFoundError as err:
         LOG.warning("File %s does not exist", err)
         raise click.Abort
@@ -78,7 +78,9 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
 @click.option("-j", "--json", help="json formatted input")
 @click.argument("path", required=False)
 @click.pass_context
-def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: str, path: str):
+def file_cmd(
+    context: click.Context, tags: List[str], bundle_name: str, json: str, path: str
+):
     """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
     store: Store = context.obj["store"]
@@ -103,7 +105,9 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
 
     tags = data.get("tags", tags)
 
-    new_file = store.add_file(file_path=file_path, bundle=bundle, tags=tags)
+    new_file = store.update_latest_bundle_with_files(
+        file_path=file_path, bundle=bundle, tags=tags
+    )
     store.add_commit(new_file)
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
 
@@ -134,7 +138,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
         raise click.Abort
 
     data["created_at"] = get_date(data.get("created_at"))
-    new_version = store.add_version(data, bundle)
+    new_version = store.update_bundle_with_version(data, bundle)
 
     if not new_version:
         LOG.warning("Seems like version already exists for the bundle")
@@ -170,7 +174,7 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
 
         if not tag:
             LOG.info("%s: tag created", tag_name)
-            tag: Tag = store.new_tag(tag_name)
+            tag: Tag = store.create_tag(tag_name)
             store.add_commit(tag)
 
         if not file:

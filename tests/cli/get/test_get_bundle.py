@@ -50,7 +50,7 @@ def test_get_non_existing_bundle_name(base_context, cli_runner, helpers, case_id
     store = base_context["store"]
 
     # GIVEN that there are no bundles
-    assert helpers.count_iterable(store.bundles()) == 0
+    assert helpers.count_iterable(store.get_bundles()) == 0
 
     # WHEN trying to fetch the bundle based on bundle name
     output = helpers.get_stdout(
@@ -69,7 +69,7 @@ def test_get_non_existing_bundle_populated_store(
     store = populated_context["store"]
 
     # GIVEN a non empty store
-    assert helpers.count_iterable(store.bundles()) > 0
+    assert helpers.count_iterable(store.get_bundles()) > 0
 
     # GIVEN a bundle name that does not exist in database
     assert store.get_bundle_by_name(bundle_name=other_case_id) is None
@@ -138,7 +138,7 @@ def test_get_bundles_multiple_bundles(
     helpers.add_bundle(store, other_bundle)
 
     # GIVEN a store with more than one bundles
-    nr_bundles = helpers.count_iterable(store.bundles())
+    nr_bundles = helpers.count_iterable(store.get_bundles())
     assert nr_bundles > 1
 
     # WHEN fetching all bundles by not specifying any bundle
@@ -157,7 +157,7 @@ def test_get_bundles_no_bundle(base_context, cli_runner, helpers):
     store = base_context["store"]
 
     # GIVEN a store without bundles
-    assert helpers.count_iterable(store.bundles()) == 0
+    assert helpers.count_iterable(store.get_bundles()) == 0
 
     # WHEN fetching all bundles by not specifying any bundle
     json_bundles = helpers.get_json(

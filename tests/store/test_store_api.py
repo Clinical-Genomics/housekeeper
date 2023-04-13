@@ -11,7 +11,7 @@ def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     """
     store = populated_store
     # GIVEN a store with two bundles and two files in each bundle
-    bundle_old_obj, _ = store.add_bundle(data=bundle_data_old)
+    bundle_old_obj, _ = store.create_bundle_and_version(data=bundle_data_old)
     store.add_commit(bundle_old_obj)
 
     # WHEN fetching all files in the database
@@ -27,7 +27,7 @@ def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timesta
     """
     store = populated_store
     # GIVEN a store with two bundles and two files in each bundle
-    bundle_old_obj, _ = store.add_bundle(data=bundle_data_old)
+    bundle_old_obj, _ = store.create_bundle_and_version(data=bundle_data_old)
     store.add_commit(bundle_old_obj)
 
     # WHEN fetching all files before the oldest date
@@ -50,7 +50,7 @@ def test_get_no_get_files_before_oldest(
     """
     store = populated_store
     # GIVEN a store with two bundles and two files in each bundle
-    bundle_old_obj, _ = store.add_bundle(data=bundle_data_old)
+    bundle_old_obj, _ = store.create_bundle_and_version(data=bundle_data_old)
     store.add_commit(bundle_old_obj)
 
     # WHEN fetching all files before the oldest date
