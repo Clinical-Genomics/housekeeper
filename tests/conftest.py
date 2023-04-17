@@ -373,3 +373,9 @@ def fixture_populated_store(store: Store, bundle_data: dict, helpers: Helpers) -
     """Returns a populated store."""
     helpers.add_bundle(store, bundle_data)
     return store
+
+
+@pytest.fixture(name="timestamp_now")
+def fixture_timestamp_now() -> datetime.datetime:
+    """Return a timestamp for now."""
+    return datetime.datetime.now()
