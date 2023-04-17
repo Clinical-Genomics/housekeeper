@@ -104,7 +104,7 @@ def test_add_version_existing_bundle_same_date(
     # THEN assert it has a non zero exit status
     assert result.exit_code == 1
     # THEN check that the error message is displayed
-    assert "version of bundle already added" in caplog.text
+    assert "Version of bundle already added" in caplog.text
 
 
 def test_add_version_no_files_json(

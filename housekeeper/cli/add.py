@@ -134,7 +134,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 
     bundle = store.get_bundle_by_name(bundle_name=bundle_name)
     if bundle is None:
-        LOG.warning("unknown bundle: %s", bundle_name)
+        LOG.warning(f"unknown bundle: {bundle_name}")
         raise click.Abort
 
     data["created_at"] = get_date(data.get("created_at"))
@@ -145,7 +145,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
         raise click.Abort
 
     store.add_commit(new_version)
-    LOG.info("new version (%s) added to bundle %s", new_version.id, bundle.name)
+    LOG.info(f"new version {new_version.id} added to bundle {bundle.name}")
 
 
 @add.command("tag")
