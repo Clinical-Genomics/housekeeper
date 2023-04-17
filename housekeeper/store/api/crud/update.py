@@ -1,37 +1,39 @@
 import logging
 from housekeeper.store.api.base import BaseHandler
 from housekeeper.store.models import Bundle, File, Version, Tag
-from typing import Dict, List, Tuple
+from typing import Dict, List, Set
 from pathlib import Path
 
 LOG = logging.getLogger(__name__)
 
 
 class UpdateHandler(BaseHandler):
-    """This class handles updating model entries in the store"""
+    """This class handles updating entries in the store"""
 
     def update_bundle_with_version(
         self,
         data: dict,
         bundle: Bundle,
     ) -> Version:
-        """Build a new version object and add it to an existing bundle"""
-        created_at = data.get("created_at", data.get("created"))
+        """Create a new version object and add it to an existing bundle."""
+        created_at: dt.datetime = data.get("created_at", data.get("created"))
         if self.get_version_by_date_and_bundle_name(
             version_date=created_at, bundle_name=bundle.name
         ):
-            LOG.info("version of bundle already added")
+            LOG.info("Version of bundle already added")
             return None
 
-        version_obj = self.create_version(
+        version: Version = self.create_version(
             created_at=created_at,
             expires_at=data.get("expires_at", data.get("expires")),
         )
         if data.get("files"):
-            self.update_version_with_files_and_tags(data["files"], version_obj)
+            self.update_version_with_files_and_tags(
+                files=data["files"], version_obj=version
+            )
 
-        version_obj.bundle = bundle
-        return version_obj
+        version.bundle = bundle
+        return version
 
     def update_latest_bundle_with_files(
         self,
@@ -40,42 +42,40 @@ class UpdateHandler(BaseHandler):
         to_archive: bool = False,
         tags: List[str] = None,
     ) -> File:
-        """Build a new file object and add it to the latest version of an existing bundle"""
-        version_obj = bundle.versions[0]
-        tags = tags or []
-        tag_objs = [
-            tag_obj for tag_name, tag_obj in self.create_tags_list(tags).items()
-        ]
-        new_file = self.create_file(
+        """Create a new file object and add it to the latest version of an existing bundle."""
+        version: Version = bundle.versions[0]
+        tags: List[Tag] = tags or []
+        tags: List[Tag] = [tag for tag_name, tag in self.create_tags_dict(tags).items()]
+        file: File = self.create_file(
             path=str(file_path.absolute()),
             to_archive=to_archive,
-            tags=tag_objs,
+            tags=tags,
         )
-        new_file.version = version_obj
-        return new_file
+        file.version = version
+        return file
 
     def update_version_with_files_and_tags(
         self, files: List[dict], version_obj: Version
     ) -> None:
-        """Create file objects and the tags and add them to a version object"""
+        """Create file objects and the tags and add them to a version object."""
 
-        tag_names = set(
-            tag_name for file_data in files for tag_name in file_data["tags"]
+        tag_names: Set[str] = set(
+            tag_name for file in files for tag_name in file["tags"]
         )
-        tag_map = self.create_tags_list(tag_names)
+        tag_map: Dict[str, Tag] = self.create_tags_dict(tag_names)
 
-        for file_data in files:
+        for file in files:
             # This if can be removed after decoupling
-            if isinstance(file_data["path"], str):
-                paths = [file_data["path"]]
+            if isinstance(file["path"], str):
+                paths: List[Path] = [file["path"]]
             else:
-                paths = file_data["path"]
+                paths: Path = file["path"]
             for path in paths:
-                LOG.debug("adding file: %s", path)
+                LOG.debug(f"adding file: {path}")
                 if not Path(path).exists():
                     raise FileNotFoundError(path)
-                tags = [tag_map[tag_name] for tag_name in file_data["tags"]]
-                new_file = self.create_file(
-                    path, to_archive=file_data["archive"], tags=tags
+                tags: List[str] = [tag_map[tag_name] for tag_name in file["tags"]]
+                file: File = self.create_file(
+                    path=path, to_archive=file["archive"], tags=tags
                 )
-                version_obj.files.append(new_file)
+                version_obj.files.append(file)

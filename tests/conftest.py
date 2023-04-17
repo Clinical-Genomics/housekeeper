@@ -130,26 +130,24 @@ def fixture_bundle_data(
     helpers: Helpers,
 ) -> dict:
     """Return a bundle."""
-    data = helpers.create_bundle_data(
+    return helpers.create_bundle_data(
         case_id=case_id, files=[family_data, sample_data], created_at=timestamp
     )
-    return data
 
 
 @pytest.fixture(scope="function", name="empty_version_data")
 def fixture_empty_version_data(
     later_timestamp: datetime.datetime, case_id: str
 ) -> dict:
-    """Return a dummy bundle."""
-    data = {"bundle_name": case_id, "created_at": later_timestamp, "files": []}
-    return data
+    """Return a mock bundle."""
+    return {"bundle_name": case_id, "created_at": later_timestamp, "files": []}
 
 
 @pytest.fixture(scope="function", name="version_data")
 def fixture_version_data(
     empty_version_data: dict, family2_data: dict, sample2_data: dict
 ) -> dict:
-    """Return a dummy bundle."""
+    """Return a mock bundle."""
     data = copy.deepcopy(empty_version_data)
     data["files"] = [
         {

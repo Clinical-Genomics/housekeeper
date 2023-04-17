@@ -7,7 +7,7 @@ import click
 from rich.console import Console
 
 from housekeeper.store.api import schema
-
+from housekeeper.store.models import Bundle
 from .tables import (
     get_bundles_table,
     get_files_table,
@@ -38,7 +38,7 @@ def get():
 def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     """Get bundle information from database"""
     store = context.obj["store"]
-    bundles = store.get_bundles()
+    bundles: List[Bundle] = store.get_bundles()
 
     if bundle_name:
         bundle = store.get_bundle_by_name(bundle_name=bundle_name)
@@ -81,7 +81,7 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     "-c",
     "--compact",
     is_flag=True,
-    help="print compact filenames IFF verobe flag present",
+    help="print compact filenames IFF verbose flag present",
 )
 @click.pass_context
 def version_cmd(context, bundle_name, json, version_id, verbose, compact):

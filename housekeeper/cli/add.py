@@ -62,7 +62,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
         data["files"] = []
 
     try:
-        new_bundle, new_version = store.create_bundle_and_version(data)
+        new_bundle, new_version = store.create_bundle_and_version(data=data)
     except FileNotFoundError as err:
         LOG.warning("File %s does not exist", err)
         raise click.Abort
@@ -105,7 +105,7 @@ def file_cmd(
 
     tags = data.get("tags", tags)
 
-    new_file = store.update_latest_bundle_with_files(
+    new_file: File = store.update_latest_bundle_with_files(
         file_path=file_path, bundle=bundle, tags=tags
     )
     store.add_commit(new_file)
@@ -138,7 +138,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
         raise click.Abort
 
     data["created_at"] = get_date(data.get("created_at"))
-    new_version = store.update_bundle_with_version(data, bundle)
+    new_version: Version = store.update_bundle_with_version(data=data, bundle=bundle)
 
     if not new_version:
         LOG.warning("Seems like version already exists for the bundle")
@@ -170,7 +170,7 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
 
     tag_name: str
     for tag_name in tags:
-        tag: Tag = store.get_tag(tag_name)
+        tag: Tag = store.get_tag(tag_name=tag_name)
 
         if not tag:
             LOG.info("%s: tag created", tag_name)

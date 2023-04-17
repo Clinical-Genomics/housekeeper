@@ -31,7 +31,7 @@ LOG = logging.getLogger(__name__)
 
 
 class ReadHandler(BaseHandler):
-    """Handler for searching the database"""
+    """Handler for reading the database"""
 
     @staticmethod
     def _get_query(table: Type[ModelBase]) -> Query:
@@ -49,9 +49,9 @@ class ReadHandler(BaseHandler):
     def _get_join_version_query(self, query: Query):
         return query.join(Version)
 
-    def get_bundles(self):
-        """Fetch bundles."""
-        LOG.info("Fetching all bundles")
+    def get_bundles(self) -> Query:
+        """Return bundles."""
+        LOG.info("Getting all bundles")
         return self._get_query(table=Bundle)
 
     def get_bundle_by_id(self, bundle_id: int) -> Bundle:
