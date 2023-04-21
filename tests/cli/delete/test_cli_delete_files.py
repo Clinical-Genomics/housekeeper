@@ -52,7 +52,7 @@ def test_delete_existing_bundle_with_confirmation(
     caplog.set_level(logging.DEBUG)
 
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
 
     # GIVEN a existing bundle
     bundle: Bundle = store._get_query(table=Bundle).first()
@@ -75,7 +75,7 @@ def test_delete_existing_bundle_no_confirmation(
     caplog.set_level(logging.DEBUG)
 
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
 
     # GIVEN a existing bundle
     bundle: Bundle = store._get_query(table=Bundle).first()

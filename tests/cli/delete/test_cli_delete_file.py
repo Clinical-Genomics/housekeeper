@@ -31,7 +31,7 @@ def test_delete_existing_file_with_confirmation(
 ):
     """Test to delete an existing file using confirmation"""
     # GIVEN a context with a populated store, a file id and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     file_id = 1
     # GIVEN that the file exists
     file_obj = store.File.get(file_id)
@@ -50,14 +50,16 @@ def test_delete_existing_file_no_confirmation(
     """Test to delete a existing file without confirmation"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store, a file id and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     file_id = 1
     # GIVEN that the file exists
     file_obj = store.File.get(file_id)
     assert file_obj
 
     # WHEN trying to delete the file
-    result = cli_runner.invoke(delete.file_cmd, [str(file_id), "--yes"], obj=populated_context)
+    result = cli_runner.invoke(
+        delete.file_cmd, [str(file_id), "--yes"], obj=populated_context
+    )
 
     # THEN file delete should be in output
     assert "file deleted" in caplog.text

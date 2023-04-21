@@ -18,8 +18,8 @@ def test_include_files_creates_bundle_dir(
     The bundle should not exist before and after command is run it should have been created
     """
     # GIVEN a context that is populated
-    store = populated_context["store"]
-    bundle: Bundle = store.Bundle.query.first()
+    store: Store = populated_context["store"]
+    bundle: Bundle = store._get_query(table=Bundle).first()
     bundle_name: str = bundle.name
     # GIVEN that the latest version of the bundle is not included
     assert bundle.versions[0].included_at is None
@@ -42,8 +42,8 @@ def test_include_files_creates_version_specific_bundle_dir(
     The version bundle should not exist before and after command is run it should have been created
     """
     # GIVEN a context that is populated
-    store = populated_context["store"]
-    bundle: Bundle = store.Bundle.query.first()
+    store: Store = populated_context["store"]
+    bundle: Bundle = store._get_query(table=Bundle).first()
     version_obj = bundle.versions[0]
     bundle_name: str = bundle.name
     # GIVEN that the latest version of the bundle is not included
@@ -69,8 +69,8 @@ def test_include_files_adds_version_specific_files(
     The files should have been hard linked after command has been run
     """
     # GIVEN a context that is populated
-    store = populated_context["store"]
-    bundle: Bundle = store.Bundle.query.first()
+    store: Store = populated_context["store"]
+    bundle: Bundle = store._get_query(table=Bundle).first()
     version_obj = bundle.versions[0]
     bundle_name: str = bundle.name
     # GIVEN that the latest version of the bundle is not included
@@ -101,8 +101,8 @@ def test_include_files_specific_version(
     The folder should have been created
     """
     # GIVEN a context that is populated
-    store = populated_context["store"]
-    bundle: Bundle = store.Bundle.query.first()
+    store: Store = populated_context["store"]
+    bundle: Bundle = store._get_query(table=Bundle).first()
     version_obj = bundle.versions[0]
     version_id = version_obj.id
     # GIVEN that the latest version of the bundle is not included
@@ -156,7 +156,7 @@ def test_include_non_existing_version(
     """
     caplog.set_level(logging.DEBUG)
     # GIVEN a context that is populated
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a version that does not exists
     version_id = 10
     assert not store.Version.get(version_id)
@@ -231,8 +231,8 @@ def test_include_version_already_included(
     """
     caplog.set_level(logging.DEBUG)
     # GIVEN a context that is populated and a version that is already included
-    store = populated_context["store"]
-    version_obj = store.Version.query.first()
+    store: Store = populated_context["store"]
+    version_obj = store._get_query(table=Version).first()
     version_id = version_obj.id
     result = cli_runner.invoke(
         include, ["--version-id", version_id], obj=populated_context

@@ -36,8 +36,8 @@ def test_get_version_bundle_name(
     This should return all versions
     """
     # GIVEN a context that is populated
-    store = populated_context["store"]
-    bundle_obj: Bundle = store.Bundle.query.first()
+    store: Store = populated_context["store"]
+    bundle_obj: Bundle = store._get_query(table=Bundle).first()
     version_obj: Version = bundle_obj.versions[0]
     bundle_name: str = bundle_obj.name
 
@@ -56,7 +56,7 @@ def test_get_version_non_existing_bundle_name(
     """
     caplog.set_level(logging.DEBUG)
     # GIVEN a context that is populated
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a non existing bundle name
     bundle_name = "hello"
     assert not store.get_bundle_by_name(bundle_name=bundle_name)
@@ -74,8 +74,8 @@ def test_get_version_json(populated_context: Context, cli_runner: CliRunner, hel
     This should return all versions
     """
     # GIVEN a context that is populated
-    store = populated_context["store"]
-    bundle_obj = store.Bundle.query.first()
+    store: Store = populated_context["store"]
+    bundle_obj = store._get_query(table=Bundle).first()
     bundle_name = bundle_obj.name
 
     # WHEN running the include files command
@@ -95,8 +95,8 @@ def test_get_version_version_id(
     This should return all versions
     """
     # GIVEN a context that is populated
-    store = populated_context["store"]
-    bundle_obj: Bundle = store.Bundle.query.first()
+    store: Store = populated_context["store"]
+    bundle_obj: Bundle = store._get_query(table=Bundle).first()
     version_obj: Version = bundle_obj.versions[0]
     version_id: int = version_obj.id
 

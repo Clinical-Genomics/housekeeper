@@ -2,6 +2,7 @@
 import logging
 
 from housekeeper.cli.add import tag_cmd
+from housekeeper.store.api.core import Store
 
 
 def test_add_tags_no_args(populated_context, cli_runner, caplog):
@@ -43,7 +44,7 @@ def test_add_existing_tag_existing_file(populated_context, cli_runner, caplog):
     """Test to add a existing tag to a file that exists"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store, and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a existing file id
     file_id = 1
     file_obj = store.File.get(file_id)
@@ -51,7 +52,9 @@ def test_add_existing_tag_existing_file(populated_context, cli_runner, caplog):
     tag = file_obj.tags[0].name
 
     # WHEN trying to add the existing tag to the file
-    result = cli_runner.invoke(tag_cmd, [tag, "-f", str(file_id)], obj=populated_context)
+    result = cli_runner.invoke(
+        tag_cmd, [tag, "-f", str(file_id)], obj=populated_context
+    )
     # THEN assert it has a non zero exit status
     assert result.exit_code == 0
     # THEN check that it communicates that the tag existed
@@ -62,7 +65,7 @@ def test_add_tag_existing_file(populated_context, cli_runner, caplog):
     """Test to add a non existing tag to a file that exists"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store, and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a existing file id
     file_id = 1
     file_obj = store.File.get(file_id)
@@ -71,7 +74,9 @@ def test_add_tag_existing_file(populated_context, cli_runner, caplog):
     tag = "new-tag"
 
     # WHEN trying to add a tag to the existing file
-    result = cli_runner.invoke(tag_cmd, [tag, "-f", str(file_id)], obj=populated_context)
+    result = cli_runner.invoke(
+        tag_cmd, [tag, "-f", str(file_id)], obj=populated_context
+    )
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tag is displayed in the output
@@ -82,7 +87,7 @@ def test_add_tag_non_existing_file(populated_context, cli_runner, caplog):
     """Test to add a tag to a file that not exist"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a non existing file id
     missing_file_id = 42
     file_obj = store.File.get(missing_file_id)

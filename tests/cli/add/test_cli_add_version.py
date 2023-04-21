@@ -37,7 +37,7 @@ def test_add_version_non_existing_bundle(
     """
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a non existing bundle
     bundle_name = "non_existing"
     bundle: Bundle = store.get_bundle_by_name(bundle_name=bundle_name)
@@ -61,9 +61,9 @@ def test_add_version_existing_bundle(
     """
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle: Bundle = store.Bundle.query.first()
+    bundle: Bundle = store._get_query(table=Bundle).first()
     assert isinstance(bundle, Bundle)
 
     # GIVEN the name of a existing bundle
@@ -88,9 +88,9 @@ def test_add_version_existing_bundle_same_date(
     """
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle: Bundle = store.Bundle.query.first()
+    bundle: Bundle = store._get_query(table=Bundle).first()
     assert isinstance(bundle, Bundle)
     bundle_name: str = bundle.name
 
@@ -119,7 +119,7 @@ def test_add_version_no_files_json(
     """
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     version_data = json.loads(empty_version_data_json)
     # GIVEN a bundle with one version
     bundle = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])
@@ -149,7 +149,7 @@ def test_add_version_with_files_json(
     """Test to add a new version with files to existing bundle using json as input"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     version_data = json.loads(version_data_json)
     # GIVEN a bundle with one version
     bundle = store.get_bundle_by_name(bundle_name=version_data["bundle_name"])

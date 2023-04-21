@@ -6,15 +6,17 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli.add import bundle_cmd
+from housekeeper.store.api.core import Store
+from housekeeper.store.models import Bundle
 
 
 def test_add_existing_bundle(populated_context: Context, cli_runner: CliRunner, caplog):
     """Test to add a bundle that exists"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a existing bundle
-    bundle_obj = store.Bundle.query.first()
+    bundle_obj = store._get_query(table=Bundle).first()
     assert bundle_obj
     bundle_name = bundle_obj.name
 
@@ -27,7 +29,9 @@ def test_add_existing_bundle(populated_context: Context, cli_runner: CliRunner, 
     assert "already exists" in caplog.text
 
 
-def test_add_simple_bundle(base_context: Context, cli_runner: CliRunner, case_id: str, caplog):
+def test_add_simple_bundle(
+    base_context: Context, cli_runner: CliRunner, case_id: str, caplog
+):
     """Test to add a new bundle by only specifying bundle name"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a empty store and a cli runner
@@ -70,7 +74,9 @@ def test_add_bundle_json_and_bundle_name(
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a empty store, a cli runner and a bundle in json format
     # WHEN trying to add a bundle with both json and bundle_name as input
-    result = cli_runner.invoke(bundle_cmd, [case_id, "--json", bundle_data_json], obj=base_context)
+    result = cli_runner.invoke(
+        bundle_cmd, [case_id, "--json", bundle_data_json], obj=base_context
+    )
 
     # THEN assert the call failed
     assert result.exit_code == 1
@@ -85,7 +91,9 @@ def test_add_bundle_json(
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a empty store, a cli runner and a bundle in json format
     # WHEN trying to add a bundle
-    result = cli_runner.invoke(bundle_cmd, ["--json", bundle_data_json], obj=base_context)
+    result = cli_runner.invoke(
+        bundle_cmd, ["--json", bundle_data_json], obj=base_context
+    )
 
     # THEN assert it succeded
     assert result.exit_code == 0
@@ -106,7 +114,9 @@ def test_add_bundle_json_no_files(
     bundle_data_json = json.dumps(bundle_data)
 
     # WHEN trying to add a bundle
-    result = cli_runner.invoke(bundle_cmd, ["--json", bundle_data_json], obj=base_context)
+    result = cli_runner.invoke(
+        bundle_cmd, ["--json", bundle_data_json], obj=base_context
+    )
 
     # THEN assert it succeded
     assert result.exit_code == 0
@@ -130,7 +140,9 @@ def test_add_bundle_non_existing_file(
     bundle_data_json = json.dumps(bundle_data)
 
     # WHEN trying to add a bundle
-    result = cli_runner.invoke(bundle_cmd, ["--json", bundle_data_json], obj=base_context)
+    result = cli_runner.invoke(
+        bundle_cmd, ["--json", bundle_data_json], obj=base_context
+    )
 
     # THEN assert it succeded
     assert result.exit_code == 1
@@ -151,7 +163,9 @@ def test_add_bundle_json_missing_data(
     bundle_data_json = json.dumps(bundle_data)
 
     # WHEN trying to add a bundle
-    result = cli_runner.invoke(bundle_cmd, ["--json", bundle_data_json], obj=base_context)
+    result = cli_runner.invoke(
+        bundle_cmd, ["--json", bundle_data_json], obj=base_context
+    )
 
     # THEN assert it succeded
     assert result.exit_code == 1
