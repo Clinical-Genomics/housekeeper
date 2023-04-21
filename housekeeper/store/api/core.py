@@ -43,3 +43,11 @@ class Store(CoreHandler):
         self.Version.app_root = Path(root)
 
         super().__init__(self.session)
+
+    def create_all(self):
+        """Create all tables in the database."""
+        Model.metadata.create_all(bind=self.session.get_bind())
+
+    def drop_all(self):
+        """Drop all tables in the database."""
+        Model.metadata.drop_all(bind=self.session.get_bind())

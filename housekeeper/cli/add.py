@@ -66,9 +66,10 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
     except FileNotFoundError as err:
         LOG.warning("File %s does not exist", err)
         raise click.Abort
-    store.add_commit(new_bundle)
+    store.session.add(new_bundle)
     new_version.bundle: Bundle = new_bundle
-    store.add_commit(new_version)
+    store.session.add(new_version)
+    store.session.commit()
     LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
 
@@ -78,7 +79,9 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
 @click.option("-j", "--json", help="json formatted input")
 @click.argument("path", required=False)
 @click.pass_context
-def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: str, path: str):
+def file_cmd(
+    context: click.Context, tags: List[str], bundle_name: str, json: str, path: str
+):
     """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
     store: Store = context.obj["store"]
@@ -104,7 +107,8 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
     tags = data.get("tags", tags)
 
     new_file = store.add_file(file_path=file_path, bundle=bundle, tags=tags)
-    store.add_commit(new_file)
+    store.session.add(new_file)
+    store.session.commit()
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
 
 
@@ -116,7 +120,7 @@ def file_cmd(context: click.Context, tags: List[str], bundle_name: str, json: st
 def version_cmd(context: click.Context, bundle_name: str, created_at: str, json: str):
     """Add a new version to a bundle."""
     LOG.info("Running add version")
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
@@ -140,7 +144,8 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
         LOG.warning("Seems like version already exists for the bundle")
         raise click.Abort
 
-    store.add_commit(new_version)
+    store.session.add(new_version)
+    store.session.commit()
     LOG.info("new version (%s) added to bundle %s", new_version.id, bundle.name)
 
 
@@ -171,7 +176,8 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
         if not tag:
             LOG.info("%s: tag created", tag_name)
             tag: Tag = store.new_tag(tag_name)
-            store.add_commit(tag)
+            store.session.add(tag)
+            store.session.commit()
 
         if not file:
             continue

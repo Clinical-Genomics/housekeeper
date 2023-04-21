@@ -6,6 +6,7 @@ from click.testing import CliRunner
 
 from housekeeper.cli.include import include
 from housekeeper.cli.add import bundle_cmd
+from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle
 
 
@@ -202,11 +203,12 @@ def test_include_bundle_without_version(
     """
     caplog.set_level(logging.DEBUG)
     # GIVEN context with a bundle without versions
-    store = base_context["store"]
+    store: Store = base_context["store"]
     bundle_name = "hello"
 
     new_bundle = store.new_bundle(name=bundle_name, created_at=timestamp)
-    store.add_commit(new_bundle)
+    store.session.add(new_bundle)
+    store.session.commit()
 
     bundle = store.get_bundle_by_name(bundle_name=bundle_name)
     assert len(bundle.versions) == 0

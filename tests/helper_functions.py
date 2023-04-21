@@ -38,10 +38,13 @@ class Helpers:
     def add_bundle(store: Store, bundle: dict) -> None:
         """Add and commit bundle to housekeeper store"""
         bundle_obj, _ = store.add_bundle(bundle)
-        store.add_commit(bundle_obj)
+        store.session.add(bundle_obj)
+        store.session.commit()
 
     @staticmethod
-    def create_bundle_data(case_id: str, files: List[dict], created_at: dt.datetime = None) -> dict:
+    def create_bundle_data(
+        case_id: str, files: List[dict], created_at: dt.datetime = None
+    ) -> dict:
         """
         Create a new bundle_data dictionary with the given parameters.
 
@@ -53,7 +56,10 @@ class Helpers:
         if created_at is None:
             created_at = dt.datetime.now()
 
-        files = [{"path": str(file_data["file"]), "archive": True, "tags": file_data["tags"]} for file_data in files]
+        files = [
+            {"path": str(file_data["file"]), "archive": True, "tags": file_data["tags"]}
+            for file_data in files
+        ]
 
         data = {
             "name": case_id,

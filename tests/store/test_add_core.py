@@ -1,6 +1,7 @@
 """Tests for store core functions"""
 
 from housekeeper.store import models
+from housekeeper.store.api.core import Store
 
 # tag tests
 
@@ -15,12 +16,13 @@ def test_create_tag_obj(store, vcf_tag_name):
     assert new_tag.name == vcf_tag_name
 
 
-def test_add_tag(store, vcf_tag_obj):
+def test_add_tag(store: Store, vcf_tag_obj):
     """Test to add a tag"""
     # GIVEN a store without tags
     assert store.Tag.query.count() == 0
     # WHEN adding a tag
-    store.add_commit(vcf_tag_obj)
+    store.session.add(vcf_tag_obj)
+    store.session.commit()
     # THEN assert the new tag was added
     assert store.Tag.query.count() == 1
     assert store.Tag.query.first() == vcf_tag_obj
@@ -57,7 +59,7 @@ def test_create_bundle_obj(store, bundle_data):
     assert len(bundle_obj.versions[0].files) == len(bundle_data["files"])
 
 
-def test_add_bundle(store, bundle_obj):
+def test_add_bundle(store: Store, bundle_obj):
     """Test to add a bundle to the store"""
     # GIVEN a store without files, tags, versions or bundles
     assert store.Bundle.query.count() == 0
@@ -65,7 +67,8 @@ def test_add_bundle(store, bundle_obj):
     assert store.Version.query.count() == 0
     assert store.File.query.count() == 0
     # WHEN adding the new bundle
-    store.add_commit(bundle_obj)
+    store.session.add(bundle_obj)
+    store.session.commit()
     # THEN assert that a bundle was added
     assert store.Bundle.query.count() == 1
     # THEN assert that the bundle is correct
@@ -91,13 +94,14 @@ def test_add_bundle_twice(populated_store, bundle_data):
 
 def test_add_two_versions_of_bundle(populated_store, second_bundle_data):
     """Test to add two versions of the same bundle"""
-    store = populated_store
+    store: Store = populated_store
     # GIVEN a populated store and some modified bundle data
     assert store.Bundle.query.count() > 0
 
     # WHEN adding the modified bundle to the database
     new_bundle_obj = store.add_bundle(second_bundle_data)[0]
-    store.add_commit(new_bundle_obj)
+    store.session.add(new_bundle_obj)
+    store.session.commit()
 
     # THEN there should still be one bundle
     assert store.Bundle.query.count() == 1

@@ -1,6 +1,7 @@
 """Tests for the store api"""
 import datetime
 from typing import List
+from housekeeper.store.api.core import Store
 
 from housekeeper.store.models import File
 
@@ -9,10 +10,11 @@ def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     """
     Test return all files when two bundles are added.
     """
-    store = populated_store
+    store: Store = populated_store
     # GIVEN a store with two bundles and two files in each bundle
     bundle_old_obj, _ = store.add_bundle(data=bundle_data_old)
-    store.add_commit(bundle_old_obj)
+    store.session.add(bundle_old_obj)
+    store.session.commit()
 
     # WHEN fetching all files in the database
     files = store.get_files_before(before_date=time_stamp_now)
@@ -25,10 +27,11 @@ def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timesta
     """
     test fetch files where not all files are older than before date
     """
-    store = populated_store
+    store: Store = populated_store
     # GIVEN a store with two bundles and two files in each bundle
     bundle_old_obj, _ = store.add_bundle(data=bundle_data_old)
-    store.add_commit(bundle_old_obj)
+    store.session.add(bundle_old_obj)
+    store.session.commit()
 
     # WHEN fetching all files before the oldest date
     date = old_timestamp + datetime.timedelta(days=10)
@@ -48,10 +51,11 @@ def test_get_no_get_files_before_oldest(
     """
     Test get files where no files are older than before date.
     """
-    store = populated_store
+    store: Store = populated_store
     # GIVEN a store with two bundles and two files in each bundle
     bundle_old_obj, _ = store.add_bundle(data=bundle_data_old)
-    store.add_commit(bundle_old_obj)
+    store.session.add(bundle_old_obj)
+    store.session.commit()
 
     # WHEN fetching all files before the oldest date
     date = old_timestamp - datetime.timedelta(days=10)
