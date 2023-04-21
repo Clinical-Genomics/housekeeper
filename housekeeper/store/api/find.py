@@ -4,9 +4,8 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import List, Optional, Set
-
-from sqlalchemy.orm import Query
+from typing import List
+from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
 from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
@@ -32,6 +31,9 @@ LOG = logging.getLogger(__name__)
 
 class FindHandler(BaseHandler):
     """Handler for searching the database"""
+
+    def __init__(self, session: Session):
+        super().__init__(session=session)
 
     def bundles(self):
         """Fetch bundles."""
@@ -88,10 +90,6 @@ class FindHandler(BaseHandler):
         """Return all tags from the database."""
         LOG.info("Fetching all tags")
         return self._get_query(table=Tag)
-
-    def _get_tag_query(self) -> Query:
-        """Return a tag query."""
-        return self.Tag.query
 
     def get_file_by_id(self, file_id: int):
         """Get a file by record id."""

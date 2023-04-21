@@ -4,9 +4,10 @@
 import logging
 from pathlib import Path
 
-import alchy
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
 
-from housekeeper.store import models
+from housekeeper.store.models import Model
 from housekeeper.store.api.add import AddHandler
 from housekeeper.store.api.find import FindHandler
 
@@ -16,8 +17,12 @@ LOG = logging.getLogger(__name__)
 class CoreHandler(FindHandler, AddHandler):
     """Aggregating class for the store api handlers"""
 
+    def __init__(self, session):
+        FindHandler(session=session)
+        AddHandler(session=session)
 
-class Store(alchy.Manager, CoreHandler):
+
+class Store(CoreHandler):
 
     """
     Handles interactions with the database in the context when a temporary
@@ -28,9 +33,13 @@ class Store(alchy.Manager, CoreHandler):
     """
 
     def __init__(self, uri: str, root: str):
-        super(Store, self).__init__(
-            config=dict(SQLALCHEMY_DATABASE_URI=uri), Model=models.Model
-        )
+        self.engine = create_engine(uri)
+        session_factory = sessionmaker(bind=self.engine)
+        self.session = scoped_session(session_factory)
+        self.Model = Model
+
         LOG.debug("Initializing Store")
         self.File.app_root = Path(root)
         self.Version.app_root = Path(root)
+
+        super().__init__(self.session)
