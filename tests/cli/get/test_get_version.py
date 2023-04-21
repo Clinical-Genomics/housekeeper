@@ -6,6 +6,7 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli.get import version_cmd
+from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle, Version
 
 

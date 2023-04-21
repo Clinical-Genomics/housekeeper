@@ -1,7 +1,7 @@
 """Initialise HK db from CLI"""
 import logging
-
 import click
+from housekeeper.store.api.core import Store
 
 LOG = logging.getLogger(__name__)
 
