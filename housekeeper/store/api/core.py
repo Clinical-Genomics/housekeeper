@@ -36,7 +36,6 @@ class Store(CoreHandler):
         self.engine = create_engine(uri)
         session_factory = sessionmaker(bind=self.engine)
         self.session = scoped_session(session_factory)
-        self.Model = Model
 
         LOG.debug("Initializing Store")
         self.File.app_root = Path(root)
