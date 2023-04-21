@@ -7,6 +7,8 @@ import click
 from rich.console import Console
 
 from housekeeper.store.api import schema
+from housekeeper.store.api.core import Store
+from housekeeper.store.models import Version
 
 from .tables import (
     get_bundles_table,
@@ -98,7 +100,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
         version_objs = bundle.versions
 
     if version_id:
-        version = store.Version.get(version_id)
+        version: Version = store.get_version_by_id(version_id=version_id)
         if not version:
             LOG.warning("Could not find version %s", version_id)
             raise click.Abort

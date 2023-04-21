@@ -7,7 +7,7 @@ from click.testing import CliRunner
 from housekeeper.cli.include import include
 from housekeeper.cli.add import bundle_cmd
 from housekeeper.store.api.core import Store
-from housekeeper.store.models import Bundle
+from housekeeper.store.models import Bundle, Version
 
 
 def test_include_files_creates_bundle_dir(
@@ -159,7 +159,7 @@ def test_include_non_existing_version(
     store: Store = populated_context["store"]
     # GIVEN a version that does not exists
     version_id = 10
-    assert not store.Version.get(version_id)
+    assert not store.get_version_by_id(version_id=version_id)
 
     # WHEN running the include files specifying the non existing version
     result = cli_runner.invoke(

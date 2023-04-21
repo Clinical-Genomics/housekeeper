@@ -14,7 +14,7 @@ def test_delete_non_existing_file(base_context: Context, cli_runner: CliRunner, 
     file_id = 1
     # GIVEN that the file does not exist
     store = base_context["store"]
-    file_obj = store.File.get(file_id)
+    file_obj: File = store.get_file_by_id(file_id=file_id)
     assert not file_obj
 
     # WHEN trying to delete the non existing file
@@ -34,7 +34,7 @@ def test_delete_existing_file_with_confirmation(
     store: Store = populated_context["store"]
     file_id = 1
     # GIVEN that the file exists
-    file_obj = store.File.get(file_id)
+    file_obj: File = store.get_file_by_id(file_id=file_id)
     assert file_obj
 
     # WHEN trying to delete the file
@@ -53,7 +53,7 @@ def test_delete_existing_file_no_confirmation(
     store: Store = populated_context["store"]
     file_id = 1
     # GIVEN that the file exists
-    file_obj = store.File.get(file_id)
+    file_obj: File = store.get_file_by_id(file_id=file_id)
     assert file_obj
 
     # WHEN trying to delete the file

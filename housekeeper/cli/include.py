@@ -6,6 +6,7 @@ import click
 
 from housekeeper.exc import VersionIncludedError
 from housekeeper.include import include_version
+from housekeeper.store.api.core import Store
 
 LOG = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ def include(context: click.Context, bundle_name: str, version_id: int):
 
     if version_id:
         LOG.info("Use version %s", version_id)
-        version_obj = store.Version.get(version_id)
+        version_obj = store.get_version_by_id(version_id=version_id)
         if version_obj is None:
             LOG.warning("version not found")
             raise click.Abort
