@@ -20,7 +20,7 @@ def include(context: click.Context, bundle_name: str, version_id: int):
     Use bundle name if you simply want to include the latest version.
     """
     LOG.info("Running include")
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     if not (version_id or bundle_name):
         LOG.warning("Please use bundle name or version-id")
         raise click.Abort

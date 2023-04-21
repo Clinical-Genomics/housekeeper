@@ -21,7 +21,13 @@ LOG = logging.getLogger(__name__)
 @click.option("-l", "--log-level", default="INFO")
 @click.version_option(housekeeper.__version__, prog_name=housekeeper.__title__)
 @click.pass_context
-def base(context: click.Context, config: click.File, database: Optional[str], root: Optional[str], log_level: str):
+def base(
+    context: click.Context,
+    config: click.File,
+    database: Optional[str],
+    root: Optional[str],
+    log_level: str,
+):
     """Housekeeper - Access your files!"""
     coloredlogs.install(level=log_level)
     config_values = {}
