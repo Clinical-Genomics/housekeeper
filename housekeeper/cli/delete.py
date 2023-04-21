@@ -39,7 +39,7 @@ def bundle_cmd(context, yes, bundle_name):
         raise click.Abort
 
     bundle.delete()
-    store.commit()
+    store.session.commit()
     LOG.info("Bundle deleted: %s", bundle.name)
 
 
@@ -90,7 +90,7 @@ def version_cmd(context, bundle_name, version_id, yes):
         shutil.rmtree(version_obj.full_path, ignore_errors=True)
 
     version_obj.delete()
-    store.commit()
+    store.session.commit()
     LOG.info("version deleted: %s", version_obj.full_path)
 
 
@@ -184,7 +184,7 @@ def delete_file(file: File, store: Store):
     if file_should_be_unlinked(file):
         file_path.unlink()
     file.delete()
-    store.commit()
+    store.session.commit()
     LOG.info(f"{file.full_path} deleted")
 
 
@@ -224,5 +224,5 @@ def file_cmd(context, yes, file_id):
             Path(file.full_path).unlink()
 
         file.delete()
-        store.commit()
+        store.session.commit()
         LOG.info("file deleted")

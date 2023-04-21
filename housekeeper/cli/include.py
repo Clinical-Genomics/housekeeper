@@ -52,5 +52,5 @@ def include(context: click.Context, bundle_name: str, version_id: int):
         raise click.Abort
 
     version_obj.included_at = dt.datetime.now()
-    store.commit()
+    store.session.commit()
     click.echo(click.style("included all files!", fg="green"))

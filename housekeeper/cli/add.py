@@ -188,7 +188,7 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
 
         file.tags.append(tag)
 
-    store.commit()
+    store.session.commit()
 
     if not file:
         return
