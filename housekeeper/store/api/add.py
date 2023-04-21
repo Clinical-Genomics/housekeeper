@@ -4,6 +4,7 @@ import datetime as dt
 import logging
 from pathlib import Path
 from typing import Dict, List, Tuple
+from sqlalchemy.orm import Session
 
 from housekeeper.store import models
 from housekeeper.store.api.base import BaseHandler
@@ -15,11 +16,13 @@ LOG = logging.getLogger(__name__)
 class AddHandler(BaseHandler):
     """Handles adding things to the store"""
 
-    def __init__(self):
-        super().__init__()
-        AddHandler.version = FindHandler.version
+    def __init__(self, session: Session):
+        super().__init__(session=session)
         AddHandler.get_bundle_by_name = FindHandler.get_bundle_by_name
         AddHandler.get_tag = FindHandler.get_tag
+        AddHandler.get_version_by_date_and_bundle_name = (
+            FindHandler.get_version_by_date_and_bundle_name
+        )
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
         """Create a new file bundle."""

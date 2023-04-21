@@ -7,6 +7,8 @@ import click
 from rich.console import Console
 
 from housekeeper.store.api import schema
+from housekeeper.store.api.core import Store
+from housekeeper.store.models import Version
 
 from .tables import (
     get_bundles_table,
@@ -37,7 +39,7 @@ def get():
 @click.pass_context
 def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
     """Get bundle information from database"""
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     bundles = store.bundles()
 
     if bundle_name:
@@ -86,7 +88,7 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
 @click.pass_context
 def version_cmd(context, bundle_name, json, version_id, verbose, compact):
     """Get versions from database"""
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     if not (bundle_name or version_id):
         LOG.info("Please select a bundle or a version")
         return
@@ -98,7 +100,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
         version_objs = bundle.versions
 
     if version_id:
-        version = store.Version.get(version_id)
+        version: Version = store.get_version_by_id(version_id=version_id)
         if not version:
             LOG.warning("Could not find version %s", version_id)
             raise click.Abort
@@ -147,7 +149,7 @@ def files_cmd(
     compact: bool,
 ):
     """Get files from database"""
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     file_objs = store.get_files(
         bundle_name=bundle, tag_names=tag_names, version_id=version_id
     )
@@ -168,7 +170,7 @@ def files_cmd(
 @click.pass_context
 def tag_cmd(context, json, name):
     """Get the tags from database"""
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     LOG.info("Fetch tags")
     tag_objs = store.get_tags()
     template = schema.TagSchema()

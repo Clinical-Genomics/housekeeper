@@ -2,6 +2,7 @@
 from pathlib import Path
 from housekeeper.cli.get import files_cmd
 from housekeeper.cli.tables import squash_names, _get_suffix
+from housekeeper.store.api.core import Store
 
 
 def test_get_files_no_files(base_context, cli_runner, helpers):
@@ -25,7 +26,7 @@ def test_get_files_no_files(base_context, cli_runner, helpers):
 def test_get_files_json(populated_context, cli_runner, helpers):
     """Test to get all files from a populated store"""
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a store with some files
     nr_files = helpers.count_iterable(store.get_files())
     assert nr_files > 0
@@ -43,7 +44,7 @@ def test_get_files(populated_context, cli_runner):
     """Test to get all files from a populated store in human friendly format"""
     # GIVEN a context with a populated store and a cli runner
     # GIVEN a store with some files
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a file name
     file_obj = store.get_files().first()
     file_name = Path(file_obj.path).name
@@ -60,7 +61,7 @@ def test_get_files(populated_context, cli_runner):
 def test_get_files_tag(populated_context, cli_runner, helpers, vcf_tag_name):
     """Test to get files with a specific tag from a populated store"""
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a store with some files that are tagged
     nr_files = helpers.count_iterable(store.get_files(tag_names=[vcf_tag_name]))
     assert nr_files > 0
@@ -81,7 +82,7 @@ def test_get_files_multiple_tags(
 ):
     """Test to get files with multiple tags tag from a populated store"""
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a store with some files that are tagged
     nr_files = helpers.count_iterable(
         store.get_files(tag_names=[vcf_tag_name, family_tag_name])
@@ -104,7 +105,7 @@ def test_get_files_multiple_tags(
 def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_name):
     """Test to get files with a tag that is not on all files from a populated store"""
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     # GIVEN a store with some files that are tagged
     total_nr_files = helpers.count_iterable(store.get_files())
     nr_tag_files = helpers.count_iterable(store.get_files(tag_names=[family_tag_name]))

@@ -24,7 +24,7 @@ def delete():
 @click.pass_context
 def bundle_cmd(context, yes, bundle_name):
     """Delete a empty bundle, that is a bundle without versions."""
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     bundle = store.get_bundle_by_name(bundle_name=bundle_name)
     if bundle is None:
         LOG.warning("bundle %s not found", bundle_name)
@@ -38,8 +38,8 @@ def bundle_cmd(context, yes, bundle_name):
     if not (yes or click.confirm(question)):
         raise click.Abort
 
-    bundle.delete()
-    store.commit()
+    store.session.delete(bundle)
+    store.session.commit()
     LOG.info("Bundle deleted: %s", bundle.name)
 
 
@@ -50,7 +50,7 @@ def bundle_cmd(context, yes, bundle_name):
 @click.pass_context
 def version_cmd(context, bundle_name, version_id, yes):
     """Delete a version from database"""
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     if not (bundle_name or version_id):
         LOG.info("Please select a bundle or a version")
         raise click.Abort
@@ -89,8 +89,8 @@ def version_cmd(context, bundle_name, version_id, yes):
     if version_obj.included_at:
         shutil.rmtree(version_obj.full_path, ignore_errors=True)
 
-    version_obj.delete()
-    store.commit()
+    store.session.delete(version_obj)
+    store.session.commit()
     LOG.info("version deleted: %s", version_obj.full_path)
 
 
@@ -116,7 +116,7 @@ def files_cmd(
 
     validate_delete_options(tag=tag, bundle_name=bundle_name)
     before_date = parse_date(before) if before else None
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
 
     if bundle_name:
         validate_bundle_exists(store=store, bundle_name=bundle_name)
@@ -183,8 +183,9 @@ def delete_file(file: File, store: Store):
     file_path = Path(file.full_path)
     if file_should_be_unlinked(file):
         file_path.unlink()
-    file.delete()
-    store.commit()
+
+    store.session.delete(file)
+    store.session.commit()
     LOG.info(f"{file.full_path} deleted")
 
 
@@ -208,7 +209,7 @@ def parse_date(date: str):
 @click.pass_context
 def file_cmd(context, yes, file_id):
     """Delete a file."""
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     file = store.get_file_by_id(file_id=file_id)
     if not file:
         LOG.info("file not found")
@@ -223,6 +224,6 @@ def file_cmd(context, yes, file_id):
         if file.is_included and Path(file.full_path).exists():
             Path(file.full_path).unlink()
 
-        file.delete()
-        store.commit()
+        store.session.delete(file)
+        store.session.commit()
         LOG.info("file deleted")

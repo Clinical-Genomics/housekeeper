@@ -6,6 +6,7 @@ import click
 
 from housekeeper.exc import VersionIncludedError
 from housekeeper.include import include_version
+from housekeeper.store.api.core import Store
 
 LOG = logging.getLogger(__name__)
 
@@ -20,14 +21,14 @@ def include(context: click.Context, bundle_name: str, version_id: int):
     Use bundle name if you simply want to include the latest version.
     """
     LOG.info("Running include")
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     if not (version_id or bundle_name):
         LOG.warning("Please use bundle name or version-id")
         raise click.Abort
 
     if version_id:
         LOG.info("Use version %s", version_id)
-        version_obj = store.Version.get(version_id)
+        version_obj = store.get_version_by_id(version_id=version_id)
         if version_obj is None:
             LOG.warning("version not found")
             raise click.Abort
@@ -52,5 +53,5 @@ def include(context: click.Context, bundle_name: str, version_id: int):
         raise click.Abort
 
     version_obj.included_at = dt.datetime.now()
-    store.commit()
+    store.session.commit()
     click.echo(click.style("included all files!", fg="green"))

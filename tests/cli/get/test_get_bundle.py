@@ -1,5 +1,6 @@
 """Tests for adding via CLI"""
 from housekeeper.cli.get import bundle_cmd
+from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle
 
 
@@ -7,7 +8,7 @@ def test_get_existing_bundle_name(populated_context, cli_runner, helpers):
     """Test to fetch an existing bundle based on name"""
 
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
 
     # GIVEN a existing bundle
     bundle: Bundle = store._get_query(table=Bundle).first()
@@ -28,7 +29,7 @@ def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
     """Test to fetch an existing bundle based on name with verbose information"""
 
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
 
     # GIVEN a existing bundle
     bundle: Bundle = store._get_query(table=Bundle).first()
@@ -66,7 +67,7 @@ def test_get_non_existing_bundle_populated_store(
 ):
     """Test to fetch a non existing bundle based on name when bundles exists"""
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
 
     # GIVEN a non empty store
     assert helpers.count_iterable(store.bundles()) > 0
@@ -86,10 +87,10 @@ def test_get_non_existing_bundle_populated_store(
 def test_get_existing_bundle_id(populated_context, cli_runner, helpers):
     """Test to fetch an existing bundle based on bundle id"""
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
 
     # GIVEN a existing bundle
-    bundle = store.Bundle.query.first()
+    bundle = store._get_query(table=Bundle).first()
     bundle_id = bundle.id
 
     # WHEN trying to fetch a bundle based on bundle id
@@ -108,10 +109,10 @@ def test_get_bundle_json(populated_context, cli_runner, helpers):
     """Test to fetch a bundle in json format"""
 
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
 
     # GIVEN a existing bundle
-    bundle = store.Bundle.query.first()
+    bundle = store._get_query(table=Bundle).first()
     bundle_id = bundle.id
 
     # WHEN fetching the bundle in json format
@@ -134,7 +135,7 @@ def test_get_bundles_multiple_bundles(
     """Test to get all bundles when there are more than one bundle"""
 
     # GIVEN a context with a populated store and a cli runner
-    store = populated_context["store"]
+    store: Store = populated_context["store"]
     helpers.add_bundle(store, other_bundle)
 
     # GIVEN a store with more than one bundles

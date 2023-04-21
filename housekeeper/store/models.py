@@ -3,10 +3,10 @@
 import datetime as dt
 from pathlib import Path
 
-import alchy
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, orm, types
 
-Model = alchy.make_declarative_base(Base=alchy.ModelBase)
+Model = declarative_base()
 
 
 file_tag_link = Table(
