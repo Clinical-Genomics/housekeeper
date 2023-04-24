@@ -26,7 +26,7 @@ class AddHandler(BaseHandler):
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
         """Create a new file bundle."""
-        new_bundle = self.Bundle(name=name, created_at=created_at)
+        new_bundle = models.Bundle(name=name, created_at=created_at)
         LOG.info("Created new bundle: %s", new_bundle.name)
         return new_bundle
 
@@ -85,7 +85,7 @@ class AddHandler(BaseHandler):
     ) -> models.Version:
         """Create a new bundle version."""
         LOG.info("Created new version")
-        new_version = self.Version(created_at=created_at, expires_at=expires_at)
+        new_version = models.Version(created_at=created_at, expires_at=expires_at)
         return new_version
 
     def add_version(
@@ -153,12 +153,12 @@ class AddHandler(BaseHandler):
         tags: List[models.Tag] = None,
     ) -> models.File:
         """Create a new file object based on the information given."""
-        new_file = self.File(
+        new_file = models.File(
             path=path, checksum=checksum, to_archive=to_archive, tags=tags
         )
         return new_file
 
     def new_tag(self, name: str, category: str = None) -> models.Tag:
         """Create a new tag object based on the information given."""
-        new_tag = self.Tag(name=name, category=category)
+        new_tag = models.Tag(name=name, category=category)
         return new_tag
