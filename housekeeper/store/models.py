@@ -8,7 +8,6 @@ from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, orm, types
 
 Model = declarative_base()
 
-
 file_tag_link = Table(
     "file_tag_link",
     Model.metadata,
@@ -18,8 +17,19 @@ file_tag_link = Table(
 )
 
 
-class Bundle(Model):
+class Archive(Model):
+    """Information regarding the archival of a file"""
+    __tablename__ = "archive"
+    archiving_task_id = Column(types.Integer, nullable=False)
+    retrieval_task_id = Column(types.Integer, nullable=True)
+    file_id = Column(ForeignKey("file.id"), nullable=False, primary_key=True)
+    archived_at = Column(types.DateTime(), nullable=True)
+    retrieved_at = Column(types.DateTime(), nullable=True)
 
+    file = orm.relationship("File", backref="archive")
+
+
+class Bundle(Model):
     """A general group of files."""
 
     __tablename__ = "bundle"
@@ -36,7 +46,6 @@ class Bundle(Model):
 
 
 class Version(Model):
-
     """Keeps track of versions"""
 
     __tablename__ = "version"
@@ -68,7 +77,6 @@ class Version(Model):
 
 
 class File(Model):
-
     """Represent a file."""
 
     __tablename__ = "file"
@@ -97,7 +105,6 @@ class File(Model):
 
 
 class Tag(Model):
-
     """Represents tags for bundles"""
 
     __tablename__ = "tag"

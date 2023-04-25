@@ -177,3 +177,5 @@ class FindHandler(BaseHandler):
 
         files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
         return files_not_on_disk
+
+
