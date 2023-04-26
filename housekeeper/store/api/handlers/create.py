@@ -8,20 +8,20 @@ from sqlalchemy.orm import Session
 
 from housekeeper.store import models
 from housekeeper.store.api.handlers.base import BaseHandler
-from housekeeper.store.api.handlers.read import FindHandler
+from housekeeper.store.api.handlers.read import ReadHandler
 
 LOG = logging.getLogger(__name__)
 
 
-class AddHandler(BaseHandler):
+class CreateHandler(BaseHandler):
     """Handles adding things to the store"""
 
     def __init__(self, session: Session):
         super().__init__(session=session)
-        AddHandler.get_bundle_by_name = FindHandler.get_bundle_by_name
-        AddHandler.get_tag = FindHandler.get_tag
-        AddHandler.get_version_by_date_and_bundle_name = (
-            FindHandler.get_version_by_date_and_bundle_name
+        CreateHandler.get_bundle_by_name = ReadHandler.get_bundle_by_name
+        CreateHandler.get_tag = ReadHandler.get_tag
+        CreateHandler.get_version_by_date_and_bundle_name = (
+            ReadHandler.get_version_by_date_and_bundle_name
         )
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
