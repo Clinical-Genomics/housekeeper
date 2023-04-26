@@ -8,18 +8,18 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 from housekeeper.store.models import Model
-from housekeeper.store.api.add import AddHandler
-from housekeeper.store.api.find import FindHandler
+from housekeeper.store.api.handlers.create import CreateHandler
+from housekeeper.store.api.handlers.read import ReadHandler
 
 LOG = logging.getLogger(__name__)
 
 
-class CoreHandler(FindHandler, AddHandler):
+class CoreHandler(ReadHandler, CreateHandler):
     """Aggregating class for the store api handlers"""
 
     def __init__(self, session):
-        FindHandler(session=session)
-        AddHandler(session=session)
+        ReadHandler(session=session)
+        CreateHandler(session=session)
 
 
 class Store(CoreHandler):

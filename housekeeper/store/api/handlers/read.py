@@ -29,7 +29,7 @@ from .base import BaseHandler
 LOG = logging.getLogger(__name__)
 
 
-class FindHandler(BaseHandler):
+class ReadHandler(BaseHandler):
     """Handler for searching the database"""
 
     def __init__(self, session: Session):
