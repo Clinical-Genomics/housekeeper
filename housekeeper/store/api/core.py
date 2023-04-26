@@ -8,8 +8,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
 from housekeeper.store.models import Model
-from housekeeper.store.api.add import AddHandler
-from housekeeper.store.api.find import FindHandler
+from housekeeper.store.api.handlers.create import AddHandler
+from housekeeper.store.api.handlers.read import FindHandler
 
 LOG = logging.getLogger(__name__)
 

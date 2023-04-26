@@ -7,8 +7,8 @@ from typing import Dict, List, Tuple
 from sqlalchemy.orm import Session
 
 from housekeeper.store import models
-from housekeeper.store.api.base import BaseHandler
-from housekeeper.store.api.find import FindHandler
+from housekeeper.store.api.handlers.base import BaseHandler
+from housekeeper.store.api.handlers.read import FindHandler
 
 LOG = logging.getLogger(__name__)
 
