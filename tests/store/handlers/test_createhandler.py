@@ -1,7 +1,18 @@
 """Tests for store core functions"""
-
+from housekeeper.store.api import schema
 from housekeeper.store.models import Bundle, File, Tag, Version
 from housekeeper.store.api.core import Store
+
+
+def test_schema_with_invalid_input(bundle_data_json):
+    # GIVEN input data with missing name of the bundle
+    del bundle_data_json["name"]
+    # WHEN validating it against the schema
+    errors = schema.BundleSchema().validate(bundle_data_json)
+    # THEN it should report errors for the field
+    assert len(errors) > 0
+    assert "name" in errors
+
 
 # tag tests
 
@@ -109,3 +120,43 @@ def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data):
     assert store._get_query(table=Version).count() == 2
     # THEN tere should be all four files
     assert store._get_query(table=File).count() == 4
+
+
+def test_add_file(
+    populated_store: Store, second_family_vcf: Path, family_tag_names: List[str]
+):
+    """Test to create a file with the add file method"""
+    # GIVEN the path and the tags for a file
+
+    # GIVEN a store populated with a bundle
+    bundle: Bundle = populated_store.bundles().first()
+    assert isinstance(bundle, Bundle)
+
+    # WHEN using the add file method to create a new file object
+    new_file: File = populated_store.add_file(
+        file_path=second_family_vcf, bundle=bundle, tags=family_tag_names
+    )
+
+    # THEN assert that the file is a file object
+    assert isinstance(new_file, File)
+    # THEN assert that the file is added to the latest version of the bundle
+    assert new_file.version == bundle.versions[0]
+    # THEN assert that the tags are added to the new file
+    assert len(new_file.tags) == len(family_tag_names)
+    for tag_obj in new_file.tags:
+        assert isinstance(tag_obj, Tag)
+
+
+def test_add_file_no_tags(populated_store: Store, second_family_vcf: Path):
+    """Test to create a file with the add file method without tags"""
+    # GIVEN a path for a file
+
+    # GIVEN a store populated with a bundle
+    bundle: Bundle = populated_store.bundles().first()
+    assert isinstance(bundle, Bundle)
+
+    # WHEN using the add file method to create a new file object
+    new_file = populated_store.add_file(file_path=second_family_vcf, bundle=bundle)
+
+    # THEN assert that the no tags where added to the file
+    assert len(new_file.tags) == 0
