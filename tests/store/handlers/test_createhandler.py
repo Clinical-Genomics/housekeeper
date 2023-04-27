@@ -1,4 +1,7 @@
 """Tests for store core functions"""
+from pathlib import Path
+from typing import List
+
 from housekeeper.store.api import schema
 from housekeeper.store.models import Bundle, File, Tag, Version
 from housekeeper.store.api.core import Store

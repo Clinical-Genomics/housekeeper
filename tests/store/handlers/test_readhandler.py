@@ -1,5 +1,5 @@
 """Tests for finding tags in store."""
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 from housekeeper.store import Store
@@ -59,7 +59,7 @@ def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timesta
     store.session.commit()
 
     # WHEN fetching all files before the oldest date
-    date = old_timestamp + datetime.timedelta(days=10)
+    date = old_timestamp + timedelta(days=10)
     assert old_timestamp < date < timestamp
     files: List[File] = store.get_files_before(before_date=date)
 
@@ -83,7 +83,7 @@ def test_get_no_get_files_before_oldest(
     store.session.commit()
 
     # WHEN fetching all files before the oldest date
-    date = old_timestamp - datetime.timedelta(days=10)
+    date = old_timestamp - timedelta(days=10)
     assert date < old_timestamp < timestamp
     files: List[File] = store.get_files_before(before_date=date)
 
