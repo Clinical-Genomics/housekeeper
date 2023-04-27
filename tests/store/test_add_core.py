@@ -1,7 +1,12 @@
 """Tests for store core functions"""
+from pathlib import Path
 
-from housekeeper.store.models import Bundle, File, Tag, Version
+import pytest
+from sqlalchemy.exc import IntegrityError
+
+from housekeeper.store.models import Bundle, File, Tag, Version, Archive
 from housekeeper.store.api.core import Store
+
 
 # tag tests
 
@@ -96,16 +101,54 @@ def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data):
     """Test to add two versions of the same bundle"""
     store: Store = populated_store
     # GIVEN a populated store and some modified bundle data
-    assert store._get_query(table=Bundle).count() > 0
+    starting_bundle_count: int = store._get_query(table=Bundle).count()
+    starting_version_count: int = store._get_query(table=Version).count()
+    starting_file_count: int = store._get_query(table=File).count()
 
     # WHEN adding the modified bundle to the database
     new_bundle_obj = store.add_bundle(second_bundle_data)[0]
     store.session.add(new_bundle_obj)
     store.session.commit()
 
-    # THEN there should still be one bundle
-    assert store._get_query(table=Bundle).count() == 1
-    # THEN there should be two versions
-    assert store._get_query(table=Version).count() == 2
-    # THEN tere should be all four files
-    assert store._get_query(table=File).count() == 4
+    # THEN there should still be the same number of bundles
+    assert store._get_query(table=Bundle).count() == starting_bundle_count
+    # THEN there should be one more version
+    assert store._get_query(table=Version).count() == starting_version_count + 1
+    # THEN there should be two more files
+    assert store._get_query(table=File).count() == starting_file_count + 2
+
+
+def test_add_archive(archive_task_id: int, populated_store: Store, spring_file_2: Path):
+    """Test to see that adding an archive works as expected."""
+    # GIVEN a file that's not archived
+    non_archived_file: File = populated_store.get_files(
+        file_path=spring_file_2.as_posix()
+    ).first()
+    # WHEN adding an archive
+    new_archive: Archive = populated_store.add_archive(
+        file_id=non_archived_file.id, archive_task_id=archive_task_id
+    )
+    populated_store.session.add(new_archive)
+    populated_store.session.commit()
+    # THEN an archive should be created
+    assert isinstance(new_archive, Archive)
+    # THEN the archive should be reachable via the file
+    assert non_archived_file.archive == new_archive
+
+
+def test_add_archive_to_archived_file(archive_task_id: int, populated_store: Store,
+                                      spring_file_1: Path):
+    """Test to see that adding an archive to an already archived file raises an error."""
+    # GIVEN a file that's archived
+    non_archived_file: File = populated_store.get_files(
+        file_path=spring_file_1.as_posix()
+    ).first()
+    # WHEN adding an archive
+    new_archive: Archive = populated_store.add_archive(
+        file_id=non_archived_file.id, archive_task_id=archive_task_id
+    )
+    populated_store.session.add(new_archive)
+
+    # THEN an SQLAlchemy error should be thrown
+    with pytest.raises(IntegrityError):
+        populated_store.session.commit()

@@ -159,5 +159,6 @@ class AddHandler(BaseHandler):
         return new_tag
 
     def add_archive(self, file_id: int, archive_task_id: int) -> Archive:
-        """Creates an archive object to the given file, whith the given archive task id."""
+        """Creates an archive object to the given file, with the given archive task id."""
         return Archive(file_id=file_id, archiving_task_id=archive_task_id)
+

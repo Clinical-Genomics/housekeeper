@@ -5,6 +5,7 @@ from pathlib import Path
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, orm, types
+from sqlalchemy.orm import backref
 
 Model = declarative_base()
 
@@ -19,6 +20,7 @@ file_tag_link = Table(
 
 class Archive(Model):
     """Information regarding the archival of a file"""
+
     __tablename__ = "archive"
     archiving_task_id = Column(types.Integer, nullable=False)
     retrieval_task_id = Column(types.Integer, nullable=True)
@@ -26,7 +28,7 @@ class Archive(Model):
     archived_at = Column(types.DateTime(), nullable=True)
     retrieved_at = Column(types.DateTime(), nullable=True)
 
-    file = orm.relationship("File", backref="archive")
+    file = orm.relationship("File", backref=backref("archive", uselist=False))
 
 
 class Bundle(Model):

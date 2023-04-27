@@ -12,11 +12,13 @@ import yaml
 
 from housekeeper.date import get_date
 from housekeeper.store import Store, models
+from housekeeper.store.models import Bundle
 
 from .helper_functions import Helpers
 
 
 # basic fixtures
+
 
 @pytest.fixture(scope="function", name="helpers")
 def fixture_helpers() -> Helpers:
@@ -60,6 +62,24 @@ def fixture_sample_tag_names(vcf_tag_name: str, sample_tag_name: str) -> List[st
     return [vcf_tag_name, sample_tag_name]
 
 
+@pytest.fixture(scope="function", name="spring_tag")
+def fixture_spring_tag() -> str:
+    """Return the tag marking spring files."""
+    return "spring"
+
+
+@pytest.fixture(scope="function", name="sample_id")
+def fixture_sample_id() -> str:
+    """Return name of a another case."""
+    return "ACC123456A1"
+
+
+@pytest.fixture(scope="function", name="archive_task_id")
+def fixture_archive_task_id() -> int:
+    """Return an id of an archive task."""
+    return 1234
+
+
 @pytest.fixture(scope="function", name="case_id")
 def fixture_case_id() -> str:
     """Return name of a case."""
@@ -82,6 +102,22 @@ def fixture_sample_data(sample_tag_names: List[str], sample_vcf: Path) -> dict:
 def fixture_sample2_data(sample_tag_names: List[str], second_sample_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": sample_tag_names, "file": second_sample_vcf}
+
+
+@pytest.fixture(scope="function", name="spring_file_1_with_tags")
+def fixture_spring_file_1_with_tags(
+    sample_id: str, spring_tag: str, spring_file_1: Path
+) -> dict:
+    """Return spring file and tags for a sample."""
+    return {"tags": [sample_id, spring_tag], "file": spring_file_1}
+
+
+@pytest.fixture(scope="function", name="spring_file_2_with_tags")
+def fixture_spring_file_2_with_tags(
+    sample_id: str, spring_tag: str, spring_file_2: Path
+) -> dict:
+    """Return a second spring file and tags for a sample."""
+    return {"tags": [sample_id, spring_tag], "file": spring_file_2}
 
 
 @pytest.fixture(scope="function", name="family_data")
@@ -122,22 +158,49 @@ def fixture_later_timestamp() -> datetime.datetime:
 
 @pytest.fixture(scope="function", name="bundle_data")
 def fixture_bundle_data(
-    case_id: str, sample_data: dict, family_data: dict, timestamp: datetime.datetime, helpers: Helpers
+    case_id: str,
+    sample_data: dict,
+    family_data: dict,
+    timestamp: datetime.datetime,
+    helpers: Helpers,
 ) -> dict:
     """Return a bundle."""
-    data = helpers.create_bundle_data(case_id=case_id, files=[family_data, sample_data], created_at=timestamp)
+    data = helpers.create_bundle_data(
+        case_id=case_id, files=[family_data, sample_data], created_at=timestamp
+    )
     return data
 
 
+@pytest.fixture(scope="function", name="sample_bundle_data")
+def fixture_sample_bundle_data(
+    sample_id: str,
+    sample_data: dict,
+    spring_file_1_with_tags: dict,
+    spring_file_2_with_tags: dict,
+    timestamp: datetime.datetime,
+    helpers: Helpers,
+) -> dict:
+    """Return a bundle containing mock sequencing files."""
+    return helpers.create_bundle_data(
+        case_id=sample_id,
+        files=[spring_file_1_with_tags, spring_file_2_with_tags],
+        created_at=timestamp,
+    )
+
+
 @pytest.fixture(scope="function", name="empty_version_data")
-def fixture_empty_version_data(later_timestamp: datetime.datetime, case_id: str) -> dict:
+def fixture_empty_version_data(
+    later_timestamp: datetime.datetime, case_id: str
+) -> dict:
     """Return a dummy bundle."""
     data = {"bundle_name": case_id, "created_at": later_timestamp, "files": []}
     return data
 
 
 @pytest.fixture(scope="function", name="version_data")
-def fixture_version_data(empty_version_data: dict, family2_data: dict, sample2_data: dict) -> dict:
+def fixture_version_data(
+    empty_version_data: dict, family2_data: dict, sample2_data: dict
+) -> dict:
     """Return a dummy bundle."""
     data = copy.deepcopy(empty_version_data)
     data["files"] = [
@@ -181,11 +244,11 @@ def fixture_version_data_json(version_data: dict) -> str:
 
 @pytest.fixture(scope="function", name="other_bundle")
 def fixture_other_bundle(
-        bundle_data: dict,
-        other_case_id: str,
-        later_timestamp: datetime.datetime,
-        second_sample_vcf: Path,
-        second_family_vcf: Path,
+    bundle_data: dict,
+    other_case_id: str,
+    later_timestamp: datetime.datetime,
+    second_sample_vcf: Path,
+    second_family_vcf: Path,
 ) -> dict:
     """Return a dummy bundle."""
     data = deepcopy(bundle_data)
@@ -242,6 +305,12 @@ def fixture_bundle_obj(bundle_data: dict, store: Store) -> models.Bundle:
     return store.add_bundle(bundle_data)[0]
 
 
+@pytest.fixture(scope="function", name="sample_bundle")
+def fixture_sample_bundle(sample_bundle_data: dict, store: Store) -> models.Bundle:
+    """Return a bundle object."""
+    return store.add_bundle(sample_bundle_data)[0]
+
+
 @pytest.fixture(scope="function", name="version_obj")
 def fixture_version_obj(bundle_data: dict, store: Store) -> models.Version:
     """Return a version object."""
@@ -261,6 +330,12 @@ def fixture_fixtures_dir() -> Path:
 def fixture_vcf_dir(fixtures_dir: Path) -> Path:
     """Return the path to the vcf fixtures directory."""
     return fixtures_dir / "vcfs"
+
+
+@pytest.fixture(scope="function", name="sequencing_files_dir")
+def fixture_sequencing_files_dir(fixtures_dir: Path) -> Path:
+    """Return the path to the sequencing_files fixtures directory."""
+    return Path(fixtures_dir, "sequencing_files")
 
 
 @pytest.fixture(scope="function", name="project_dir")
@@ -302,37 +377,64 @@ def fixture_config_file(config_dir: Path, configs: dict) -> Path:
 @pytest.fixture(scope="function", name="sample_vcf")
 def fixture_sample_vcf(vcf_dir: Path) -> Path:
     """Return the path to a vcf file."""
-    return vcf_dir / "example.vcf"
+    return Path(vcf_dir, "example.vcf")
+
+
+@pytest.fixture(scope="function", name="spring_file_1")
+def fixture_spring_file_1(sequencing_files_dir: Path) -> Path:
+    """Return the path to a SPRING file."""
+    return Path(sequencing_files_dir, "lane1.spring")
+
+
+@pytest.fixture(scope="function", name="spring_file_2")
+def fixture_spring_file_2(sequencing_files_dir: Path) -> Path:
+    """Return the path to a SPRING file."""
+    return Path(sequencing_files_dir, "lane2.spring")
+
+@pytest.fixture(scope="function", name="archived_file")
+def fixture_archived_file(spring_file_1: Path) -> Path:
+    """Return the path to anarchived file."""
+    return spring_file_1
+
+@pytest.fixture(scope="function", name="non_archived_file")
+def fixture_non_archived_file(spring_file_2: Path) -> Path:
+    """Return the path to a non-archived file."""
+    return spring_file_2
+
+@pytest.fixture(scope="function", name="spring_file_2")
+def fixture_spring_file_2(sequencing_files_dir: Path) -> Path:
+    """Return the path to a SPRING file."""
+    return Path(sequencing_files_dir, "lane2.spring")
 
 
 @pytest.fixture(scope="function", name="family_vcf")
 def fixture_family_vcf(vcf_dir: Path) -> Path:
     """Return the path to a vcf file."""
-    return vcf_dir / "family.vcf"
+    return Path(vcf_dir, "family.vcf")
 
 
 @pytest.fixture(scope="function", name="second_sample_vcf")
 def fixture_second_sample_vcf(vcf_dir: Path) -> Path:
     """Return the path to a vcf file."""
-    return vcf_dir / "example.2.vcf"
+    return Path(vcf_dir, "example.2.vcf")
 
 
 @pytest.fixture(scope="function", name="second_family_vcf")
 def fixture_second_family_vcf(vcf_dir: Path) -> Path:
     """Return the path to a vcf file."""
-    return vcf_dir / "family.2.vcf"
+    return Path(vcf_dir, "family.2.vcf")
 
 
 @pytest.fixture(scope="function", name="third_family_vcf")
 def fixture_third_family_vcf(vcf_dir: Path) -> Path:
     """Return the path to a vcf file."""
-    return vcf_dir / "family.3.vcf"
+    return Path(vcf_dir, "family.3.vcf")
 
 
 @pytest.fixture(scope="function", name="checksum_file")
 def fixture_checksum_file(fixtures_dir: Path) -> Path:
     """Return the path to file to test checksum."""
-    return fixtures_dir / "26a90105b99c05381328317f913e9509e373b64f.txt"
+    return Path(fixtures_dir, "26a90105b99c05381328317f913e9509e373b64f.txt")
 
 
 @pytest.fixture(scope="function", name="checksum")
@@ -345,6 +447,7 @@ def fixture_checksum(checksum_file: Path) -> Path:
 def fixture_helpers() -> Helpers:
     """Return a test helper object."""
     return Helpers()
+
 
 # Store fixtures
 
@@ -359,7 +462,21 @@ def fixture_store(project_dir: Path) -> Store:
 
 
 @pytest.fixture(scope="function", name="populated_store")
-def fixture_populated_store(store: Store, bundle_data: dict, helpers: Helpers) -> Store:
+def fixture_populated_store(
+    archive_task_id: int,
+    bundle_data: dict,
+    helpers: Helpers,
+    sample_bundle_data: dict,
+    spring_file_1: Path,
+    store: Store,
+) -> Store:
     """Returns a populated store."""
-    helpers.add_bundle(store, bundle_data)
+    helpers.add_bundle(store=store, bundle=bundle_data)
+    helpers.add_bundle(store=store, bundle=sample_bundle_data)
+    helpers.add_archive(
+        store=store,
+        file_id=store.get_files(file_path=spring_file_1.as_posix()).first().id,
+        archive_task_id=archive_task_id,
+    )
+
     return store
