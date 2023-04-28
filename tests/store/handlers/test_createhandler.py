@@ -8,6 +8,7 @@ from housekeeper.store.api.core import Store
 
 
 def test_schema_with_invalid_input(bundle_data_json):
+    """Tests that errors are thrown when validating incorrect input data."""
     # GIVEN input data with missing name of the bundle
     del bundle_data_json["name"]
     # WHEN validating it against the schema
@@ -21,7 +22,7 @@ def test_schema_with_invalid_input(bundle_data_json):
 
 
 def test_create_tag_obj(store: Store, vcf_tag_name):
-    """Test to create a tag object"""
+    """Test to create a tag object."""
     # GIVEN a store and a tag name
     # WHEN creating a tag
     new_tag = store.new_tag(vcf_tag_name)
@@ -31,7 +32,7 @@ def test_create_tag_obj(store: Store, vcf_tag_name):
 
 
 def test_add_tag(store: Store, vcf_tag_obj):
-    """Test to add a tag"""
+    """Test to add a tag."""
     # GIVEN a store without tags
     assert store._get_query(table=Tag).count() == 0
     # WHEN adding a tag
@@ -46,7 +47,7 @@ def test_add_tag(store: Store, vcf_tag_obj):
 
 
 def test_create_version_obj(store: Store, timestamp):
-    """Test to create a version object"""
+    """Test to create a version object."""
     # GIVEN a store and a time stamp
     # WHEN creating a version
     new_version = store.new_version(created_at=timestamp, expires_at=timestamp)
@@ -59,7 +60,7 @@ def test_create_version_obj(store: Store, timestamp):
 
 
 def test_create_bundle_obj(store: Store, bundle_data):
-    """Test to create a bundle object"""
+    """Test to create a bundle object."""
     # GIVEN some bundle information
     # WHEN adding the new bundle
     bundle_obj = store.add_bundle(bundle_data)[0]
@@ -74,7 +75,7 @@ def test_create_bundle_obj(store: Store, bundle_data):
 
 
 def test_add_bundle(store: Store, bundle_obj):
-    """Test to add a bundle to the store"""
+    """Test to add a bundle to the store."""
     # GIVEN a store without files, tags, versions or bundles
     assert store._get_query(table=Bundle).count() == 0
     assert store._get_query(table=Tag).count() == 0
@@ -96,7 +97,7 @@ def test_add_bundle(store: Store, bundle_obj):
 
 
 def test_add_bundle_twice(populated_store: Store, bundle_data):
-    """Test to add a bundle twice"""
+    """Test to add a bundle twice."""
     store = populated_store
     # GIVEN a store ppopulated with a bundle
     assert store._get_query(table=Bundle).count() > 0
@@ -107,7 +108,7 @@ def test_add_bundle_twice(populated_store: Store, bundle_data):
 
 
 def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data):
-    """Test to add two versions of the same bundle"""
+    """Test to add two versions of the same bundle."""
     store: Store = populated_store
     # GIVEN a populated store and some modified bundle data
     assert store._get_query(table=Bundle).count() > 0
