@@ -1,4 +1,4 @@
-"""Tests for store core functions"""
+"""Tests for store core functions."""
 from pathlib import Path
 from typing import List
 
@@ -128,7 +128,7 @@ def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data):
 def test_add_file(
     populated_store: Store, second_family_vcf: Path, family_tag_names: List[str]
 ):
-    """Test to create a file with the add file method"""
+    """Test to create a file with the add file method."""
     # GIVEN the path and the tags for a file
 
     # GIVEN a store populated with a bundle
@@ -151,7 +151,7 @@ def test_add_file(
 
 
 def test_add_file_no_tags(populated_store: Store, second_family_vcf: Path):
-    """Test to create a file with the add file method without tags"""
+    """Test to create a file with the add file method without tags."""
     # GIVEN a path for a file
 
     # GIVEN a store populated with a bundle
