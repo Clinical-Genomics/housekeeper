@@ -357,8 +357,6 @@ def fixture_helpers() -> Helpers:
 
 
 # Store fixtures
-
-
 @pytest.fixture(scope="function", name="store")
 def fixture_store(project_dir: Path) -> Store:
     """Return a store setup with all tables."""
