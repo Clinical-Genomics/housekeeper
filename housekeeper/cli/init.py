@@ -1,7 +1,7 @@
 """Initialise HK db from CLI"""
 import logging
-
 import click
+from housekeeper.store.api.core import Store
 
 LOG = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ LOG = logging.getLogger(__name__)
 @click.pass_context
 def init(context, reset, force):
     """Setup the database."""
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
     existing_tables = store.engine.table_names()
     if force or reset:
         if existing_tables and not force:

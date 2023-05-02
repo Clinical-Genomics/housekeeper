@@ -66,9 +66,10 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
     except FileNotFoundError as err:
         LOG.warning("File %s does not exist", err)
         raise click.Abort
-    store.add_commit(new_bundle)
+    store.session.add(new_bundle)
     new_version.bundle: Bundle = new_bundle
-    store.add_commit(new_version)
+    store.session.add(new_version)
+    store.session.commit()
     LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
 
@@ -108,7 +109,8 @@ def file_cmd(
     new_file: File = store.update_latest_bundle_with_files(
         file_path=file_path, bundle=bundle, tags=tags
     )
-    store.add_commit(new_file)
+    store.session.add(new_file)
+    store.session.commit()
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
 
 
@@ -120,7 +122,7 @@ def file_cmd(
 def version_cmd(context: click.Context, bundle_name: str, created_at: str, json: str):
     """Add a new version to a bundle."""
     LOG.info("Running add version")
-    store = context.obj["store"]
+    store: Store = context.obj["store"]
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
@@ -144,7 +146,8 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
         LOG.warning("Seems like version already exists for the bundle")
         raise click.Abort
 
-    store.add_commit(new_version)
+    store.session.add(new_version)
+    store.session.commit()
     LOG.info(f"new version {new_version.id} added to bundle {bundle.name}")
 
 
@@ -173,20 +176,21 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
         tag: Tag = store.get_tag(tag_name=tag_name)
 
         if not tag:
-            LOG.info("%s: tag created", tag_name)
+            LOG.info(f"{tag_name}: tag created")
             tag: Tag = store.create_tag(tag_name)
-            store.add_commit(tag)
+            store.session.add(tag)
+            store.session.commit()
 
         if not file:
             continue
 
         if tag in file.tags:
-            LOG.info("%s: tag already added", tag_name)
+            LOG.info(f"{tag_name}: tag already added")
             continue
 
         file.tags.append(tag)
 
-    store.commit()
+    store.session.commit()
 
     if not file:
         return

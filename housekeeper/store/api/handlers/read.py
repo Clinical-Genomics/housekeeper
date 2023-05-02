@@ -4,11 +4,14 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-
+<<<<<<<< HEAD:housekeeper/store/api/crud/read.py
 from typing import List, Optional, Set, Type
 from alchy import ModelBase
+from sqlalchemy.orm import Query
+========
+from typing import List
 from sqlalchemy.orm import Query, Session
-
+>>>>>>>> master:housekeeper/store/api/handlers/read.py
 
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
 from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
@@ -33,10 +36,8 @@ LOG = logging.getLogger(__name__)
 
 
 class ReadHandler(BaseHandler):
+<<<<<<<< HEAD:housekeeper/store/api/crud/read.py
     """Handler for reading the database"""
-
-    def __init__(self, session: Session):
-        super().__init__(session=session)
 
     @staticmethod
     def _get_query(table: Type[ModelBase]) -> Query:
@@ -57,6 +58,16 @@ class ReadHandler(BaseHandler):
     def get_bundles(self) -> Query:
         """Return bundles."""
         LOG.info("Getting all bundles")
+========
+    """Handler for searching the database"""
+
+    def __init__(self, session: Session):
+        super().__init__(session=session)
+
+    def bundles(self):
+        """Fetch bundles."""
+        LOG.info("Fetching all bundles")
+>>>>>>>> master:housekeeper/store/api/handlers/read.py
         return self._get_query(table=Bundle)
 
     def get_bundle_by_id(self, bundle_id: int) -> Bundle:
