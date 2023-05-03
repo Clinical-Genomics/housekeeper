@@ -13,7 +13,7 @@ fileConfig(config.config_file_name)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
-from housekeeper.store import Model
+from housekeeper.store.models import Model
 
 # target_metadata = mymodel.Base.metadata
 target_metadata = Model.metadata
