@@ -1,4 +1,4 @@
-"""empty message Creates a new table describing archiving and retrieval tasks
+"""Creates a new table describing archiving and retrieval tasks
 
 Revision ID: f1669dd42064
 Revises: 9334201fec74

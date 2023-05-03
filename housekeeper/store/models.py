@@ -19,7 +19,7 @@ file_tag_link = Table(
 
 
 class Archive(Model):
-    """Information regarding the archival of a file"""
+    """Information regarding the archival of a file."""
 
     __tablename__ = "archive"
     archiving_task_id = Column(types.Integer, nullable=False)
@@ -48,7 +48,7 @@ class Bundle(Model):
 
 
 class Version(Model):
-    """Keeps track of versions"""
+    """Keeps track of versions."""
 
     __tablename__ = "version"
 
@@ -107,7 +107,7 @@ class File(Model):
 
 
 class Tag(Model):
-    """Represents tags for bundles"""
+    """Represents tags for bundles."""
 
     __tablename__ = "tag"
 
