@@ -35,8 +35,11 @@ def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     """
     Test return all files when two bundles are added.
     """
+    # GIVEN a populated store
     store: Store = populated_store
-    # GIVEN a store with two bundles and two files in each bundle
+    starting_nr_of_files: int = len(store.get_files_before(before_date=time_stamp_now))
+
+    # GIVEN two new files
     bundle_old_obj, _ = store.add_bundle(data=bundle_data_old)
     store.session.add(bundle_old_obj)
     store.session.commit()
@@ -44,8 +47,8 @@ def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     # WHEN fetching all files in the database
     files = store.get_files_before(before_date=time_stamp_now)
 
-    # THEN all four files should be fetched
-    assert len(files) == 4
+    # THEN two more files should be returned
+    assert len(files) == starting_nr_of_files + 2
 
 
 def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timestamp):

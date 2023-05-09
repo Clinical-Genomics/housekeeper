@@ -111,19 +111,22 @@ def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data):
     """Test to add two versions of the same bundle."""
     store: Store = populated_store
     # GIVEN a populated store and some modified bundle data
-    assert store._get_query(table=Bundle).count() > 0
+    starting_nr_of_bundles: int = store._get_query(table=Bundle).count()
+    starting_nr_of_versions: int = store._get_query(table=Version).count()
+    starting_nr_of_files: int = store._get_query(table=File).count()
+    assert starting_nr_of_bundles > 0
 
     # WHEN adding the modified bundle to the database
     new_bundle_obj = store.add_bundle(second_bundle_data)[0]
     store.session.add(new_bundle_obj)
     store.session.commit()
 
-    # THEN there should still be one bundle
-    assert store._get_query(table=Bundle).count() == 1
-    # THEN there should be two versions
-    assert store._get_query(table=Version).count() == 2
-    # THEN there should be all four files
-    assert store._get_query(table=File).count() == 4
+    # THEN the nuber of bundles should stay the same
+    assert store._get_query(table=Bundle).count() == starting_nr_of_bundles
+    # THEN there should one more version
+    assert store._get_query(table=Version).count() == starting_nr_of_versions + 1
+    # THEN there should be two more files
+    assert store._get_query(table=File).count() == starting_nr_of_files + 2
 
 
 def test_add_file(
