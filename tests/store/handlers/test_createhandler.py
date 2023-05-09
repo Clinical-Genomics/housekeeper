@@ -122,7 +122,7 @@ def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data):
     assert store._get_query(table=Bundle).count() == 1
     # THEN there should be two versions
     assert store._get_query(table=Version).count() == 2
-    # THEN tere should be all four files
+    # THEN there should be all four files
     assert store._get_query(table=File).count() == 4
 
 

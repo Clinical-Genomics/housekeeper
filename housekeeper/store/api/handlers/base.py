@@ -31,3 +31,13 @@ class BaseHandler:
 
     def _get_join_version_query(self, query: Query):
         return query.join(Version)
+
+    def _add_bundle_to_file_query(self, file_query: Query) -> Query:
+        """Adds bundle information to a File query."""
+        return file_query.join(File.version, Version.bundle)
+
+    def _get_join_file_tags_archive_query(self) -> Query:
+        """Returns a File query joined with archive information."""
+        return self._add_bundle_to_file_query(
+            file_query=self._get_join_file_tag_query()
+        ).outerjoin(File.archive)

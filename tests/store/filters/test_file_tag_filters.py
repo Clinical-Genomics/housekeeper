@@ -13,7 +13,7 @@ def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
 
     # WHEN filtering files by tags
     filtered_files_query = filter_files_by_tags(
-        files_tags=populated_store._get_join_file_tag_query(),
+        files_query=populated_store._get_join_file_tag_query(),
         tag_names=tag_names,
     )
 
@@ -35,7 +35,7 @@ def test_filter_files_by_tags_returns_empty_list_when_no_files_match_tags(
 
     # WHEN filtering files by the nonexistent tag
     filtered_files_query = filter_files_by_tags(
-        files_tags=populated_store._get_join_file_tag_query(),
+        files_query=populated_store._get_join_file_tag_query(),
         tag_names=[tag_name],
     )
 

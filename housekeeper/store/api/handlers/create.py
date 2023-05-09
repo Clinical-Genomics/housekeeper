@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Dict, List, Tuple
 from sqlalchemy.orm import Session
 
-from housekeeper.store import models
+from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 from housekeeper.store.api.handlers.base import BaseHandler
 from housekeeper.store.api.handlers.read import ReadHandler
 
@@ -24,13 +24,13 @@ class CreateHandler(BaseHandler):
             ReadHandler.get_version_by_date_and_bundle_name
         )
 
-    def new_bundle(self, name: str, created_at: dt.datetime = None) -> models.Bundle:
+    def new_bundle(self, name: str, created_at: dt.datetime = None) -> Bundle:
         """Create a new file bundle."""
         new_bundle = self.Bundle(name=name, created_at=created_at)
         LOG.info("Created new bundle: %s", new_bundle.name)
         return new_bundle
 
-    def add_bundle(self, data: dict) -> Tuple[models.Bundle, models.Version]:
+    def add_bundle(self, data: dict) -> Tuple[Bundle, Version]:
         """Build a new bundle version of files.
 
         The format of the input dict is defined in the `schema` module.
@@ -54,9 +54,7 @@ class CreateHandler(BaseHandler):
         version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
 
-    def _add_files_to_version(
-        self, files: List[dict], version_obj: models.Version
-    ) -> None:
+    def _add_files_to_version(self, files: List[dict], version_obj: Version) -> None:
         """Create file objects and the tags and add them to a version object"""
 
         tag_names = set(
@@ -82,7 +80,7 @@ class CreateHandler(BaseHandler):
 
     def new_version(
         self, created_at: dt.datetime, expires_at: dt.datetime = None
-    ) -> models.Version:
+    ) -> Version:
         """Create a new bundle version."""
         LOG.info("Created new version")
         new_version = self.Version(created_at=created_at, expires_at=expires_at)
@@ -91,8 +89,8 @@ class CreateHandler(BaseHandler):
     def add_version(
         self,
         data: dict,
-        bundle: models.Bundle,
-    ) -> models.Version:
+        bundle: Bundle,
+    ) -> Version:
         """Build a new version object and add it to an existing bundle"""
         created_at = data.get("created_at", data.get("created"))
         if self.get_version_by_date_and_bundle_name(
@@ -114,10 +112,10 @@ class CreateHandler(BaseHandler):
     def add_file(
         self,
         file_path: Path,
-        bundle: models.Bundle,
+        bundle: Bundle,
         to_archive: bool = False,
         tags: List[str] = None,
-    ) -> models.File:
+    ) -> File:
         """Build a new file object and add it to the latest version of an existing bundle"""
         version_obj = bundle.versions[0]
         tags = tags or []
@@ -130,7 +128,7 @@ class CreateHandler(BaseHandler):
         new_file.version = version_obj
         return new_file
 
-    def _build_tags(self, tag_names: List[str]) -> Dict[str, models.Tag]:
+    def _build_tags(self, tag_names: List[str]) -> Dict[str, Tag]:
         """Build a list of tag objects.
 
         Take a list of tags, if a tag does not exist create a new tag object.
@@ -150,15 +148,17 @@ class CreateHandler(BaseHandler):
         path: str,
         checksum: str = None,
         to_archive: bool = False,
-        tags: List[models.Tag] = None,
-    ) -> models.File:
+        tags: List[Tag] = None,
+    ) -> File:
         """Create a new file object based on the information given."""
-        new_file = self.File(
-            path=path, checksum=checksum, to_archive=to_archive, tags=tags
-        )
-        return new_file
+        return self.File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
 
-    def new_tag(self, name: str, category: str = None) -> models.Tag:
+    def new_tag(self, name: str, category: str = None) -> Tag:
         """Create a new tag object based on the information given."""
         new_tag = self.Tag(name=name, category=category)
         return new_tag
+
+    def add_archive(self, file_id: int, archive_task_id: int) -> Archive:
+        """Creates an archive object to the given file, with the given archive task id."""
+        return Archive(file_id=file_id, archiving_task_id=archive_task_id)
+
