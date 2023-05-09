@@ -1,13 +1,14 @@
 """This module defines a BaseHandler class holding different models"""
 
 from typing import Type
-from housekeeper.store.models import Bundle, File, Version, Tag, Model
+from housekeeper.store.models import Archive, Bundle, File, Version, Tag, Model
 from sqlalchemy.orm import Query, Session
 
 
 class BaseHandler:
-    """This is a base class holding different models"""
+    """This is a base class holding different models."""
 
+    Archive: Type[Model] = Archive
     Bundle: Type[Model] = Bundle
     Version: Type[Model] = Version
     File: Type[Model] = File
