@@ -42,7 +42,6 @@ def base(
     if not root_path:
         LOG.error("Please specify a root dir")
         raise click.Abort
-    LOG.info("Use database %s", db_path)
     context.obj["database"] = db_path
     LOG.info("Use root path %s", root_path)
     context.obj["store"] = Store(db_path, root_path)
