@@ -70,7 +70,7 @@ def fixture_spring_tag() -> str:
 
 @pytest.fixture(scope="function", name="sample_id")
 def fixture_sample_id() -> str:
-    """Return name of a another case."""
+    """Return name of a sample."""
     return "ACC123456A1"
 
 
@@ -81,7 +81,7 @@ def fixture_archive_task_id() -> int:
 
 @pytest.fixture(scope="function", name="retrieval_task_id")
 def fixture_retrieval_task_id() -> int:
-    """Return an id of an archive task."""
+    """Return an id of a retrieval task."""
     return 4321
 
 
