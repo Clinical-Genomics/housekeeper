@@ -9,7 +9,7 @@ from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
 from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
-from housekeeper.store.filters.file_tags_filters import (
+from housekeeper.store.filters.file_join_filters import (
     FileJoinFilter,
     apply_file_join_filter,
 )
@@ -180,13 +180,13 @@ class ReadHandler(BaseHandler):
         return files_not_on_disk
 
     def get_archived_files(self, bundle_name: str, tags: Optional[list]) -> List[File]:
-        files_filtered_om_bundle: Query = apply_bundle_filter(
+        files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
             bundle_name=bundle_name,
             filter_functions=[BundleFilters.FILTER_BY_NAME],
         )
         return apply_file_join_filter(
-            files_query=files_filtered_om_bundle,
+            files_query=files_filtered_on_bundle,
             filter_functions=[
                 FileJoinFilter.FILTER_FILES_BY_TAGS,
                 FileJoinFilter.FILTER_FILES_BY_ARCHIVE,

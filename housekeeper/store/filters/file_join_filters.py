@@ -7,7 +7,7 @@ from housekeeper.store.models import File, Tag
 
 
 def filter_files_by_tags(files_query: Query, tag_names: List[str], **kwargs) -> Query:
-    """Filter files by tag_names."""
+    """Filter files by tag names."""
     return (
         files_query.filter(Tag.name.in_(tag_names))
         .group_by(File.id)
@@ -21,7 +21,7 @@ def filter_files_by_archive(files_query: Query, is_archived: bool, **kwargs) -> 
 
 
 class FileJoinFilter(Enum):
-    """Define filters functions for joins between File and other tables."""
+    """Define filter functions for joins between File and other tables."""
 
     FILTER_FILES_BY_TAGS: Callable = filter_files_by_tags
     FILTER_FILES_BY_ARCHIVE: Callable = filter_files_by_archive
