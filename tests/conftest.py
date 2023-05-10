@@ -11,8 +11,8 @@ import pytest
 import yaml
 
 from housekeeper.date import get_date
-from housekeeper.store import Store, models
-from housekeeper.store.models import Bundle, Archive
+from housekeeper.store import Store
+from housekeeper.store.models import Archive, Bundle, Tag, Version
 
 from .helper_functions import Helpers
 
@@ -64,7 +64,7 @@ def fixture_sample_tag_names(vcf_tag_name: str, sample_tag_name: str) -> List[st
 
 @pytest.fixture(scope="function", name="spring_tag")
 def fixture_spring_tag() -> str:
-    """Return the tag marking spring files."""
+    """Return the tag marking SPRING files."""
     return "spring"
 
 
@@ -74,9 +74,9 @@ def fixture_sample_id() -> str:
     return "ACC123456A1"
 
 
-@pytest.fixture(scope="function", name="archive_task_id")
-def fixture_archive_task_id() -> int:
-    """Return an id of an archive task."""
+@pytest.fixture(scope="function", name="archiving_task_id")
+def fixture_archiving_task_id() -> int:
+    """Return an id of an archiving task."""
     return 1234
 
 @pytest.fixture(scope="function", name="retrieval_task_id")
@@ -301,28 +301,28 @@ def fixture_configs(project_dir: Path, db_uri: str) -> dict:
 @pytest.fixture(scope="function", name="vcf_tag_obj")
 def fixture_vcf_tag_obj(vcf_tag_name: str, timestamp: datetime.datetime) -> str:
     """Return a tag object."""
-    return models.Tag(name=vcf_tag_name, created_at=timestamp)
+    return Tag(name=vcf_tag_name, created_at=timestamp)
 
 
 @pytest.fixture(scope="function", name="bundle_obj")
-def fixture_bundle_obj(bundle_data: dict, store: Store) -> models.Bundle:
+def fixture_bundle_obj(bundle_data: dict, store: Store) -> Bundle:
     """Return a bundle object."""
     return store.add_bundle(bundle_data)[0]
 
 
 @pytest.fixture(scope="function", name="sample_bundle")
-def fixture_sample_bundle(sample_bundle_data: dict, store: Store) -> models.Bundle:
+def fixture_sample_bundle(sample_bundle_data: dict, store: Store) -> Bundle:
     """Return a bundle object."""
     return store.add_bundle(sample_bundle_data)[0]
 
 
 @pytest.fixture(scope="function", name="version_obj")
-def fixture_version_obj(bundle_data: dict, store: Store) -> models.Version:
+def fixture_version_obj(bundle_data: dict, store: Store) -> Version:
     """Return a version object."""
     return store.add_bundle(bundle_data)[1]
 
 @pytest.fixture(scope="function", name="archive")
-def fixture_archive(populated_store: Store) -> models.Archive:
+def fixture_archive(populated_store: Store) -> Archive:
     """Return an archive object."""
     return populated_store._get_query(table=Archive).first()
 
@@ -403,7 +403,7 @@ def fixture_spring_file_2(sequencing_files_dir: Path) -> Path:
 
 @pytest.fixture(scope="function", name="archived_file")
 def fixture_archived_file(spring_file_1: Path) -> Path:
-    """Return the path to anarchived file."""
+    """Return the path to an archived file."""
     return spring_file_1
 
 @pytest.fixture(scope="function", name="non_archived_file")
@@ -473,7 +473,7 @@ def fixture_store(project_dir: Path) -> Store:
 
 @pytest.fixture(scope="function", name="populated_store")
 def fixture_populated_store(
-    archive_task_id: int,
+    archiving_task_id: int,
     bundle_data: dict,
     helpers: Helpers,
     sample_bundle_data: dict,
@@ -486,7 +486,7 @@ def fixture_populated_store(
     helpers.add_archive(
         store=store,
         file_id=store.get_files(file_path=spring_file_1.as_posix()).first().id,
-        archive_task_id=archive_task_id,
+        archiving_task_id=archiving_task_id,
     )
 
     return store

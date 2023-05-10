@@ -1,11 +1,10 @@
 """Tests for finding tags in store."""
-from datetime import datetime, timedelta
+from datetime import timedelta
 from pathlib import Path
-from typing import List, Set
+from typing import List
 
-from housekeeper import store
 from housekeeper.store import Store
-from housekeeper.store.models import Tag, File, Archive
+from housekeeper.store.models import Tag, File
 
 
 def test_tag_with_tag_name(populated_store: Store, sample_tag_name: str):
@@ -35,7 +34,7 @@ def test_tag_without_tag_name(populated_store: Store):
 
 def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     """
-    Test return all files when two bundles are added.
+    Test return all files when two bundles are added and all files are older.
     """
     # GIVEN a populated store
     store: Store = populated_store
@@ -52,10 +51,9 @@ def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     # THEN two more files should be returned
     assert len(files) == starting_nr_of_files + 2
 
-
 def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timestamp):
     """
-    test fetch files where not all files are older than before date
+    test fetch files where not all files are older than before date.
     """
     store: Store = populated_store
     # GIVEN a store with two bundles and two files in each bundle
@@ -101,9 +99,9 @@ def test_get_archived_files(
     non_archived_file: Path,
     populated_store: Store,
     sample_id: str,
-    spring_tag,
+    spring_tag: str,
 ):
-    """Tests fetching all spring files in a given bundle that are archived."""
+    """Tests fetching all archive SPRING files in a given bundle."""
     # GIVEN a bundle with two files, where one is archive and one is not
 
     # WHEN asking for all archived files
@@ -124,9 +122,9 @@ def test_get_non_archived_files(
     non_archived_file: Path,
     populated_store: Store,
     sample_id: str,
-    spring_tag,
+    spring_tag: str,
 ):
-    """Tests fetching all spring files in a given bundle that are not archived."""
+    """Tests fetching all non-archive SPRING files in a given bundle."""
     # GIVEN a bundle with two files, where one is archive and one is not
 
     # WHEN asking for all non-archived files

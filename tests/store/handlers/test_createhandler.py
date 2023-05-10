@@ -110,7 +110,7 @@ def test_add_bundle_twice(populated_store: Store, bundle_data):
     assert new_bundle is None
 
 
-def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data):
+def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data: dict):
     """Test to add two versions of the same bundle."""
     store: Store = populated_store
     # GIVEN a populated store and some modified bundle data
@@ -131,15 +131,15 @@ def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data):
     assert store._get_query(table=File).count() == starting_file_count + 2
 
 
-def test_add_archive(archive_task_id: int, populated_store: Store, spring_file_2: Path):
-    """Test to see that adding an archive works as expected."""
-    # GIVEN a file that's not archived
+def test_add_archive(archiving_task_id: int, populated_store: Store, spring_file_2: Path):
+    """Test that adding an archive works as expected."""
+    # GIVEN a file that is not archived
     non_archived_file: File = populated_store.get_files(
         file_path=spring_file_2.as_posix()
     ).first()
     # WHEN adding an archive
-    new_archive: Archive = populated_store.add_archive(
-        file_id=non_archived_file.id, archive_task_id=archive_task_id
+    new_archive: Archive = populated_store.create_archive(
+        file_id=non_archived_file.id, archiving_task_id=archiving_task_id
     )
     populated_store.session.add(new_archive)
     populated_store.session.commit()
@@ -149,16 +149,16 @@ def test_add_archive(archive_task_id: int, populated_store: Store, spring_file_2
     assert non_archived_file.archive == new_archive
 
 
-def test_add_archive_to_archived_file(archive_task_id: int, populated_store: Store,
+def test_add_archive_to_archived_file(archiving_task_id: int, populated_store: Store,
                                       spring_file_1: Path):
-    """Test to see that adding an archive to an already archived file raises an error."""
-    # GIVEN a file that's archived
+    """Test that adding an archive to an already archived file raises an error."""
+    # GIVEN a file that is archived
     non_archived_file: File = populated_store.get_files(
         file_path=spring_file_1.as_posix()
     ).first()
     # WHEN adding an archive
-    new_archive: Archive = populated_store.add_archive(
-        file_id=non_archived_file.id, archive_task_id=archive_task_id
+    new_archive: Archive = populated_store.create_archive(
+        file_id=non_archived_file.id, archiving_task_id=archiving_task_id
     )
     populated_store.session.add(new_archive)
 

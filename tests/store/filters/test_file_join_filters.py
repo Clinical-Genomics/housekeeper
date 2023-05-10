@@ -19,7 +19,7 @@ def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
 
     # WHEN filtering files by tags
     filtered_files_query = filter_files_by_tags(
-        files_query=populated_store._get_join_file_tag_query(),
+        files=populated_store._get_join_file_tag_query(),
         tag_names=tag_names,
     )
 
@@ -36,12 +36,12 @@ def test_filter_files_by_tags_returns_empty_list_when_no_files_match_tags(
     """Test filtering files by tags when no files match the given tags."""
 
     # GIVEN a store with files
-    # create a tag that does not exist in any files in the store
+    # GIVEN a tag that does not exist in any files in the store
     tag_name = "nonexistent_tag"
 
     # WHEN filtering files by the nonexistent tag
     filtered_files_query = filter_files_by_tags(
-        files_query=populated_store._get_join_file_tag_query(),
+        files=populated_store._get_join_file_tag_query(),
         tag_names=[tag_name],
     )
 
@@ -56,7 +56,7 @@ def test_filter_files_by_archive_true(populated_store: Store):
 
     # WHEN filtering on archived files
     archived_files_query: Query = filter_files_by_archive(
-        files_query=populated_store._get_join_file_tags_archive_query(),
+        files=populated_store._get_join_file_tags_archive_query(),
         is_archived=True,
     )
 
@@ -72,7 +72,7 @@ def test_filter_files_by_archive_false(populated_store: Store):
 
     # WHEN filtering on non-archived files
     archived_files_query: Query = filter_files_by_archive(
-        files_query=populated_store._get_join_file_tags_archive_query(),
+        files=populated_store._get_join_file_tags_archive_query(),
         is_archived=False,
     )
 

@@ -11,7 +11,7 @@ from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle
 from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
 from housekeeper.store.filters.file_join_filters import (
     FileJoinFilter,
-    apply_file_join_filter,
+    apply_file_filter_extended,
 )
 from housekeeper.store.filters.version_bundle_filters import (
     VersionBundleFilters,
@@ -130,8 +130,8 @@ class ReadHandler(BaseHandler):
             formatted_tags = ",".join(tag_names)
             LOG.info(f"Fetching files with tags in [{formatted_tags}]")
 
-            query = apply_file_join_filter(
-                files_query=query.join(File.tags),
+            query = apply_file_filter_extended(
+                files=query.join(File.tags),
                 filter_functions=[FileJoinFilter.FILTER_FILES_BY_TAGS],
                 tag_names=tag_names,
             )
@@ -179,14 +179,15 @@ class ReadHandler(BaseHandler):
         files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
         return files_not_on_disk
 
-    def get_archived_files(self, bundle_name: str, tags: Optional[list]) -> List[File]:
+    def get_archived_files(self, bundle_name: str, tags: Optional[List]) -> List[File]:
+        """Returns all files in the given bundle, with the given tags, and are archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
             bundle_name=bundle_name,
             filter_functions=[BundleFilters.FILTER_BY_NAME],
         )
-        return apply_file_join_filter(
-            files_query=files_filtered_on_bundle,
+        return apply_file_filter_extended(
+            files=files_filtered_on_bundle,
             filter_functions=[
                 FileJoinFilter.FILTER_FILES_BY_TAGS,
                 FileJoinFilter.FILTER_FILES_BY_ARCHIVE,
@@ -196,15 +197,16 @@ class ReadHandler(BaseHandler):
         ).all()
 
     def get_non_archived_files(
-        self, bundle_name: str, tags: Optional[list]
+        self, bundle_name: str, tags: Optional[List]
     ) -> List[File]:
+        """Returns all files in the given bundle, with the given tags, and are not archived."""
         files_filtered_om_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
             bundle_name=bundle_name,
             filter_functions=[BundleFilters.FILTER_BY_NAME],
         )
-        return apply_file_join_filter(
-            files_query=files_filtered_om_bundle,
+        return apply_file_filter_extended(
+            files=files_filtered_om_bundle,
             filter_functions=[
                 FileJoinFilter.FILTER_FILES_BY_TAGS,
                 FileJoinFilter.FILTER_FILES_BY_ARCHIVE,
@@ -212,4 +214,3 @@ class ReadHandler(BaseHandler):
             is_archived=False,
             tag_names=tags,
         ).all()
-
