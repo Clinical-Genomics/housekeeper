@@ -51,6 +51,7 @@ def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     # THEN two more files should be returned
     assert len(files) == starting_nr_of_files + 2
 
+
 def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timestamp):
     """
     test fetch files where not all files are older than before date.
@@ -73,9 +74,7 @@ def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timesta
     assert len(files) == 2
 
 
-def test_get_no_get_files_before_oldest(
-    populated_store, bundle_data_old, old_timestamp, timestamp
-):
+def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_timestamp, timestamp):
     """
     Test get files where no files are older than before date.
     """
@@ -107,9 +106,7 @@ def test_get_archived_files(
     # WHEN asking for all archived files
     archived_files: List[Path] = [
         Path(file.path)
-        for file in populated_store.get_archived_files(
-            bundle_name=sample_id, tags=[spring_tag]
-        )
+        for file in populated_store.get_archived_files(bundle_name=sample_id, tags=[spring_tag])
     ]
 
     # THEN only one should be returned
@@ -130,9 +127,7 @@ def test_get_non_archived_files(
     # WHEN asking for all non-archived files
     archived_files: List[Path] = [
         Path(file.path)
-        for file in populated_store.get_non_archived_files(
-            bundle_name=sample_id, tags=[spring_tag]
-        )
+        for file in populated_store.get_non_archived_files(bundle_name=sample_id, tags=[spring_tag])
     ]
 
     # THEN only one should be returned

@@ -79,6 +79,7 @@ def fixture_archiving_task_id() -> int:
     """Return an id of an archiving task."""
     return 1234
 
+
 @pytest.fixture(scope="function", name="retrieval_task_id")
 def fixture_retrieval_task_id() -> int:
     """Return an id of a retrieval task."""
@@ -110,17 +111,13 @@ def fixture_sample2_data(sample_tag_names: List[str], second_sample_vcf: Path) -
 
 
 @pytest.fixture(scope="function", name="spring_file_1_with_tags")
-def fixture_spring_file_1_with_tags(
-    sample_id: str, spring_tag: str, spring_file_1: Path
-) -> dict:
+def fixture_spring_file_1_with_tags(sample_id: str, spring_tag: str, spring_file_1: Path) -> dict:
     """Return spring file and tags for a sample."""
     return {"tags": [sample_id, spring_tag], "file": spring_file_1}
 
 
 @pytest.fixture(scope="function", name="spring_file_2_with_tags")
-def fixture_spring_file_2_with_tags(
-    sample_id: str, spring_tag: str, spring_file_2: Path
-) -> dict:
+def fixture_spring_file_2_with_tags(sample_id: str, spring_tag: str, spring_file_2: Path) -> dict:
     """Return a second spring file and tags for a sample."""
     return {"tags": [sample_id, spring_tag], "file": spring_file_2}
 
@@ -194,18 +191,14 @@ def fixture_sample_bundle_data(
 
 
 @pytest.fixture(scope="function", name="empty_version_data")
-def fixture_empty_version_data(
-    later_timestamp: datetime.datetime, case_id: str
-) -> dict:
+def fixture_empty_version_data(later_timestamp: datetime.datetime, case_id: str) -> dict:
     """Return a dummy bundle."""
     data = {"bundle_name": case_id, "created_at": later_timestamp, "files": []}
     return data
 
 
 @pytest.fixture(scope="function", name="version_data")
-def fixture_version_data(
-    empty_version_data: dict, family2_data: dict, sample2_data: dict
-) -> dict:
+def fixture_version_data(empty_version_data: dict, family2_data: dict, sample2_data: dict) -> dict:
     """Return a dummy bundle."""
     data = copy.deepcopy(empty_version_data)
     data["files"] = [
@@ -321,6 +314,7 @@ def fixture_version_obj(bundle_data: dict, store: Store) -> Version:
     """Return a version object."""
     return store.add_bundle(bundle_data)[1]
 
+
 @pytest.fixture(scope="function", name="archive")
 def fixture_archive(populated_store: Store) -> Archive:
     """Return an archive object."""
@@ -401,15 +395,18 @@ def fixture_spring_file_2(sequencing_files_dir: Path) -> Path:
     """Return the path to a SPRING file."""
     return Path(sequencing_files_dir, "lane2.spring")
 
+
 @pytest.fixture(scope="function", name="archived_file")
 def fixture_archived_file(spring_file_1: Path) -> Path:
     """Return the path to an archived file."""
     return spring_file_1
 
+
 @pytest.fixture(scope="function", name="non_archived_file")
 def fixture_non_archived_file(spring_file_2: Path) -> Path:
     """Return the path to a non-archived file."""
     return spring_file_2
+
 
 @pytest.fixture(scope="function", name="spring_file_2")
 def fixture_spring_file_2(sequencing_files_dir: Path) -> Path:
