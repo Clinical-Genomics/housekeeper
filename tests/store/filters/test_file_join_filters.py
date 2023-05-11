@@ -3,9 +3,9 @@ from typing import List
 from sqlalchemy.orm import Query
 
 from housekeeper.store.api.core import Store
-from housekeeper.store.filters.file_join_filters import (
+from housekeeper.store.filters.file_filters import (
     filter_files_by_tags,
-    filter_files_by_archive,
+    filter_files_by_is_archived,
 )
 from housekeeper.store.models import File
 
@@ -31,7 +31,7 @@ def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
 
 
 def test_filter_files_by_tags_returns_empty_list_when_no_files_match_tags(
-        populated_store: Store,
+    populated_store: Store,
 ):
     """Test filtering files by tags when no files match the given tags."""
 
@@ -55,7 +55,7 @@ def test_filter_files_by_archive_true(populated_store: Store):
     # GIVEN as store with files
 
     # WHEN filtering on archived files
-    archived_files_query: Query = filter_files_by_archive(
+    archived_files_query: Query = filter_files_by_is_archived(
         files=populated_store._get_join_file_tags_archive_query(),
         is_archived=True,
     )
@@ -71,7 +71,7 @@ def test_filter_files_by_archive_false(populated_store: Store):
     # GIVEN as store with files
 
     # WHEN filtering on non-archived files
-    archived_files_query: Query = filter_files_by_archive(
+    archived_files_query: Query = filter_files_by_is_archived(
         files=populated_store._get_join_file_tags_archive_query(),
         is_archived=False,
     )
