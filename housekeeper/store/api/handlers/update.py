@@ -1,37 +1,59 @@
 """
 This module handles updating entries in the store/database
 """
-import datetime as dt
+from datetime import datetime
 import logging
-from pathlib import Path
-from typing import List, Optional
-from sqlalchemy.orm import Query, Session
+from typing import List
 
-from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
-from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
-from housekeeper.store.filters.file_tags_filters import (
-    FileJoinFilter,
-    apply_file_join_filter,
-)
-from housekeeper.store.filters.version_bundle_filters import (
-    VersionBundleFilters,
-    apply_version_bundle_filter,
-)
-from housekeeper.store.filters.version_filters import (
-    VersionFilter,
-    apply_version_filter,
-)
-from housekeeper.store.models import Bundle, File, Tag, Version
-from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
+from sqlalchemy.orm import Session
 
-from .base import BaseHandler
+
+from housekeeper.store.api.handlers.base import BaseHandler
+from housekeeper.store.filters.archive_filters import (
+    apply_archive_filter,
+    ArchiveFilter,
+)
+from housekeeper.store.models import Archive
 
 LOG = logging.getLogger(__name__)
 
 
 class UpdateHandler(BaseHandler):
     """Handler for updating entries in the database."""
+
     def __init__(self, session: Session):
         super().__init__(session=session)
-    def set_archive_time_stamps(self):
-        pass
+
+    @staticmethod
+    def update_archiving_time_stamp(archive: Archive) -> None:
+        """Sets the archived_at timestamp of the given archive to now."""
+        if archive.archived_at:
+            return
+        archive.archived_at = datetime.now()
+
+    @staticmethod
+    def update_retrieval_time_stamp(archive: Archive) -> None:
+        """Sets the retrieved_at timestamp of the given archive to now."""
+        if archive.retrieved_at:
+            return
+        archive.retrieved_at = datetime.now()
+
+    def update_finished_archival_task(self, archiving_task_id: int):
+        """Sets the archived_at field to now for all archives with the given archiving task id."""
+        completed_archives: List[Archive] = apply_archive_filter(
+            archives=self._get_query(table=Archive),
+            filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK],
+            task_id=archiving_task_id,
+        ).all()
+        for archive in completed_archives:
+            self.update_archiving_time_stamp(archive=archive)
+
+    def update_finished_retrieval_task(self, retrieval_task_id: int):
+        """Sets the archived_at field to now for all archives with the given archiving task id."""
+        completed_archives: List[Archive] = apply_archive_filter(
+            archives=self._get_query(table=Archive),
+            filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK],
+            task_id=retrieval_task_id,
+        ).all()
+        for archive in completed_archives:
+            self.update_retrieval_time_stamp(archive=archive)

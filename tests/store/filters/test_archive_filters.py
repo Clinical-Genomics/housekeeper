@@ -8,7 +8,7 @@ from housekeeper.store.filters.archive_filters import (
 from housekeeper.store.models import Archive
 
 
-def test_filter_archiving_in_progress(populated_store: Store, archive_task_id: int):
+def test_filter_archiving_in_progress(populated_store: Store, archiving_task_id: int):
     """Tests filtering Archives on if their archiving task is finished."""
     # GIVEN a populated store with, an unfinished task
 

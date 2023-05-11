@@ -4,7 +4,7 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Set
 from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
@@ -21,11 +21,11 @@ from housekeeper.store.filters.version_filters import (
     VersionFilter,
     apply_version_filter,
 )
-from housekeeper.store.models import Bundle, File, Tag, Version
+from housekeeper.store.models import Bundle, File, Tag, Version, Archive
 from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
 
 from .base import BaseHandler
-
+from ...filters.archive_filters import apply_archive_filter, ArchiveFilter
 
 LOG = logging.getLogger(__name__)
 
@@ -212,3 +212,22 @@ class ReadHandler(BaseHandler):
             is_archived=False,
             tag_names=tags,
         ).all()
+
+    def get_unfinished_archiving_tasks(self) -> Set[int]:
+        """Returns all archiving/retrieval tasks that are not marked as finished."""
+        return {
+            archive.archiving_task_id
+            for archive in apply_archive_filter(
+                archives=self._get_query(table=Archive),
+                filter_functions=[ArchiveFilter.FILTER_ARCHIVING_IN_PROGRESS],
+            ).all()
+        }
+
+    def get_unfinished_retrieval_tasks(self) -> Set[int]:
+        return {
+            archive.retrieval_task_id
+            for archive in apply_archive_filter(
+                archives=self._get_query(table=Archive),
+                filter_functions=[ArchiveFilter.FILTER_RETRIEVAL_IN_PROGRESS],
+            ).all()
+        }
