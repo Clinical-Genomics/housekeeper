@@ -15,7 +15,7 @@ from housekeeper.store.api.handlers.read import ReadHandler
 LOG = logging.getLogger(__name__)
 
 
-class CoreHandler(ReadHandler, CreateHandler):
+class CoreHandler(CreateHandler, ReadHandler, UpdateHandler):
     """Aggregating class for the store api handlers"""
 
     def __init__(self, session):

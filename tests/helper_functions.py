@@ -43,13 +43,14 @@ class Helpers:
         store.session.commit()
 
     @staticmethod
-    def add_archive(store: Store, file_id: int, archiving_task_id: int = 1234) -> None:
+    def add_archive(store: Store, file_id: int, archiving_task_id: int = 1234) -> Archive:
         """Adds an archive object to the database."""
         new_archive: Archive = store.create_archive(
             file_id=file_id, archiving_task_id=archiving_task_id
         )
         store.session.add(new_archive)
         store.session.commit()
+        return new_archive
 
     @staticmethod
     def create_bundle_data(case_id: str, files: List[dict], created_at: dt.datetime = None) -> dict:

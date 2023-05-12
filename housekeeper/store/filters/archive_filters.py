@@ -15,33 +15,33 @@ RETRIEVAL_NOT_FINISHED: BooleanClauseList = and_(
 )
 
 
-def filter_archiving_in_progress(archives: Query) -> Query:
+def filter_archiving_in_progress(archives: Query, **kwargs) -> Query:
     """Return archives where the archiving is not marked as completed."""
     return archives.filter(ARCHIVING_NOT_FINISHED)
 
 
-def filter_retrieval_in_progress(archives: Query) -> Query:
+def filter_retrieval_in_progress(archives: Query, **kwargs) -> Query:
     """Return archives where the retrieval is not marked as completed."""
     return archives.filter(RETRIEVAL_NOT_FINISHED)
 
 
-def filter_by_archiving_task(archives: Query, task_id: int) -> Query:
+def filter_by_archiving_task_id(archives: Query, task_id: int, **kwargs) -> Query:
     """Return archives where the archiving task id matches the one given."""
     return archives.filter(Archive.archiving_task_id == task_id)
 
 
-def filter_by_retrieval_task(archives: Query, task_id: int) -> Query:
+def filter_by_retrieval_task_id(archives: Query, task_id: int, **kwargs) -> Query:
     """Return archives where the retrieval task id matches the one given."""
     return archives.filter(Archive.retrieval_task_id == task_id)
 
 
 class ArchiveFilter(Enum):
-    """Define Tag filter functions."""
+    """Define Archive filter functions."""
 
     FILTER_ARCHIVING_IN_PROGRESS: Callable = filter_archiving_in_progress
     FILTER_RETRIEVAL_IN_PROGRESS: Callable = filter_retrieval_in_progress
-    FILTER_BY_ARCHIVING_TASK: Callable = filter_by_archiving_task
-    FILTER_BY_RETRIEVAL_TASK: Callable = filter_by_retrieval_task
+    FILTER_BY_ARCHIVING_TASK_ID: Callable = filter_by_archiving_task_id
+    FILTER_BY_RETRIEVAL_TASK_ID: Callable = filter_by_retrieval_task_id
 
 
 def apply_archive_filter(

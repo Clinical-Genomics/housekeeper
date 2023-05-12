@@ -214,7 +214,7 @@ class ReadHandler(BaseHandler):
         ).all()
 
     def get_unfinished_archiving_tasks(self) -> Set[int]:
-        """Returns all archiving/retrieval tasks that are not marked as finished."""
+        """Returns all archiving tasks that have an archiving task but no archived_at timestamp."""
         return {
             archive.archiving_task_id
             for archive in apply_archive_filter(
@@ -224,6 +224,7 @@ class ReadHandler(BaseHandler):
         }
 
     def get_unfinished_retrieval_tasks(self) -> Set[int]:
+        """Returns all retrieval tasks that have a retrieval task but no retrieved_at timestamp."""
         return {
             archive.retrieval_task_id
             for archive in apply_archive_filter(

@@ -1,10 +1,10 @@
 """Tests for finding tags in store."""
 from datetime import timedelta
 from pathlib import Path
-from typing import List
+from typing import List, Set
 
 from housekeeper.store import Store
-from housekeeper.store.models import Tag, File
+from housekeeper.store.models import Tag, File, Archive
 
 
 def test_tag_with_tag_name(populated_store: Store, sample_tag_name: str):
@@ -133,3 +133,33 @@ def test_get_non_archived_files(
     # THEN only one should be returned
     assert archived_file not in archived_files
     assert non_archived_file in archived_files
+
+
+def test_get_unfinished_archiving_tasks(
+    archive: Archive, archiving_task_id: int, populated_store: Store
+):
+    """Tests the fetching of unfinished archiving tasks."""
+    # GIVEN a populated store with one unfinished archiving task
+    archive.archiving_task_id = archiving_task_id
+    archive.archived_at = None
+
+    # WHEN fetching unfinished archiving tasks
+    unfinished_tasks: Set[int] = populated_store.get_unfinished_archiving_tasks()
+
+    # THEN the set should include the initial archiving task id
+    assert archiving_task_id in unfinished_tasks
+
+
+def test_get_unfinished_retrieval_tasks(
+    archive: Archive, retrieval_task_id: int, populated_store: Store
+):
+    """Tests the fetching of unfinished retrieval tasks."""
+    # GIVEN a populated store with one unfinished retrieval task
+    archive.retrieval_task_id = retrieval_task_id
+    archive.retrieved_at = None
+
+    # WHEN fetching unfinished retrieval tasks
+    unfinished_tasks: Set[int] = populated_store.get_unfinished_retrieval_tasks()
+
+    # THEN the set should include the initial retrieval task id
+    assert retrieval_task_id in unfinished_tasks
