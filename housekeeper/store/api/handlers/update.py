@@ -38,7 +38,7 @@ class UpdateHandler(BaseHandler):
             return
         archive.retrieved_at = datetime.now()
 
-    def update_finished_archival_task(self, archiving_task_id: int):
+    def update_finished_archival_task(self, archiving_task_id: int) -> None:
         """Sets the archived_at field to now for all archives with the given archiving task id."""
         completed_archives: List[Archive] = apply_archive_filter(
             archives=self._get_query(table=Archive),
@@ -48,7 +48,7 @@ class UpdateHandler(BaseHandler):
         for archive in completed_archives:
             self.update_archiving_time_stamp(archive=archive)
 
-    def update_finished_retrieval_task(self, retrieval_task_id: int):
+    def update_finished_retrieval_task(self, retrieval_task_id: int) -> None:
         """Sets the archived_at field to now for all archives with the given archiving task id."""
         completed_archives: List[Archive] = apply_archive_filter(
             archives=self._get_query(table=Archive),

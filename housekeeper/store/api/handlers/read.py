@@ -8,7 +8,6 @@ from typing import List, Optional, Set
 from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
-from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
 from housekeeper.store.filters.file_filters import (
     FileFilter,
     apply_file_filter,
@@ -24,8 +23,8 @@ from housekeeper.store.filters.version_filters import (
 from housekeeper.store.models import Bundle, File, Tag, Version, Archive
 from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
 
-from .base import BaseHandler
-from ...filters.archive_filters import apply_archive_filter, ArchiveFilter
+from housekeeper.store.api.handlers.base import BaseHandler
+from housekeeper.store.filters.archive_filters import apply_archive_filter, ArchiveFilter
 
 LOG = logging.getLogger(__name__)
 

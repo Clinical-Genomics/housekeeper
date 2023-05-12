@@ -1,3 +1,5 @@
+from typing import List
+
 import pytest
 from sqlalchemy.orm import Query
 
@@ -6,6 +8,8 @@ from housekeeper.store.models import File
 from housekeeper.store.filters.file_filters import (
     filter_files_by_id,
     filter_files_by_path,
+    filter_files_by_tags,
+    filter_files_by_is_archived,
 )
 
 
@@ -80,18 +84,6 @@ def test_filter_files_by_id_returns_none_for_invalid_id(populated_store: Store, 
     # THEN no file should be returned
     filtered_file: File = file_query.first()
     assert filtered_file is None
-
-
-from typing import List
-
-from sqlalchemy.orm import Query
-
-from housekeeper.store.api.core import Store
-from housekeeper.store.filters.file_filters import (
-    filter_files_by_tags,
-    filter_files_by_is_archived,
-)
-from housekeeper.store.models import File
 
 
 def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
