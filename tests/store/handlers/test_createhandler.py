@@ -134,9 +134,7 @@ def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data: 
 def test_add_archive(archiving_task_id: int, populated_store: Store, spring_file_2: Path):
     """Test that adding an archive works as expected."""
     # GIVEN a file that is not archived
-    non_archived_file: File = populated_store.get_files(
-        file_path=spring_file_2.as_posix()
-    ).first()
+    non_archived_file: File = populated_store.get_files(file_path=spring_file_2.as_posix()).first()
     # WHEN adding an archive
     new_archive: Archive = populated_store.create_archive(
         file_id=non_archived_file.id, archiving_task_id=archiving_task_id
@@ -149,13 +147,12 @@ def test_add_archive(archiving_task_id: int, populated_store: Store, spring_file
     assert non_archived_file.archive == new_archive
 
 
-def test_add_archive_to_archived_file(archiving_task_id: int, populated_store: Store,
-                                      spring_file_1: Path):
+def test_add_archive_to_archived_file(
+    archiving_task_id: int, populated_store: Store, spring_file_1: Path
+):
     """Test that adding an archive to an already archived file raises an error."""
     # GIVEN a file that is archived
-    non_archived_file: File = populated_store.get_files(
-        file_path=spring_file_1.as_posix()
-    ).first()
+    non_archived_file: File = populated_store.get_files(file_path=spring_file_1.as_posix()).first()
     # WHEN adding an archive
     new_archive: Archive = populated_store.create_archive(
         file_id=non_archived_file.id, archiving_task_id=archiving_task_id
@@ -167,9 +164,7 @@ def test_add_archive_to_archived_file(archiving_task_id: int, populated_store: S
         populated_store.session.commit()
 
 
-def test_add_file(
-    populated_store: Store, second_family_vcf: Path, family_tag_names: List[str]
-):
+def test_add_file(populated_store: Store, second_family_vcf: Path, family_tag_names: List[str]):
     """Test to create a file with the add file method."""
     # GIVEN the path and the tags for a file
 

@@ -1,10 +1,10 @@
 """Tests for finding tags in store."""
 from datetime import timedelta
 from pathlib import Path
-from typing import List
+from typing import List, Set
 
 from housekeeper.store import Store
-from housekeeper.store.models import Tag, File
+from housekeeper.store.models import Tag, File, Archive
 
 
 def test_tag_with_tag_name(populated_store: Store, sample_tag_name: str):
@@ -51,6 +51,7 @@ def test_get_files_before(populated_store, bundle_data_old, time_stamp_now):
     # THEN two more files should be returned
     assert len(files) == starting_nr_of_files + 2
 
+
 def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timestamp):
     """
     test fetch files where not all files are older than before date.
@@ -73,9 +74,7 @@ def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timesta
     assert len(files) == 2
 
 
-def test_get_no_get_files_before_oldest(
-    populated_store, bundle_data_old, old_timestamp, timestamp
-):
+def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_timestamp, timestamp):
     """
     Test get files where no files are older than before date.
     """
@@ -107,9 +106,7 @@ def test_get_archived_files(
     # WHEN asking for all archived files
     archived_files: List[Path] = [
         Path(file.path)
-        for file in populated_store.get_archived_files(
-            bundle_name=sample_id, tags=[spring_tag]
-        )
+        for file in populated_store.get_archived_files(bundle_name=sample_id, tags=[spring_tag])
     ]
 
     # THEN only one should be returned
@@ -124,17 +121,45 @@ def test_get_non_archived_files(
     sample_id: str,
     spring_tag: str,
 ):
-    """Tests fetching all non-archive SPRING files in a given bundle."""
+    """Tests getting all non-archive SPRING files in a given bundle."""
     # GIVEN a bundle with two files, where one is archive and one is not
 
     # WHEN asking for all non-archived files
     archived_files: List[Path] = [
         Path(file.path)
-        for file in populated_store.get_non_archived_files(
-            bundle_name=sample_id, tags=[spring_tag]
-        )
+        for file in populated_store.get_non_archived_files(bundle_name=sample_id, tags=[spring_tag])
     ]
 
     # THEN only one should be returned
     assert archived_file not in archived_files
     assert non_archived_file in archived_files
+
+
+def test_get_ongoing_archiving_tasks(
+    archive: Archive, archiving_task_id: int, populated_store: Store
+):
+    """Tests returning unfinished archiving tasks ids."""
+    # GIVEN a populated store with one ongoing archiving task
+    archive.archiving_task_id = archiving_task_id
+    archive.archived_at = None
+
+    # WHEN getting ongoing archiving tasks
+    ongoing_task_ids: Set[int] = populated_store.get_ongoing_archiving_tasks()
+
+    # THEN the set should include the initial archiving task id
+    assert archiving_task_id in ongoing_task_ids
+
+
+def test_get_ongoing_retrieval_tasks(
+    archive: Archive, retrieval_task_id: int, populated_store: Store
+):
+    """Tests the returning of ongoing retrieval tasks."""
+    # GIVEN a populated store with one ongoing retrieval task
+    archive.retrieval_task_id = retrieval_task_id
+    archive.retrieved_at = None
+
+    # WHEN getting ongoing retrieval tasks
+    ongoing_task_ids: Set[int] = populated_store.get_ongoing_retrieval_tasks()
+
+    # THEN the set should include the initial retrieval task id
+    assert retrieval_task_id in ongoing_task_ids

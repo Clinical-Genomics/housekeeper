@@ -1,0 +1,61 @@
+"""
+This module handles updating entries in the store/database.
+"""
+from datetime import datetime
+import logging
+from typing import List
+
+from sqlalchemy.orm import Session
+
+
+from housekeeper.store.api.handlers.base import BaseHandler
+from housekeeper.store.filters.archive_filters import (
+    apply_archive_filter,
+    ArchiveFilter,
+)
+from housekeeper.store.models import Archive
+
+LOG = logging.getLogger(__name__)
+
+
+class UpdateHandler(BaseHandler):
+    """Handler for updating entries in the database."""
+
+    def __init__(self, session: Session):
+        super().__init__(session=session)
+
+    @staticmethod
+    def update_archiving_time_stamp(archive: Archive) -> None:
+        """Sets the archived_at timestamp of the given archive to now if no previous timestamp is
+        present."""
+        if archive.archived_at:
+            return
+        archive.archived_at = datetime.now()
+
+    @staticmethod
+    def update_retrieval_time_stamp(archive: Archive) -> None:
+        """Sets the retrieved_at timestamp of the given archive to now if no previous timestamp is
+        present."""
+        if archive.retrieved_at:
+            return
+        archive.retrieved_at = datetime.now()
+
+    def update_finished_archival_task(self, archiving_task_id: int) -> None:
+        """Sets the archived_at field to now for all archives with the given archiving task id."""
+        completed_archives: List[Archive] = apply_archive_filter(
+            archives=self._get_query(table=Archive),
+            filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK_ID],
+            task_id=archiving_task_id,
+        ).all()
+        for archive in completed_archives:
+            self.update_archiving_time_stamp(archive=archive)
+
+    def update_finished_retrieval_task(self, retrieval_task_id: int) -> None:
+        """Sets the archived_at field to now for all archives with the given archiving task id."""
+        completed_archives: List[Archive] = apply_archive_filter(
+            archives=self._get_query(table=Archive),
+            filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
+            task_id=retrieval_task_id,
+        ).all()
+        for archive in completed_archives:
+            self.update_retrieval_time_stamp(archive=archive)

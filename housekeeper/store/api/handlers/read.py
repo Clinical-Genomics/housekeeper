@@ -4,11 +4,10 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import List, Optional
+from typing import List, Optional, Set
 from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
-from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
 from housekeeper.store.filters.file_filters import (
     FileFilter,
     apply_file_filter,
@@ -21,11 +20,14 @@ from housekeeper.store.filters.version_filters import (
     VersionFilter,
     apply_version_filter,
 )
-from housekeeper.store.models import Bundle, File, Tag, Version
+from housekeeper.store.models import Bundle, File, Tag, Version, Archive
 from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
 
-from .base import BaseHandler
-
+from housekeeper.store.api.handlers.base import BaseHandler
+from housekeeper.store.filters.archive_filters import (
+    apply_archive_filter,
+    ArchiveFilter,
+)
 
 LOG = logging.getLogger(__name__)
 
@@ -212,3 +214,25 @@ class ReadHandler(BaseHandler):
             is_archived=False,
             tag_names=tags,
         ).all()
+
+    def get_ongoing_archiving_tasks(self) -> Set[int]:
+        """Returns all archiving tasks in the archive table, for entries where the archiving
+        field is empty."""
+        return {
+            archive.archiving_task_id
+            for archive in apply_archive_filter(
+                archives=self._get_query(table=Archive),
+                filter_functions=[ArchiveFilter.FILTER_ARCHIVING_ONGOING],
+            ).all()
+        }
+
+    def get_ongoing_retrieval_tasks(self) -> Set[int]:
+        """Returns all retrieval tasks in the archive table, for entries where the retrieved_at
+        field is empty."""
+        return {
+            archive.retrieval_task_id
+            for archive in apply_archive_filter(
+                archives=self._get_query(table=Archive),
+                filter_functions=[ArchiveFilter.FILTER_RETRIEVAL_ONGOING],
+            ).all()
+        }

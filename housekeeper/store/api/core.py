@@ -7,6 +7,7 @@ from pathlib import Path
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 
+from housekeeper.store.api.handlers.update import UpdateHandler
 from housekeeper.store.models import Model
 from housekeeper.store.api.handlers.create import CreateHandler
 from housekeeper.store.api.handlers.read import ReadHandler
@@ -14,12 +15,13 @@ from housekeeper.store.api.handlers.read import ReadHandler
 LOG = logging.getLogger(__name__)
 
 
-class CoreHandler(ReadHandler, CreateHandler):
+class CoreHandler(CreateHandler, ReadHandler, UpdateHandler):
     """Aggregating class for the store api handlers"""
 
     def __init__(self, session):
         ReadHandler(session=session)
         CreateHandler(session=session)
+        UpdateHandler(session=session)
 
 
 class Store(CoreHandler):
