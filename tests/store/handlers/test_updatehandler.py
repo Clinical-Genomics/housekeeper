@@ -87,7 +87,7 @@ def test_update_finished_retrieval_task(
     archive.retrieval_task_id = retrieval_task_id
     second_archive.retrieval_task_id = retrieval_task_id
 
-    # WHEN updating all archives with the given archiving task id
+    # WHEN updating all archives with the given retrieval task id
     populated_store.update_finished_retrieval_task(retrieval_task_id=retrieval_task_id)
 
     # THEN both archive should have their retrieved_at timestamp updated

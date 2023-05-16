@@ -7,22 +7,18 @@ from sqlalchemy.sql.elements import BooleanClauseList
 
 from housekeeper.store.models import Archive
 
-ARCHIVING_NOT_FINISHED: BooleanClauseList = and_(
-    Archive.archiving_task_id, Archive.archived_at == None
-)
-RETRIEVAL_NOT_FINISHED: BooleanClauseList = and_(
-    Archive.retrieval_task_id, Archive.retrieved_at == None
-)
+ARCHIVING_ONGOING: BooleanClauseList = and_(Archive.archiving_task_id, Archive.archived_at == None)
+RETRIEVAL_ONGOING: BooleanClauseList = and_(Archive.retrieval_task_id, Archive.retrieved_at == None)
 
 
-def filter_archiving_in_progress(archives: Query, **kwargs) -> Query:
+def filter_archiving_ongoing(archives: Query, **kwargs) -> Query:
     """Return archives where the archiving is not marked as completed."""
-    return archives.filter(ARCHIVING_NOT_FINISHED)
+    return archives.filter(ARCHIVING_ONGOING)
 
 
-def filter_retrieval_in_progress(archives: Query, **kwargs) -> Query:
+def filter_retrieval_ongoing(archives: Query, **kwargs) -> Query:
     """Return archives where the retrieval is not marked as completed."""
-    return archives.filter(RETRIEVAL_NOT_FINISHED)
+    return archives.filter(RETRIEVAL_ONGOING)
 
 
 def filter_by_archiving_task_id(archives: Query, task_id: int, **kwargs) -> Query:
@@ -38,8 +34,8 @@ def filter_by_retrieval_task_id(archives: Query, task_id: int, **kwargs) -> Quer
 class ArchiveFilter(Enum):
     """Define Archive filter functions."""
 
-    FILTER_ARCHIVING_IN_PROGRESS: Callable = filter_archiving_in_progress
-    FILTER_RETRIEVAL_IN_PROGRESS: Callable = filter_retrieval_in_progress
+    FILTER_ARCHIVING_ONGOING: Callable = filter_archiving_ongoing
+    FILTER_RETRIEVAL_ONGOING: Callable = filter_retrieval_ongoing
     FILTER_BY_ARCHIVING_TASK_ID: Callable = filter_by_archiving_task_id
     FILTER_BY_RETRIEVAL_TASK_ID: Callable = filter_by_retrieval_task_id
 

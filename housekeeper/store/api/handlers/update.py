@@ -1,5 +1,5 @@
 """
-This module handles updating entries in the store/database
+This module handles updating entries in the store/database.
 """
 from datetime import datetime
 import logging
@@ -26,14 +26,16 @@ class UpdateHandler(BaseHandler):
 
     @staticmethod
     def update_archiving_time_stamp(archive: Archive) -> None:
-        """Sets the archived_at timestamp of the given archive to now."""
+        """Sets the archived_at timestamp of the given archive to now if no previous timestamp is
+        present."""
         if archive.archived_at:
             return
         archive.archived_at = datetime.now()
 
     @staticmethod
     def update_retrieval_time_stamp(archive: Archive) -> None:
-        """Sets the retrieved_at timestamp of the given archive to now."""
+        """Sets the retrieved_at timestamp of the given archive to now if no previous timestamp is
+        present."""
         if archive.retrieved_at:
             return
         archive.retrieved_at = datetime.now()

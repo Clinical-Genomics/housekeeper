@@ -24,7 +24,10 @@ from housekeeper.store.models import Bundle, File, Tag, Version, Archive
 from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
 
 from housekeeper.store.api.handlers.base import BaseHandler
-from housekeeper.store.filters.archive_filters import apply_archive_filter, ArchiveFilter
+from housekeeper.store.filters.archive_filters import (
+    apply_archive_filter,
+    ArchiveFilter,
+)
 
 LOG = logging.getLogger(__name__)
 
@@ -212,22 +215,24 @@ class ReadHandler(BaseHandler):
             tag_names=tags,
         ).all()
 
-    def get_unfinished_archiving_tasks(self) -> Set[int]:
-        """Returns all archiving tasks that have an archiving task but no archived_at timestamp."""
+    def get_ongoing_archiving_tasks(self) -> Set[int]:
+        """Returns all archiving tasks in the archive table, for entries where the archiving
+        field is empty."""
         return {
             archive.archiving_task_id
             for archive in apply_archive_filter(
                 archives=self._get_query(table=Archive),
-                filter_functions=[ArchiveFilter.FILTER_ARCHIVING_IN_PROGRESS],
+                filter_functions=[ArchiveFilter.FILTER_ARCHIVING_ONGOING],
             ).all()
         }
 
-    def get_unfinished_retrieval_tasks(self) -> Set[int]:
-        """Returns all retrieval tasks that have a retrieval task but no retrieved_at timestamp."""
+    def get_ongoing_retrieval_tasks(self) -> Set[int]:
+        """Returns all retrieval tasks in the archive table, for entries where the retrieved_at
+        field is empty."""
         return {
             archive.retrieval_task_id
             for archive in apply_archive_filter(
                 archives=self._get_query(table=Archive),
-                filter_functions=[ArchiveFilter.FILTER_RETRIEVAL_IN_PROGRESS],
+                filter_functions=[ArchiveFilter.FILTER_RETRIEVAL_ONGOING],
             ).all()
         }

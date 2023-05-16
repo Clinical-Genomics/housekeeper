@@ -113,9 +113,9 @@ def test_filter_files_by_tags_returns_empty_list_when_no_files_match_tags(
 
     # GIVEN a store with files
     # GIVEN a tag that does not exist in any files in the store
-    tag_name = "nonexistent_tag"
+    tag_name = "non_existent_tag"
 
-    # WHEN filtering files by the nonexistent tag
+    # WHEN filtering files by the non_existent tag
     filtered_files_query = filter_files_by_tags(
         files=populated_store._get_join_file_tag_query(),
         tag_names=[tag_name],
@@ -130,7 +130,7 @@ def test_filter_files_by_archive_true(populated_store: Store):
 
     # GIVEN as store with files
 
-    # WHEN filtering on archived files
+    # WHEN filtering by archived files
     archived_files_query: Query = filter_files_by_is_archived(
         files=populated_store._get_join_file_tags_archive_query(),
         is_archived=True,
@@ -147,11 +147,11 @@ def test_filter_files_by_archive_false(populated_store: Store):
     # GIVEN as store with files
 
     # WHEN filtering on non-archived files
-    archived_files_query: Query = filter_files_by_is_archived(
+    non_archived_files_query: Query = filter_files_by_is_archived(
         files=populated_store._get_join_file_tags_archive_query(),
         is_archived=False,
     )
 
     # THEN none of the files returned should have an archive object linked to it
-    for file in archived_files_query:
+    for file in non_archived_files_query:
         assert file.archive is None

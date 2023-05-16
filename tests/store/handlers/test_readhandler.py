@@ -121,7 +121,7 @@ def test_get_non_archived_files(
     sample_id: str,
     spring_tag: str,
 ):
-    """Tests fetching all non-archive SPRING files in a given bundle."""
+    """Tests getting all non-archive SPRING files in a given bundle."""
     # GIVEN a bundle with two files, where one is archive and one is not
 
     # WHEN asking for all non-archived files
@@ -135,31 +135,31 @@ def test_get_non_archived_files(
     assert non_archived_file in archived_files
 
 
-def test_get_unfinished_archiving_tasks(
+def test_get_ongoing_archiving_tasks(
     archive: Archive, archiving_task_id: int, populated_store: Store
 ):
-    """Tests the fetching of unfinished archiving tasks."""
-    # GIVEN a populated store with one unfinished archiving task
+    """Tests returning unfinished archiving tasks ids."""
+    # GIVEN a populated store with one ongoing archiving task
     archive.archiving_task_id = archiving_task_id
     archive.archived_at = None
 
-    # WHEN fetching unfinished archiving tasks
-    unfinished_tasks: Set[int] = populated_store.get_unfinished_archiving_tasks()
+    # WHEN getting ongoing archiving tasks
+    ongoing_task_ids: Set[int] = populated_store.get_ongoing_archiving_tasks()
 
     # THEN the set should include the initial archiving task id
-    assert archiving_task_id in unfinished_tasks
+    assert archiving_task_id in ongoing_task_ids
 
 
-def test_get_unfinished_retrieval_tasks(
+def test_get_ongoing_retrieval_tasks(
     archive: Archive, retrieval_task_id: int, populated_store: Store
 ):
-    """Tests the fetching of unfinished retrieval tasks."""
-    # GIVEN a populated store with one unfinished retrieval task
+    """Tests the returning of ongoing retrieval tasks."""
+    # GIVEN a populated store with one ongoing retrieval task
     archive.retrieval_task_id = retrieval_task_id
     archive.retrieved_at = None
 
-    # WHEN fetching unfinished retrieval tasks
-    unfinished_tasks: Set[int] = populated_store.get_unfinished_retrieval_tasks()
+    # WHEN getting ongoing retrieval tasks
+    ongoing_task_ids: Set[int] = populated_store.get_ongoing_retrieval_tasks()
 
     # THEN the set should include the initial retrieval task id
-    assert retrieval_task_id in unfinished_tasks
+    assert retrieval_task_id in ongoing_task_ids

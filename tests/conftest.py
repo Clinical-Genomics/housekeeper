@@ -118,7 +118,7 @@ def fixture_spring_file_1_with_tags(sample_id: str, spring_tag: str, spring_file
 
 @pytest.fixture(scope="function", name="spring_file_2_with_tags")
 def fixture_spring_file_2_with_tags(sample_id: str, spring_tag: str, spring_file_2: Path) -> dict:
-    """Return a second spring file and tags for a sample."""
+    """Return a second SPRING file and tags for a sample."""
     return {"tags": [sample_id, spring_tag], "file": spring_file_2}
 
 
