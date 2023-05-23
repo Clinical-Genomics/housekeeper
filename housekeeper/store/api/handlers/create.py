@@ -4,11 +4,12 @@ import datetime as dt
 import logging
 from pathlib import Path
 from typing import Dict, List, Tuple
-from sqlalchemy.orm import Session
 
-from housekeeper.store.models import Archive, Bundle, File, Tag, Version
+from housekeeper.include import link_file
 from housekeeper.store.api.handlers.base import BaseHandler
 from housekeeper.store.api.handlers.read import ReadHandler
+from housekeeper.store.models import Archive, Bundle, File, Tag, Version
+from sqlalchemy.orm import Session
 
 LOG = logging.getLogger(__name__)
 
@@ -107,6 +108,8 @@ class CreateHandler(BaseHandler):
         self,
         file_path: Path,
         bundle: Bundle,
+        root: Path,
+        exclude: bool = False,
         to_archive: bool = False,
         tags: List[str] = None,
     ) -> File:
@@ -114,13 +117,28 @@ class CreateHandler(BaseHandler):
         version_obj = bundle.versions[0]
         tags = tags or []
         tag_objs = [tag_obj for tag_name, tag_obj in self._build_tags(tags).items()]
+        file_path_to_use: str = str(file_path.absolute())
+        if not exclude:
+            file_path_to_use = str(
+                self._link_and_convert_to_relative_path(
+                    file_path=file_path, root_path=root, version=version_obj
+                )
+            )
         new_file = self.new_file(
-            path=str(file_path.absolute()),
+            path=file_path_to_use,
             to_archive=to_archive,
             tags=tag_objs,
         )
         new_file.version = version_obj
         return new_file
+
+    def _link_and_convert_to_relative_path(
+        self, file_path: Path, root_path: Path, version: Version
+    ) -> Path:
+        """Link the given absolute path to its path when included in the given version and return the relative path."""
+        housekeeper_path: Path = root_path / version.relative_root_dir / file_path.name
+        link_file(file_path=file_path, new_path=housekeeper_path, hardlink=True)
+        return version.relative_root_dir / file_path.name
 
     def _build_tags(self, tag_names: List[str]) -> Dict[str, Tag]:
         """Build a list of tag objects.
