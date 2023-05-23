@@ -3,14 +3,14 @@ import datetime as dt
 import logging
 from logging import Logger
 from pathlib import Path
-from typing import List, Dict, Generator
+from typing import Dict, Generator, List
 
 import click
-
 from housekeeper.date import get_date
 from housekeeper.files import load_json, validate_input
+from housekeeper.include import link_file
 from housekeeper.store import Store
-from housekeeper.store.models import Bundle, Version, File, Tag
+from housekeeper.store.models import Bundle, File, Tag, Version
 
 LOG: Logger = logging.getLogger(__name__)
 
@@ -77,10 +77,18 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
 @click.option("-t", "--tag", "tags", multiple=True, help="tag to associate the file by")
 @click.option("-b", "--bundle-name", help="name of bundle that file should be added to")
 @click.option("-j", "--json", help="json formatted input")
+@click.option(
+    "-e",
+    "--exclude",
+    is_flag=True,
+    default=False,
+    show_default=True,
+    help="flag to not include the file in housekeeper",
+)
 @click.argument("path", required=False)
 @click.pass_context
 def file_cmd(
-    context: click.Context, tags: List[str], bundle_name: str, json: str, path: str
+    context: click.Context, tags: List[str], bundle_name: str, json: str, path: str, exclude: bool
 ):
     """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
@@ -104,12 +112,26 @@ def file_cmd(
         LOG.warning("unknown bundle: %s", bundle_name)
         raise click.Abort
 
+    if not exclude:
+        file_path = _link_and_convert_to_relative_path_(
+            absolute_path=file_path, root_path=Path(context.obj["root"]), version=bundle.versions[0]
+        )
+
     tags = data.get("tags", tags)
 
     new_file = store.add_file(file_path=file_path, bundle=bundle, tags=tags)
     store.session.add(new_file)
     store.session.commit()
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
+
+
+def _link_and_convert_to_relative_path_(
+    absolute_path: Path, root_path: Path, version: Version
+) -> Path:
+    """Link the given absolute path to its path when included in the given version and return the relative path."""
+    housekeeper_path: Path = root_path / version.relative_root_dir / absolute_path.name
+    link_file(file_path=absolute_path, new_path=housekeeper_path, hardlink=True)
+    return version.relative_root_dir / absolute_path.name
 
 
 @add.command("version")
