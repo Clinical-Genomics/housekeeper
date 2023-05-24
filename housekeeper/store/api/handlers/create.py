@@ -14,6 +14,13 @@ from sqlalchemy.orm import Session
 LOG = logging.getLogger(__name__)
 
 
+def _link_and_convert_to_relative_path(file_path: Path, root_path: Path, version: Version) -> Path:
+    """Link the given absolute path to its path when included in the given version and return the relative path."""
+    housekeeper_path: Path = root_path / version.relative_root_dir / file_path.name
+    link_file(file_path=file_path, new_path=housekeeper_path, hardlink=True)
+    return version.relative_root_dir / file_path.name
+
+
 class CreateHandler(BaseHandler):
     """Handles adding things to the store"""
 
@@ -120,7 +127,7 @@ class CreateHandler(BaseHandler):
         file_path_to_use: str = str(file_path.absolute())
         if not exclude:
             file_path_to_use = str(
-                self._link_and_convert_to_relative_path(
+                _link_and_convert_to_relative_path(
                     file_path=file_path, root_path=root, version=version_obj
                 )
             )
@@ -131,14 +138,6 @@ class CreateHandler(BaseHandler):
         )
         new_file.version = version_obj
         return new_file
-
-    def _link_and_convert_to_relative_path(
-        self, file_path: Path, root_path: Path, version: Version
-    ) -> Path:
-        """Link the given absolute path to its path when included in the given version and return the relative path."""
-        housekeeper_path: Path = root_path / version.relative_root_dir / file_path.name
-        link_file(file_path=file_path, new_path=housekeeper_path, hardlink=True)
-        return version.relative_root_dir / file_path.name
 
     def _build_tags(self, tag_names: List[str]) -> Dict[str, Tag]:
         """Build a list of tag objects.
