@@ -120,7 +120,7 @@ class CreateHandler(BaseHandler):
         to_archive: bool = False,
         tags: List[str] = None,
     ) -> File:
-        """Build a new file object and add it to the latest version of an existing bundle"""
+        """Build a new file object and add it to the latest version of an existing bundle."""
         version_obj = bundle.versions[0]
         tags = tags or []
         tag_objs = [tag_obj for tag_name, tag_obj in self._build_tags(tags).items()]

@@ -350,7 +350,7 @@ def fixture_project_dir(tmpdir_factory) -> Path:
 
 @pytest.fixture(scope="function", name="housekeeper_version_dir")
 def fixture_housekeeper_version_dir(project_dir, case_id, timestamp_string) -> Path:
-    """Path to a created directory with case and version"""
+    """Path to a created directory with case and version."""
     my_tmpdir = Path(project_dir, case_id, timestamp_string)
     my_tmpdir.mkdir(parents=True)
     return my_tmpdir
