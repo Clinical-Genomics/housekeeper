@@ -137,7 +137,7 @@ def test_add_file_existing_bundle_without_include(
     # WHEN trying to add the file to a bundle
     result = cli_runner.invoke(
         file_cmd,
-        [str(second_sample_vcf), "-b", bundle_name, "-e"],
+        [str(second_sample_vcf), "-b", bundle_name, "-kip"],
         obj=populated_context,
     )
 

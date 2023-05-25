@@ -182,7 +182,6 @@ def test_add_file(
         file_path=second_family_vcf,
         bundle=bundle,
         tags=family_tag_names,
-        root=project_dir,
     )
 
     # THEN assert that the file is a file object
@@ -209,9 +208,7 @@ def test_add_file_no_tags(
     assert isinstance(bundle, Bundle)
 
     # WHEN using the add file method to create a new file object
-    new_file = populated_store.add_file(
-        file_path=second_family_vcf, bundle=bundle, root=project_dir
-    )
+    new_file = populated_store.add_file(file_path=second_family_vcf, bundle=bundle)
 
     # THEN assert that the no tags where added to the file
     assert len(new_file.tags) == 0

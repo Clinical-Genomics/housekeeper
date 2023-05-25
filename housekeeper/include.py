@@ -55,3 +55,13 @@ def checksum(path: Path) -> str:
             hasher.update(buf)
             buf = stream.read(BLOCKSIZE)
     return hasher.hexdigest()
+
+
+def link_to_relative_path(file_path: Path, root_path: Path, version: models.Version) -> None:
+    """Link the given absolute path to its path when included in the given version and return the relative path."""
+    housekeeper_path: Path = Path(root_path, version.relative_root_dir, file_path.name)
+    link_file(file_path=file_path, new_path=housekeeper_path, hardlink=True)
+
+
+def relative_path(version: models.Version, file: Path) -> Path:
+    return Path(version.relative_root_dir, file.name)
