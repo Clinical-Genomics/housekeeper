@@ -141,7 +141,7 @@ def test_add_file_existing_bundle_without_include(
         obj=populated_context,
     )
 
-    # THEN assert it succedes
+    # THEN assert the program exits with success
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
     assert "new file added" in caplog.text
