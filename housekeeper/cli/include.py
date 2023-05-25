@@ -3,7 +3,7 @@ import datetime as dt
 import logging
 
 import click
-
+from housekeeper.constants import ROOT
 from housekeeper.exc import VersionIncludedError
 from housekeeper.include import include_version
 from housekeeper.store.api.core import Store
@@ -47,7 +47,7 @@ def include(context: click.Context, bundle_name: str, version_id: int):
         version_obj = bundle.versions[0]
 
     try:
-        include_version(context.obj["root"], version_obj)
+        include_version(context.obj[ROOT], version_obj)
     except VersionIncludedError as error:
         LOG.warning(error.message)
         raise click.Abort

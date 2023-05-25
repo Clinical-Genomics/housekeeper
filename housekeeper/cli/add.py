@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Dict, Generator, List
 
 import click
+from housekeeper.constants import ROOT
 from housekeeper.date import get_date
 from housekeeper.files import load_json, validate_input
 from housekeeper.store import Store
@@ -117,9 +118,8 @@ def file_cmd(
         raise click.Abort
 
     tags = data.get("tags", tags)
-
     new_file = store.add_file(
-        file_path=file_path, bundle=bundle, tags=tags, exclude=exclude, root=context.obj["root"]
+        file_path=file_path, bundle=bundle, tags=tags, exclude=exclude, root=context.obj[ROOT]
     )
     store.session.add(new_file)
     store.session.commit()

@@ -18,9 +18,9 @@ def test_add_file_non_existing_bundle(
 ):
     """Test to add a file to a non existing bundle"""
     caplog.set_level(logging.DEBUG)
+
     # GIVEN a context with a empty store and a cli runner
     unknown_bundle_name = case_id
-
     # WHEN trying to add a bundle
     result = cli_runner.invoke(
         file_cmd, [str(second_sample_vcf), "-b", unknown_bundle_name], obj=base_context
@@ -114,10 +114,10 @@ def test_add_file_existing_bundle_with_include(
     # THEN check that the proper information is displayed
     assert "new file added" in caplog.text
     # THEN check that the file has been included in the version and that the relative path is given
-    assert (housekeeper_version_dir / second_sample_vcf.name).exists()
-    assert (housekeeper_version_dir / second_sample_vcf.name).is_file()
-    assert Path(version_obj.files[2].path) == Path(version_obj.relative_root_dir) / Path(
-        second_sample_vcf.name
+    assert Path(housekeeper_version_dir, second_sample_vcf.name).exists()
+    assert Path(housekeeper_version_dir, second_sample_vcf.name).is_file()
+    assert Path(version_obj.files[2].path) == Path(
+        version_obj.relative_root_dir, second_sample_vcf.name
     )
 
 

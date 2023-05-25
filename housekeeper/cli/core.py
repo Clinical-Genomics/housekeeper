@@ -4,11 +4,11 @@ from typing import Optional
 
 import click
 import coloredlogs
-import yaml
-
 import housekeeper
+import yaml
 from housekeeper.store import Store
 
+from ..constants import ROOT
 from . import add, delete, get, include, init
 
 LOG = logging.getLogger(__name__)
@@ -35,7 +35,7 @@ def base(
         config_values = yaml.full_load(config)
     context.obj = config_values
     db_path = database or context.obj.get("database")
-    root_path = context.obj["root"] = root or context.obj.get("root")
+    root_path = context.obj[ROOT] = root or context.obj.get(ROOT)
     if not db_path:
         LOG.error("Please point to a database")
         raise click.Abort
