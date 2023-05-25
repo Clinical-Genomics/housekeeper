@@ -82,7 +82,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
     is_flag=True,
     default=False,
     show_default=True,
-    help="flag to not include the file in housekeeper",
+    help="Flag to exclude the file from housekeeper",
 )
 @click.argument("path", required=False)
 @click.pass_context
