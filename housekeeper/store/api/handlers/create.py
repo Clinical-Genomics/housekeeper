@@ -5,7 +5,6 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Tuple
 
-from housekeeper.include import link_file, link_to_relative_path, relative_path
 from housekeeper.store.api.handlers.base import BaseHandler
 from housekeeper.store.api.handlers.read import ReadHandler
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
