@@ -49,7 +49,9 @@ def test_include_files_creates_version_specific_bundle_dir(
     # GIVEN that the latest version of the bundle is not included
     assert version_obj.included_at is None
     # GIVEN that no version specific folder has been created since version is not included
-    version_path = populated_context[ROOT] / bundle.name / str(version_obj.created_at.date())
+    version_path: Path = Path(
+        populated_context[ROOT], bundle.name, str(version_obj.created_at.date())
+    )
     assert not version_path.exists()
 
     # WHEN running the include files command
