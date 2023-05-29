@@ -9,13 +9,11 @@ from typing import List
 
 import pytest
 import yaml
-
 from housekeeper.date import get_date
 from housekeeper.store import Store
 from housekeeper.store.models import Archive, Bundle, Tag, Version
 
 from .helper_functions import Helpers
-
 
 # basic fixtures
 
@@ -348,6 +346,14 @@ def fixture_project_dir(tmpdir_factory) -> Path:
     my_tmpdir = Path(tmpdir_factory.mktemp("workdir"))
     yield my_tmpdir
     shutil.rmtree(str(my_tmpdir))
+
+
+@pytest.fixture(scope="function", name="housekeeper_version_dir")
+def fixture_housekeeper_version_dir(project_dir: Path, case_id: str, timestamp_string: str) -> Path:
+    """Path to a created directory with case and version."""
+    hk_version_tmpdir: Path = Path(project_dir, case_id, timestamp_string)
+    hk_version_tmpdir.mkdir(parents=True)
+    return hk_version_tmpdir
 
 
 @pytest.fixture(scope="function", name="config_dir")

@@ -3,14 +3,15 @@ import datetime as dt
 import logging
 from logging import Logger
 from pathlib import Path
-from typing import List, Dict, Generator
+from typing import Dict, Generator, List
 
 import click
-
+from housekeeper.constants import ROOT
 from housekeeper.date import get_date
 from housekeeper.files import load_json, validate_input
+from housekeeper.include import link_to_relative_path, relative_path
 from housekeeper.store import Store
-from housekeeper.store.models import Bundle, Version, File, Tag
+from housekeeper.store.models import Bundle, Tag, Version
 
 LOG: Logger = logging.getLogger(__name__)
 
@@ -77,10 +78,23 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
 @click.option("-t", "--tag", "tags", multiple=True, help="tag to associate the file by")
 @click.option("-b", "--bundle-name", help="name of bundle that file should be added to")
 @click.option("-j", "--json", help="json formatted input")
+@click.option(
+    "-kip",
+    "--keep-input-path",
+    is_flag=True,
+    default=False,
+    show_default=True,
+    help="Flag to use the input path in Housekeeper",
+)
 @click.argument("path", required=False)
 @click.pass_context
 def file_cmd(
-    context: click.Context, tags: List[str], bundle_name: str, json: str, path: str
+    context: click.Context,
+    tags: List[str],
+    bundle_name: str,
+    json: str,
+    keep_input_path: bool,
+    path: str,
 ):
     """Add a file to the latest version of a bundle."""
     LOG.info("Running add file")
@@ -92,7 +106,7 @@ def file_cmd(
         data: Dict = load_json(json)
         validate_input(data, input_type="file")
 
-    file_path = Path(data.get("path", path))
+    file_path: Path = Path(data.get("path", path))
     if not file_path.exists():
         LOG.warning("File: %s does not exist", file_path)
         raise click.Abort
@@ -105,7 +119,10 @@ def file_cmd(
         raise click.Abort
 
     tags = data.get("tags", tags)
-
+    if not keep_input_path:
+        version: Version = bundle.versions[0]
+        link_to_relative_path(version=version, file_path=file_path, root_path=context.obj[ROOT])
+        file_path: Path = relative_path(version=version, file=file_path)
     new_file = store.add_file(file_path=file_path, bundle=bundle, tags=tags)
     store.session.add(new_file)
     store.session.commit()
@@ -158,7 +175,7 @@ def tag_cmd(context: click.Context, tags: List[str], file_id: int):
     LOG.info("Running add tag")
     store: Store = context.obj["store"]
     file = None
-    if len(tags) == 0:
+    if not tags:
         LOG.warning("No tags provided")
         raise click.Abort
 
