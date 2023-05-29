@@ -6,9 +6,9 @@ import click
 import coloredlogs
 import housekeeper
 import yaml
+from housekeeper.constants import ROOT
 from housekeeper.store import Store
 
-from ..constants import ROOT
 from . import add, delete, get, include, init
 
 LOG = logging.getLogger(__name__)

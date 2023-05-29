@@ -1,6 +1,7 @@
 """Tests for include cli command"""
 import logging
 from datetime import datetime
+from pathlib import Path
 
 from click import Context
 from click.testing import CliRunner
@@ -23,7 +24,7 @@ def test_include_files_creates_bundle_dir(populated_context: Context, cli_runner
     # GIVEN that the latest version of the bundle is not included
     assert bundle.versions[0].included_at is None
     # GIVEN that no folder has been created since case is not included
-    bundle_path = populated_context[ROOT] / bundle.name
+    bundle_path = Path(populated_context[ROOT], bundle.name)
     assert not bundle_path.exists()
 
     # WHEN running the include files command
@@ -101,7 +102,9 @@ def test_include_files_specific_version(populated_context: Context, cli_runner: 
     # GIVEN that the latest version of the bundle is not included
     assert version_obj.included_at is None
     # GIVEN that no version specific folder has been created since version is not included
-    version_path = populated_context[ROOT] / bundle.name / str(version_obj.created_at.date())
+    version_path: Path = Path(
+        populated_context[ROOT], bundle.name, str(version_obj.created_at.date())
+    )
     assert not version_path.exists()
 
     # WHEN running the include files command

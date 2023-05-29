@@ -84,7 +84,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str):
     is_flag=True,
     default=False,
     show_default=True,
-    help="flag to use the input path in housekeeper",
+    help="Flag to use the input path in Housekeeper",
 )
 @click.argument("path", required=False)
 @click.pass_context
@@ -106,7 +106,7 @@ def file_cmd(
         data: Dict = load_json(json)
         validate_input(data, input_type="file")
 
-    file_path = Path(data.get("path", path))
+    file_path: Path = Path(data.get("path", path))
     if not file_path.exists():
         LOG.warning("File: %s does not exist", file_path)
         raise click.Abort
@@ -122,7 +122,7 @@ def file_cmd(
     if not keep_input_path:
         version: Version = bundle.versions[0]
         link_to_relative_path(version=version, file_path=file_path, root_path=context.obj[ROOT])
-        file_path = relative_path(version=version, file=file_path)
+        file_path: Path = relative_path(version=version, file=file_path)
     new_file = store.add_file(file_path=file_path, bundle=bundle, tags=tags)
     store.session.add(new_file)
     store.session.commit()
