@@ -3,16 +3,14 @@ import logging
 from datetime import datetime
 from pathlib import Path
 
-from click import Context
 from click.testing import CliRunner
-from housekeeper.cli.add import bundle_cmd
 from housekeeper.cli.include import include
 from housekeeper.constants import ROOT
 from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle, Version
 
 
-def test_include_files_creates_bundle_dir(populated_context: Context, cli_runner: CliRunner):
+def test_include_files_creates_bundle_dir(populated_context: dict, cli_runner: CliRunner):
     """Test to include the files of a version for a bundle_name
 
     The bundle should not exist before and after command is run it should have been created
@@ -28,14 +26,14 @@ def test_include_files_creates_bundle_dir(populated_context: Context, cli_runner
     assert not bundle_path.exists()
 
     # WHEN running the include files command
-    result = cli_runner.invoke(include, [bundle_name], obj=populated_context)
+    cli_runner.invoke(include, [bundle_name], obj=populated_context)
 
     # THEN assert that the bundle path was created
     assert bundle_path.exists()
 
 
 def test_include_files_creates_version_specific_bundle_dir(
-    populated_context: Context, cli_runner: CliRunner
+    populated_context: dict, cli_runner: CliRunner
 ):
     """Test to include the files of a version for a bundle_name
 
@@ -61,9 +59,7 @@ def test_include_files_creates_version_specific_bundle_dir(
     assert version_path.exists()
 
 
-def test_include_files_adds_version_specific_files(
-    populated_context: Context, cli_runner: CliRunner
-):
+def test_include_files_adds_version_specific_files(populated_context: dict, cli_runner: CliRunner):
     """Test to include the files of a version for a bundle_name
 
     The files should have been hard linked after command has been run
@@ -76,22 +72,18 @@ def test_include_files_adds_version_specific_files(
     # GIVEN that the latest version of the bundle is not included
     assert version_obj.included_at is None
     # GIVEN that no version specific folder has been created since version is not included
-    version_path = populated_context[ROOT] / bundle.name / str(version_obj.created_at.date())
+    version_path = Path(populated_context[ROOT], bundle.name, str(version_obj.created_at.date()))
     assert not version_path.exists()
 
     # WHEN running the include files command
     cli_runner.invoke(include, [bundle_name], obj=populated_context)
 
-    # THEN assert that files are included in the folder
-    files_included = []
-    for file_path in version_path.iterdir():
-        files_included.append(file_path)
-
+    files_included = list(version_path.iterdir())
     assert files_included
     assert len(files_included) == len(version_obj.files)
 
 
-def test_include_files_specific_version(populated_context: Context, cli_runner: CliRunner):
+def test_include_files_specific_version(populated_context: dict, cli_runner: CliRunner):
     """Test to include the files of a version by specifying the version id
 
     The folder should have been created
@@ -115,16 +107,12 @@ def test_include_files_specific_version(populated_context: Context, cli_runner: 
     # THEN assert that the folder was created
     assert version_path.exists()
 
-    # THEN assert that files are included in the folder
-    files_included = []
-    for file_path in version_path.iterdir():
-        files_included.append(file_path)
-
+    files_included = list(version_path.iterdir())
     assert files_included
     assert len(files_included) == len(version_obj.files)
 
 
-def test_include_version_no_args(populated_context: Context, cli_runner: CliRunner, caplog):
+def test_include_version_no_args(populated_context: dict, cli_runner: CliRunner, caplog):
     """Test to include the files of a version without specifying bundle name or version
 
     The command should exit since it needs to be specified
@@ -141,7 +129,7 @@ def test_include_version_no_args(populated_context: Context, cli_runner: CliRunn
     assert "use bundle name or version-id" in caplog.text
 
 
-def test_include_non_existing_version(populated_context: Context, cli_runner: CliRunner, caplog):
+def test_include_non_existing_version(populated_context: dict, cli_runner: CliRunner, caplog):
     """Test to include the files of a version that does not exist
 
     The command should exit since a valid version is needed
@@ -163,7 +151,7 @@ def test_include_non_existing_version(populated_context: Context, cli_runner: Cl
 
 
 def test_include_non_existing_bundle(
-    base_context: Context, cli_runner: CliRunner, timestamp: datetime, caplog
+    base_context: dict, cli_runner: CliRunner, timestamp: datetime, caplog
 ):
     """Test to include the files in the latest version of a bundle that does not exist
 
@@ -185,7 +173,7 @@ def test_include_non_existing_bundle(
 
 
 def test_include_bundle_without_version(
-    base_context: Context, cli_runner: CliRunner, timestamp: datetime, caplog
+    base_context: dict, cli_runner: CliRunner, timestamp: datetime, caplog
 ):
     """Test to include the files in the latest version of a bundle that does not have versions
 
@@ -201,7 +189,7 @@ def test_include_bundle_without_version(
     store.session.commit()
 
     bundle = store.get_bundle_by_name(bundle_name=bundle_name)
-    assert len(bundle.versions) == 0
+    assert not bundle.versions
 
     # WHEN running the include files specifying bundle without versions
     result = cli_runner.invoke(include, [bundle_name], obj=base_context)
@@ -212,9 +200,7 @@ def test_include_bundle_without_version(
     assert f"Could not find any versions for bundle {bundle_name}" in caplog.text
 
 
-def test_include_version_already_included(
-    populated_context: Context, cli_runner: CliRunner, caplog
-):
+def test_include_version_already_included(populated_context: dict, cli_runner: CliRunner, caplog):
     """Test to include the files of a version that is already included
 
     The command should exit since the version can not be included again
@@ -224,7 +210,7 @@ def test_include_version_already_included(
     store: Store = populated_context["store"]
     version_obj = store._get_query(table=Version).first()
     version_id = version_obj.id
-    result = cli_runner.invoke(include, ["--version-id", version_id], obj=populated_context)
+    cli_runner.invoke(include, ["--version-id", version_id], obj=populated_context)
 
     # WHEN trying to include the version again
     result = cli_runner.invoke(include, ["--version-id", version_id], obj=populated_context)
