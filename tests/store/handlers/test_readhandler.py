@@ -136,6 +136,7 @@ def test_get_non_archived_files(
 
 
 def test_get_bundle_name_from_file_path(populated_store: Store, spring_file_1: Path):
+    """Test that the bundle name is fetched correctly from a file path."""
     # GIVEN a store containing a spring file related to sample ACC123456A1
 
     # WHEN getting the bundle name for the file
@@ -146,6 +147,7 @@ def test_get_bundle_name_from_file_path(populated_store: Store, spring_file_1: P
 
 
 def test_get_all_non_archived_spring_files(populated_store: Store):
+    """Test that getting all non-archived spring files from the store returns all files fulfilling said condition."""
     # GIVEN a populated store containing four files
 
     # WHEN retrieving all non archived spring files and compare to all files
