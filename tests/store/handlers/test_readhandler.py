@@ -146,8 +146,15 @@ def test_get_bundle_name_from_file_path(populated_store: Store, spring_file_1: P
 
 
 def test_get_all_non_archived_spring_files(populated_store: Store):
-    spring_files: List[File] = populated_store.get_all_non_archived_spring_files()
-    assert True
+
+    non_archived_spring_files: List[File] = populated_store.get_all_non_archived_spring_files()
+    spring_files: List[File] = populated_store.get_files(tag_names=["spring"]).all()
+    all_files: List[File] = populated_store.get_files().all()
+    assert len(all_files) == 4
+    assert len(spring_files) == 2
+    assert len(non_archived_spring_files) == 1
+    assert not non_archived_spring_files[0].archive
+    assert "spring" in [tag.name for tag in non_archived_spring_files[0].tags]
 
 
 def test_get_ongoing_archiving_tasks(
