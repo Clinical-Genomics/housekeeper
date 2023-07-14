@@ -8,6 +8,8 @@ from housekeeper.cli.add import file_cmd
 from housekeeper.store import Store
 from housekeeper.store.models import Bundle, Version
 
+NEW_FILE_ADDED: str = "new file added"
+
 
 def test_add_file_non_existing_bundle(
     base_context: Context,
@@ -73,7 +75,7 @@ def test_add_non_existing_file(base_context: Context, cli_runner: CliRunner, cap
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a empty store and a cli runner
     non_existing = Path("hello.txt")
-    assert non_existing.exists() is False
+    assert not non_existing.exists()
 
     # WHEN trying to add a bundle
     result = cli_runner.invoke(file_cmd, [str(non_existing)], obj=base_context)
@@ -85,7 +87,7 @@ def test_add_non_existing_file(base_context: Context, cli_runner: CliRunner, cap
 
 
 def test_add_file_existing_bundle_with_include(
-    populated_context: Context,
+    populated_context: dict,
     cli_runner: CliRunner,
     case_id: str,
     second_sample_vcf: Path,
@@ -112,7 +114,7 @@ def test_add_file_existing_bundle_with_include(
     # THEN assert it succedes
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
-    assert "new file added" in caplog.text
+    assert NEW_FILE_ADDED in caplog.text
     # THEN check that the file has been included in the version and that the relative path is given
     assert Path(housekeeper_version_dir, second_sample_vcf.name).exists()
     assert Path(housekeeper_version_dir, second_sample_vcf.name).is_file()
@@ -144,7 +146,7 @@ def test_add_file_existing_bundle_without_include(
     # THEN assert the program exits with success
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
-    assert "new file added" in caplog.text
+    assert NEW_FILE_ADDED in caplog.text
 
 
 def test_add_file_json(
@@ -164,4 +166,4 @@ def test_add_file_json(
     # THEN assert it fails
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
-    assert "new file added" in caplog.text
+    assert NEW_FILE_ADDED in caplog.text
