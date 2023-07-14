@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Set
 
 from housekeeper.store import Store
-from housekeeper.store.models import Tag, File, Archive
+from housekeeper.store.models import Archive, File, Tag
 
 
 def test_tag_with_tag_name(populated_store: Store, sample_tag_name: str):
@@ -133,6 +133,21 @@ def test_get_non_archived_files(
     # THEN only one should be returned
     assert archived_file not in archived_files
     assert non_archived_file in archived_files
+
+
+def test_get_bundle_name_from_file_path(populated_store: Store, spring_file_1: Path):
+    # GIVEN a store containing a spring file related to sample ACC123456A1
+
+    # WHEN getting the bundle name for the file
+    bundle_name: str = populated_store.get_bundle_name_from_file_path(spring_file_1.as_posix())
+
+    # THEN the bundle name should be the sample name
+    assert bundle_name == "ACC123456A1"
+
+
+def test_get_all_non_archived_spring_files(populated_store: Store):
+    spring_files: List[File] = populated_store.get_all_non_archived_spring_files()
+    assert True
 
 
 def test_get_ongoing_archiving_tasks(

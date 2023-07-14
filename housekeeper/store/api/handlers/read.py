@@ -237,7 +237,7 @@ class ReadHandler(BaseHandler):
         alias_file = aliased(File)
         filter_archived = exists().where(alias_file.id == Archive.file_id)
         return apply_file_filter(
-            self._store.get_files().outerjoin(Archive).filter(~filter_archived).all(),
+            self.get_files().outerjoin(Archive).filter(~filter_archived),
             filter_functions=[FileFilter.FILTER_FILES_BY_TAGS],
             tag_names=["spring"],
         )
