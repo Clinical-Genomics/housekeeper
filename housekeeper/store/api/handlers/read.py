@@ -240,4 +240,4 @@ class ReadHandler(BaseHandler):
             self.get_files().outerjoin(Archive).filter(~filter_archived),
             filter_functions=[FileFilter.FILTER_FILES_BY_TAGS],
             tag_names=["spring"],
-        )
+        ).all()
