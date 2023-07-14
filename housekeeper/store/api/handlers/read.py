@@ -234,10 +234,12 @@ class ReadHandler(BaseHandler):
 
     def get_all_non_archived_spring_files(self) -> List[File]:
         """Return all spring files which are not marked as archived in Housekeeper."""
-        alias_file = aliased(File)
-        filter_archived = exists().where(alias_file.id == Archive.file_id)
         return apply_file_filter(
-            self.get_files().outerjoin(Archive).filter(~filter_archived),
-            filter_functions=[FileFilter.FILTER_FILES_BY_TAGS],
+            self.get_files().outerjoin(Archive),
+            filter_functions=[
+                FileFilter.FILTER_FILES_BY_TAGS,
+                FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
+            ],
             tag_names=["spring"],
-        ).all()
+            is_archived=False,
+        )
