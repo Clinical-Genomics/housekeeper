@@ -47,7 +47,9 @@ def fixture_populated_context(db_uri, project_dir, populated_store):
 
 
 @pytest.fixture(scope="function", name="populated_store_subsequent")
-def fixture_populated_store_subsequent(store: Store, bundle_data_subsequent: dict, helpers: Helpers) -> Store:
+def fixture_populated_store_subsequent(
+    store: Store, bundle_data_subsequent: dict, helpers: Helpers
+) -> Store:
     """Returns a populated store"""
     helpers.add_bundle(store, bundle_data_subsequent)
     return store
@@ -66,7 +68,11 @@ def fixture_populated_context_subsequent(db_uri, project_dir, populated_store_su
 
 @pytest.fixture(scope="function", name="bundle_data_subsequent")
 def fixture_bundle_data_subsequent(
-        case_id: str, family_data: dict, family2_data: dict, family3_data: dict, timestamp: datetime.datetime
+    case_id: str,
+    family_data: dict,
+    family2_data: dict,
+    family3_data: dict,
+    timestamp: datetime.datetime,
 ) -> dict:
     """Return a bundle."""
     data = {
@@ -87,7 +93,7 @@ def fixture_bundle_data_subsequent(
                 "path": str(family3_data["file"]),
                 "archive": True,
                 "tags": family3_data["tags"],
-            }
+            },
         ],
     }
     return data
