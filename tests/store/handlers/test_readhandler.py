@@ -151,17 +151,17 @@ def test_get_bundle_name_from_file_path(
 def test_get_all_non_archived_spring_files(populated_store: Store):
     """Test that getting all non-archived spring files from the store
     returns all files fulfilling said condition."""
-    # GIVEN a populated store containing four files
-
-    # WHEN retrieving all non archived spring files and compare to all files
-    non_archived_spring_files: List[File] = populated_store.get_all_non_archived_spring_files()
+    # GIVEN a populated store containing SPRING and non-SPRING entries
     all_files: List[File] = populated_store.get_files().all()
-
-    # THEN both queries should contain entries
-    assert non_archived_spring_files
     assert all_files
 
-    # THEN all files with archives and the spring tag should be returned
+    # WHEN retrieving all non archived spring files
+    non_archived_spring_files: List[File] = populated_store.get_all_non_archived_spring_files()
+
+    # THEN entries should be returned
+    assert non_archived_spring_files
+
+    # THEN all files with archives and the SPRING tag should be returned
     for file in all_files:
         if file not in non_archived_spring_files:
             assert file.archive or "spring" not in [tag.name for tag in file.tags]
