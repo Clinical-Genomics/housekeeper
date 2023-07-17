@@ -4,7 +4,7 @@ from pathlib import Path
 from typing import List, Set
 
 from housekeeper.store import Store
-from housekeeper.store.models import Tag, File, Archive
+from housekeeper.store.models import Archive, File, Tag
 
 
 def test_tag_with_tag_name(populated_store: Store, sample_tag_name: str):
@@ -133,6 +133,42 @@ def test_get_non_archived_files(
     # THEN only one should be returned
     assert archived_file not in archived_files
     assert non_archived_file in archived_files
+
+
+def test_get_bundle_name_from_file_path(
+    populated_store: Store, sample_id: str, spring_file_1: Path
+):
+    """Test that the bundle name is fetched correctly from a file path."""
+    # GIVEN a store containing a spring file related to sample ACC123456A1
+
+    # WHEN getting the bundle name for the file
+    bundle_name: str = populated_store.get_bundle_name_from_file_path(spring_file_1.as_posix())
+
+    # THEN the bundle name should be the sample name
+    assert bundle_name == sample_id
+
+
+def test_get_all_non_archived_files(populated_store: Store, spring_tag: str):
+    """Test that getting all non-archived spring files from the store
+    returns all files fulfilling said condition."""
+    # GIVEN a populated store containing SPRING and non-SPRING entries
+    all_files: List[File] = populated_store.get_files().all()
+    assert all_files
+
+    # WHEN retrieving all non archived spring files
+    non_archived_spring_files: List[File] = populated_store.get_all_non_archived_files([spring_tag])
+
+    # THEN entries should be returned
+    assert non_archived_spring_files
+
+    # THEN all files with archives and the SPRING tag should be returned
+    for file in all_files:
+        if file not in non_archived_spring_files:
+            assert file.archive or spring_tag not in [tag.name for tag in file.tags]
+        else:
+            assert not file.archive
+            assert spring_tag in [tag.name for tag in file.tags]
+            assert file in non_archived_spring_files
 
 
 def test_get_ongoing_archiving_tasks(

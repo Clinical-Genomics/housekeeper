@@ -1,9 +1,9 @@
 from enum import Enum
 from typing import Callable, List, Optional
-from sqlalchemy import func as sqlalchemy_func
-from sqlalchemy.orm import Query
 
 from housekeeper.store.models import File, Tag
+from sqlalchemy import func as sqlalchemy_func
+from sqlalchemy.orm import Query
 
 
 def filter_files_by_id(files: Query, file_id: int, **kwargs) -> Query:

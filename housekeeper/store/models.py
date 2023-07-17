@@ -3,8 +3,8 @@
 import datetime as dt
 from pathlib import Path
 
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, orm, types
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import backref
 
 Model = declarative_base()
@@ -19,7 +19,7 @@ file_tag_link = Table(
 
 
 class Archive(Model):
-    """Information regarding the archival of a file."""
+    """Information regarding the archiving of a file."""
 
     __tablename__ = "archive"
     archiving_task_id = Column(types.Integer, nullable=False)
