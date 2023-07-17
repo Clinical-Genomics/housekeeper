@@ -232,7 +232,7 @@ class ReadHandler(BaseHandler):
         """Return the bundle name for the specified file."""
         return self.get_files(file_path=file_path).first().version.bundle.name
 
-    def get_all_non_archived_spring_files(self) -> List[File]:
+    def get_all_non_archived_files(self, tag_names: List[str]) -> List[File]:
         """Return all spring files which are not marked as archived in Housekeeper."""
         return apply_file_filter(
             self._get_join_file_tags_archive_query(),
@@ -240,6 +240,6 @@ class ReadHandler(BaseHandler):
                 FileFilter.FILTER_FILES_BY_TAGS,
                 FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
             ],
-            tag_names=["spring"],
+            tag_names=tag_names,
             is_archived=False,
         ).all()
