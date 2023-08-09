@@ -94,3 +94,32 @@ def test_update_finished_retrieval_task(
     assert archive.retrieved_at
     assert second_archive.retrieved_at
     assert archive.retrieved_at.minute == second_archive.retrieved_at.minute
+
+
+def test_update_retrieval_task_id(archive: Archive, retrieval_task_id: int, populated_store: store):
+    """Tests updating the retrieved_at timestamp on a given archive when there already is one."""
+    # GIVEN an Archive with no retrieval_task_id
+    assert not archive.retrieval_task_id
+
+    # WHEN updating the retrieval task id
+    populated_store.update_retrieval_task_id(file=archive.file, retrieval_task_id=retrieval_task_id)
+
+    # THEN the retrieval task id should be set
+    assert archive.retrieval_task_id == retrieval_task_id
+
+
+def test_update_archiving_task_id(
+    archive: Archive, new_archiving_task_id: int, populated_store: store
+):
+    """Tests updating the archiving_task_od on a given archive when there already is one.
+    Necessary for retrieval and rearchiving."""
+    # GIVEN an Archive with an old archiving_task_id
+    assert archive.archiving_task_id != new_archiving_task_id
+
+    # WHEN updating the archiving_task_id
+    populated_store.update_archiving_task_id(
+        file=archive.file, archiving_task_id=new_archiving_task_id
+    )
+
+    # THEN the retrieval task id should be set
+    assert archive.archiving_task_id == new_archiving_task_id
