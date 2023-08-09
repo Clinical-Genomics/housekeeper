@@ -56,15 +56,11 @@ class UpdateHandler(BaseHandler):
             self.update_retrieval_time_stamp(archive=archive)
 
     @staticmethod
-    def update_retrieval_task_id(file: File, retrieval_task_id: int):
+    def update_retrieval_task_id(archive: Archive, retrieval_task_id: int):
         """Sets the retrieval_task_id in the Archive entry for the provided file."""
-        archive: Archive = file.archive
-        if archive:
-            archive.retrieval_task_id = retrieval_task_id
+        archive.retrieval_task_id = retrieval_task_id
 
     @staticmethod
-    def update_archiving_task_id(file: File, archiving_task_id: int):
+    def update_archiving_task_id(archive: Archive, archiving_task_id: int):
         """Sets the archiving_task_id in the Archive entry for the provided file."""
-        archive: Archive = file.archive
-        if archive:
-            archive.archiving_task_id = archiving_task_id
+        archive.archiving_task_id = archiving_task_id

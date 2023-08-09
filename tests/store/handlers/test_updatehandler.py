@@ -103,7 +103,7 @@ def test_update_retrieval_task_id(archive: Archive, retrieval_task_id: int, popu
     assert not archive.retrieval_task_id
 
     # WHEN updating the retrieval task id
-    populated_store.update_retrieval_task_id(file=archive.file, retrieval_task_id=retrieval_task_id)
+    populated_store.update_retrieval_task_id(archive=archive, retrieval_task_id=retrieval_task_id)
 
     # THEN the retrieval task id should be set
     assert archive.retrieval_task_id == retrieval_task_id
@@ -119,7 +119,7 @@ def test_update_archiving_task_id(
 
     # WHEN updating the archiving_task_id
     populated_store.update_archiving_task_id(
-        file=archive.file, archiving_task_id=new_archiving_task_id
+        archive=archive, archiving_task_id=new_archiving_task_id
     )
 
     # THEN the retrieval task id should be set
