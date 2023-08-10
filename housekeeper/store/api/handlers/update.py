@@ -63,4 +63,4 @@ class UpdateHandler(BaseHandler):
     @staticmethod
     def update_archiving_task_id(archive: Archive, archiving_task_id: int):
         """Sets the archiving_task_id in the Archive entry for the provided file."""
-        archive.archiving_task_id = archiving_task_id
+        archive.archiving_task_id: int = archiving_task_id
