@@ -78,6 +78,12 @@ def fixture_archiving_task_id() -> int:
     return 1234
 
 
+@pytest.fixture(scope="function", name="new_archiving_task_id")
+def fixture_new_archiving_task_id() -> int:
+    """Return a new id of an archiving task."""
+    return 1235
+
+
 @pytest.fixture(scope="function", name="retrieval_task_id")
 def fixture_retrieval_task_id() -> int:
     """Return an id of a retrieval task."""

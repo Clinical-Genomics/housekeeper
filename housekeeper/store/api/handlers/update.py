@@ -1,19 +1,14 @@
 """
 This module handles updating entries in the store/database.
 """
-from datetime import datetime
 import logging
+from datetime import datetime
 from typing import List
 
-from sqlalchemy.orm import Session
-
-
 from housekeeper.store.api.handlers.base import BaseHandler
-from housekeeper.store.filters.archive_filters import (
-    apply_archive_filter,
-    ArchiveFilter,
-)
-from housekeeper.store.models import Archive
+from housekeeper.store.filters.archive_filters import ArchiveFilter, apply_archive_filter
+from housekeeper.store.models import Archive, File
+from sqlalchemy.orm import Session
 
 LOG = logging.getLogger(__name__)
 
@@ -59,3 +54,13 @@ class UpdateHandler(BaseHandler):
         ).all()
         for archive in completed_archives:
             self.update_retrieval_time_stamp(archive=archive)
+
+    @staticmethod
+    def update_retrieval_task_id(archive: Archive, retrieval_task_id: int):
+        """Sets the retrieval_task_id in the Archive entry for the provided file."""
+        archive.retrieval_task_id: int = retrieval_task_id
+
+    @staticmethod
+    def update_archiving_task_id(archive: Archive, archiving_task_id: int):
+        """Sets the archiving_task_id in the Archive entry for the provided file."""
+        archive.archiving_task_id: int = archiving_task_id
