@@ -8,7 +8,7 @@ import pytest
 from housekeeper.store import models
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def minimal_bundle_obj(case_id, timestamp) -> models.Bundle:
     """Return a bundle object"""
     return models.Bundle(name=case_id, created_at=timestamp)
@@ -22,19 +22,19 @@ def bundle_data_json(bundle_data):
     return json_data
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def second_timestamp(timestamp) -> datetime.datetime:
     """Return a time stamp in date time format"""
     return timestamp + datetime.timedelta(days=10)
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def old_timestamp() -> datetime.datetime:
     """Return a time stamp that is older than a year"""
     return datetime.datetime(2018, 1, 1)
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def second_bundle_data(
     bundle_data, second_sample_vcf, second_family_vcf, second_timestamp
 ) -> dict:
@@ -46,13 +46,13 @@ def second_bundle_data(
     return second_bundle
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def other_case() -> str:
     """Return the case id that differs from base fixture"""
     return "angrybird"
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def bundle_data_old(
     bundle_data, second_sample_vcf, second_family_vcf, old_timestamp, other_case
 ) -> dict:
@@ -65,7 +65,7 @@ def bundle_data_old(
     return _bundle
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def time_stamp_now() -> dt.datetime:
     """Time stamp now"""
     return dt.datetime.now()

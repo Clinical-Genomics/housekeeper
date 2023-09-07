@@ -7,7 +7,7 @@ from housekeeper.store import Store
 from tests.helper_functions import Helpers
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def store(project_dir, db_uri):
     """Override the store fixture to get a controlled db path"""
     _store = Store(uri=db_uri, root=str(project_dir))
@@ -16,13 +16,13 @@ def store(project_dir, db_uri):
     _store.drop_all()
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def cli_runner():
     """Return a cli runner for testing Click"""
     return CliRunner()
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def base_context(db_uri, project_dir, store) -> dict:
     """Return a context with initialized database"""
     return {
@@ -32,7 +32,7 @@ def base_context(db_uri, project_dir, store) -> dict:
     }
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def populated_context(db_uri, project_dir, populated_store) -> dict:
     """Return a context with initialized database with some data"""
     return {
@@ -42,7 +42,7 @@ def populated_context(db_uri, project_dir, populated_store) -> dict:
     }
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def populated_store_subsequent(
     store: Store, bundle_data_subsequent: dict, helpers: Helpers
 ) -> Store:
@@ -51,7 +51,7 @@ def populated_store_subsequent(
     return store
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def populated_context_subsequent(db_uri, project_dir, populated_store_subsequent):
     """Return a context with initialized database with some data"""
     return {
@@ -61,7 +61,7 @@ def populated_context_subsequent(db_uri, project_dir, populated_store_subsequent
     }
 
 
-@pytest.fixture(scope="function", )
+@pytest.fixture(scope="function")
 def bundle_data_subsequent(
     case_id: str,
     family_data: dict,
