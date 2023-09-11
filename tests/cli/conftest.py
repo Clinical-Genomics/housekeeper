@@ -7,8 +7,8 @@ from housekeeper.store import Store
 from tests.helper_functions import Helpers
 
 
-@pytest.fixture(scope="function", name="store")
-def fixture_store(project_dir, db_uri):
+@pytest.fixture(scope="function")
+def store(project_dir, db_uri):
     """Override the store fixture to get a controlled db path"""
     _store = Store(uri=db_uri, root=str(project_dir))
     _store.create_all()
@@ -16,14 +16,14 @@ def fixture_store(project_dir, db_uri):
     _store.drop_all()
 
 
-@pytest.fixture(scope="function", name="cli_runner")
-def fixture_cli_runner():
+@pytest.fixture(scope="function")
+def cli_runner():
     """Return a cli runner for testing Click"""
     return CliRunner()
 
 
-@pytest.fixture(scope="function", name="base_context")
-def fixture_base_context(db_uri, project_dir, store) -> dict:
+@pytest.fixture(scope="function")
+def base_context(db_uri, project_dir, store) -> dict:
     """Return a context with initialized database"""
     return {
         "database": db_uri,
@@ -32,8 +32,8 @@ def fixture_base_context(db_uri, project_dir, store) -> dict:
     }
 
 
-@pytest.fixture(scope="function", name="populated_context")
-def fixture_populated_context(db_uri, project_dir, populated_store) -> dict:
+@pytest.fixture(scope="function")
+def populated_context(db_uri, project_dir, populated_store) -> dict:
     """Return a context with initialized database with some data"""
     return {
         "database": db_uri,
@@ -42,8 +42,8 @@ def fixture_populated_context(db_uri, project_dir, populated_store) -> dict:
     }
 
 
-@pytest.fixture(scope="function", name="populated_store_subsequent")
-def fixture_populated_store_subsequent(
+@pytest.fixture(scope="function")
+def populated_store_subsequent(
     store: Store, bundle_data_subsequent: dict, helpers: Helpers
 ) -> Store:
     """Returns a populated store"""
@@ -51,8 +51,8 @@ def fixture_populated_store_subsequent(
     return store
 
 
-@pytest.fixture(scope="function", name="populated_context_subsequent")
-def fixture_populated_context_subsequent(db_uri, project_dir, populated_store_subsequent):
+@pytest.fixture(scope="function")
+def populated_context_subsequent(db_uri, project_dir, populated_store_subsequent):
     """Return a context with initialized database with some data"""
     return {
         "database": db_uri,
@@ -61,8 +61,8 @@ def fixture_populated_context_subsequent(db_uri, project_dir, populated_store_su
     }
 
 
-@pytest.fixture(scope="function", name="bundle_data_subsequent")
-def fixture_bundle_data_subsequent(
+@pytest.fixture(scope="function")
+def bundle_data_subsequent(
     case_id: str,
     family_data: dict,
     family2_data: dict,
