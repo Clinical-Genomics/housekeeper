@@ -35,9 +35,7 @@ def old_timestamp() -> datetime.datetime:
 
 
 @pytest.fixture(scope="function")
-def second_bundle_data(
-    bundle_data, second_sample_vcf, second_family_vcf, second_timestamp
-) -> dict:
+def second_bundle_data(bundle_data, second_sample_vcf, second_family_vcf, second_timestamp) -> dict:
     """Return a bundle similar to bundle_data with updated file paths"""
     second_bundle = deepcopy(bundle_data)
     second_bundle["created_at"] = second_timestamp

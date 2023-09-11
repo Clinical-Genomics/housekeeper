@@ -74,9 +74,10 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str, exclude: boo
     store.session.add(new_version)
     if not exclude:
         try:
-            include_version(context.obj[ROOT], new_version)
+            context_root_dir: str = context.obj[ROOT]
+            include_version(global_root=context_root_dir, version_obj=new_version)
         except VersionIncludedError as error:
-            LOG.warning(error.message)
+            LOG.error(error.message)
             raise click.Abort
         new_version.included_at = dt.datetime.now()
     store.session.commit()
