@@ -2,6 +2,8 @@
 import logging
 import click
 from housekeeper.store.api.core import Store
+from sqlalchemy import inspect
+
 
 LOG = logging.getLogger(__name__)
 
@@ -13,7 +15,9 @@ LOG = logging.getLogger(__name__)
 def init(context, reset, force):
     """Setup the database."""
     store: Store = context.obj["store"]
-    existing_tables = store.engine.table_names()
+    inspector = inspect(store.engine)
+    existing_tables = inspector.get_table_names()
+
     if force or reset:
         if existing_tables and not force:
             message = f"Delete existing tables? [{', '.join(existing_tables)}]"
@@ -24,4 +28,4 @@ def init(context, reset, force):
         context.abort()
 
     store.create_all()
-    LOG.info("Success! New tables: %s", ", ".join(store.engine.table_names()))
+    LOG.info("Success! New tables: %s", ", ".join(inspector.get_table_names()))
