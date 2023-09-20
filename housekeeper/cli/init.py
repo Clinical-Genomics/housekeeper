@@ -28,4 +28,4 @@ def init(context, reset, force):
         context.abort()
 
     store.create_all()
-    LOG.info("Success! New tables: %s", ", ".join(inspector.get_table_names()))
+    LOG.info(f"Success! New tables: {', '.join(inspector.get_table_names())}")
