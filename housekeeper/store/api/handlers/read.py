@@ -130,7 +130,7 @@ class ReadHandler(BaseHandler):
             )
 
         if version_id:
-            LOG.info(f"Fetching files from version {version_id}")
+            LOG.debug(f"Fetching files from version {version_id}")
             query = apply_version_filter(
                 versions=query.join(self.File.version),
                 filter_functions=[VersionFilter.FILTER_BY_ID],
@@ -138,7 +138,7 @@ class ReadHandler(BaseHandler):
             )
 
         if file_path:
-            LOG.info(f"Fetching file with path {file_path}")
+            LOG.debug(f"Fetching file with path {file_path}")
             query = apply_file_filter(
                 files=query,
                 filter_functions=[FileFilter.FILTER_BY_PATH],
