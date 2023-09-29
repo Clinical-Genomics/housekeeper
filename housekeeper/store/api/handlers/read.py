@@ -31,12 +31,12 @@ class ReadHandler(BaseHandler):
 
     def bundles(self):
         """Fetch bundles."""
-        LOG.info("Fetching all bundles")
+        LOG.debug("Fetching all bundles")
         return self._get_query(table=Bundle)
 
     def get_bundle_by_id(self, bundle_id: int) -> Bundle:
         """Fetch a bundle by id from the store."""
-        LOG.info(f"Fetching bundle with id: {bundle_id}")
+        LOG.debug(f"Fetching bundle with id: {bundle_id}")
         return apply_bundle_filter(
             bundles=self._get_query(table=Bundle),
             filter_functions=[BundleFilters.FILTER_BY_ID],
@@ -45,7 +45,7 @@ class ReadHandler(BaseHandler):
 
     def get_bundle_by_name(self, bundle_name: str) -> Bundle:
         """Get a bundle by name from the store."""
-        LOG.info(f"Fetching bundle with name: {bundle_name}")
+        LOG.debug(f"Fetching bundle with name: {bundle_name}")
         return apply_bundle_filter(
             bundles=self._get_query(table=Bundle),
             filter_functions=[BundleFilters.FILTER_BY_NAME],
@@ -64,7 +64,7 @@ class ReadHandler(BaseHandler):
 
     def get_version_by_id(self, version_id: int) -> Version:
         """Fetch a version from the store."""
-        LOG.info(f"Fetching version with id: {version_id}")
+        LOG.debug(f"Fetching version with id: {version_id}")
         return apply_version_filter(
             versions=self._get_query(table=Version),
             filter_functions=[VersionFilter.FILTER_BY_ID],
@@ -73,7 +73,7 @@ class ReadHandler(BaseHandler):
 
     def get_tag(self, tag_name: str = None) -> Tag:
         """Return a tag from the database."""
-        LOG.info(f"Fetching tag with name: {tag_name}")
+        LOG.debug(f"Fetching tag with name: {tag_name}")
         return apply_tag_filter(
             tags=self._get_query(table=Tag),
             filter_functions=[TagFilter.FILTER_BY_NAME],
@@ -82,7 +82,7 @@ class ReadHandler(BaseHandler):
 
     def get_tags(self) -> Query:
         """Return all tags from the database."""
-        LOG.info("Fetching all tags")
+        LOG.debug("Fetching all tags")
         return self._get_query(table=Tag)
 
     def get_file_by_id(self, file_id: int):
@@ -112,7 +112,7 @@ class ReadHandler(BaseHandler):
         """
         query = self._get_query(table=File)
         if bundle_name:
-            LOG.info(f"Fetching files from bundle {bundle_name}")
+            LOG.debug(f"Fetching files from bundle {bundle_name}")
             query = apply_bundle_filter(
                 bundles=query.join(self.File.version, self.Version.bundle),
                 filter_functions=[BundleFilters.FILTER_BY_NAME],
@@ -121,7 +121,7 @@ class ReadHandler(BaseHandler):
 
         if tag_names:
             formatted_tags = ",".join(tag_names)
-            LOG.info(f"Fetching files with tags in [{formatted_tags}]")
+            LOG.debug(f"Fetching files with tags in [{formatted_tags}]")
 
             query = apply_file_filter(
                 files=query.join(File.tags),
@@ -130,7 +130,7 @@ class ReadHandler(BaseHandler):
             )
 
         if version_id:
-            LOG.info(f"Fetching files from version {version_id}")
+            LOG.debug(f"Fetching files from version {version_id}")
             query = apply_version_filter(
                 versions=query.join(self.File.version),
                 filter_functions=[VersionFilter.FILTER_BY_ID],
@@ -138,7 +138,7 @@ class ReadHandler(BaseHandler):
             )
 
         if file_path:
-            LOG.info(f"Fetching file with path {file_path}")
+            LOG.debug(f"Fetching file with path {file_path}")
             query = apply_file_filter(
                 files=query,
                 filter_functions=[FileFilter.FILTER_BY_PATH],
