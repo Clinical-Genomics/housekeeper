@@ -27,7 +27,7 @@ class CreateHandler(BaseHandler):
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> Bundle:
         """Create a new file bundle."""
         new_bundle = self.Bundle(name=name, created_at=created_at)
-        LOG.info("Created new bundle: %s", new_bundle.name)
+        LOG.debug("Created new bundle: %s", new_bundle.name)
         return new_bundle
 
     def add_bundle(self, data: dict) -> Tuple[Bundle, Version]:
@@ -76,7 +76,7 @@ class CreateHandler(BaseHandler):
 
     def new_version(self, created_at: dt.datetime, expires_at: dt.datetime = None) -> Version:
         """Create a new bundle version."""
-        LOG.info("Created new version")
+        LOG.debug("Created new version")
         new_version = self.Version(created_at=created_at, expires_at=expires_at)
         return new_version
 
@@ -90,7 +90,7 @@ class CreateHandler(BaseHandler):
         if self.get_version_by_date_and_bundle_name(
             version_date=created_at, bundle_name=bundle.name
         ):
-            LOG.info("version of bundle already added")
+            LOG.debug("version of bundle already added")
             return None
 
         version_obj = self.new_version(
