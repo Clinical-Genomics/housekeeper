@@ -1,6 +1,6 @@
-FROM python:3.7-slim
+FROM python:3.8-slim
 
-LABEL base_image="python:3.7-slim"
+LABEL base_image="python:3.8-slim"
 LABEL software="housekeeper"
 LABEL about.summary="Image for housekeeper"
 LABEL about.home="https://github.com/Clinical-Genomics/housekeeper"
