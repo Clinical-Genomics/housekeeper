@@ -9,11 +9,11 @@ When all tests done and successful and PR is approved by codeowners, follow thes
 3. Review the details and merge the branch into master.
 4. Deploy in stage on Hasta:
     - `us`
-    - `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-stage.sh -e S_main -t housekeeper -b master`
+    - `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-stage.sh -e S_cg -t housekeeper -b master`
 5. Deploy in production by running the following commands:
     - `down`
     - `up`
-    - `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-prod.sh -e P_main -t housekeeper -b master`
+    - `bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-prod.sh -e P_cg -t housekeeper -b master`
 6. Take a screenshot or copy log text and post as a comment on the PR. Screenshot should include environment and that it succeeded.
 7. Great job :whale2:
 
