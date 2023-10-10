@@ -2,6 +2,8 @@ from typing import Optional
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, Session, sessionmaker
 
+from housekeeper.exc import HousekeeperError
+
 
 SESSION_FACTORY: Optional[Session] = None
 ENGINE = None
@@ -16,11 +18,11 @@ def initialise_database(db_uri: str):
 
 def get_session() -> Session:
     if not SESSION_FACTORY:
-        raise Exception("Database not initialised")
+        raise HousekeeperError("Database not initialised")
     return SESSION_FACTORY()
 
 
 def get_engine():
     if not ENGINE:
-        raise Exception("Database not initialised")
+        raise HousekeeperError("Database not initialised")
     return ENGINE
