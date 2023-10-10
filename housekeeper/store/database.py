@@ -5,21 +5,21 @@ from sqlalchemy.orm import scoped_session, Session, sessionmaker
 from housekeeper.exc import HousekeeperError
 
 
-SESSION_FACTORY: Optional[Session] = None
+SESSION: Optional[Session] = None
 ENGINE = None
 
 
 def initialise_database(db_uri: str):
-    global SESSION_FACTORY, ENGINE
+    global SESSION, ENGINE
     ENGINE = create_engine(db_uri)
-    session_maker = sessionmaker(ENGINE)
-    SESSION_FACTORY = scoped_session(session_maker)
+    session_factory = sessionmaker(ENGINE)
+    SESSION = scoped_session(session_factory)
 
 
 def get_session() -> Session:
-    if not SESSION_FACTORY:
+    if not SESSION:
         raise HousekeeperError("Database not initialised")
-    return SESSION_FACTORY()
+    return SESSION()
 
 
 def get_engine():
