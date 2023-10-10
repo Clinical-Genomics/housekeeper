@@ -26,7 +26,7 @@ class CreateHandler(BaseHandler):
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> Bundle:
         """Create a new file bundle."""
-        new_bundle = self.Bundle(name=name, created_at=created_at)
+        new_bundle = Bundle(name=name, created_at=created_at)
         LOG.debug("Created new bundle: %s", new_bundle.name)
         return new_bundle
 
@@ -77,7 +77,7 @@ class CreateHandler(BaseHandler):
     def new_version(self, created_at: dt.datetime, expires_at: dt.datetime = None) -> Version:
         """Create a new bundle version."""
         LOG.debug("Created new version")
-        new_version = self.Version(created_at=created_at, expires_at=expires_at)
+        new_version = Version(created_at=created_at, expires_at=expires_at)
         return new_version
 
     def add_version(
@@ -146,11 +146,11 @@ class CreateHandler(BaseHandler):
         tags: List[Tag] = None,
     ) -> File:
         """Create a new file object based on the information given."""
-        return self.File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
+        return File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
 
     def new_tag(self, name: str, category: str = None) -> Tag:
         """Create a new tag object based on the information given."""
-        new_tag = self.Tag(name=name, category=category)
+        new_tag = Tag(name=name, category=category)
         return new_tag
 
     def create_archive(self, file_id: int, archiving_task_id: int) -> Archive:
