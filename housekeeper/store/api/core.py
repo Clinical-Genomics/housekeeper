@@ -4,10 +4,8 @@
 import logging
 from pathlib import Path
 
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, scoped_session
-
 from housekeeper.store.api.handlers.update import UpdateHandler
+from housekeeper.store.database import get_session
 from housekeeper.store.models import Model
 from housekeeper.store.api.handlers.create import CreateHandler
 from housekeeper.store.api.handlers.read import ReadHandler
@@ -34,10 +32,8 @@ class Store(CoreHandler):
         uri (str): SQLAlchemy database connection str
     """
 
-    def __init__(self, uri: str, root: str):
-        self.engine = create_engine(uri)
-        session_factory = sessionmaker(bind=self.engine)
-        self.session = scoped_session(session_factory)
+    def __init__(self, root: str):
+        self.session = get_session()
 
         LOG.debug("Initializing Store")
         self.File.app_root = Path(root)

@@ -8,6 +8,7 @@ import housekeeper
 import yaml
 from housekeeper.constants import ROOT
 from housekeeper.store import Store
+from housekeeper.store.database import initialise_database
 
 from . import add, delete, get, include, init
 
@@ -44,7 +45,8 @@ def base(
         raise click.Abort
     context.obj["database"] = db_path
     LOG.info("Use root path %s", root_path)
-    context.obj["store"] = Store(db_path, root_path)
+    initialise_database(db_path)
+    context.obj["store"] = Store(root=root_path)
 
 
 base.add_command(init.init)

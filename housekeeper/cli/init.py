@@ -4,6 +4,8 @@ import click
 from housekeeper.store.api.core import Store
 from sqlalchemy import inspect
 
+from housekeeper.store.database import get_engine
+
 
 LOG = logging.getLogger(__name__)
 
@@ -15,7 +17,7 @@ LOG = logging.getLogger(__name__)
 def init(context, reset, force):
     """Setup the database."""
     store: Store = context.obj["store"]
-    inspector = inspect(store.engine)
+    inspector = inspect(get_engine())
     existing_tables = inspector.get_table_names()
 
     if force or reset:
