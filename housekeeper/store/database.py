@@ -11,7 +11,7 @@ ENGINE = None
 
 def initialise_database(db_uri: str):
     global SESSION, ENGINE
-    ENGINE = create_engine(db_uri)
+    ENGINE = create_engine(db_uri, pool_pre_ping=True)
     session_factory = sessionmaker(ENGINE)
     SESSION = scoped_session(session_factory)
 
