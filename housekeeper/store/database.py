@@ -3,6 +3,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, Session, sessionmaker
 
 from housekeeper.exc import HousekeeperError
+from housekeeper.store.models import Model
 
 
 SESSION: Optional[Session] = None
@@ -26,3 +27,18 @@ def get_engine():
     if not ENGINE:
         raise HousekeeperError("Database not initialised")
     return ENGINE
+
+
+def create_all_tables() -> None:
+    session: Session = get_session()
+    Model.metadata.create_all(bind=session.get_bind())
+
+
+def drop_all_tables() -> None:
+    session: Session = get_session()
+    Model.metadata.drop_all(bind=session.get_bind())
+
+
+def get_tables() -> list:
+    engine = get_engine()
+    return engine.table_names()

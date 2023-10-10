@@ -4,7 +4,7 @@ import datetime
 import pytest
 from click.testing import CliRunner
 from housekeeper.store import Store
-from housekeeper.store.database import initialise_database
+from housekeeper.store.database import create_all_tables, drop_all_tables, initialise_database
 from tests.helper_functions import Helpers
 
 
@@ -13,9 +13,9 @@ def store(project_dir, db_uri):
     """Override the store fixture to get a controlled db path"""
     initialise_database(db_uri)
     _store = Store(root=str(project_dir))
-    _store.create_all()
+    create_all_tables()
     yield _store
-    _store.drop_all()
+    drop_all_tables()
 
 
 @pytest.fixture(scope="function")
