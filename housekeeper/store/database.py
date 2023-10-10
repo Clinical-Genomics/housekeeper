@@ -6,21 +6,22 @@ from housekeeper.exc import HousekeeperError
 from housekeeper.store.models import Model
 
 
-SESSION: Optional[Session] = None
+SESSION_FACTORY: Optional[Session] = None
 ENGINE = None
 
 
 def initialise_database(db_uri: str):
-    global SESSION, ENGINE
+    """Initialize the global engine and session factory for SQLAlchemy."""
+    global SESSION_FACTORY, ENGINE
     ENGINE = create_engine(db_uri, pool_pre_ping=True)
-    session_factory = sessionmaker(ENGINE)
-    SESSION = scoped_session(session_factory)
+    session_maker = sessionmaker(ENGINE)
+    SESSION_FACTORY = scoped_session(session_maker)
 
 
 def get_session() -> Session:
-    if not SESSION:
+    if not SESSION_FACTORY:
         raise HousekeeperError("Database not initialised")
-    return SESSION()
+    return SESSION_FACTORY()
 
 
 def get_engine():
