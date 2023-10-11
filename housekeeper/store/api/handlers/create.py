@@ -73,6 +73,7 @@ class CreateHandler(BaseHandler):
                 tags = [tag_map[tag_name] for tag_name in file_data["tags"]]
                 new_file = self.new_file(path, to_archive=file_data["archive"], tags=tags)
                 version_obj.files.append(new_file)
+                new_file.version_id = version_obj.id
 
     def new_version(self, created_at: dt.datetime, expires_at: dt.datetime = None) -> Version:
         """Create a new bundle version."""
