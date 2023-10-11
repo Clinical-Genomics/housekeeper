@@ -8,12 +8,6 @@ from sqlalchemy.orm import Query, Session
 class BaseHandler:
     """This is a base class holding different models."""
 
-    Archive: Type[Model] = Archive
-    Bundle: Type[Model] = Bundle
-    Version: Type[Model] = Version
-    File: Type[Model] = File
-    Tag: Type[Model] = Tag
-
     def __init__(self, session: Session):
         self.session = session
 

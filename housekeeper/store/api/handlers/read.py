@@ -114,7 +114,7 @@ class ReadHandler(BaseHandler):
         if bundle_name:
             LOG.debug(f"Fetching files from bundle {bundle_name}")
             query = apply_bundle_filter(
-                bundles=query.join(self.File.version, self.Version.bundle),
+                bundles=query.join(File.version, Version.bundle),
                 filter_functions=[BundleFilters.FILTER_BY_NAME],
                 bundle_name=bundle_name,
             )
@@ -132,7 +132,7 @@ class ReadHandler(BaseHandler):
         if version_id:
             LOG.debug(f"Fetching files from version {version_id}")
             query = apply_version_filter(
-                versions=query.join(self.File.version),
+                versions=query.join(File.version),
                 filter_functions=[VersionFilter.FILTER_BY_ID],
                 version_id=version_id,
             )
