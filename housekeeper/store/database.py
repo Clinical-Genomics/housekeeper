@@ -15,7 +15,7 @@ ENGINE: Optional[Engine] = None
 def initialize_database(db_uri: str) -> None:
     """Initialize the global engine and session for SQLAlchemy."""
     global SESSION, ENGINE
-    ENGINE = create_engine(db_uri, pool_pre_ping=True)
+    ENGINE: Engine = create_engine(db_uri, pool_pre_ping=True)
     session_factory = sessionmaker(ENGINE)
     SESSION = scoped_session(session_factory)
 
