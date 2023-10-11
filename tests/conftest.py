@@ -11,7 +11,7 @@ import pytest
 import yaml
 from housekeeper.date import get_date
 from housekeeper.store import Store
-from housekeeper.store.database import create_all_tables, drop_all_tables, initialise_database
+from housekeeper.store.database import create_all_tables, drop_all_tables, initialize_database
 from housekeeper.store.models import Archive, Bundle, Tag, Version
 
 from .helper_functions import Helpers
@@ -475,7 +475,7 @@ def helpers() -> Helpers:
 @pytest.fixture(scope="function")
 def store(project_dir: Path) -> Store:
     """Return a store setup with all tables."""
-    initialise_database("sqlite:///")
+    initialize_database("sqlite:///")
     _store = Store(root=str(project_dir))
     create_all_tables()
     yield _store
