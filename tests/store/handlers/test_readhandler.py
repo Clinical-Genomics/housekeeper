@@ -1,7 +1,6 @@
 """Tests for finding tags in store."""
 from datetime import timedelta
 from pathlib import Path
-from typing import Set
 
 from housekeeper.store import Store
 from housekeeper.store.models import Archive, File, Tag
@@ -180,7 +179,7 @@ def test_get_ongoing_archiving_tasks(
     archive.archived_at = None
 
     # WHEN getting ongoing archiving tasks
-    ongoing_task_ids: Set[int] = populated_store.get_ongoing_archiving_tasks()
+    ongoing_task_ids: set[int] = populated_store.get_ongoing_archiving_tasks()
 
     # THEN the set should include the initial archiving task id
     assert archiving_task_id in ongoing_task_ids
@@ -195,7 +194,7 @@ def test_get_ongoing_retrieval_tasks(
     archive.retrieved_at = None
 
     # WHEN getting ongoing retrieval tasks
-    ongoing_task_ids: Set[int] = populated_store.get_ongoing_retrieval_tasks()
+    ongoing_task_ids: set[int] = populated_store.get_ongoing_retrieval_tasks()
 
     # THEN the set should include the initial retrieval task id
     assert retrieval_task_id in ongoing_task_ids
