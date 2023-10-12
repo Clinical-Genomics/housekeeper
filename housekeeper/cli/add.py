@@ -3,7 +3,7 @@ import datetime as dt
 import logging
 from logging import Logger
 from pathlib import Path
-from typing import Dict, Generator
+from typing import Generator
 
 import click
 
@@ -49,10 +49,10 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str, exclude: boo
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data: Dict = {"name": bundle_name, "created_at": str(dt.datetime.now())}
+    data: dict = {"name": bundle_name, "created_at": str(dt.datetime.now())}
     # This is to preserve the behaviour of adding a bundle without providing all information
     if json:
-        data: Dict = load_json(json)
+        data: dict = load_json(json)
 
     bundle_name = data["name"]
     if store.get_bundle_by_name(bundle_name=bundle_name):
@@ -112,9 +112,9 @@ def file_cmd(
     store: Store = context.obj["store"]
     validate_args(arg=path, json=json, arg_name="path")
 
-    data: Dict = {}
+    data: dict = {}
     if json:
-        data: Dict = load_json(json)
+        data: dict = load_json(json)
         validate_input(data, input_type="file")
 
     file_path: Path = Path(data.get("path", path))
@@ -152,9 +152,9 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data: Dict = {"bundle_name": bundle_name, "created_at": created_at}
+    data: dict = {"bundle_name": bundle_name, "created_at": created_at}
     if json:
-        data: Dict = load_json(json)
+        data: dict = load_json(json)
         bundle_name = data["bundle_name"]
 
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
