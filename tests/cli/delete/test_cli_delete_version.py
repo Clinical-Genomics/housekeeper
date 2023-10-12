@@ -21,4 +21,3 @@ def test_delete_non_version_no_input(base_context: Context, cli_runner: CliRunne
     assert result.exit_code == 1
     # THEN it should communicate that the bundle was not found
     assert "Please select a bundle or a version" in caplog.text
-

@@ -79,9 +79,7 @@ def version_cmd(context, bundle_name, version_id, yes):
     if version_obj.included_at:
         question = f"remove bundle version from file system and database: {version_obj.full_path}"
     else:
-        question = (
-            f"remove bundle version from database: {version_obj.created_at.date()}"
-        )
+        question = f"remove bundle version from database: {version_obj.created_at.date()}"
 
     if not (yes or click.confirm(question)):
         raise click.Abort
@@ -99,19 +97,11 @@ def version_cmd(context, bundle_name, version_id, yes):
 @click.option("-t", "--tag", multiple=True, help="file tag")
 @click.option("-b", "--bundle-name", help="bundle name")
 @click.option("-a", "--before", help="version created before...")
-@click.option(
-    "-n", "--notondisk", is_flag=True, help="rm db entry from files not on disk"
-)
-@click.option(
-    "-l", "--list-files", is_flag=True, help="lists files that will be deleted"
-)
-@click.option(
-    "-L", "--list-files-verbose", is_flag=True, help="lists additional information"
-)
+@click.option("-n", "--notondisk", is_flag=True, help="rm db entry from files not on disk")
+@click.option("-l", "--list-files", is_flag=True, help="lists files that will be deleted")
+@click.option("-L", "--list-files-verbose", is_flag=True, help="lists additional information")
 @click.pass_context
-def files_cmd(
-    context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose
-):
+def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose):
     """Delete files based on tags."""
 
     validate_delete_options(tag=tag, bundle_name=bundle_name)
@@ -121,9 +111,7 @@ def files_cmd(
     if bundle_name:
         validate_bundle_exists(store=store, bundle_name=bundle_name)
 
-    files = store.get_files_before(
-        bundle_name=bundle_name, tag_names=tag, before_date=before_date
-    )
+    files = store.get_files_before(bundle_name=bundle_name, tag_names=tag, before_date=before_date)
 
     if notondisk:
         files = store.get_files_not_on_disk(files=files)
@@ -138,15 +126,11 @@ def files_cmd(
     elif list_files:
         list_files_with_full_path(files=files)
 
-    if not (
-        yes or click.confirm(f"Are you sure you want to delete {len(files)} files?")
-    ):
+    if not (yes or click.confirm(f"Are you sure you want to delete {len(files)} files?")):
         raise click.Abort
 
     for file in files:
-        if yes or click.confirm(
-            f"remove file from disk and database: {file.full_path}"
-        ):
+        if yes or click.confirm(f"remove file from disk and database: {file.full_path}"):
             delete_file(file=file, store=store)
 
 
