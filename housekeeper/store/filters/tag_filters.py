@@ -11,11 +11,15 @@ def filter_tag_by_name(tags: Query, tag_name: str) -> Query:
 
 class TagFilter(Enum):
     """Define Tag filter functions."""
+
     FILTER_BY_NAME: Callable = filter_tag_by_name
 
 
-def apply_tag_filter(tags: Query, filter_functions: List[Callable],
-                     tag_name: Optional[str] = None, ) -> Query:
+def apply_tag_filter(
+    tags: Query,
+    filter_functions: List[Callable],
+    tag_name: Optional[str] = None,
+) -> Query:
     """Apply filtering functions to tag and return filtered Query."""
     for filter_function in filter_functions:
         tags: Query = filter_function(

@@ -10,7 +10,7 @@ def test_filter_version_by_name_and_bundle_date_returns_the_correct_version(popu
     """Test getting version by bundle name and date."""
 
     # GIVEN a store with a version
-    version_bundles_query: Query =populated_store._get_join_version_bundle_query()
+    version_bundles_query: Query = populated_store._get_join_version_bundle_query()
     assert isinstance(version_bundles_query, Query)
     assert version_bundles_query.count() > 0
 
@@ -34,7 +34,10 @@ def test_filter_version_by_name_and_bundle_date_returns_the_correct_version(popu
     # THEN the version's creation date should match the given date
     assert filtered_version.created_at == version_date
 
-def test_filter_version_by_name_and_bundle_date_with_nonexistent_data_returns_empty_query(populated_store: Store, time_stamp_now: dt.datetime):
+
+def test_filter_version_by_name_and_bundle_date_with_nonexistent_data_returns_empty_query(
+    populated_store: Store, time_stamp_now: dt.datetime
+):
     """Test that the function returns an empty result when given a non-existent bundle name or version date."""
 
     # GIVEN a bundle name and version date that does not exist in the store

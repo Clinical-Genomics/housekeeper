@@ -44,7 +44,9 @@ def test_get_tags(cli_runner: Context, base_context: CliRunner, caplog):
     assert tag_names[0] in caplog.text
 
 
-def test_get_tags_non_existing(cli_runner: Context, base_context: CliRunner, non_existent_tag_name, caplog):
+def test_get_tags_non_existing(
+    cli_runner: Context, base_context: CliRunner, non_existent_tag_name, caplog
+):
     """Test to get a non-existing tag from a database with some tags"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a database with some tags

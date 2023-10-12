@@ -44,9 +44,7 @@ def test_init_database(db_uri, db_path, cli_runner, project_dir):
     assert not db_path.exists()
 
     # WHEN calling the CLI
-    result = cli_runner.invoke(
-        base, ["--database", db_uri, "--root", project_dir, "init"]
-    )
+    result = cli_runner.invoke(base, ["--database", db_uri, "--root", project_dir, "init"])
 
     # THEN the database should have been created
     assert db_path.exists()

@@ -59,9 +59,7 @@ def test_delete_existing_file_no_confirmation(
     assert file_obj
 
     # WHEN trying to delete the file
-    result = cli_runner.invoke(
-        delete.file_cmd, [str(file_id), "--yes"], obj=populated_context
-    )
+    result = cli_runner.invoke(delete.file_cmd, [str(file_id), "--yes"], obj=populated_context)
 
     # THEN file delete should be in output
     assert "file deleted" in caplog.text

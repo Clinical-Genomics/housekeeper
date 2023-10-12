@@ -69,9 +69,7 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
                 LOG.info("No versions found for bundle %s", bundle.name)
                 return
             version_obj = bundle.versions[0]
-            context.invoke(
-                version_cmd, version_id=version_obj.id, verbose=True, compact=compact
-            )
+            context.invoke(version_cmd, version_id=version_obj.id, verbose=True, compact=compact)
 
 
 @get.command("version")
@@ -124,16 +122,12 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
         return
 
     for version_obj in version_objs:
-        context.invoke(
-            files_cmd, version_id=version_obj.id, verbose=True, compact=compact
-        )
+        context.invoke(files_cmd, version_id=version_obj.id, verbose=True, compact=compact)
 
 
 @get.command("file")
 @click.option("-t", "--tag", "tag_names", multiple=True, help="filter by file tag")
-@click.option(
-    "-v", "--version", "version_id", type=int, help="filter by version of the bundle"
-)
+@click.option("-v", "--version", "version_id", type=int, help="filter by version of the bundle")
 @click.option("-V", "--verbose", is_flag=True, help="print additional information")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-c", "--compact", is_flag=True, help="print compact filenames")
@@ -150,9 +144,7 @@ def files_cmd(
 ):
     """Get files from database"""
     store: Store = context.obj["store"]
-    file_objs = store.get_files(
-        bundle_name=bundle, tag_names=tag_names, version_id=version_id
-    )
+    file_objs = store.get_files(bundle_name=bundle, tag_names=tag_names, version_id=version_id)
     template = schema.FileSchema()
     result = []
     for file in file_objs:

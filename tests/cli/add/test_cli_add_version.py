@@ -10,9 +10,7 @@ from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle
 
 
-def test_add_version_non_input(
-    populated_context: Context, cli_runner: CliRunner, caplog
-):
+def test_add_version_non_input(populated_context: Context, cli_runner: CliRunner, caplog):
     """Test to add a version to a bundle without providing input
 
     The CLI should exit with non zero since nothing is defined
@@ -29,9 +27,7 @@ def test_add_version_non_input(
     assert "Please input json or bundle_name" in caplog.text
 
 
-def test_add_version_non_existing_bundle(
-    populated_context: Context, cli_runner: CliRunner, caplog
-):
+def test_add_version_non_existing_bundle(populated_context: Context, cli_runner: CliRunner, caplog):
     """Test to add a version to a non existing bundle
 
     The CLI should exit with non zero since the bundle does not exist
@@ -53,9 +49,7 @@ def test_add_version_non_existing_bundle(
     assert f"unknown bundle: {bundle_name}" in caplog.text
 
 
-def test_add_version_existing_bundle(
-    populated_context: Context, cli_runner: CliRunner, caplog
-):
+def test_add_version_existing_bundle(populated_context: Context, cli_runner: CliRunner, caplog):
     """Test to add a version to a existing bundle
 
     The functionality should work as expected since the bundle exists
@@ -160,9 +154,7 @@ def test_add_version_with_files_json(
     assert version_data["files"] != []
 
     # WHEN trying to add the version
-    result = cli_runner.invoke(
-        version_cmd, ["--json", version_data_json], obj=populated_context
-    )
+    result = cli_runner.invoke(version_cmd, ["--json", version_data_json], obj=populated_context)
 
     # THEN assert it succeded
     assert result.exit_code == 0
