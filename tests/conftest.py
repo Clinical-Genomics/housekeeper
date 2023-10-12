@@ -5,10 +5,10 @@ import json
 import shutil
 from copy import deepcopy
 from pathlib import Path
-from typing import List
 
 import pytest
 import yaml
+
 from housekeeper.date import get_date
 from housekeeper.store import Store
 from housekeeper.store.models import Archive, Bundle, Tag, Version
@@ -49,13 +49,13 @@ def non_existent_tag_name() -> str:
 
 
 @pytest.fixture(scope="function")
-def family_tag_names(vcf_tag_name: str, family_tag_name: str) -> List[str]:
+def family_tag_names(vcf_tag_name: str, family_tag_name: str) -> list[str]:
     """Return a list of the family tag names."""
     return [vcf_tag_name, family_tag_name]
 
 
 @pytest.fixture(scope="function")
-def sample_tag_names(vcf_tag_name: str, sample_tag_name: str) -> List[str]:
+def sample_tag_names(vcf_tag_name: str, sample_tag_name: str) -> list[str]:
     """Return a list of the sample tag names."""
     return [vcf_tag_name, sample_tag_name]
 
@@ -103,13 +103,13 @@ def other_case_id() -> str:
 
 
 @pytest.fixture(scope="function")
-def sample_data(sample_tag_names: List[str], sample_vcf: Path) -> dict:
+def sample_data(sample_tag_names: list[str], sample_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": sample_tag_names, "file": sample_vcf}
 
 
 @pytest.fixture(scope="function")
-def sample2_data(sample_tag_names: List[str], second_sample_vcf: Path) -> dict:
+def sample2_data(sample_tag_names: list[str], second_sample_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": sample_tag_names, "file": second_sample_vcf}
 
@@ -127,19 +127,19 @@ def spring_file_2_with_tags(sample_id: str, spring_tag: str, spring_file_2: Path
 
 
 @pytest.fixture(scope="function")
-def family_data(family_tag_names: List[str], family_vcf: Path) -> dict:
+def family_data(family_tag_names: list[str], family_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": family_tag_names, "file": family_vcf}
 
 
 @pytest.fixture(scope="function")
-def family2_data(family_tag_names: List[str], second_family_vcf: Path) -> dict:
+def family2_data(family_tag_names: list[str], second_family_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": family_tag_names, "file": second_family_vcf}
 
 
 @pytest.fixture(scope="function")
-def family3_data(family_tag_names: List[str], third_family_vcf: Path) -> dict:
+def family3_data(family_tag_names: list[str], third_family_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": family_tag_names, "file": third_family_vcf}
 

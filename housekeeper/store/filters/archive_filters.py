@@ -1,7 +1,7 @@
 from enum import Enum
-from typing import Callable, List, Optional
+from typing import Callable
 
-from sqlalchemy import or_, and_
+from sqlalchemy import and_
 from sqlalchemy.orm import Query
 from sqlalchemy.sql.elements import BooleanClauseList
 
@@ -41,7 +41,7 @@ class ArchiveFilter(Enum):
 
 
 def apply_archive_filter(
-    archives: Query, filter_functions: List[Callable], task_id: int = None
+    archives: Query, filter_functions: list[Callable], task_id: int = None
 ) -> Query:
     """Apply filtering functions to archives and return filtered Query."""
     for filter_function in filter_functions:

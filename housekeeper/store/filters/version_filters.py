@@ -1,7 +1,9 @@
 from datetime import datetime
 from enum import Enum
-from typing import Callable, List, Optional
+from typing import Callable, Optional
+
 from sqlalchemy.orm import Query
+
 from housekeeper.store.models import Version
 
 
@@ -24,7 +26,7 @@ class VersionFilter(Enum):
 
 def apply_version_filter(
     versions: Query,
-    filter_functions: List[Callable],
+    filter_functions: list[Callable],
     version_id: Optional[int] = None,
     before_date: Optional[datetime] = None,
 ) -> Query:

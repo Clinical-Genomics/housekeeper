@@ -2,8 +2,7 @@
 
 import datetime as dt
 import json
-from pathlib import Path
-from typing import Iterable, List
+from typing import Iterable
 
 from housekeeper.constants import LOGLEVELS
 from housekeeper.store import Store
@@ -30,7 +29,7 @@ class Helpers:
         return "\n".join(stripped)
 
     @staticmethod
-    def get_json(output: str) -> List:
+    def get_json(output: str) -> list:
         """Convert a string to json"""
         output = Helpers.get_stdout(output)
         return json.loads(output)
@@ -53,7 +52,7 @@ class Helpers:
         return new_archive
 
     @staticmethod
-    def create_bundle_data(case_id: str, files: List[dict], created_at: dt.datetime = None) -> dict:
+    def create_bundle_data(case_id: str, files: list[dict], created_at: dt.datetime = None) -> dict:
         """
         Create a new bundle_data dictionary with the given parameters.
 

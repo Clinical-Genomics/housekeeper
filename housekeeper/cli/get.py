@@ -1,7 +1,6 @@
 """Code for CLI get"""
 import json as jsonlib
 import logging
-from typing import List
 
 import click
 from rich.console import Console
@@ -135,7 +134,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
 @click.pass_context
 def files_cmd(
     context,
-    tag_names: List[str],
+    tag_names: list[str],
     version_id: int,
     verbose: bool,
     bundle: str,
