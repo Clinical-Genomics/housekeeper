@@ -63,7 +63,9 @@ class Version(Model):
     archive_checksum = Column(types.String(256), unique=True)
 
     bundle_id = Column(ForeignKey(Bundle.id, ondelete="CASCADE"), nullable=False)
-    files = orm.relationship("File", backref="version", cascade="delete, save-update")
+    files = orm.relationship(
+        "File", backref=backref("version", cascade_backrefs=False), cascade="delete, save-update"
+    )
 
     app_root = None
 
