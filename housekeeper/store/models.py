@@ -44,6 +44,7 @@ class Bundle(Model):
         backref="bundle",
         order_by="-Version.created_at",
         cascade="delete, save-update",
+        cascade_backrefs=False,
     )
 
 

@@ -118,8 +118,9 @@ def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data: 
     starting_file_count: int = store._get_query(table=File).count()
 
     # WHEN adding the modified bundle to the database
-    new_bundle_obj = store.add_bundle(second_bundle_data)[0]
+    new_bundle_obj, version = store.add_bundle(second_bundle_data)
     store.session.add(new_bundle_obj)
+    store.session.add(version)
     store.session.commit()
 
     # THEN there should still be the same number of bundles
