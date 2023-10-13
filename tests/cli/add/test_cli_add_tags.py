@@ -53,9 +53,7 @@ def test_add_existing_tag_existing_file(populated_context, cli_runner, caplog):
     tag = file_obj.tags[0].name
 
     # WHEN trying to add the existing tag to the file
-    result = cli_runner.invoke(
-        tag_cmd, [tag, "-f", str(file_id)], obj=populated_context
-    )
+    result = cli_runner.invoke(tag_cmd, [tag, "-f", str(file_id)], obj=populated_context)
     # THEN assert it has a non zero exit status
     assert result.exit_code == 0
     # THEN check that it communicates that the tag existed
@@ -75,9 +73,7 @@ def test_add_tag_existing_file(populated_context, cli_runner, caplog):
     tag = "new-tag"
 
     # WHEN trying to add a tag to the existing file
-    result = cli_runner.invoke(
-        tag_cmd, [tag, "-f", str(file_id)], obj=populated_context
-    )
+    result = cli_runner.invoke(tag_cmd, [tag, "-f", str(file_id)], obj=populated_context)
     # THEN assert it has a zero exit status
     assert result.exit_code == 0
     # THEN check that the tag is displayed in the output
