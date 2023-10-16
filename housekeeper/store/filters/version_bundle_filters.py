@@ -1,7 +1,8 @@
-from enum import Enum
-from typing import Callable, List, Optional
-from sqlalchemy.orm import Query
 import datetime as dt
+from enum import Enum
+from typing import Callable, Optional
+
+from sqlalchemy.orm import Query
 
 from housekeeper.store.models import Bundle, Version
 
@@ -21,7 +22,7 @@ class VersionBundleFilters(Enum):
 
 def apply_version_bundle_filter(
     version_bundles: Query,
-    filter_functions: List[Callable],
+    filter_functions: list[Callable],
     bundle_name: Optional[str] = None,
     version_date: Optional[dt.datetime] = None,
 ) -> Query:

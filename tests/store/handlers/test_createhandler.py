@@ -1,12 +1,12 @@
 """Tests for store core functions."""
 from pathlib import Path
-from typing import List
 
 import pytest
+from sqlalchemy.exc import IntegrityError
+
 from housekeeper.store.api import schema
 from housekeeper.store.api.core import Store
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
-from sqlalchemy.exc import IntegrityError
 
 
 def test_schema_with_invalid_input(bundle_data_json):
@@ -166,7 +166,7 @@ def test_add_archive_to_archived_file(
 def test_add_file(
     populated_store: Store,
     second_family_vcf: Path,
-    family_tag_names: List[str],
+    family_tag_names: list[str],
     housekeeper_version_dir: Path,
     project_dir: Path,
 ):

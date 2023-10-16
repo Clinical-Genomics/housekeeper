@@ -1,16 +1,14 @@
-from typing import List
-
 import pytest
 from sqlalchemy.orm import Query
 
 from housekeeper.store import Store
-from housekeeper.store.models import File
 from housekeeper.store.filters.file_filters import (
     filter_files_by_id,
+    filter_files_by_is_archived,
     filter_files_by_path,
     filter_files_by_tags,
-    filter_files_by_is_archived,
 )
+from housekeeper.store.models import File
 
 
 def test_filter_files_by_id_returns_query(populated_store: Store):
@@ -91,7 +89,7 @@ def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
 
     # GIVEN a store with files
     file: File = populated_store._get_query(table=File).first()
-    tag_names: List[str] = [tag.name for tag in file.tags]
+    tag_names: list[str] = [tag.name for tag in file.tags]
 
     # WHEN filtering files by tags
     filtered_files_query = filter_files_by_tags(
@@ -99,7 +97,7 @@ def test_filter_files_by_tags_returns_correct_files(populated_store: Store):
         tag_names=tag_names,
     )
 
-    filtered_files: List[File] = filtered_files_query.all()
+    filtered_files: list[File] = filtered_files_query.all()
 
     # THEN each file should have all the requested tags
     for filtered_file in filtered_files:

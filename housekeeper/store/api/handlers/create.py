@@ -3,12 +3,13 @@
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
+
+from sqlalchemy.orm import Session
 
 from housekeeper.store.api.handlers.base import BaseHandler
 from housekeeper.store.api.handlers.read import ReadHandler
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
-from sqlalchemy.orm import Session
 
 LOG = logging.getLogger(__name__)
 
@@ -54,7 +55,7 @@ class CreateHandler(BaseHandler):
         version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
 
-    def _add_files_to_version(self, files: List[dict], version_obj: Version) -> None:
+    def _add_files_to_version(self, files: list[dict], version_obj: Version) -> None:
         """Create file objects and the tags and add them to a version object"""
 
         tag_names = set(tag_name for file_data in files for tag_name in file_data["tags"])
@@ -108,7 +109,7 @@ class CreateHandler(BaseHandler):
         file_path: Path,
         bundle: Bundle,
         to_archive: bool = False,
-        tags: List[str] = None,
+        tags: list[str] = None,
     ) -> File:
         """Build a new file object and add it to the latest version of an existing bundle."""
         version = bundle.versions[0]
@@ -123,7 +124,7 @@ class CreateHandler(BaseHandler):
         new_file.version = version
         return new_file
 
-    def _build_tags(self, tag_names: List[str]) -> Dict[str, Tag]:
+    def _build_tags(self, tag_names: list[str]) -> Dict[str, Tag]:
         """Build a list of tag objects.
 
         Take a list of tags, if a tag does not exist create a new tag object.
@@ -143,7 +144,7 @@ class CreateHandler(BaseHandler):
         path: str,
         checksum: str = None,
         to_archive: bool = False,
-        tags: List[Tag] = None,
+        tags: list[Tag] = None,
     ) -> File:
         """Create a new file object based on the information given."""
         return File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)

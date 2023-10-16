@@ -1,12 +1,11 @@
 """Code for building tables that are displayed in the terminal"""
 import re
 from pathlib import Path
-from typing import List
 
 from rich.table import Table
 
 
-def get_tags_table(rows: List[dict]) -> Table:
+def get_tags_table(rows: list[dict]) -> Table:
     """Return a tag table"""
     table = Table(show_header=True, header_style="bold magenta")
     table.title = "[not italic]:bookmark:[/] Tags table [not italic]:bookmark:[/]"
@@ -24,7 +23,7 @@ def get_tags_table(rows: List[dict]) -> Table:
     return table
 
 
-def get_files_table(rows: List[dict], verbose=False, compact=False) -> Table:
+def get_files_table(rows: list[dict], verbose=False, compact=False) -> Table:
     """Return a tag table"""
     table = Table(show_header=True, header_style="bold magenta")
     table.title = "[not italic]:scroll:[/] Files table [not italic]:scroll:[/]"
@@ -47,7 +46,7 @@ def get_files_table(rows: List[dict], verbose=False, compact=False) -> Table:
     return table
 
 
-def get_bundles_table(rows: List[dict]) -> Table:
+def get_bundles_table(rows: list[dict]) -> Table:
     """Return a bundles table"""
     table = Table(show_header=True, header_style="bold magenta")
     table.title = "[not italic]:package:[/] Bundle table [not italic]:package:[/]"
@@ -66,7 +65,7 @@ def get_bundles_table(rows: List[dict]) -> Table:
     return table
 
 
-def get_versions_table(rows: List[dict]) -> Table:
+def get_versions_table(rows: list[dict]) -> Table:
     """Return a versions table"""
     table = Table(show_header=True, header_style="bold magenta")
     table.title = "[not italic]:closed_book:[/] Version table [not italic]:closed_book:[/]"
@@ -90,7 +89,7 @@ def get_versions_table(rows: List[dict]) -> Table:
     return table
 
 
-def squash_names(list_of_files: List[dict]) -> List[dict]:
+def squash_names(list_of_files: list[dict]) -> list[dict]:
     """If subsequent elements (filenames) in 'list_of_files' end in an integer- And that integer is
     following the previous- those are squashed when displayed.
     Example:
@@ -148,7 +147,7 @@ def squash_names(list_of_files: List[dict]) -> List[dict]:
     return list_of_squashed
 
 
-def remove_duplicates(tag_list: List[dict]) -> List[dict]:
+def remove_duplicates(tag_list: list[dict]) -> list[dict]:
     """Remove duoplicate elements from `tag_list`"""
     no_duplicates = []
     for i in tag_list:

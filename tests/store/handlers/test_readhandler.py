@@ -1,7 +1,6 @@
 """Tests for finding tags in store."""
 from datetime import timedelta
 from pathlib import Path
-from typing import List, Set
 
 from housekeeper.store import Store
 from housekeeper.store.models import Archive, File, Tag
@@ -65,7 +64,7 @@ def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timesta
     # WHEN fetching all files before the oldest date
     date = old_timestamp + timedelta(days=10)
     assert old_timestamp < date < timestamp
-    files: List[File] = store.get_files_before(before_date=date)
+    files: list[File] = store.get_files_before(before_date=date)
 
     # THEN a list of Files is returned
     assert isinstance(files[0], File)
@@ -87,7 +86,7 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     # WHEN fetching all files before the oldest date
     date = old_timestamp - timedelta(days=10)
     assert date < old_timestamp < timestamp
-    files: List[File] = store.get_files_before(before_date=date)
+    files: list[File] = store.get_files_before(before_date=date)
 
     # THEN assert no files where that old
     assert len(files) == 0
@@ -104,7 +103,7 @@ def test_get_archived_files(
     # GIVEN a bundle with two files, where one is archive and one is not
 
     # WHEN asking for all archived files
-    archived_files: List[Path] = [
+    archived_files: list[Path] = [
         Path(file.path)
         for file in populated_store.get_archived_files(bundle_name=sample_id, tags=[spring_tag])
     ]
@@ -125,7 +124,7 @@ def test_get_non_archived_files(
     # GIVEN a bundle with two files, where one is archive and one is not
 
     # WHEN asking for all non-archived files
-    archived_files: List[Path] = [
+    archived_files: list[Path] = [
         Path(file.path)
         for file in populated_store.get_non_archived_files(bundle_name=sample_id, tags=[spring_tag])
     ]
@@ -152,11 +151,11 @@ def test_get_all_non_archived_files(populated_store: Store, spring_tag: str):
     """Test that getting all non-archived spring files from the store
     returns all files fulfilling said condition."""
     # GIVEN a populated store containing SPRING and non-SPRING entries
-    all_files: List[File] = populated_store.get_files().all()
+    all_files: list[File] = populated_store.get_files().all()
     assert all_files
 
     # WHEN retrieving all non archived spring files
-    non_archived_spring_files: List[File] = populated_store.get_all_non_archived_files([spring_tag])
+    non_archived_spring_files: list[File] = populated_store.get_all_non_archived_files([spring_tag])
 
     # THEN entries should be returned
     assert non_archived_spring_files
@@ -180,7 +179,7 @@ def test_get_ongoing_archiving_tasks(
     archive.archived_at = None
 
     # WHEN getting ongoing archiving tasks
-    ongoing_task_ids: Set[int] = populated_store.get_ongoing_archiving_tasks()
+    ongoing_task_ids: set[int] = populated_store.get_ongoing_archiving_tasks()
 
     # THEN the set should include the initial archiving task id
     assert archiving_task_id in ongoing_task_ids
@@ -195,7 +194,7 @@ def test_get_ongoing_retrieval_tasks(
     archive.retrieved_at = None
 
     # WHEN getting ongoing retrieval tasks
-    ongoing_task_ids: Set[int] = populated_store.get_ongoing_retrieval_tasks()
+    ongoing_task_ids: set[int] = populated_store.get_ongoing_retrieval_tasks()
 
     # THEN the set should include the initial retrieval task id
     assert retrieval_task_id in ongoing_task_ids

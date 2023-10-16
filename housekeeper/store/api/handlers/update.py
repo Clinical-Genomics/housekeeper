@@ -3,12 +3,15 @@ This module handles updating entries in the store/database.
 """
 import logging
 from datetime import datetime
-from typing import List
+
+from sqlalchemy.orm import Session
 
 from housekeeper.store.api.handlers.base import BaseHandler
-from housekeeper.store.filters.archive_filters import ArchiveFilter, apply_archive_filter
-from housekeeper.store.models import Archive, File
-from sqlalchemy.orm import Session
+from housekeeper.store.filters.archive_filters import (
+    ArchiveFilter,
+    apply_archive_filter,
+)
+from housekeeper.store.models import Archive
 
 LOG = logging.getLogger(__name__)
 
@@ -37,7 +40,7 @@ class UpdateHandler(BaseHandler):
 
     def update_finished_archival_task(self, archiving_task_id: int) -> None:
         """Sets the archived_at field to now for all archives with the given archiving task id."""
-        completed_archives: List[Archive] = apply_archive_filter(
+        completed_archives: list[Archive] = apply_archive_filter(
             archives=self._get_query(table=Archive),
             filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK_ID],
             task_id=archiving_task_id,
@@ -47,7 +50,7 @@ class UpdateHandler(BaseHandler):
 
     def update_finished_retrieval_task(self, retrieval_task_id: int) -> None:
         """Sets the archived_at field to now for all archives with the given archiving task id."""
-        completed_archives: List[Archive] = apply_archive_filter(
+        completed_archives: list[Archive] = apply_archive_filter(
             archives=self._get_query(table=Archive),
             filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
             task_id=retrieval_task_id,
