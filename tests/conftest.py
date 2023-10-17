@@ -60,13 +60,13 @@ def sample_tag_names(vcf_tag_name: str, sample_tag_name: str) -> list[str]:
     return [vcf_tag_name, sample_tag_name]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def spring_tag() -> str:
     """Return the tag marking SPRING files."""
     return "spring"
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def sample_id() -> str:
     """Return name of a sample."""
     return "ACC123456A1"
@@ -132,7 +132,7 @@ def spring_file_2_with_tags(sample_id: str, spring_tag: str, spring_file_2: Path
     return {"tags": [sample_id, spring_tag], "file": spring_file_2}
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def spring_file_3_with_tags(sample_id: str, spring_tag: str, spring_file_3: Path) -> dict:
     """Return a third SPRING file and tags for a sample."""
     return {"tags": [sample_id, spring_tag], "file": spring_file_3}
@@ -341,7 +341,7 @@ def archive(populated_store: Store) -> Archive:
 # dir fixtures
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def fixtures_dir() -> Path:
     """Return the path to the fixtures directory."""
     return Path("tests/fixtures/")
@@ -353,7 +353,7 @@ def vcf_dir(fixtures_dir: Path) -> Path:
     return fixtures_dir / "vcfs"
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def sequencing_files_dir(fixtures_dir: Path) -> Path:
     """Return the path to the sequencing_files fixtures directory."""
     return Path(fixtures_dir, "sequencing_files")
@@ -421,7 +421,7 @@ def spring_file_2(sequencing_files_dir: Path) -> Path:
     return Path(sequencing_files_dir, "lane2.spring")
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def spring_file_3(sequencing_files_dir: Path) -> Path:
     """Return the path to a SPRING file."""
     return Path(sequencing_files_dir, "lane3.spring")

@@ -223,7 +223,7 @@ def test_get_archive_entries_by_retrieval_id(retrieval_task_id: int, populated_s
     archives: list[Archive] = populated_store.get_archives(retrieval_task_id=retrieval_task_id)
 
     # THEN an Archive entry should be returned
-    assert len(archives) > 0
+    assert archives
 
     # THEN all returned entries should have the specified retrieval task id
     for archive in archives:
@@ -239,18 +239,17 @@ def test_archives_not_returned_via_archiving_id(archiving_task_id: int, populate
     all_archives: list[Archive] = populated_store.get_archives()
 
     # WHEN fetching all archives with a specified archiving task id
-    archiving_archives: list[Archive] = populated_store.get_archives(
+    selected_archives: list[Archive] | None = populated_store.get_archives(
         archival_task_id=archiving_task_id
     )
 
     # THEN only archives with the matching retrieval task id is returned
-
-    assert len(all_archives) > len(archiving_archives)
+    assert len(all_archives) > len(selected_archives)
     for archive in all_archives:
         if archive.archiving_task_id == archiving_task_id:
-            assert archive in archiving_archives
+            assert archive in selected_archives
         else:
-            assert archive not in archiving_archives
+            assert archive not in selected_archives
 
 
 def test_archives_not_returned_via_retrieval_id(retrieval_task_id: int, populated_store: Store):
@@ -262,15 +261,14 @@ def test_archives_not_returned_via_retrieval_id(retrieval_task_id: int, populate
     all_archives: list[Archive] = populated_store.get_archives()
 
     # WHEN fetching all archives with a specified retrieval task id
-    retrieval_archives: list[Archive] = populated_store.get_archives(
+    selected_archives: list[Archive] | None = populated_store.get_archives(
         retrieval_task_id=retrieval_task_id
     )
 
     # THEN only archives with the matching retrieval task id is returned
-
-    assert len(all_archives) > len(retrieval_archives)
+    assert len(all_archives) > len(selected_archives)
     for archive in all_archives:
         if archive.retrieval_task_id == retrieval_task_id:
-            assert archive in retrieval_archives
+            assert archive in selected_archives
         else:
-            assert archive not in retrieval_archives
+            assert archive not in selected_archives
