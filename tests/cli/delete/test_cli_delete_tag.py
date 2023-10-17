@@ -40,7 +40,7 @@ def test_delete_existing_tag_with_confirmation(
     result = cli_runner.invoke(delete.tag_cmd, ["--name", family_tag_name], obj=populated_context)
 
     # THEN the confirmation question should be shown in stdout
-    assert f"delete tag {family_tag_name} with" in result.output
+    assert f"Delete tag {family_tag_name} with" in result.output
 
 
 def test_delete_existing_tag_no_confirmation(
