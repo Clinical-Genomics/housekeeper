@@ -12,8 +12,8 @@ Model = declarative_base()
 file_tag_link = Table(
     "file_tag_link",
     Model.metadata,
-    Column("file_id", types.Integer, ForeignKey("file.id"), nullable=False),
-    Column("tag_id", types.Integer, ForeignKey("tag.id"), nullable=False),
+    Column("file_id", types.Integer, ForeignKey("file.id", ondelete="CASCADE"), nullable=False),
+    Column("tag_id", types.Integer, ForeignKey("tag.id", ondelete="CASCADE"), nullable=False),
     UniqueConstraint("file_id", "tag_id", name="_file_tag_uc"),
 )
 

@@ -8,7 +8,7 @@ import click
 
 from housekeeper.date import get_date
 from housekeeper.store.api.core import Store
-from housekeeper.store.models import File
+from housekeeper.store.models import File, Tag
 
 LOG = logging.getLogger(__name__)
 
@@ -49,7 +49,7 @@ def bundle_cmd(context, yes, bundle_name):
 @click.option("-y", "--yes", is_flag=True, help="skip checks")
 @click.pass_context
 def version_cmd(context, bundle_name, version_id, yes):
-    """Delete a version from database"""
+    """Delete a version from database."""
     store: Store = context.obj["store"]
     if not (bundle_name or version_id):
         LOG.info("Please select a bundle or a version")
@@ -132,6 +132,28 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
     for file in files:
         if yes or click.confirm(f"remove file from disk and database: {file.full_path}"):
             delete_file(file=file, store=store)
+
+
+@delete.command("tag")
+@click.option("-n", "--name", help="Name of the tag to delete")
+@click.option("-y", "--yes", is_flag=True, help="skip checks")
+@click.pass_context
+def tag_cmd(context, yes, name: str):
+    """Delete a tag from the database.
+    Entries in the file_tag_link table associated with the tag will be removed."""
+    store: Store = context.obj["store"]
+    tag: Tag = store.get_tag(tag_name=name)
+    if not tag:
+        LOG.warning(f"Tag {name} not found")
+        raise click.Abort
+
+    tag_files: int = len(tag.files) if tag.files else 0
+    question = f"delete tag {name} with {tag_files} associated files?"
+
+    if yes or click.confirm(question):
+        store.session.delete(tag)
+        store.session.commit()
+        LOG.info("Tag deleted")
 
 
 def validate_delete_options(tag: str, bundle_name: str):
