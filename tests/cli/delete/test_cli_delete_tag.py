@@ -39,7 +39,7 @@ def test_delete_existing_tag_with_confirmation(
     # WHEN trying to delete the tag
     result = cli_runner.invoke(delete.tag_cmd, ["--name", family_tag_name], obj=populated_context)
 
-    # THEN the confirmation question shoul dbe shown in stdout
+    # THEN the confirmation question should be shown in stdout
     assert f"delete tag {family_tag_name} with" in result.output
 
 
@@ -58,6 +58,7 @@ def test_delete_existing_tag_no_confirmation(
         delete.tag_cmd, ["--name", family_tag_name, "--yes"], obj=populated_context
     )
 
-    # THEN the confirmation question should be shown in stdout
+    # THEN the tag should have been deleted
     assert result.exit_code == 0
     assert f"Tag {family_tag_name} deleted" in caplog.text
+    assert not store.get_tag(tag_name=family_tag_name)

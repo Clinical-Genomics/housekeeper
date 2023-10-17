@@ -3,6 +3,7 @@
 import logging
 import shutil
 from pathlib import Path
+from typing import Optional
 
 import click
 
@@ -142,13 +143,13 @@ def tag_cmd(context, yes, name: str):
     """Delete a tag from the database.
     Entries in the file_tag_link table associated with the tag will be removed."""
     store: Store = context.obj["store"]
-    tag: Tag = store.get_tag(tag_name=name)
+    tag: Tag | None = store.get_tag(tag_name=name)
     if not tag:
         LOG.warning(f"Tag {name} not found")
         raise click.Abort
 
-    tag_files: int = len(tag.files) if tag.files else 0
-    question = f"delete tag {name} with {tag_files} associated files?"
+    tag_file_count: int = len(tag.files) if tag.files else 0
+    question = f"delete tag {name} with {tag_file_count} associated files?"
 
     if yes or click.confirm(question):
         store.session.delete(tag)
