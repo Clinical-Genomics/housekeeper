@@ -78,13 +78,7 @@ def archiving_task_id() -> int:
     return 1234
 
 
-@pytest.fixture(scope="function")
-def second_archiving_task_id() -> int:
-    """Return another id of an archiving task."""
-    return 1235
-
-
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def new_archiving_task_id() -> int:
     """Return a new id of an archiving task."""
     return 1235
@@ -502,7 +496,7 @@ def store(project_dir: Path) -> Store:
 @pytest.fixture(scope="function")
 def populated_store(
     archiving_task_id: int,
-    second_archiving_task_id,
+    new_archiving_task_id,
     retrieval_task_id: int,
     bundle_data: dict,
     helpers: Helpers,
@@ -522,7 +516,7 @@ def populated_store(
     retrieval_archive: Archive = helpers.add_archive(
         store=store,
         file_id=store.get_files(file_path=spring_file_3.as_posix()).first().id,
-        archiving_task_id=second_archiving_task_id,
+        archiving_task_id=new_archiving_task_id,
     )
     retrieval_archive.retrieval_task_id = retrieval_task_id
     store.session.commit()
