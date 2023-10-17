@@ -1,12 +1,14 @@
 """Tests for delete CLI functions"""
 import logging
+import os
 
+import pytest
 from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
 from housekeeper.store.api.core import Store
-from housekeeper.store.models import Tag
+from housekeeper.store.models import Bundle, File, Tag, Version
 
 
 def test_delete_non_existing_tag(
@@ -62,3 +64,27 @@ def test_delete_existing_tag_no_confirmation(
     assert result.exit_code == 0
     assert f"Tag {family_tag_name} deleted" in caplog.text
     assert not store.get_tag(tag_name=family_tag_name)
+
+
+def test_delete_tag_without_deleting_file(
+    base_context: Context,
+    populated_store: Store,
+    cli_runner: CliRunner,
+):
+    """Test that deleting a tag does not delete files with the tag."""
+    # GIVEN a file with a tag
+    file_with_tag: File = populated_store.get_file_by_id(file_id=1)
+    assert file_with_tag
+    tag: Tag = file_with_tag.tags[0]
+    assert tag
+
+    # WHEN deleting the tag
+    cli_runner.invoke(delete.tag_cmd, ["--name", tag.name, "--yes"], obj=base_context)
+
+    # THEN the tag is deleted
+    assert not populated_store.get_tag(tag_name=tag.name)
+    # THEN the file is not deleted
+    file_without_tag: File = populated_store.get_files(file_path=file_with_tag.path).first()
+    assert file_without_tag
+    # THEN the file no longer has the tag
+    assert tag not in file_without_tag.tags
