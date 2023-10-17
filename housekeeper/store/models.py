@@ -4,8 +4,7 @@ import datetime as dt
 from pathlib import Path
 
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, orm, types
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import backref
+from sqlalchemy.orm import backref, declarative_base
 
 Model = declarative_base()
 

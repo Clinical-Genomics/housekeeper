@@ -153,7 +153,7 @@ def tag_cmd(context, yes, name: str):
     if yes or click.confirm(question):
         store.session.delete(tag)
         store.session.commit()
-        LOG.info("Tag deleted")
+        LOG.info(f"Tag {name} deleted")
 
 
 def validate_delete_options(tag: str, bundle_name: str):
