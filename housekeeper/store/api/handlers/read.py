@@ -9,10 +9,7 @@ from typing import Optional, Set
 from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.api.handlers.base import BaseHandler
-from housekeeper.store.filters.archive_filters import (
-    ArchiveFilter,
-    apply_archive_filter,
-)
+from housekeeper.store.filters.archive_filters import ArchiveFilter, apply_archive_filter
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
 from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
 from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
@@ -20,10 +17,7 @@ from housekeeper.store.filters.version_bundle_filters import (
     VersionBundleFilters,
     apply_version_bundle_filter,
 )
-from housekeeper.store.filters.version_filters import (
-    VersionFilter,
-    apply_version_filter,
-)
+from housekeeper.store.filters.version_filters import VersionFilter, apply_version_filter
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 
 LOG = logging.getLogger(__name__)
@@ -249,3 +243,23 @@ class ReadHandler(BaseHandler):
             tag_names=tag_names,
             is_archived=False,
         ).all()
+
+    def get_archives(self, archival_task_id: int, retrieval_task_id: int) -> Optional[list[File]]:
+        """Returns all entries in the archive table with the specified archival/retrieval task id."""
+        if not archival_task_id and not retrieval_task_id:
+            raise ValueError("Please provide a task id for an archival or a retrieval.")
+        if archival_task_id and retrieval_task_id:
+            raise ValueError("Please do not provide both archival_task_id and retrieval_task_id.")
+        if archival_task_id:
+            return apply_archive_filter(
+                archives=self._get_query(table=Archive),
+                filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK_ID],
+                task_id=archival_task_id,
+            ).all()
+
+        else:
+            return apply_archive_filter(
+                archives=self._get_query(table=Archive),
+                filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
+                task_id=retrieval_task_id,
+            ).all()
