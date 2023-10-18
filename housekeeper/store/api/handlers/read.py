@@ -4,7 +4,9 @@ This module handles finding things in the store/database
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import List, Optional, Set
+from typing import Optional, Set
+
+from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.api.handlers.base import BaseHandler
 from housekeeper.store.filters.archive_filters import ArchiveFilter, apply_archive_filter
@@ -17,8 +19,6 @@ from housekeeper.store.filters.version_bundle_filters import (
 )
 from housekeeper.store.filters.version_filters import VersionFilter, apply_version_filter
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
-from sqlalchemy import exists
-from sqlalchemy.orm import Query, Session, aliased
 
 LOG = logging.getLogger(__name__)
 
@@ -85,7 +85,7 @@ class ReadHandler(BaseHandler):
         LOG.debug("Fetching all tags")
         return self._get_query(table=Tag)
 
-    def get_file_by_id(self, file_id: int):
+    def get_file_by_id(self, file_id: int) -> File | None:
         """Get a file by record id."""
         return apply_file_filter(
             files=self._get_query(table=File),
@@ -96,14 +96,14 @@ class ReadHandler(BaseHandler):
     def get_files(
         self,
         bundle_name: str = None,
-        tag_names: List[str] = None,
+        tag_names: list[str] = None,
         version_id: int = None,
         file_path: str = None,
     ) -> Query:
         """Fetches files from the store based on the specified filters.
         Args:
             bundle_name (str, optional): Name of the bundle to fetch files from.
-            tag_names (List[str], optional): List of tags to filter files by.
+            tag_names (list[str], optional): list of tags to filter files by.
             version_id (int, optional): ID of the version to fetch files from.
             path (str, optional): Path to the file to fetch.
 
@@ -150,9 +150,9 @@ class ReadHandler(BaseHandler):
     def get_files_before(
         self,
         bundle_name: str = None,
-        tag_names: List[str] = None,
+        tag_names: list[str] = None,
         before_date: dt.datetime = None,
-    ) -> List[File]:
+    ) -> list[File]:
         """Return files before a specific date from store."""
         query = self.get_files(tag_names=tag_names, bundle_name=bundle_name)
         if before_date:
@@ -164,7 +164,7 @@ class ReadHandler(BaseHandler):
         return query.all()
 
     @staticmethod
-    def get_files_not_on_disk(files: List[File]) -> List[File]:
+    def get_files_not_on_disk(files: list[File]) -> list[File]:
         """Return list of files that are not on disk."""
         if not files:
             return []
@@ -172,7 +172,7 @@ class ReadHandler(BaseHandler):
         files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
         return files_not_on_disk
 
-    def get_archived_files(self, bundle_name: str, tags: Optional[List]) -> List[File]:
+    def get_archived_files(self, bundle_name: str, tags: Optional[list]) -> list[File]:
         """Returns all files in the given bundle, with the given tags, and are archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
@@ -189,7 +189,7 @@ class ReadHandler(BaseHandler):
             tag_names=tags,
         ).all()
 
-    def get_non_archived_files(self, bundle_name: str, tags: Optional[List]) -> List[File]:
+    def get_non_archived_files(self, bundle_name: str, tags: Optional[list]) -> list[File]:
         """Returns all files in the given bundle, with the given tags, and are not archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
@@ -232,7 +232,7 @@ class ReadHandler(BaseHandler):
         """Return the bundle name for the specified file."""
         return self.get_files(file_path=file_path).first().version.bundle.name
 
-    def get_all_non_archived_files(self, tag_names: List[str]) -> List[File]:
+    def get_all_non_archived_files(self, tag_names: list[str]) -> list[File]:
         """Return all spring files which are not marked as archived in Housekeeper."""
         return apply_file_filter(
             self._get_join_file_tags_archive_query(),
@@ -242,4 +242,33 @@ class ReadHandler(BaseHandler):
             ],
             tag_names=tag_names,
             is_archived=False,
+        ).all()
+
+    def get_archives(
+        self, archival_task_id: int = None, retrieval_task_id: int = None
+    ) -> Optional[list[File]]:
+        """Returns all entries in the archive table with the specified archival/retrieval task id."""
+        if not archival_task_id and not retrieval_task_id:
+            return self._get_query(table=Archive).all()
+        if archival_task_id and retrieval_task_id:
+            return apply_archive_filter(
+                archives=apply_archive_filter(
+                    archives=self._get_query(table=Archive),
+                    filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK_ID],
+                    task_id=archival_task_id,
+                ),
+                filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
+                task_id=retrieval_task_id,
+            ).all()
+        if archival_task_id:
+            return apply_archive_filter(
+                archives=self._get_query(table=Archive),
+                filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK_ID],
+                task_id=archival_task_id,
+            ).all()
+
+        return apply_archive_filter(
+            archives=self._get_query(table=Archive),
+            filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
+            task_id=retrieval_task_id,
         ).all()

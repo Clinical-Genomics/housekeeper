@@ -1,9 +1,10 @@
 from enum import Enum
-from typing import Callable, List, Optional
+from typing import Callable, Optional
 
-from housekeeper.store.models import File, Tag
 from sqlalchemy import func as sqlalchemy_func
 from sqlalchemy.orm import Query
+
+from housekeeper.store.models import File, Tag
 
 
 def filter_files_by_id(files: Query, file_id: int, **kwargs) -> Query:
@@ -16,7 +17,7 @@ def filter_files_by_path(files: Query, file_path: str, **kwargs) -> Query:
     return files.filter(File.path == file_path)
 
 
-def filter_files_by_tags(files: Query, tag_names: List[str], **kwargs) -> Query:
+def filter_files_by_tags(files: Query, tag_names: list[str], **kwargs) -> Query:
     """Filter files by tag names."""
     return (
         files.filter(Tag.name.in_(tag_names))
@@ -41,11 +42,11 @@ class FileFilter(Enum):
 
 def apply_file_filter(
     files: Query,
-    filter_functions: List[Callable],
+    filter_functions: list[Callable],
     file_id: Optional[int] = None,
     file_path: Optional[str] = None,
     is_archived: Optional[bool] = None,
-    tag_names: Optional[List[str]] = None,
+    tag_names: Optional[list[str]] = None,
 ) -> Query:
     """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:

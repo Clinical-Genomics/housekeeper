@@ -5,15 +5,14 @@ import json
 import shutil
 from copy import deepcopy
 from pathlib import Path
-from typing import List
 
 import pytest
 import yaml
+
 from housekeeper.date import get_date
 from housekeeper.store import Store
 from housekeeper.store.models import Archive, Bundle, Tag, Version
-
-from .helper_functions import Helpers
+from tests.helper_functions import Helpers
 
 # basic fixtures
 
@@ -49,24 +48,24 @@ def non_existent_tag_name() -> str:
 
 
 @pytest.fixture(scope="function")
-def family_tag_names(vcf_tag_name: str, family_tag_name: str) -> List[str]:
+def family_tag_names(vcf_tag_name: str, family_tag_name: str) -> list[str]:
     """Return a list of the family tag names."""
     return [vcf_tag_name, family_tag_name]
 
 
 @pytest.fixture(scope="function")
-def sample_tag_names(vcf_tag_name: str, sample_tag_name: str) -> List[str]:
+def sample_tag_names(vcf_tag_name: str, sample_tag_name: str) -> list[str]:
     """Return a list of the sample tag names."""
     return [vcf_tag_name, sample_tag_name]
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def spring_tag() -> str:
     """Return the tag marking SPRING files."""
     return "spring"
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def sample_id() -> str:
     """Return name of a sample."""
     return "ACC123456A1"
@@ -78,7 +77,7 @@ def archiving_task_id() -> int:
     return 1234
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def new_archiving_task_id() -> int:
     """Return a new id of an archiving task."""
     return 1235
@@ -103,13 +102,13 @@ def other_case_id() -> str:
 
 
 @pytest.fixture(scope="function")
-def sample_data(sample_tag_names: List[str], sample_vcf: Path) -> dict:
+def sample_data(sample_tag_names: list[str], sample_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": sample_tag_names, "file": sample_vcf}
 
 
 @pytest.fixture(scope="function")
-def sample2_data(sample_tag_names: List[str], second_sample_vcf: Path) -> dict:
+def sample2_data(sample_tag_names: list[str], second_sample_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": sample_tag_names, "file": second_sample_vcf}
 
@@ -126,20 +125,26 @@ def spring_file_2_with_tags(sample_id: str, spring_tag: str, spring_file_2: Path
     return {"tags": [sample_id, spring_tag], "file": spring_file_2}
 
 
+@pytest.fixture(scope="session")
+def spring_file_3_with_tags(sample_id: str, spring_tag: str, spring_file_3: Path) -> dict:
+    """Return a third SPRING file and tags for a sample."""
+    return {"tags": [sample_id, spring_tag], "file": spring_file_3}
+
+
 @pytest.fixture(scope="function")
-def family_data(family_tag_names: List[str], family_vcf: Path) -> dict:
+def family_data(family_tag_names: list[str], family_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": family_tag_names, "file": family_vcf}
 
 
 @pytest.fixture(scope="function")
-def family2_data(family_tag_names: List[str], second_family_vcf: Path) -> dict:
+def family2_data(family_tag_names: list[str], second_family_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": family_tag_names, "file": second_family_vcf}
 
 
 @pytest.fixture(scope="function")
-def family3_data(family_tag_names: List[str], third_family_vcf: Path) -> dict:
+def family3_data(family_tag_names: list[str], third_family_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": family_tag_names, "file": third_family_vcf}
 
@@ -183,13 +188,14 @@ def sample_bundle_data(
     sample_data: dict,
     spring_file_1_with_tags: dict,
     spring_file_2_with_tags: dict,
+    spring_file_3_with_tags: dict,
     timestamp: datetime.datetime,
     helpers: Helpers,
 ) -> dict:
     """Return a bundle containing mock sequencing files."""
     return helpers.create_bundle_data(
         case_id=sample_id,
-        files=[spring_file_1_with_tags, spring_file_2_with_tags],
+        files=[spring_file_1_with_tags, spring_file_2_with_tags, spring_file_3_with_tags],
         created_at=timestamp,
     )
 
@@ -328,7 +334,7 @@ def archive(populated_store: Store) -> Archive:
 # dir fixtures
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def fixtures_dir() -> Path:
     """Return the path to the fixtures directory."""
     return Path("tests/fixtures/")
@@ -340,7 +346,7 @@ def vcf_dir(fixtures_dir: Path) -> Path:
     return fixtures_dir / "vcfs"
 
 
-@pytest.fixture(scope="function")
+@pytest.fixture(scope="session")
 def sequencing_files_dir(fixtures_dir: Path) -> Path:
     """Return the path to the sequencing_files fixtures directory."""
     return Path(fixtures_dir, "sequencing_files")
@@ -406,6 +412,12 @@ def spring_file_1(sequencing_files_dir: Path) -> Path:
 def spring_file_2(sequencing_files_dir: Path) -> Path:
     """Return the path to a SPRING file."""
     return Path(sequencing_files_dir, "lane2.spring")
+
+
+@pytest.fixture(scope="session")
+def spring_file_3(sequencing_files_dir: Path) -> Path:
+    """Return the path to a SPRING file."""
+    return Path(sequencing_files_dir, "lane3.spring")
 
 
 @pytest.fixture(scope="function")
@@ -483,10 +495,13 @@ def store(project_dir: Path) -> Store:
 @pytest.fixture(scope="function")
 def populated_store(
     archiving_task_id: int,
+    new_archiving_task_id,
+    retrieval_task_id: int,
     bundle_data: dict,
     helpers: Helpers,
     sample_bundle_data: dict,
     spring_file_1: Path,
+    spring_file_3: Path,
     store: Store,
 ) -> Store:
     """Returns a populated store."""
@@ -497,5 +512,12 @@ def populated_store(
         file_id=store.get_files(file_path=spring_file_1.as_posix()).first().id,
         archiving_task_id=archiving_task_id,
     )
+    retrieval_archive: Archive = helpers.add_archive(
+        store=store,
+        file_id=store.get_files(file_path=spring_file_3.as_posix()).first().id,
+        archiving_task_id=new_archiving_task_id,
+    )
+    retrieval_archive.retrieval_task_id = retrieval_task_id
+    store.session.commit()
 
     return store
