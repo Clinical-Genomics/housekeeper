@@ -85,7 +85,7 @@ class ReadHandler(BaseHandler):
         LOG.debug("Fetching all tags")
         return self._get_query(table=Tag)
 
-    def get_file_by_id(self, file_id: int):
+    def get_file_by_id(self, file_id: int) -> File | None:
         """Get a file by record id."""
         return apply_file_filter(
             files=self._get_query(table=File),

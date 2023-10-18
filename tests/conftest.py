@@ -12,8 +12,7 @@ import yaml
 from housekeeper.date import get_date
 from housekeeper.store import Store
 from housekeeper.store.models import Archive, Bundle, Tag, Version
-
-from .helper_functions import Helpers
+from tests.helper_functions import Helpers
 
 # basic fixtures
 
