@@ -53,7 +53,7 @@ class Helpers:
         return new_archive
 
     @staticmethod
-    def create_bundle_data(case_id: str, files: List[dict], created_at: dt.datetime = None) -> dict:
+    def create_bundle_data(case_id: str, files: list[dict], created_at: dt.datetime = None) -> dict:
         """Create a new bundle_data dictionary with the given parameters."""
 
         if created_at is None:
