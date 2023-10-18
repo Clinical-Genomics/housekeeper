@@ -37,8 +37,9 @@ class Helpers:
     @staticmethod
     def add_bundle(store: Store, bundle: dict) -> None:
         """Add and commit bundle to housekeeper store"""
-        bundle_obj, _ = store.add_bundle(bundle)
+        bundle_obj, version = store.add_bundle(bundle)
         store.session.add(bundle_obj)
+        store.session.add(version)
         store.session.commit()
 
     @staticmethod
@@ -53,14 +54,8 @@ class Helpers:
 
     @staticmethod
     def create_bundle_data(case_id: str, files: list[dict], created_at: dt.datetime = None) -> dict:
-        """
-        Create a new bundle_data dictionary with the given parameters.
+        """Create a new bundle_data dictionary with the given parameters."""
 
-        :param case_id: The name of the bundle.
-        :param files: A list of dictionaries representing file data.
-        :param created_at: The timestamp when the bundle was created (optional).
-        :return: A dictionary representing the bundle data.
-        """
         if created_at is None:
             created_at = dt.datetime.now()
 
