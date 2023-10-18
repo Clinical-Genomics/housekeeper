@@ -267,9 +267,8 @@ class ReadHandler(BaseHandler):
                 task_id=archival_task_id,
             ).all()
 
-        else:
-            return apply_archive_filter(
-                archives=self._get_query(table=Archive),
-                filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
-                task_id=retrieval_task_id,
-            ).all()
+        return apply_archive_filter(
+            archives=self._get_query(table=Archive),
+            filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
+            task_id=retrieval_task_id,
+        ).all()
