@@ -9,7 +9,7 @@ from housekeeper.exc import HousekeeperError
 from housekeeper.store.models import Model
 
 
-SESSION: Optional[scoped_session] = None
+SESSION: Optional[Session] = None
 ENGINE: Optional[Engine] = None
 
 
@@ -28,7 +28,7 @@ def get_session() -> Session:
     """
     if not SESSION:
         raise HousekeeperError("Database not initialised")
-    return SESSION()
+    return SESSION
 
 
 def get_engine() -> Engine:

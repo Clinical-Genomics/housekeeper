@@ -6,9 +6,9 @@ from pathlib import Path
 
 from housekeeper.store.database import get_session
 from housekeeper.store.api.handlers.update import UpdateHandler
-from housekeeper.store.models import File, Model, Version
 from housekeeper.store.api.handlers.create import CreateHandler
 from housekeeper.store.api.handlers.read import ReadHandler
+from housekeeper.store.models import File, Version
 
 LOG = logging.getLogger(__name__)
 
@@ -17,9 +17,9 @@ class CoreHandler(CreateHandler, ReadHandler, UpdateHandler):
     """Aggregating class for the store api handlers"""
 
     def __init__(self, session):
-        ReadHandler(session=session)
-        CreateHandler(session=session)
-        UpdateHandler(session=session)
+        ReadHandler(session)
+        CreateHandler(session)
+        UpdateHandler(session)
 
 
 class Store(CoreHandler):
