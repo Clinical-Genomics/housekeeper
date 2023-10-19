@@ -84,9 +84,7 @@ def test_get_files_multiple_tags(
     # GIVEN a context with a populated store and a cli runner
     store: Store = populated_context["store"]
     # GIVEN a store with some files that are tagged
-    nr_files = helpers.count_iterable(
-        store.get_files(tag_names=[vcf_tag_name, family_tag_name])
-    )
+    nr_files = helpers.count_iterable(store.get_files(tag_names=[vcf_tag_name, family_tag_name]))
     assert nr_files > 0
 
     # WHEN fetching all files by not specifying any file
@@ -123,9 +121,7 @@ def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_n
     assert len(json_bundles) == nr_tag_files
 
 
-def test_get_files_compact(
-    populated_context_subsequent, cli_runner, family_tag_name, helpers
-):
+def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_name, helpers):
     """Test to get all files from a populated store in human friendly format, subsequent names concatenated"""
     # GIVEN an example result file list
     file_list = [

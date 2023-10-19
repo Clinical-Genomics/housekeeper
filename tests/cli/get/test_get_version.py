@@ -10,9 +10,7 @@ from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle, Version
 
 
-def test_get_version_no_input(
-    populated_context: Context, cli_runner: CliRunner, caplog
-):
+def test_get_version_no_input(populated_context: Context, cli_runner: CliRunner, caplog):
     """Test to get all versions when no input is given
 
     This should exit with False
@@ -29,9 +27,7 @@ def test_get_version_no_input(
     assert "Please select a bundle or a version" in caplog.text
 
 
-def test_get_version_bundle_name(
-    populated_context: Context, cli_runner: CliRunner, helpers
-):
+def test_get_version_bundle_name(populated_context: Context, cli_runner: CliRunner, helpers):
     """Test to get all versions from a bundle by using the bundle name.
 
     This should return all versions
@@ -80,17 +76,13 @@ def test_get_version_json(populated_context: Context, cli_runner: CliRunner, hel
     bundle_name = bundle_obj.name
 
     # WHEN running the include files command
-    result = cli_runner.invoke(
-        version_cmd, ["-b", bundle_name, "--json"], obj=populated_context
-    )
+    result = cli_runner.invoke(version_cmd, ["-b", bundle_name, "--json"], obj=populated_context)
 
     # THEN assert that the program exits succesfully
     assert result.exit_code == 0
 
 
-def test_get_version_version_id(
-    populated_context: Context, cli_runner: CliRunner, helpers
-):
+def test_get_version_version_id(populated_context: Context, cli_runner: CliRunner, helpers):
     """Test to get all versions from a bundle by using the bundle name in json format.
 
     This should return all versions

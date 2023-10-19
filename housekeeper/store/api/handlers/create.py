@@ -3,12 +3,13 @@
 import datetime as dt
 import logging
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
+
+from sqlalchemy.orm import Session
 
 from housekeeper.store.api.handlers.base import BaseHandler
 from housekeeper.store.api.handlers.read import ReadHandler
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
-from sqlalchemy.orm import Session
 
 LOG = logging.getLogger(__name__)
 
@@ -26,11 +27,11 @@ class CreateHandler(BaseHandler):
 
     def new_bundle(self, name: str, created_at: dt.datetime = None) -> Bundle:
         """Create a new file bundle."""
-        new_bundle = self.Bundle(name=name, created_at=created_at)
+        new_bundle = Bundle(name=name, created_at=created_at)
         LOG.debug("Created new bundle: %s", new_bundle.name)
         return new_bundle
 
-    def add_bundle(self, data: dict) -> Tuple[Bundle, Version]:
+    def add_bundle(self, data: dict) -> Tuple[Bundle, Version] | None:
         """Build a new bundle version of files.
 
         The format of the input dict is defined in the `schema` module.
@@ -54,7 +55,7 @@ class CreateHandler(BaseHandler):
         version_obj.bundle = bundle_obj
         return bundle_obj, version_obj
 
-    def _add_files_to_version(self, files: List[dict], version_obj: Version) -> None:
+    def _add_files_to_version(self, files: list[dict], version_obj: Version) -> None:
         """Create file objects and the tags and add them to a version object"""
 
         tag_names = set(tag_name for file_data in files for tag_name in file_data["tags"])
@@ -77,7 +78,7 @@ class CreateHandler(BaseHandler):
     def new_version(self, created_at: dt.datetime, expires_at: dt.datetime = None) -> Version:
         """Create a new bundle version."""
         LOG.debug("Created new version")
-        new_version = self.Version(created_at=created_at, expires_at=expires_at)
+        new_version = Version(created_at=created_at, expires_at=expires_at)
         return new_version
 
     def add_version(
@@ -108,7 +109,7 @@ class CreateHandler(BaseHandler):
         file_path: Path,
         bundle: Bundle,
         to_archive: bool = False,
-        tags: List[str] = None,
+        tags: list[str] = None,
     ) -> File:
         """Build a new file object and add it to the latest version of an existing bundle."""
         version = bundle.versions[0]
@@ -123,7 +124,7 @@ class CreateHandler(BaseHandler):
         new_file.version = version
         return new_file
 
-    def _build_tags(self, tag_names: List[str]) -> Dict[str, Tag]:
+    def _build_tags(self, tag_names: list[str]) -> Dict[str, Tag]:
         """Build a list of tag objects.
 
         Take a list of tags, if a tag does not exist create a new tag object.
@@ -143,14 +144,14 @@ class CreateHandler(BaseHandler):
         path: str,
         checksum: str = None,
         to_archive: bool = False,
-        tags: List[Tag] = None,
+        tags: list[Tag] = None,
     ) -> File:
         """Create a new file object based on the information given."""
-        return self.File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
+        return File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
 
     def new_tag(self, name: str, category: str = None) -> Tag:
         """Create a new tag object based on the information given."""
-        new_tag = self.Tag(name=name, category=category)
+        new_tag = Tag(name=name, category=category)
         return new_tag
 
     def create_archive(self, file_id: int, archiving_task_id: int) -> Archive:

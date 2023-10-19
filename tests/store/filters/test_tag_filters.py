@@ -1,22 +1,20 @@
+from sqlalchemy.orm import Query
+
 from housekeeper.store import Store
-from housekeeper.store.models import Tag
 from housekeeper.store.filters.tag_filters import (
-    filter_tag_by_name,
     TagFilter,
     apply_tag_filter,
+    filter_tag_by_name,
 )
-from sqlalchemy.orm import Query
-from typing import List
+from housekeeper.store.models import Tag
 
 
-def test_filter_tag_by_name_returns_correct_tag(
-    populated_store: Store, sample_tag_name: str
-):
+def test_filter_tag_by_name_returns_correct_tag(populated_store: Store, sample_tag_name: str):
     """Test that fetching a tag by name returns a tag with the expected name."""
 
     # GIVEN a store with the desired tag
     all_tags: Query = populated_store._get_query(table=Tag)
-    all_tag_names: List[str] = [t.name for t in all_tags.all()]
+    all_tag_names: list[str] = [t.name for t in all_tags.all()]
     assert sample_tag_name in all_tag_names
 
     # WHEN retrieving the tag by name
@@ -36,13 +34,11 @@ def test_filter_tag_by_name_returns_correct_tag(
     assert tag.name == sample_tag_name
 
 
-def test_filter_tag_by_name_non_existent_tag(
-    populated_store: Store, non_existent_tag_name
-):
+def test_filter_tag_by_name_non_existent_tag(populated_store: Store, non_existent_tag_name):
     """Test that using a non-existent tag name returns an empty query."""
     # GIVEN a tag name not included in a populated store
     all_tags: Query = populated_store._get_query(table=Tag)
-    all_tag_names: List[str] = [t.name for t in all_tags.all()]
+    all_tag_names: list[str] = [t.name for t in all_tags.all()]
     assert non_existent_tag_name not in all_tag_names
 
     # WHEN retrieving the tag by name

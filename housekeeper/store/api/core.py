@@ -6,6 +6,7 @@ from pathlib import Path
 
 from housekeeper.store.database import get_session
 from housekeeper.store.api.handlers.update import UpdateHandler
+from housekeeper.store.models import File, Model, Version
 from housekeeper.store.api.handlers.create import CreateHandler
 from housekeeper.store.api.handlers.read import ReadHandler
 
@@ -35,7 +36,7 @@ class Store(CoreHandler):
         self.session = get_session()
 
         LOG.debug("Initializing Store")
-        self.File.app_root = Path(root)
-        self.Version.app_root = Path(root)
+        File.app_root = Path(root)
+        Version.app_root = Path(root)
 
         super().__init__(self.session)

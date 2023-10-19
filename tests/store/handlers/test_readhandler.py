@@ -1,7 +1,6 @@
 """Tests for finding tags in store."""
 from datetime import timedelta
 from pathlib import Path
-from typing import List, Set
 
 from housekeeper.store import Store
 from housekeeper.store.models import Archive, File, Tag
@@ -65,7 +64,7 @@ def test_get_past_files(populated_store, bundle_data_old, timestamp, old_timesta
     # WHEN fetching all files before the oldest date
     date = old_timestamp + timedelta(days=10)
     assert old_timestamp < date < timestamp
-    files: List[File] = store.get_files_before(before_date=date)
+    files: list[File] = store.get_files_before(before_date=date)
 
     # THEN a list of Files is returned
     assert isinstance(files[0], File)
@@ -87,7 +86,7 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     # WHEN fetching all files before the oldest date
     date = old_timestamp - timedelta(days=10)
     assert date < old_timestamp < timestamp
-    files: List[File] = store.get_files_before(before_date=date)
+    files: list[File] = store.get_files_before(before_date=date)
 
     # THEN assert no files where that old
     assert len(files) == 0
@@ -104,7 +103,7 @@ def test_get_archived_files(
     # GIVEN a bundle with two files, where one is archive and one is not
 
     # WHEN asking for all archived files
-    archived_files: List[Path] = [
+    archived_files: list[Path] = [
         Path(file.path)
         for file in populated_store.get_archived_files(bundle_name=sample_id, tags=[spring_tag])
     ]
@@ -125,7 +124,7 @@ def test_get_non_archived_files(
     # GIVEN a bundle with two files, where one is archive and one is not
 
     # WHEN asking for all non-archived files
-    archived_files: List[Path] = [
+    archived_files: list[Path] = [
         Path(file.path)
         for file in populated_store.get_non_archived_files(bundle_name=sample_id, tags=[spring_tag])
     ]
@@ -152,11 +151,11 @@ def test_get_all_non_archived_files(populated_store: Store, spring_tag: str):
     """Test that getting all non-archived spring files from the store
     returns all files fulfilling said condition."""
     # GIVEN a populated store containing SPRING and non-SPRING entries
-    all_files: List[File] = populated_store.get_files().all()
+    all_files: list[File] = populated_store.get_files().all()
     assert all_files
 
     # WHEN retrieving all non archived spring files
-    non_archived_spring_files: List[File] = populated_store.get_all_non_archived_files([spring_tag])
+    non_archived_spring_files: list[File] = populated_store.get_all_non_archived_files([spring_tag])
 
     # THEN entries should be returned
     assert non_archived_spring_files
@@ -180,7 +179,9 @@ def test_get_ongoing_archiving_tasks(
     archive.archived_at = None
 
     # WHEN getting ongoing archiving tasks
-    ongoing_task_ids: Set[int] = populated_store.get_ongoing_archiving_tasks()
+    ongoing_task_ids: set[int] = set(
+        archive_entry.archiving_task_id for archive_entry in populated_store.get_ongoing_archivals()
+    )
 
     # THEN the set should include the initial archiving task id
     assert archiving_task_id in ongoing_task_ids
@@ -195,7 +196,84 @@ def test_get_ongoing_retrieval_tasks(
     archive.retrieved_at = None
 
     # WHEN getting ongoing retrieval tasks
-    ongoing_task_ids: Set[int] = populated_store.get_ongoing_retrieval_tasks()
+    ongoing_task_ids: set[int] = set(
+        archive_entry.retrieval_task_id
+        for archive_entry in populated_store.get_ongoing_retrievals()
+    )
 
     # THEN the set should include the initial retrieval task id
     assert retrieval_task_id in ongoing_task_ids
+
+
+def test_get_archive_entries_by_archiving_id(
+    archive: Archive, archiving_task_id: int, populated_store: Store
+):
+    """Tests that get_archives returns archive entries with the given archiving task id."""
+
+    # GIVEN a populated store with an archive entry
+
+    # WHEN getting entries with the matching archiving task id
+    archives: list[Archive] = populated_store.get_archives(archival_task_id=archiving_task_id)
+
+    # THEN the matching entry should have been returned
+    assert archive in archives
+
+
+def test_get_archive_entries_by_retrieval_id(retrieval_task_id: int, populated_store: Store):
+    """Tests that get_archives returns archive entries with the given archiving task id."""
+
+    # GIVEN a populated store with an archive entry
+
+    # WHEN getting entries with the matching retrieval task id
+    archives: list[Archive] = populated_store.get_archives(retrieval_task_id=retrieval_task_id)
+
+    # THEN an Archive entry should be returned
+    assert archives
+
+    # THEN all returned entries should have the specified retrieval task id
+    for archive in archives:
+        assert archive.retrieval_task_id == retrieval_task_id
+
+
+def test_archives_not_returned_via_archiving_id(archiving_task_id: int, populated_store: Store):
+    """Tests that only archives with matching archiving task ids are returned."""
+
+    # GIVEN a store with multiple archive entries, out of which only one has the provided archiving task id
+
+    # WHEN fetching all archives
+    all_archives: list[Archive] = populated_store.get_archives()
+
+    # WHEN fetching all archives with a specified archiving task id
+    selected_archives: list[Archive] | None = populated_store.get_archives(
+        archival_task_id=archiving_task_id
+    )
+
+    # THEN only archives with the matching retrieval task id is returned
+    assert len(all_archives) > len(selected_archives)
+    for archive in all_archives:
+        if archive.archiving_task_id == archiving_task_id:
+            assert archive in selected_archives
+        else:
+            assert archive not in selected_archives
+
+
+def test_archives_not_returned_via_retrieval_id(retrieval_task_id: int, populated_store: Store):
+    """Tests that only archives with matching retrieval task ids are returned."""
+
+    # GIVEN a store with multiple archive entries, out of which only one has the provided retrieval task id
+
+    # WHEN fetching all archives
+    all_archives: list[Archive] = populated_store.get_archives()
+
+    # WHEN fetching all archives with a specified retrieval task id
+    selected_archives: list[Archive] | None = populated_store.get_archives(
+        retrieval_task_id=retrieval_task_id
+    )
+
+    # THEN only archives with the matching retrieval task id is returned
+    assert len(all_archives) > len(selected_archives)
+    for archive in all_archives:
+        if archive.retrieval_task_id == retrieval_task_id:
+            assert archive in selected_archives
+        else:
+            assert archive not in selected_archives

@@ -3,12 +3,13 @@
 import logging
 import shutil
 from pathlib import Path
+from typing import Optional
 
 import click
 
 from housekeeper.date import get_date
 from housekeeper.store.api.core import Store
-from housekeeper.store.models import File
+from housekeeper.store.models import File, Tag
 
 LOG = logging.getLogger(__name__)
 
@@ -40,7 +41,7 @@ def bundle_cmd(context, yes, bundle_name):
 
     store.session.delete(bundle)
     store.session.commit()
-    LOG.info("Bundle deleted: %s", bundle.name)
+    LOG.info(f"Deleted bundle {bundle.name}")
 
 
 @delete.command("version")
@@ -49,7 +50,7 @@ def bundle_cmd(context, yes, bundle_name):
 @click.option("-y", "--yes", is_flag=True, help="skip checks")
 @click.pass_context
 def version_cmd(context, bundle_name, version_id, yes):
-    """Delete a version from database"""
+    """Delete a version from database."""
     store: Store = context.obj["store"]
     if not (bundle_name or version_id):
         LOG.info("Please select a bundle or a version")
@@ -58,18 +59,18 @@ def version_cmd(context, bundle_name, version_id, yes):
     if bundle_name:
         bundle = store.get_bundle_by_name(bundle_name=bundle_name)
         if not bundle:
-            LOG.info("Could not find bundle %s", bundle_name)
+            LOG.info(f"Could not find bundle {bundle_name}")
             return
         if len(bundle.versions) == 0:
-            LOG.warning("Could not find versions for bundle %s", bundle_name)
+            LOG.warning(f"Could not find versions for bundle {bundle_name}")
             return
-        LOG.info("Deleting the latest version of bundle %s", bundle_name)
+        LOG.info(f"Deleting the latest version of bundle {bundle_name}")
         version_obj = bundle.versions[0]
 
     if version_id:
         version = store.get_version_by_id(version_id=version_id)
         if not version:
-            LOG.warning("Could not find version %s", version_id)
+            LOG.warning(f"Could not find version {version_id}")
             raise click.Abort
         bundle = store.get_bundle_by_id(bundle_id=version.bundle_id)
         for ver in bundle.versions:
@@ -77,11 +78,9 @@ def version_cmd(context, bundle_name, version_id, yes):
                 version_obj = ver
 
     if version_obj.included_at:
-        question = f"remove bundle version from file system and database: {version_obj.full_path}"
+        question = f"Remove bundle version {version_obj.full_path} from file system and database?"
     else:
-        question = (
-            f"remove bundle version from database: {version_obj.created_at.date()}"
-        )
+        question = f"Remove bundle version {version_obj.created_at.date()} from database?"
 
     if not (yes or click.confirm(question)):
         raise click.Abort
@@ -91,7 +90,7 @@ def version_cmd(context, bundle_name, version_id, yes):
 
     store.session.delete(version_obj)
     store.session.commit()
-    LOG.info("version deleted: %s", version_obj.full_path)
+    LOG.info(f"version deleted: {version_obj.full_path}")
 
 
 @delete.command("files")
@@ -99,19 +98,11 @@ def version_cmd(context, bundle_name, version_id, yes):
 @click.option("-t", "--tag", multiple=True, help="file tag")
 @click.option("-b", "--bundle-name", help="bundle name")
 @click.option("-a", "--before", help="version created before...")
-@click.option(
-    "-n", "--notondisk", is_flag=True, help="rm db entry from files not on disk"
-)
-@click.option(
-    "-l", "--list-files", is_flag=True, help="lists files that will be deleted"
-)
-@click.option(
-    "-L", "--list-files-verbose", is_flag=True, help="lists additional information"
-)
+@click.option("-n", "--notondisk", is_flag=True, help="rm db entry from files not on disk")
+@click.option("-l", "--list-files", is_flag=True, help="lists files that will be deleted")
+@click.option("-L", "--list-files-verbose", is_flag=True, help="lists additional information")
 @click.pass_context
-def files_cmd(
-    context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose
-):
+def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, list_files_verbose):
     """Delete files based on tags."""
 
     validate_delete_options(tag=tag, bundle_name=bundle_name)
@@ -121,9 +112,7 @@ def files_cmd(
     if bundle_name:
         validate_bundle_exists(store=store, bundle_name=bundle_name)
 
-    files = store.get_files_before(
-        bundle_name=bundle_name, tag_names=tag, before_date=before_date
-    )
+    files = store.get_files_before(bundle_name=bundle_name, tag_names=tag, before_date=before_date)
 
     if notondisk:
         files = store.get_files_not_on_disk(files=files)
@@ -138,16 +127,34 @@ def files_cmd(
     elif list_files:
         list_files_with_full_path(files=files)
 
-    if not (
-        yes or click.confirm(f"Are you sure you want to delete {len(files)} files?")
-    ):
+    if not (yes or click.confirm(f"Are you sure you want to delete {len(files)} files?")):
         raise click.Abort
 
     for file in files:
-        if yes or click.confirm(
-            f"remove file from disk and database: {file.full_path}"
-        ):
+        if yes or click.confirm(f"Remove file from disk and database: {file.full_path}?"):
             delete_file(file=file, store=store)
+
+
+@delete.command("tag")
+@click.option("-n", "--name", help="Name of the tag to delete")
+@click.option("-y", "--yes", is_flag=True, help="skip checks")
+@click.pass_context
+def tag_cmd(context, yes, name: str):
+    """Delete a tag from the database.
+    Entries in the file_tag_link table associated with the tag will be removed."""
+    store: Store = context.obj["store"]
+    tag: Tag | None = store.get_tag(tag_name=name)
+    if not tag:
+        LOG.warning(f"Tag {name} not found")
+        raise click.Abort
+
+    tag_file_count: int = len(tag.files) if tag.files else 0
+    question = f"Delete tag {name} with {tag_file_count} associated files?"
+
+    if yes or click.confirm(question):
+        store.session.delete(tag)
+        store.session.commit()
+        LOG.info(f"Tag {name} deleted")
 
 
 def validate_delete_options(tag: str, bundle_name: str):
@@ -216,9 +223,9 @@ def file_cmd(context, yes, file_id):
         raise click.Abort
 
     if file.is_included:
-        question = f"remove file from file system and database: {file.full_path}"
+        question = f"Remove file {file.full_path} from file system and database?"
     else:
-        question = f"remove file from database: {file.full_path}"
+        question = f"Remove file {file.full_path} from database?"
 
     if yes or click.confirm(question):
         if file.is_included and Path(file.full_path).exists():

@@ -3,9 +3,10 @@ import datetime as dt
 import logging
 from logging import Logger
 from pathlib import Path
-from typing import Dict, Generator, List
+from typing import Generator
 
 import click
+
 from housekeeper.constants import ROOT
 from housekeeper.date import get_date
 from housekeeper.exc import VersionIncludedError
@@ -48,10 +49,10 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str, exclude: boo
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data: Dict = {"name": bundle_name, "created_at": str(dt.datetime.now())}
+    data: dict = {"name": bundle_name, "created_at": str(dt.datetime.now())}
     # This is to preserve the behaviour of adding a bundle without providing all information
     if json:
-        data: Dict = load_json(json)
+        data: dict = load_json(json)
 
     bundle_name = data["name"]
     if store.get_bundle_by_name(bundle_name=bundle_name):
@@ -100,7 +101,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str, exclude: boo
 @click.pass_context
 def file_cmd(
     context: click.Context,
-    tags: List[str],
+    tags: list[str],
     bundle_name: str,
     json: str,
     keep_input_path: bool,
@@ -111,9 +112,9 @@ def file_cmd(
     store: Store = context.obj["store"]
     validate_args(arg=path, json=json, arg_name="path")
 
-    data: Dict = {}
+    data: dict = {}
     if json:
-        data: Dict = load_json(json)
+        data: dict = load_json(json)
         validate_input(data, input_type="file")
 
     file_path: Path = Path(data.get("path", path))
@@ -151,9 +152,9 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 
     validate_args(arg=bundle_name, json=json, arg_name="bundle_name")
 
-    data: Dict = {"bundle_name": bundle_name, "created_at": created_at}
+    data: dict = {"bundle_name": bundle_name, "created_at": created_at}
     if json:
-        data: Dict = load_json(json)
+        data: dict = load_json(json)
         bundle_name = data["bundle_name"]
 
     data["created_at"] = data.get("created_at") or str(dt.datetime.now())
@@ -180,7 +181,7 @@ def version_cmd(context: click.Context, bundle_name: str, created_at: str, json:
 @click.argument("tags", nargs=-1)
 @click.option("-f", "--file-id", type=int)
 @click.pass_context
-def tag_cmd(context: click.Context, tags: List[str], file_id: int):
+def tag_cmd(context: click.Context, tags: list[str], file_id: int):
     """Add tags to housekeeper. Use `--file-id` to add tags to existing file"""
     LOG.info("Running add tag")
     store: Store = context.obj["store"]

@@ -1,6 +1,7 @@
 """Tests for delete CLI functions"""
 
 import logging
+
 from click import Context
 from click.testing import CliRunner
 
@@ -43,7 +44,7 @@ def test_delete_existing_file_with_confirmation(
     result = cli_runner.invoke(delete.file_cmd, [str(file_id)], obj=populated_context)
 
     # THEN it should ask if you are sure
-    assert "remove file from" in result.output
+    assert "Remove file " in result.output
 
 
 def test_delete_existing_file_no_confirmation(
@@ -59,9 +60,7 @@ def test_delete_existing_file_no_confirmation(
     assert file_obj
 
     # WHEN trying to delete the file
-    result = cli_runner.invoke(
-        delete.file_cmd, [str(file_id), "--yes"], obj=populated_context
-    )
+    result = cli_runner.invoke(delete.file_cmd, [str(file_id), "--yes"], obj=populated_context)
 
     # THEN file delete should be in output
     assert "file deleted" in caplog.text

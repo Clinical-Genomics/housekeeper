@@ -8,12 +8,6 @@ from sqlalchemy.orm import Query, Session
 class BaseHandler:
     """This is a base class holding different models."""
 
-    Archive: Type[Model] = Archive
-    Bundle: Type[Model] = Bundle
-    Version: Type[Model] = Version
-    File: Type[Model] = File
-    Tag: Type[Model] = Tag
-
     def __init__(self, session: Session):
         self.session = session
 
@@ -35,7 +29,7 @@ class BaseHandler:
 
     def _get_join_bundle_to_file_query(self, file_query: Query) -> Query:
         """Joins bundle information to a File query."""
-        return file_query.join(File.version, Version.bundle)
+        return file_query.join(File.version).join(Version.bundle)
 
     def _get_join_file_tags_archive_query(self) -> Query:
         """Returns a File query joined with bundle, tags and archive information."""

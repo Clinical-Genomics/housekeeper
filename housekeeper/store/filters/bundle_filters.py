@@ -1,6 +1,8 @@
 from enum import Enum
-from typing import Callable, List, Optional
+from typing import Callable, Optional
+
 from sqlalchemy.orm import Query
+
 from housekeeper.store.models import Bundle
 
 
@@ -16,13 +18,14 @@ def filter_bundle_by_id(bundles: Query, bundle_id: int, **kwargs) -> Query:
 
 class BundleFilters(Enum):
     """Define Bundle filter functions."""
+
     FILTER_BY_NAME: Callable = filter_bundle_by_name
     FILTER_BY_ID: Callable = filter_bundle_by_id
 
 
 def apply_bundle_filter(
     bundles: Query,
-    filter_functions: List[Callable],
+    filter_functions: list[Callable],
     bundle_name: Optional[str] = None,
     bundle_id: Optional[int] = None,
 ) -> Query:
