@@ -206,27 +206,21 @@ class ReadHandler(BaseHandler):
             tag_names=tags,
         ).all()
 
-    def get_ongoing_archiving_tasks(self) -> Set[int]:
+    def get_ongoing_archivals(self) -> list[Archive]:
         """Returns all archiving tasks in the archive table, for entries where the archiving
         field is empty."""
-        return {
-            archive.archiving_task_id
-            for archive in apply_archive_filter(
-                archives=self._get_query(table=Archive),
-                filter_functions=[ArchiveFilter.FILTER_ARCHIVING_ONGOING],
-            ).all()
-        }
+        return apply_archive_filter(
+            archives=self._get_query(table=Archive),
+            filter_functions=[ArchiveFilter.FILTER_ARCHIVING_ONGOING],
+        ).all()
 
-    def get_ongoing_retrieval_tasks(self) -> Set[int]:
+    def get_ongoing_retrievals(self) -> list[Archive]:
         """Returns all retrieval tasks in the archive table, for entries where the retrieved_at
         field is empty."""
-        return {
-            archive.retrieval_task_id
-            for archive in apply_archive_filter(
-                archives=self._get_query(table=Archive),
-                filter_functions=[ArchiveFilter.FILTER_RETRIEVAL_ONGOING],
-            ).all()
-        }
+        return apply_archive_filter(
+            archives=self._get_query(table=Archive),
+            filter_functions=[ArchiveFilter.FILTER_RETRIEVAL_ONGOING],
+        ).all()
 
     def get_bundle_name_from_file_path(self, file_path: str) -> str:
         """Return the bundle name for the specified file."""
