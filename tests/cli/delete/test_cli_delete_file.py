@@ -76,27 +76,31 @@ def test_delete_sample_sheet(
     assert store.get_files(file_path=str(sample_sheet)).one()
 
     # WHEN deleting the sample sheet
-    cli_runner.invoke(delete.delete_sample_sheet, [str(flow_cell_id), "--yes"], obj=populated_context)
+    cli_runner.invoke(
+        delete.delete_sample_sheet, [str(flow_cell_id), "--yes"], obj=populated_context
+    )
 
     # THEN the sample sheet should be deleted
     assert not store.get_files(file_path=str(sample_sheet)).first()
 
 
 def test_delete_sample_sheet_included(
-        populated_context: Context, cli_runner: CliRunner, caplog, flow_cell_id: str,
-        sample_sheet: Path
+    populated_context: Context, cli_runner: CliRunner, caplog, flow_cell_id: str, sample_sheet: Path
 ):
     # GIVEN an included bundle with a file tagged with sample-sheet
     store: Store = populated_context["store"]
     sample_sheet_file: File = store.get_files(file_path=str(sample_sheet)).one()
-    include_version(global_root=populated_context["root"],version_obj=sample_sheet_file.version)
+    include_version(global_root=populated_context["root"], version_obj=sample_sheet_file.version)
     assert sample_sheet_file
     assert sample_sheet_file.is_included
     assert Path(sample_sheet_file.full_path).exists()
 
     # WHEN deleting the sample sheet
-    cli_runner.invoke(delete.delete_sample_sheet, [str(flow_cell_id), "--yes"],
-                      obj=populated_context)
+    cli_runner.invoke(
+        delete.delete_sample_sheet,
+        [flow_cell_id, "--yes"],
+        obj=populated_context,
+    )
 
     # THEN the sample sheet should be deleted from the database
     assert not store.get_files(file_path=str(sample_sheet)).first()

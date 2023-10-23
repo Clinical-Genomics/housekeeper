@@ -52,7 +52,9 @@ class Helpers:
         return new_archive
 
     @staticmethod
-    def create_bundle_data(bundle_name: str, files: list[dict], created_at: dt.datetime = None) -> dict:
+    def create_bundle_data(
+        bundle_name: str, files: list[dict], created_at: dt.datetime = None
+    ) -> dict:
         """
         Create a new bundle_data dictionary with the given parameters.
 
