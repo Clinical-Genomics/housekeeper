@@ -103,6 +103,12 @@ def other_case_id() -> str:
 
 
 @pytest.fixture(scope="function")
+def flow_cell_id() -> str:
+    """Returns a flow cell ID."""
+    return "22522YLT3"
+
+
+@pytest.fixture(scope="function")
 def sample_data(sample_tag_names: list[str], sample_vcf: Path) -> dict:
     """Return file and tags for sample."""
     return {"tags": sample_tag_names, "file": sample_vcf}
@@ -172,7 +178,7 @@ def bundle_data(
 ) -> dict:
     """Return a bundle."""
     data = helpers.create_bundle_data(
-        case_id=case_id, files=[family_data, sample_data], created_at=timestamp
+        bundle_name=case_id, files=[family_data, sample_data], created_at=timestamp
     )
     return data
 
@@ -188,8 +194,23 @@ def sample_bundle_data(
 ) -> dict:
     """Return a bundle containing mock sequencing files."""
     return helpers.create_bundle_data(
-        case_id=sample_id,
+        bundle_name=sample_id,
         files=[spring_file_1_with_tags, spring_file_2_with_tags],
+        created_at=timestamp,
+    )
+
+
+@pytest.fixture(scope="function")
+def flow_cell_bundle_data(
+    flow_cell_id: str,
+    sample_sheet: Path,
+    timestamp: datetime.datetime,
+    helpers: Helpers,
+) -> dict:
+    """Return a bundle containing mock sequencing files."""
+    return helpers.create_bundle_data(
+        bundle_name=flow_cell_id,
+        files=[{"file": sample_sheet, "tags": ["samplesheet"]}],
         created_at=timestamp,
     )
 
@@ -457,6 +478,12 @@ def checksum_file(fixtures_dir: Path) -> Path:
 
 
 @pytest.fixture(scope="function")
+def sample_sheet(fixtures_dir: Path) -> Path:
+    """Return the path to a vcf file."""
+    return Path(fixtures_dir, "SampleSheet.csv")
+
+
+@pytest.fixture(scope="function")
 def checksum(checksum_file: Path) -> Path:
     """Return the checksum for checksum test file."""
     return checksum_file.name.rstrip(".txt")
@@ -484,18 +511,18 @@ def store(project_dir: Path) -> Store:
 def populated_store(
     archiving_task_id: int,
     bundle_data: dict,
+    flow_cell_bundle_data: dict,
     helpers: Helpers,
     sample_bundle_data: dict,
     spring_file_1: Path,
     store: Store,
 ) -> Store:
     """Returns a populated store."""
-    helpers.add_bundle(store=store, bundle=bundle_data)
-    helpers.add_bundle(store=store, bundle=sample_bundle_data)
+    for bundle_dict in [bundle_data, sample_bundle_data, flow_cell_bundle_data]:
+        helpers.add_bundle(store=store, bundle=bundle_dict)
     helpers.add_archive(
         store=store,
         file_id=store.get_files(file_path=spring_file_1.as_posix()).first().id,
         archiving_task_id=archiving_task_id,
     )
-
     return store

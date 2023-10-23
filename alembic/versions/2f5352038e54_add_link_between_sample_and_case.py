@@ -31,5 +31,5 @@ def downgrade():
     op.add_column("sample", sa.Column("family_id", mysql.VARCHAR(length=128), nullable=False))
     op.add_column("sample", sa.Column("customer", mysql.VARCHAR(length=32), nullable=False))
     op.drop_constraint(None, "sample", type_="foreignkey")
-    op.drop_column("sample", "case_id")
+    op.drop_column("sample", "bundle_name")
     ### end Alembic commands ###

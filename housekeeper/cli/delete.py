@@ -5,6 +5,8 @@ import shutil
 from pathlib import Path
 
 import click
+import sqlalchemy
+from sqlalchemy.exc import MultipleResultsFound
 
 from housekeeper.date import get_date
 from housekeeper.store.api.core import Store
@@ -195,6 +197,38 @@ def file_cmd(context, yes, file_id):
     """Delete a file."""
     store: Store = context.obj["store"]
     file = store.get_file_by_id(file_id=file_id)
+    if not file:
+        LOG.info("file not found")
+        raise click.Abort
+
+    if file.is_included:
+        question = f"remove file from file system and database: {file.full_path}"
+    else:
+        question = f"remove file from database: {file.full_path}"
+
+    if yes or click.confirm(question):
+        if file.is_included and Path(file.full_path).exists():
+            Path(file.full_path).unlink()
+
+        store.session.delete(file)
+        store.session.commit()
+        LOG.info("file deleted")
+
+
+@delete.command("sample-sheet")
+@click.option("-y", "--yes", is_flag=True, help="skip checks")
+@click.argument("flow-cell-id", type=str)
+@click.pass_context
+def delete_sample_sheet(context, yes, flow_cell_id):
+    """Delete the samplesheet for the given flow_cell."""
+    store: Store = context.obj["store"]
+    try:
+        file = store.get_files(bundle_name=flow_cell_id, tag_names=["samplesheet"]).one()
+    except MultipleResultsFound as error:
+        LOG.error(
+            f"Found multiple sample sheets for flow cell {flow_cell_id}. Please curate manually"
+        )
+        raise click.abort() from error
     if not file:
         LOG.info("file not found")
         raise click.Abort

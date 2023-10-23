@@ -52,11 +52,11 @@ class Helpers:
         return new_archive
 
     @staticmethod
-    def create_bundle_data(case_id: str, files: list[dict], created_at: dt.datetime = None) -> dict:
+    def create_bundle_data(bundle_name: str, files: list[dict], created_at: dt.datetime = None) -> dict:
         """
         Create a new bundle_data dictionary with the given parameters.
 
-        :param case_id: The name of the bundle.
+        :param bundle_name: The name of the bundle.
         :param files: A list of dictionaries representing file data.
         :param created_at: The timestamp when the bundle was created (optional).
         :return: A dictionary representing the bundle data.
@@ -70,7 +70,7 @@ class Helpers:
         ]
 
         data = {
-            "name": case_id,
+            "name": bundle_name,
             "created_at": created_at,
             "files": files,
         }
