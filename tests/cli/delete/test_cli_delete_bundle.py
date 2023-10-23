@@ -1,5 +1,6 @@
 """Tests for delete CLI functions"""
 import logging
+
 from click import Context
 from click.testing import CliRunner
 
@@ -77,4 +78,4 @@ def test_delete_existing_bundle_no_versions_with_confirmation(
     # THEN assert it exits non zero
     assert result.exit_code == 0
     # THEN it should communicate that it was deleted
-    assert "Bundle deleted" in caplog.text
+    assert f"Deleted bundle {case_id}" in caplog.text

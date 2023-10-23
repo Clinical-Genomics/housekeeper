@@ -37,8 +37,9 @@ class Helpers:
     @staticmethod
     def add_bundle(store: Store, bundle: dict) -> None:
         """Add and commit bundle to housekeeper store"""
-        bundle_obj, _ = store.add_bundle(bundle)
+        bundle_obj, version = store.add_bundle(bundle)
         store.session.add(bundle_obj)
+        store.session.add(version)
         store.session.commit()
 
     @staticmethod

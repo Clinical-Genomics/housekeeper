@@ -4,16 +4,15 @@ import datetime as dt
 from pathlib import Path
 
 from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, orm, types
-from sqlalchemy.orm import declarative_base
-from sqlalchemy.orm import backref
+from sqlalchemy.orm import backref, declarative_base
 
 Model = declarative_base()
 
 file_tag_link = Table(
     "file_tag_link",
     Model.metadata,
-    Column("file_id", types.Integer, ForeignKey("file.id"), nullable=False),
-    Column("tag_id", types.Integer, ForeignKey("tag.id"), nullable=False),
+    Column("file_id", types.Integer, ForeignKey("file.id", ondelete="CASCADE"), nullable=False),
+    Column("tag_id", types.Integer, ForeignKey("tag.id", ondelete="CASCADE"), nullable=False),
     UniqueConstraint("file_id", "tag_id", name="_file_tag_uc"),
 )
 
@@ -44,6 +43,7 @@ class Bundle(Model):
         backref="bundle",
         order_by="-Version.created_at",
         cascade="delete, save-update",
+        cascade_backrefs=False,
     )
 
 
@@ -63,7 +63,9 @@ class Version(Model):
     archive_checksum = Column(types.String(256), unique=True)
 
     bundle_id = Column(ForeignKey(Bundle.id, ondelete="CASCADE"), nullable=False)
-    files = orm.relationship("File", backref="version", cascade="delete, save-update")
+    files = orm.relationship(
+        "File", backref="version", cascade="delete, save-update", cascade_backrefs=False
+    )
 
     app_root = None
 
@@ -89,7 +91,9 @@ class File(Model):
     to_archive = Column(types.Boolean, nullable=False, default=False)
 
     version_id = Column(ForeignKey(Version.id, ondelete="CASCADE"), nullable=False)
-    tags = orm.relationship("Tag", secondary=file_tag_link, backref="files")
+    tags = orm.relationship(
+        "Tag", secondary=file_tag_link, backref=backref("files", cascade_backrefs=False)
+    )
 
     app_root = None
 
