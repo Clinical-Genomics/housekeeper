@@ -31,7 +31,7 @@ class CreateHandler(BaseHandler):
         LOG.debug("Created new bundle: %s", new_bundle.name)
         return new_bundle
 
-    def add_bundle(self, data: dict) -> Tuple[Bundle, Version]:
+    def add_bundle(self, data: dict) -> Tuple[Bundle, Version] | None:
         """Build a new bundle version of files.
 
         The format of the input dict is defined in the `schema` module.

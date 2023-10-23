@@ -179,7 +179,9 @@ def test_get_ongoing_archiving_tasks(
     archive.archived_at = None
 
     # WHEN getting ongoing archiving tasks
-    ongoing_task_ids: set[int] = populated_store.get_ongoing_archiving_tasks()
+    ongoing_task_ids: set[int] = set(
+        archive_entry.archiving_task_id for archive_entry in populated_store.get_ongoing_archivals()
+    )
 
     # THEN the set should include the initial archiving task id
     assert archiving_task_id in ongoing_task_ids
@@ -194,7 +196,84 @@ def test_get_ongoing_retrieval_tasks(
     archive.retrieved_at = None
 
     # WHEN getting ongoing retrieval tasks
-    ongoing_task_ids: set[int] = populated_store.get_ongoing_retrieval_tasks()
+    ongoing_task_ids: set[int] = set(
+        archive_entry.retrieval_task_id
+        for archive_entry in populated_store.get_ongoing_retrievals()
+    )
 
     # THEN the set should include the initial retrieval task id
     assert retrieval_task_id in ongoing_task_ids
+
+
+def test_get_archive_entries_by_archiving_id(
+    archive: Archive, archiving_task_id: int, populated_store: Store
+):
+    """Tests that get_archives returns archive entries with the given archiving task id."""
+
+    # GIVEN a populated store with an archive entry
+
+    # WHEN getting entries with the matching archiving task id
+    archives: list[Archive] = populated_store.get_archives(archival_task_id=archiving_task_id)
+
+    # THEN the matching entry should have been returned
+    assert archive in archives
+
+
+def test_get_archive_entries_by_retrieval_id(retrieval_task_id: int, populated_store: Store):
+    """Tests that get_archives returns archive entries with the given archiving task id."""
+
+    # GIVEN a populated store with an archive entry
+
+    # WHEN getting entries with the matching retrieval task id
+    archives: list[Archive] = populated_store.get_archives(retrieval_task_id=retrieval_task_id)
+
+    # THEN an Archive entry should be returned
+    assert archives
+
+    # THEN all returned entries should have the specified retrieval task id
+    for archive in archives:
+        assert archive.retrieval_task_id == retrieval_task_id
+
+
+def test_archives_not_returned_via_archiving_id(archiving_task_id: int, populated_store: Store):
+    """Tests that only archives with matching archiving task ids are returned."""
+
+    # GIVEN a store with multiple archive entries, out of which only one has the provided archiving task id
+
+    # WHEN fetching all archives
+    all_archives: list[Archive] = populated_store.get_archives()
+
+    # WHEN fetching all archives with a specified archiving task id
+    selected_archives: list[Archive] | None = populated_store.get_archives(
+        archival_task_id=archiving_task_id
+    )
+
+    # THEN only archives with the matching retrieval task id is returned
+    assert len(all_archives) > len(selected_archives)
+    for archive in all_archives:
+        if archive.archiving_task_id == archiving_task_id:
+            assert archive in selected_archives
+        else:
+            assert archive not in selected_archives
+
+
+def test_archives_not_returned_via_retrieval_id(retrieval_task_id: int, populated_store: Store):
+    """Tests that only archives with matching retrieval task ids are returned."""
+
+    # GIVEN a store with multiple archive entries, out of which only one has the provided retrieval task id
+
+    # WHEN fetching all archives
+    all_archives: list[Archive] = populated_store.get_archives()
+
+    # WHEN fetching all archives with a specified retrieval task id
+    selected_archives: list[Archive] | None = populated_store.get_archives(
+        retrieval_task_id=retrieval_task_id
+    )
+
+    # THEN only archives with the matching retrieval task id is returned
+    assert len(all_archives) > len(selected_archives)
+    for archive in all_archives:
+        if archive.retrieval_task_id == retrieval_task_id:
+            assert archive in selected_archives
+        else:
+            assert archive not in selected_archives

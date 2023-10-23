@@ -41,7 +41,7 @@ class ArchiveFilter(Enum):
 
 
 def apply_archive_filter(
-    archives: Query, filter_functions: list[Callable], task_id: int = None
+    archives: Query, filter_functions: list[ArchiveFilter], task_id: int = None
 ) -> Query:
     """Apply filtering functions to archives and return filtered Query."""
     for filter_function in filter_functions:
