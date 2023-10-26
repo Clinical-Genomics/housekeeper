@@ -2,6 +2,8 @@ name: Build and publish image for branch
 
 on:
   push:
+    branches-ignore:
+      - 'master'
 
 env:
   DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
