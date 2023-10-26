@@ -23,6 +23,7 @@
 housekeeper-test-deploy <branch-name>
 housekeeper-test <command here>
 ```
+Any migrations need to be applied manually with alembic against the stage database.
 
 ### How to test
 - [ ] login to ...
