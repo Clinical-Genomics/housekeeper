@@ -8,6 +8,7 @@ When all tests are done and successful and the PR is approved by codeowners, fol
 2. Append version increment value `( major | minor | patch )` in the commit message to specify what kind of release is to be created.
 3. Review the details and merge the branch into master.
 4. Deploy the latest version to stage and production with `housekeeper-deploy`.
+5. Apply any migrations against the stage and prod databases with alembic.
 6. Take a screenshot or copy log text and post as a comment on the PR. Screenshot should include environment and that it succeeded.
 7. Great job :whale2:
 
