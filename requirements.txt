@@ -2,5 +2,5 @@ Click
 coloredlogs
 marshmallow
 pyyaml
-SQLAlchemy>=2.0
+SQLAlchemy
 rich
