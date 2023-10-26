@@ -28,7 +28,7 @@ If you would like to install the latest development version:
 ```bash
 git clone https://github.com/Clinical-Genomics/housekeeper
 cd housekeeper
-pip install --editable .
+poetry install
 ```
 
 ## Contributing
