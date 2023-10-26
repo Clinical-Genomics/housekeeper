@@ -6,49 +6,42 @@ on:
       - created
 
 jobs:
- build-n-publish:
-  name: Build and publish Python distribution to PyPI
-  runs-on: ubuntu-latest
-  steps:
-   - name: Check out git repository
-     uses: actions/checkout@v2.6.0
+  build-n-publish:
+    name: Build and publish Python distribution to PyPI
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v2.6.0
 
-   - name: Set up Python 3.11
-     uses: actions/setup-python@v2
-     with:
-      python-version: "3.11"
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.11"
 
-   - name: Install build tools
-     run: >-
-        python -m
-        pip install
-        wheel
-        twine
-        --user
+      - name: Install and configure Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: false
 
-   - name: Build a binary wheel and a source tarball
-     run: >-
-        python
-        setup.py
-        sdist
-        bdist_wheel
+      - name: Publish Distribution to PyPI 📦
+        env:
+          PYPI_USERNAME: __token__
+          PYPI_PASSWORD: ${{ secrets.pypi_password }}
+        run: |
+          poetry publish --no-interaction --build \
+            --username $PYPI_USERNAME \
+            --password $PYPI_PASSWORD
 
-   - name: Publish distribution 📦 to PyPI
-     uses: pypa/gh-action-pypi-publish@master
-     with:
-       user: __token__
-       password: ${{ secrets.pypi_password }}
-
- push_to_registry:
-   name: Push Docker image to Docker Hub
-   runs-on: ubuntu-latest
-   steps:
-     - name: Check out the repo
-       uses: actions/checkout@v2.6.0
-     - name: Push to Docker Hub
-       uses: docker/build-push-action@v3.2.0
-       with:
-         username: ${{ secrets.DOCKER_USERNAME }}
-         password: ${{ secrets.DOCKER_PASSWORD }}
-         repository: clinicalgenomics/housekeeper
-         tag_with_ref: true
+  push_to_registry:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2.6.0
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v3.2.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: clinicalgenomics/housekeeper
+          tag_with_ref: true
