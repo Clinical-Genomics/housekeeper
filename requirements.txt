@@ -4,3 +4,4 @@ marshmallow
 pyyaml
 SQLAlchemy
 rich
+pymysql
