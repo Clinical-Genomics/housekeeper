@@ -11,11 +11,7 @@ When all tests are done and successful and the PR is approved by codeowners, fol
 5. Apply any migrations against the stage and prod databases with alembic.
     - Ensure that you have the latest revisions in your branch.
     - Ensure that you have the correct tunnels open against Hasta.
-        ```bash
-        ssh -fN -L 18002:localhost:18002 first_name.last_name@hasta.scilifelab.se # Stage
-        ssh -fN -L 19002:localhost:19002 first_name.last_name@hasta.scilifelab.se # Production
-        ```
-    - Ensure that you point to the correct alembic config when you apply the revisions with `alembic --config <config path> upgrade head`
+    - Ensure that you point to the correct alembic config when you apply the revisions with `alembic --config <config path>` upgrade head`
 6. Take a screenshot or copy log text and post as a comment on the PR. Screenshot should include environment and that it succeeded.
 7. Great job :whale2:
 
