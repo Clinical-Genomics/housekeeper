@@ -179,12 +179,12 @@ class ReadHandler(BaseHandler):
             bundle_name=bundle_name,
             filter_functions=[BundleFilters.FILTER_BY_NAME],
         )
+        file_filter_functions = [FileFilter.FILTER_FILES_BY_IS_ARCHIVED]
+        if tags:
+            file_filter_functions.append(FileFilter.FILTER_FILES_BY_TAGS)
         return apply_file_filter(
             files=files_filtered_on_bundle,
-            filter_functions=[
-                FileFilter.FILTER_FILES_BY_TAGS,
-                FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
-            ],
+            filter_functions=file_filter_functions,
             is_archived=True,
             tag_names=tags,
         ).all()
@@ -196,12 +196,12 @@ class ReadHandler(BaseHandler):
             bundle_name=bundle_name,
             filter_functions=[BundleFilters.FILTER_BY_NAME],
         )
+        file_filter_functions = [FileFilter.FILTER_FILES_BY_IS_ARCHIVED]
+        if tags:
+            file_filter_functions.append(FileFilter.FILTER_FILES_BY_TAGS)
         return apply_file_filter(
             files=files_filtered_on_bundle,
-            filter_functions=[
-                FileFilter.FILTER_FILES_BY_TAGS,
-                FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
-            ],
+            filter_functions=file_filter_functions,
             is_archived=False,
             tag_names=tags,
         ).all()
@@ -234,12 +234,12 @@ class ReadHandler(BaseHandler):
 
     def get_all_non_archived_files(self, tag_names: list[str]) -> list[File]:
         """Return all spring files which are not marked as archived in Housekeeper."""
+        filter_functions = [FileFilter.FILTER_FILES_BY_IS_ARCHIVED]
+        if tag_names:
+            filter_functions.append(FileFilter.FILTER_FILES_BY_TAGS)
         return apply_file_filter(
             self._get_join_file_tags_archive_query(),
-            filter_functions=[
-                FileFilter.FILTER_FILES_BY_TAGS,
-                FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
-            ],
+            filter_functions=filter_functions,
             tag_names=tag_names,
             is_archived=False,
         ).all()
