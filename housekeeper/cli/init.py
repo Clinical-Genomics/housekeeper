@@ -1,4 +1,4 @@
-"""Initialise HousekeeperK db from CLI."""
+"""Initialise Housekeeper db from CLI."""
 import logging
 
 import click
