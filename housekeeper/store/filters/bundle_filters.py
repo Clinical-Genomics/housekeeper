@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Callable, Optional
+from typing import Callable
 
 from sqlalchemy.orm import Query
 
@@ -26,8 +26,8 @@ class BundleFilters(Enum):
 def apply_bundle_filter(
     bundles: Query,
     filter_functions: list[Callable],
-    bundle_name: Optional[str] = None,
-    bundle_id: Optional[int] = None,
+    bundle_name: str | None = None,
+    bundle_id: int | None = None,
 ) -> Query:
     """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:

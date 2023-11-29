@@ -1,16 +1,15 @@
-from typing import List, Optional
+from typing import List
 
 from sqlalchemy import create_engine, inspect
-from sqlalchemy.engine.reflection import Inspector
 from sqlalchemy.engine.base import Engine
+from sqlalchemy.engine.reflection import Inspector
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
 
 from housekeeper.exc import HousekeeperError
 from housekeeper.store.models import Model
 
-
-SESSION: Optional[Session] = None
-ENGINE: Optional[Engine] = None
+SESSION: Session | None = None
+ENGINE: Engine | None = None
 
 
 def initialize_database(db_uri: str) -> None:
