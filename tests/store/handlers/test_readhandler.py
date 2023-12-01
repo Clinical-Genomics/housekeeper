@@ -94,7 +94,7 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     assert len(files) == 0
 
 
-def test_get_archived_files_in_bundle(
+def test_get_archived_files_for_bundle(
     archived_file: Path,
     non_archived_file: Path,
     populated_store: Store,
@@ -117,7 +117,7 @@ def test_get_archived_files_in_bundle(
     assert non_archived_file not in archived_files
 
 
-def test_get_non_archived_files_in_bundle(
+def test_get_non_archived_files_for_bundle(
     archived_file: Path,
     non_archived_file: Path,
     populated_store: Store,
