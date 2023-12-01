@@ -1,8 +1,9 @@
 """Initialise HK db from CLI"""
 import logging
+from typing import List
 import click
-from housekeeper.store.api.core import Store
-from sqlalchemy import inspect
+
+from housekeeper.store.database import create_all_tables, drop_all_tables, get_tables
 
 
 LOG = logging.getLogger(__name__)
@@ -14,18 +15,16 @@ LOG = logging.getLogger(__name__)
 @click.pass_context
 def init(context, reset, force):
     """Setup the database."""
-    store: Store = context.obj["store"]
-    inspector = inspect(store.engine)
-    existing_tables = inspector.get_table_names()
+    existing_tables: List[str] = get_tables()
 
     if force or reset:
         if existing_tables and not force:
             message = f"Delete existing tables? [{', '.join(existing_tables)}]"
             click.confirm(click.style(message, fg="yellow"), abort=True)
-        store.drop_all()
+        drop_all_tables()
     elif existing_tables:
         LOG.error("Database already exists, use '--reset'")
         context.abort()
 
-    store.create_all()
-    LOG.info(f"Success! New tables: {', '.join(inspector.get_table_names())}")
+    create_all_tables()
+    LOG.info(f"Success! New tables: {', '.join(get_tables())}")

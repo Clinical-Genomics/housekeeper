@@ -16,9 +16,14 @@
 
 ### How to prepare for test
 
-- [ ] ssh to hasta (depending on type of change)
-- [ ] install on stage:
-```bash /home/proj/production/servers/resources/hasta.scilifelab.se/update-tool-stage.sh -e S_cg -t housekeeper -b YOURBRANCH```
+- [ ] ssh to Hasta
+- [ ] Test your branch with
+
+```bash
+housekeeper-test-deploy <branch-name>
+housekeeper-test <command here>
+```
+Any migrations need to be applied manually with alembic against the stage database.
 
 ### How to test
 - [ ] login to ...

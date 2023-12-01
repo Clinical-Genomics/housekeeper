@@ -2,5 +2,6 @@ Click
 coloredlogs
 marshmallow
 pyyaml
-SQLAlchemy>=1.3.0,<1.5.0
+SQLAlchemy
 rich
+pymysql
