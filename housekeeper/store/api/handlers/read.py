@@ -172,7 +172,7 @@ class ReadHandler(BaseHandler):
         files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
         return files_not_on_disk
 
-    def get_archived_files(self, bundle_name: str, tags: Optional[list]) -> list[File]:
+    def get_archived_files_for_bundle(self, bundle_name: str, tags: Optional[list]) -> list[File]:
         """Returns all files in the given bundle, with the given tags, and are archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
@@ -189,7 +189,9 @@ class ReadHandler(BaseHandler):
             tag_names=tags,
         ).all()
 
-    def get_non_archived_files(self, bundle_name: str, tags: Optional[list]) -> list[File]:
+    def get_non_archived_files_for_bundle(
+        self, bundle_name: str, tags: Optional[list]
+    ) -> list[File]:
         """Returns all files in the given bundle, with the given tags, and are not archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
@@ -226,17 +228,21 @@ class ReadHandler(BaseHandler):
         """Return the bundle name for the specified file."""
         return self.get_files(file_path=file_path).first().version.bundle.name
 
-    def get_all_non_archived_files(self, tag_names: list[str]) -> list[File]:
+    def get_non_archived_files(self, tag_names: list[str], limit: int | None = None) -> list[File]:
         """Return all spring files which are not marked as archived in Housekeeper."""
-        return apply_file_filter(
-            self._get_join_file_tags_archive_query(),
-            filter_functions=[
-                FileFilter.FILTER_FILES_BY_TAGS,
-                FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
-            ],
-            tag_names=tag_names,
-            is_archived=False,
-        ).all()
+        return (
+            apply_file_filter(
+                self._get_join_file_tags_archive_query(),
+                filter_functions=[
+                    FileFilter.FILTER_FILES_BY_TAGS,
+                    FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
+                ],
+                tag_names=tag_names,
+                is_archived=False,
+            )
+            .limit(limit)
+            .all()
+        )
 
     def get_archives(
         self, archival_task_id: int = None, retrieval_task_id: int = None

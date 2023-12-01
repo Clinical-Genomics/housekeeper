@@ -105,7 +105,9 @@ def test_get_archived_files(
     # WHEN asking for all archived files
     archived_files: list[Path] = [
         Path(file.path)
-        for file in populated_store.get_archived_files(bundle_name=sample_id, tags=[spring_tag])
+        for file in populated_store.get_archived_files_for_bundle(
+            bundle_name=sample_id, tags=[spring_tag]
+        )
     ]
 
     # THEN only one should be returned
@@ -126,7 +128,9 @@ def test_get_non_archived_files(
     # WHEN asking for all non-archived files
     archived_files: list[Path] = [
         Path(file.path)
-        for file in populated_store.get_non_archived_files(bundle_name=sample_id, tags=[spring_tag])
+        for file in populated_store.get_non_archived_files_for_bundle(
+            bundle_name=sample_id, tags=[spring_tag]
+        )
     ]
 
     # THEN only one should be returned
@@ -155,7 +159,7 @@ def test_get_all_non_archived_files(populated_store: Store, spring_tag: str):
     assert all_files
 
     # WHEN retrieving all non archived spring files
-    non_archived_spring_files: list[File] = populated_store.get_all_non_archived_files([spring_tag])
+    non_archived_spring_files: list[File] = populated_store.get_non_archived_files([spring_tag])
 
     # THEN entries should be returned
     assert non_archived_spring_files
