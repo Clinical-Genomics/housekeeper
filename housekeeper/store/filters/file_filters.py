@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Callable, Optional
+from typing import Callable
 
 from sqlalchemy import func as sqlalchemy_func
 from sqlalchemy.orm import Query
@@ -43,10 +43,10 @@ class FileFilter(Enum):
 def apply_file_filter(
     files: Query,
     filter_functions: list[Callable],
-    file_id: Optional[int] = None,
-    file_path: Optional[str] = None,
-    is_archived: Optional[bool] = None,
-    tag_names: Optional[list[str]] = None,
+    file_id: int | None = None,
+    file_path: str | None = None,
+    is_archived: bool | None = None,
+    tag_names: list[str] | None = None,
 ) -> Query:
     """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:

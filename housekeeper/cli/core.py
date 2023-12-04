@@ -1,11 +1,11 @@
 """Module for base CLI"""
 import logging
-from typing import Optional
 
 import click
 import coloredlogs
-import housekeeper
 import yaml
+
+import housekeeper
 from housekeeper.constants import ROOT
 from housekeeper.store import Store
 from housekeeper.store.database import initialize_database
@@ -25,8 +25,8 @@ LOG = logging.getLogger(__name__)
 def base(
     context: click.Context,
     config: click.File,
-    database: Optional[str],
-    root: Optional[str],
+    database: str | None,
+    root: str | None,
     log_level: str,
 ):
     """Housekeeper - Access your files!"""
