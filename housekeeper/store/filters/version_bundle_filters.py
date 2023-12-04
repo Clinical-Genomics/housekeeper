@@ -1,6 +1,6 @@
 import datetime as dt
 from enum import Enum
-from typing import Callable, Optional
+from typing import Callable
 
 from sqlalchemy.orm import Query
 
@@ -23,8 +23,8 @@ class VersionBundleFilters(Enum):
 def apply_version_bundle_filter(
     version_bundles: Query,
     filter_functions: list[Callable],
-    bundle_name: Optional[str] = None,
-    version_date: Optional[dt.datetime] = None,
+    bundle_name: str | None = None,
+    version_date: dt.datetime | None = None,
 ) -> Query:
     """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:
