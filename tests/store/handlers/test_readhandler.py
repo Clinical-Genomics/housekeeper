@@ -2,6 +2,8 @@
 from datetime import timedelta
 from pathlib import Path
 
+import pytest
+
 from housekeeper.store import Store
 from housekeeper.store.models import Archive, File, Tag
 
@@ -92,7 +94,7 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     assert len(files) == 0
 
 
-def test_get_archived_files(
+def test_get_archived_files_for_bundle(
     archived_file: Path,
     non_archived_file: Path,
     populated_store: Store,
@@ -105,7 +107,9 @@ def test_get_archived_files(
     # WHEN asking for all archived files
     archived_files: list[Path] = [
         Path(file.path)
-        for file in populated_store.get_archived_files(bundle_name=sample_id, tags=[spring_tag])
+        for file in populated_store.get_archived_files_for_bundle(
+            bundle_name=sample_id, tags=[spring_tag]
+        )
     ]
 
     # THEN only one should be returned
@@ -113,7 +117,7 @@ def test_get_archived_files(
     assert non_archived_file not in archived_files
 
 
-def test_get_non_archived_files(
+def test_get_non_archived_files_for_bundle(
     archived_file: Path,
     non_archived_file: Path,
     populated_store: Store,
@@ -126,7 +130,9 @@ def test_get_non_archived_files(
     # WHEN asking for all non-archived files
     archived_files: list[Path] = [
         Path(file.path)
-        for file in populated_store.get_non_archived_files(bundle_name=sample_id, tags=[spring_tag])
+        for file in populated_store.get_non_archived_files_for_bundle(
+            bundle_name=sample_id, tags=[spring_tag]
+        )
     ]
 
     # THEN only one should be returned
@@ -147,7 +153,8 @@ def test_get_bundle_name_from_file_path(
     assert bundle_name == sample_id
 
 
-def test_get_all_non_archived_files(populated_store: Store, spring_tag: str):
+@pytest.mark.parametrize("limit", [None, 0])
+def test_get_non_archived_files(populated_store: Store, spring_tag: str, limit: int | None):
     """Test that getting all non-archived spring files from the store
     returns all files fulfilling said condition."""
     # GIVEN a populated store containing SPRING and non-SPRING entries
@@ -155,19 +162,28 @@ def test_get_all_non_archived_files(populated_store: Store, spring_tag: str):
     assert all_files
 
     # WHEN retrieving all non archived spring files
-    non_archived_spring_files: list[File] = populated_store.get_all_non_archived_files([spring_tag])
+    non_archived_spring_files: list[File] = populated_store.get_non_archived_files(
+        tag_names=[spring_tag], limit=limit
+    )
 
-    # THEN entries should be returned
-    assert non_archived_spring_files
+    # WHEN no limit was set
+    if limit is None:
+        # THEN entries should be returned
+        assert non_archived_spring_files
 
-    # THEN all files with archives and the SPRING tag should be returned
-    for file in all_files:
-        if file not in non_archived_spring_files:
-            assert file.archive or spring_tag not in [tag.name for tag in file.tags]
-        else:
-            assert not file.archive
-            assert spring_tag in [tag.name for tag in file.tags]
-            assert file in non_archived_spring_files
+        # THEN all files with archives and the SPRING tag should be returned
+        for file in all_files:
+            if file not in non_archived_spring_files:
+                assert file.archive or spring_tag not in [tag.name for tag in file.tags]
+            else:
+                assert not file.archive
+                assert spring_tag in [tag.name for tag in file.tags]
+                assert file in non_archived_spring_files
+
+    # WHEN a limit is set to not fetch any files
+    else:
+        # THEN no files should be returned
+        assert not non_archived_spring_files
 
 
 def test_get_ongoing_archiving_tasks(
