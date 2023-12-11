@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Callable, Optional
+from typing import Callable
 
 from sqlalchemy.orm import Query
 
@@ -20,7 +20,7 @@ class TagFilter(Enum):
 def apply_tag_filter(
     tags: Query,
     filter_functions: list[Callable],
-    tag_name: Optional[str] = None,
+    tag_name: str | None = None,
 ) -> Query:
     """Apply filtering functions to tag and return filtered Query."""
     for filter_function in filter_functions:

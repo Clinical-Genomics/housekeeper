@@ -1,6 +1,6 @@
 from datetime import datetime
 from enum import Enum
-from typing import Callable, Optional
+from typing import Callable
 
 from sqlalchemy.orm import Query
 
@@ -27,8 +27,8 @@ class VersionFilter(Enum):
 def apply_version_filter(
     versions: Query,
     filter_functions: list[Callable],
-    version_id: Optional[int] = None,
-    before_date: Optional[datetime] = None,
+    version_id: int | None = None,
+    before_date: datetime | None = None,
 ) -> Query:
     """Apply filtering functions and return filtered query."""
     for filter_function in filter_functions:

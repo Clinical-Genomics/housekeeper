@@ -1,16 +1,13 @@
-from typing import List, Optional
-
 from sqlalchemy import create_engine, inspect
-from sqlalchemy.engine.reflection import Inspector
 from sqlalchemy.engine.base import Engine
+from sqlalchemy.engine.reflection import Inspector
 from sqlalchemy.orm import Session, scoped_session, sessionmaker
 
 from housekeeper.exc import HousekeeperError
 from housekeeper.store.models import Model
 
-
-SESSION: Optional[Session] = None
-ENGINE: Optional[Engine] = None
+SESSION: Session | None = None
+ENGINE: Engine | None = None
 
 
 def initialize_database(db_uri: str) -> None:
@@ -50,7 +47,7 @@ def drop_all_tables() -> None:
     Model.metadata.drop_all(bind=session.get_bind())
 
 
-def get_tables() -> List[str]:
+def get_tables() -> list[str]:
     """Get a list of all tables in housekeeper db."""
     engine: Engine = get_engine()
     inspector: Inspector = inspect(engine)
