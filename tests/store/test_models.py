@@ -1,6 +1,7 @@
 """Tests for the models"""
 
-from housekeeper.store import models
+from housekeeper.store import Store, models
+from housekeeper.store.models import Archive
 
 
 def test_instantiate_bundle_obj(case_id, timestamp):
@@ -31,3 +32,33 @@ def test_version_obj_full_path(project_dir, minimal_bundle_obj):
     # THEN it should point to the correct folder
     root_path = version_obj.full_path
     assert root_path == project_dir / minimal_bundle_obj.name / str(timestamp.date())
+
+
+def test_delete_file_cascades(archive: Archive, populated_store: Store):
+    """Tests that deleting a file deletes the associated archive entry."""
+
+    # GIVEN an archive entry
+    archive_task_id: int = archive.archiving_task_id
+    file_id: int = archive.file.id
+
+    # WHEN the file is deleted
+    populated_store.session.delete(archive.file)
+    populated_store.session.commit()
+
+    # THEN the archive entry should be deleted
+    for archive_entry in populated_store.get_archives(archival_task_id=archive_task_id):
+        assert not archive_entry.file.id == file_id
+
+
+def test_delete_archive_does_not_cascade(archive: Archive, populated_store: Store):
+    """Tests that deleting an archive entry does not delete the file entry."""
+
+    # GIVEN an archive entry
+    file_path: str = archive.file.path
+
+    # WHEN deleting the archive entry
+    populated_store.session.delete(archive)
+    populated_store.session.commit()
+
+    # THEN the file should still be in the store
+    assert populated_store.get_files(file_path=file_path)
