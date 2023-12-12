@@ -47,7 +47,7 @@ def test_delete_file_cascades(archive: Archive, populated_store: Store):
 
     # THEN the archive entry should be deleted
     for archive_entry in populated_store.get_archives(archival_task_id=archive_task_id):
-        assert not archive_entry.file.id == file_id
+        assert archive_entry.file.id != file_id
 
 
 def test_delete_archive_does_not_cascade(archive: Archive, populated_store: Store):
