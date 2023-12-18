@@ -44,7 +44,7 @@ def test_delete_files_non_existing_bundle(
 
 
 def test_delete_existing_bundle_with_confirmation(
-    populated_context: dict, cli_runner: CliRunner, case_id: str, caplog
+    populated_context: dict, cli_runner: CliRunner, caplog
 ):
     """Test to delete an existing bundle with confirmation"""
     caplog.set_level(logging.DEBUG)
@@ -65,7 +65,7 @@ def test_delete_existing_bundle_with_confirmation(
 
 
 def test_delete_existing_bundle_no_confirmation(
-    populated_context: dict, cli_runner: CliRunner, case_id: str, caplog
+    populated_context: dict, cli_runner: CliRunner, caplog
 ):
     """Test to delete an existing bundle without confirmation"""
     caplog.set_level(logging.DEBUG)
