@@ -3,7 +3,6 @@
 import logging
 from pathlib import Path
 
-from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
@@ -11,7 +10,7 @@ from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle, File
 
 
-def test_delete_files_non_specified(base_context: Context, cli_runner: CliRunner, caplog):
+def test_delete_files_non_specified(base_context: dict, cli_runner: CliRunner, caplog):
     """Test to delete files without specifying bundle name or tag"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a store and a cli runner
@@ -27,7 +26,7 @@ def test_delete_files_non_specified(base_context: Context, cli_runner: CliRunner
 
 
 def test_delete_files_non_existing_bundle(
-    base_context: Context, cli_runner: CliRunner, case_id: str, caplog
+    base_context: dict, cli_runner: CliRunner, case_id: str, caplog
 ):
     """Test to delete a non existing bundle"""
     caplog.set_level(logging.DEBUG)
@@ -45,7 +44,7 @@ def test_delete_files_non_existing_bundle(
 
 
 def test_delete_existing_bundle_with_confirmation(
-    populated_context: Context, cli_runner: CliRunner, case_id: str, caplog
+    populated_context: dict, cli_runner: CliRunner, case_id: str, caplog
 ):
     """Test to delete an existing bundle with confirmation"""
     caplog.set_level(logging.DEBUG)
@@ -66,7 +65,7 @@ def test_delete_existing_bundle_with_confirmation(
 
 
 def test_delete_existing_bundle_no_confirmation(
-    populated_context: Context, cli_runner: CliRunner, case_id: str, caplog
+    populated_context: dict, cli_runner: CliRunner, case_id: str, caplog
 ):
     """Test to delete an existing bundle without confirmation"""
     caplog.set_level(logging.DEBUG)
@@ -93,7 +92,7 @@ def test_delete_existing_bundle_no_confirmation(
 
 
 def test_delete_file_skip_archived(
-    populated_context: Context, cli_runner: CliRunner, spring_file_1: Path, caplog
+    populated_context: dict, cli_runner: CliRunner, spring_file_1: Path, caplog
 ):
     """Tests that an archived file is not deleted via the CLI."""
     caplog.set_level(logging.DEBUG)
@@ -113,9 +112,7 @@ def test_delete_file_skip_archived(
     assert store.get_files(file_path=spring_file_1.as_posix()).first()
 
 
-def test_delete_file(
-    populated_context: Context, cli_runner: CliRunner, spring_file_2: Path, caplog
-):
+def test_delete_file(populated_context: dict, cli_runner: CliRunner, spring_file_2: Path, caplog):
     """Tests that a non-archived file is deleted via the CLI."""
     caplog.set_level(logging.DEBUG)
 
