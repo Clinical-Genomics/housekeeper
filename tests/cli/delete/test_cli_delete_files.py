@@ -1,12 +1,14 @@
 """Tests for delete CLI functions"""
 
 import logging
+from pathlib import Path
+
 from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
 from housekeeper.store.api.core import Store
-from housekeeper.store.models import Bundle
+from housekeeper.store.models import Bundle, File
 
 
 def test_delete_files_non_specified(base_context: Context, cli_runner: CliRunner, caplog):
@@ -32,7 +34,7 @@ def test_delete_files_non_existing_bundle(
 
     # GIVEN a context with a store and a cli runner
 
-    # WHEN trying to delete a bundle
+    # WHEN trying to delete a bundle which does not exist
     result = cli_runner.invoke(delete.files_cmd, ["--bundle-name", case_id], obj=base_context)
 
     # THEN assert it exits non zero
@@ -88,3 +90,44 @@ def test_delete_existing_bundle_no_confirmation(
 
     # THEN the bundle should have been removed
     assert "deleted" in caplog.text
+
+
+def test_delete_file_skip_archived(
+    populated_context: Context, cli_runner: CliRunner, spring_file_1: Path, caplog
+):
+    """Tests that an archived file is not deleted via the CLI."""
+    caplog.set_level(logging.DEBUG)
+
+    # GIVEN a context with a populated store and a cli runner
+    store: Store = populated_context["store"]
+
+    # GIVEN a file with an archive entry
+    file: File = store.get_files(file_path=spring_file_1.as_posix()).first()
+    assert file.archive
+
+    # WHEN trying to delete the file
+    cli_runner.invoke(delete.file_cmd, ["--yes", str(file.id)], obj=populated_context)
+
+    # THEN the file should not have been deleted
+    assert "File is archived, please delete it with 'cg archive delete-file' instead" in caplog.text
+    assert store.get_files(file_path=spring_file_1.as_posix()).first()
+
+
+def test_delete_file(
+    populated_context: Context, cli_runner: CliRunner, spring_file_2: Path, caplog
+):
+    """Tests that a non-archived file is deleted via the CLI."""
+    caplog.set_level(logging.DEBUG)
+
+    # GIVEN a context with a populated store and a cli runner
+    store: Store = populated_context["store"]
+
+    # GIVEN a file with an archive entry
+    file: File = store.get_files(file_path=spring_file_2.as_posix()).first()
+    assert not file.archive
+
+    # WHEN trying to delete the file
+    cli_runner.invoke(delete.file_cmd, ["--yes", str(file.id)], obj=populated_context)
+
+    # THEN the file should have been deleted
+    assert not store.get_files(file_path=spring_file_2.as_posix()).first()
