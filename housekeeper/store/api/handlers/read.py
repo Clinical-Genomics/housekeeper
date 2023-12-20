@@ -8,10 +8,7 @@ from pathlib import Path
 from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.api.handlers.base import BaseHandler
-from housekeeper.store.filters.archive_filters import (
-    ArchiveFilter,
-    apply_archive_filter,
-)
+from housekeeper.store.filters.archive_filters import ArchiveFilter, apply_archive_filter
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
 from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
 from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
@@ -19,10 +16,7 @@ from housekeeper.store.filters.version_bundle_filters import (
     VersionBundleFilters,
     apply_version_bundle_filter,
 )
-from housekeeper.store.filters.version_filters import (
-    VersionFilter,
-    apply_version_filter,
-)
+from housekeeper.store.filters.version_filters import VersionFilter, apply_version_filter
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 
 LOG = logging.getLogger(__name__)
@@ -274,4 +268,22 @@ class ReadHandler(BaseHandler):
             archives=self._get_query(table=Archive),
             filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
             task_id=retrieval_task_id,
+        ).all()
+
+    def get_retrieved_files_for_bundle(
+        self, bundle_name: str, tag_names: list[str] | None = None
+    ) -> list[File]:
+        files_filtered_on_bundle: Query = apply_bundle_filter(
+            bundles=self._get_join_file_tags_archive_query(),
+            bundle_name=bundle_name,
+            filter_functions=[BundleFilters.FILTER_BY_NAME],
+        )
+        file_filters: list[callable] = [FileFilter.FILTER_FILES_BY_IS_RETRIEVED]
+        if tag_names:
+            file_filters.append(FileFilter.FILTER_FILES_BY_TAGS)
+        return apply_file_filter(
+            files=files_filtered_on_bundle,
+            filter_functions=file_filters,
+            tag_names=tag_names,
+            is_retrieved=True,
         ).all()

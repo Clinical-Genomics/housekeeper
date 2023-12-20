@@ -1,3 +1,5 @@
+import datetime
+
 import pytest
 from sqlalchemy.orm import Query
 
@@ -5,6 +7,7 @@ from housekeeper.store import Store
 from housekeeper.store.filters.file_filters import (
     filter_files_by_id,
     filter_files_by_is_archived,
+    filter_files_by_is_retrieved,
     filter_files_by_path,
     filter_files_by_tags,
 )
@@ -153,3 +156,35 @@ def test_filter_files_by_archive_false(populated_store: Store):
     # THEN none of the files returned should have an archive object linked to it
     for file in non_archived_files_query:
         assert file.archive is None
+
+
+def test_filter_files_by_retrieved_no_returned(populated_store: Store):
+    """Tests the filtering for non-archived files."""
+
+    # GIVEN a store without a single retrieved file
+
+    # WHEN filtering on retrieved files
+    retrieved_files: list[File] = filter_files_by_is_retrieved(
+        files=populated_store._get_join_file_tags_archive_query(),
+        is_retrieved=True,
+    ).all()
+
+    # THEN none of the files returned should have an archive object linked to it
+    assert not retrieved_files
+
+
+def test_filter_files_by_retrieved_finds_file(populated_store: Store, spring_file_1):
+    """Tests the filtering for non-archived files."""
+
+    # GIVEN a store with a single retrieved file
+    file: File = populated_store.get_files(file_path=spring_file_1.as_posix()).first()
+    file.archive.retrieved_at = datetime.datetime.now()
+
+    # WHEN filtering on retrieved files
+    retrieved_files: list[File] = filter_files_by_is_retrieved(
+        files=populated_store._get_join_file_tags_archive_query(),
+        is_retrieved=True,
+    ).all()
+
+    # THEN none of the files returned should have an archive object linked to it
+    assert retrieved_files == [file]

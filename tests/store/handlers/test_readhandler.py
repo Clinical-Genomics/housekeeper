@@ -1,4 +1,5 @@
 """Tests for finding tags in store."""
+import datetime
 from datetime import timedelta
 from pathlib import Path
 
@@ -293,3 +294,29 @@ def test_archives_not_returned_via_retrieval_id(retrieval_task_id: int, populate
             assert archive in selected_archives
         else:
             assert archive not in selected_archives
+
+
+@pytest.mark.parametrize("retrieved_at", [datetime.datetime.now(), None])
+def test_get_retrieved_files_for_bundle(
+    archived_file: Path,
+    populated_store: Store,
+    sample_id: str,
+    spring_tag: str,
+    retrieved_at: datetime.datetime | None,
+):
+    """Tests only getting the retrieved files for a bundle."""
+
+    # GIVEN a store with a file which is either retrieved or not retrieved
+    file: File = populated_store.get_files(file_path=archived_file.as_posix()).first()
+    file.archive.retrieved_at = retrieved_at
+
+    # WHEN getting retrieved files from the store for the files bundle
+    retrieved_files: list[File] = populated_store.get_retrieved_files_for_bundle(
+        bundle_name=file.version.bundle.name
+    )
+
+    # THEN the file should only be returned if retrieved_at is set on its Archive entry
+    if retrieved_at:
+        assert file in retrieved_files
+    else:
+        assert file not in retrieved_files

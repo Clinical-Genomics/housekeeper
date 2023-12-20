@@ -4,7 +4,7 @@ from typing import Callable
 from sqlalchemy import func as sqlalchemy_func
 from sqlalchemy.orm import Query
 
-from housekeeper.store.models import File, Tag
+from housekeeper.store.models import Archive, File, Tag
 
 
 def filter_files_by_id(files: Query, file_id: int, **kwargs) -> Query:
@@ -31,6 +31,13 @@ def filter_files_by_is_archived(files: Query, is_archived: bool, **kwargs) -> Qu
     return files.filter((File.archive != None) == is_archived)
 
 
+def filter_files_by_is_retrieved(files: Query, is_retrieved: bool, **kwargs) -> Query:
+    """Filters the query depending on if the files are retrieved or not."""
+    if is_retrieved:
+        return files.filter(File.archive).filter(Archive.retrieved_at)
+    return files.filter(File.archive == None).filter(Archive.retrieved_at == None)
+
+
 class FileFilter(Enum):
     """Define filter functions for Files joined tables."""
 
@@ -38,6 +45,7 @@ class FileFilter(Enum):
     FILTER_BY_PATH: Callable = filter_files_by_path
     FILTER_FILES_BY_TAGS: Callable = filter_files_by_tags
     FILTER_FILES_BY_IS_ARCHIVED: Callable = filter_files_by_is_archived
+    FILTER_FILES_BY_IS_RETRIEVED: Callable = filter_files_by_is_retrieved
 
 
 def apply_file_filter(
@@ -46,6 +54,7 @@ def apply_file_filter(
     file_id: int | None = None,
     file_path: str | None = None,
     is_archived: bool | None = None,
+    is_retrieved: bool | None = None,
     tag_names: list[str] | None = None,
 ) -> Query:
     """Apply filtering functions and return filtered query."""
@@ -55,6 +64,7 @@ def apply_file_filter(
             file_id=file_id,
             file_path=file_path,
             is_archived=is_archived,
+            is_retrieved=is_retrieved,
             tag_names=tag_names,
         )
     return files
