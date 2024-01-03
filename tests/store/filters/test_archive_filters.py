@@ -1,11 +1,15 @@
+import datetime
+
+import pytest
 from sqlalchemy.orm import Query
 
 from housekeeper.store import Store
 from housekeeper.store.filters.archive_filters import (
     filter_archiving_ongoing,
-    filter_retrieval_ongoing,
     filter_by_archiving_task_id,
     filter_by_retrieval_task_id,
+    filter_by_retrieved_before,
+    filter_retrieval_ongoing,
 )
 from housekeeper.store.models import Archive
 
@@ -58,7 +62,7 @@ def test_filter_by_archiving_task_id(archiving_task_id: int, populated_store: St
         assert archive.archiving_task_id == archiving_task_id
 
 
-def test_filter_by_retrival_task_id(
+def test_filter_by_retrieval_task_id(
     archive: Archive, retrieval_task_id: int, populated_store: Store
 ):
     """Tests the filtering of archives by retrieval task id."""
@@ -74,3 +78,34 @@ def test_filter_by_retrival_task_id(
     assert archives_with_given_task_id.count() > 0
     for archive in archives_with_given_task_id:
         assert archive.retrieval_task_id == retrieval_task_id
+
+
+@pytest.mark.parametrize(
+    "retrieved_at, expected_result",
+    [
+        (datetime.datetime(year=2023, month=12, day=12), False),
+        (datetime.datetime(year=2023, month=1, day=1), True),
+    ],
+)
+def test_filter_by_retrieved_before(
+    archive: Archive,
+    retrieval_task_id: int,
+    populated_store: Store,
+    retrieved_at: datetime,
+    expected_result: bool,
+):
+    """Tests filtering archives on only those retrieved before a given date."""
+    # GIVEN a store with an archive with the given retrieval task id and which was retrieved at the given time
+    archive.retrieval_task_id = retrieval_task_id
+    archive.retrieved_at = retrieved_at
+
+    # GIVEN that we want only files that were retrieved before 2023-06-06
+    date: datetime = datetime.datetime(year=2023, month=6, day=6)
+
+    # WHEN filtering by when it was retrieved
+    archives_retrieved_before_date: list[Archive] = filter_by_retrieved_before(
+        archives=populated_store._get_query(table=Archive), date=date
+    ).all()
+
+    # THEN the archive is only returned if it was retrieved before date
+    assert (archive in archives_retrieved_before_date) == expected_result
