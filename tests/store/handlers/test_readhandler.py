@@ -301,6 +301,7 @@ def test_archives_not_returned_via_retrieval_id(retrieval_task_id: int, populate
     [
         (datetime.datetime(year=2023, month=12, day=12), False),
         (datetime.datetime(year=2023, month=1, day=1), True),
+        (None, False),
     ],
 )
 def test_filter_by_retrieved_before(
