@@ -272,6 +272,7 @@ class ReadHandler(BaseHandler):
         ).all()
 
     def get_files_retrieved_before(self, date: datetime):
+        """Returns all files which were retrieved before the given date."""
         return apply_archive_filter(
             archives=self._get_join_file_tags_archive_query(),
             filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVED_BEFORE],
