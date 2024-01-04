@@ -320,7 +320,9 @@ def test_filter_by_retrieved_before(
     date: datetime = datetime.datetime(year=2023, month=6, day=6)
 
     # WHEN filtering by when it was retrieved
-    files_retrieved_before_date: list[File] = populated_store.get_files_retrieved_before(date=date)
+    files_retrieved_before_date: list[File] = populated_store.get_files_retrieved_before(
+        retrieved_before=date
+    )
 
     # THEN the archive is only returned if it was retrieved before date
     assert (archive.file in files_retrieved_before_date) == should_be_returned

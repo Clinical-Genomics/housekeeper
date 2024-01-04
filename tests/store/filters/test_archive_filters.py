@@ -100,11 +100,11 @@ def test_filter_by_retrieved_before(
     archive.retrieved_at = retrieved_at
 
     # GIVEN that we want only files that were retrieved before 2023-06-06
-    date: datetime = datetime.datetime(year=2023, month=6, day=6)
+    retrieved_before: datetime = datetime.datetime(year=2023, month=6, day=6)
 
     # WHEN filtering by when it was retrieved
     archives_retrieved_before_date: list[Archive] = filter_by_retrieved_before(
-        archives=populated_store._get_query(table=Archive), date=date
+        archives=populated_store._get_query(table=Archive), retrieved_before=retrieved_before
     ).all()
 
     # THEN the archive is only returned if it was retrieved before date
