@@ -271,10 +271,19 @@ class ReadHandler(BaseHandler):
             task_id=retrieval_task_id,
         ).all()
 
-    def get_files_retrieved_before(self, date: datetime):
+    def get_files_retrieved_before(
+        self, date: datetime, tag_names: list[str] | None = None
+    ) -> list[File]:
         """Returns all files which were retrieved before the given date."""
-        return apply_archive_filter(
+        old_enough_files: Query = apply_archive_filter(
             archives=self._get_join_file_tags_archive_query(),
             filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVED_BEFORE],
             retrieved_before=date,
         )
+        if tag_names:
+            return apply_file_filter(
+                files=old_enough_files,
+                filter_functions=[FileFilter.FILTER_FILES_BY_TAGS],
+                tag_names=tag_names,
+            ).all()
+        return old_enough_files.all()
