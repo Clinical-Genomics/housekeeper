@@ -306,7 +306,7 @@ def test_archives_not_returned_via_retrieval_id(retrieval_task_id: int, populate
         (None, [], False),
     ],
     ids=[
-        "Newly retrieved file",
+        "Nwly retrieved file",
         "Old retrieved file",
         "Old retrieved Spring file",
         "Old retrieved Fastq file",
