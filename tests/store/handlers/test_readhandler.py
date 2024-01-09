@@ -297,11 +297,13 @@ def test_archives_not_returned_via_retrieval_id(retrieval_task_id: int, populate
 
 
 @pytest.mark.parametrize(
-    "retrieved_at, should_be_returned",
+    "retrieved_at, tags, should_be_returned",
     [
-        (datetime.datetime(year=2023, month=12, day=12), False),
-        (datetime.datetime(year=2023, month=1, day=1), True),
-        (None, False),
+        (datetime.datetime(year=2023, month=12, day=12), [], False),
+        (datetime.datetime(year=2023, month=1, day=1), [], True),
+        (datetime.datetime(year=2023, month=1, day=1), ["spring"], True),
+        (datetime.datetime(year=2023, month=1, day=1), ["fastq"], False),
+        (None, [], False),
     ],
 )
 def test_filter_by_retrieved_before(
@@ -309,18 +311,21 @@ def test_filter_by_retrieved_before(
     retrieval_task_id: int,
     populated_store: Store,
     retrieved_at: datetime,
+    tags: list[str],
     should_be_returned: bool,
 ):
-    """Tests filtering archives on only those retrieved before a given date."""
+    """Tests filtering archives on only those retrieved before a given date or tagged with the given tags."""
     # GIVEN a store with an archive with the given retrieval task id and which was retrieved at the given time
     archive.retrieval_task_id = retrieval_task_id
     archive.retrieved_at = retrieved_at
 
-    # GIVEN that we want only files that were retrieved before 2023-06-06
+    # GIVEN that we want only files that were retrieved before 2023-06-06 and tagged with the provided tags
     date: datetime = datetime.datetime(year=2023, month=6, day=6)
 
     # WHEN filtering by when it was retrieved
-    files_retrieved_before_date: list[File] = populated_store.get_files_retrieved_before(date=date)
+    files_retrieved_before_date: list[File] = populated_store.get_files_retrieved_before(
+        date=date, tag_names=tags
+    )
 
     # THEN the archive is only returned if it was retrieved before date
     assert (archive.file in files_retrieved_before_date) == should_be_returned
