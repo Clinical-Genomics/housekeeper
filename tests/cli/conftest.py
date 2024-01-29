@@ -5,12 +5,12 @@ import datetime
 import pytest
 from click.testing import CliRunner
 
-from housekeeper.store.core import Store
 from housekeeper.store.database import (
     create_all_tables,
     drop_all_tables,
     initialize_database,
 )
+from housekeeper.store.store import Store
 from tests.helper_functions import Helpers
 
 

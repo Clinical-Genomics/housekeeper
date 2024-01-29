@@ -6,8 +6,8 @@ from pathlib import Path
 
 import pytest
 
-from housekeeper.store.core import Store
 from housekeeper.store.models import Archive, File, Tag
+from housekeeper.store.store import Store
 
 
 def test_tag_with_tag_name(populated_store: Store, sample_tag_name: str):

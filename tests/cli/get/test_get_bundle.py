@@ -1,8 +1,8 @@
 """Tests for adding via CLI"""
 
 from housekeeper.cli.get import bundle_cmd
-from housekeeper.store.core import Store
 from housekeeper.store.models import Bundle
+from housekeeper.store.store import Store
 
 
 def test_get_existing_bundle_name(populated_context, cli_runner, helpers):

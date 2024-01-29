@@ -3,7 +3,6 @@ import datetime
 import pytest
 from sqlalchemy.orm import Query
 
-from housekeeper.store.core import Store
 from housekeeper.store.filters.archive_filters import (
     filter_archiving_ongoing,
     filter_by_archiving_task_id,
@@ -12,6 +11,7 @@ from housekeeper.store.filters.archive_filters import (
     filter_retrieval_ongoing,
 )
 from housekeeper.store.models import Archive
+from housekeeper.store.store import Store
 
 
 def test_filter_archiving_ongoing(populated_store: Store, archiving_task_id: int):

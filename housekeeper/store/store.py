@@ -13,26 +13,17 @@ from housekeeper.store.models import File, Version
 LOG = logging.getLogger(__name__)
 
 
-class CoreHandler(CreateHandler, ReadHandler, UpdateHandler):
-    """Aggregating class for the store api handlers"""
-
-    def __init__(self, session):
-        ReadHandler(session)
-        CreateHandler(session)
-        UpdateHandler(session)
-
-
-class Store(CoreHandler):
+class Store(CreateHandler, ReadHandler, UpdateHandler):
     """
     Handles interactions with the database in the context when a temporary
-    database connection is needed, e.g. a command line interface.
-
-    Args:
-        uri (str): SQLAlchemy database connection str
+    database connection is needed, e.g., a command line interface.
     """
 
     def __init__(self, root: str):
         self.session = get_session()
+        ReadHandler(self.session)
+        CreateHandler(self.session)
+        UpdateHandler(self.session)
 
         LOG.debug("Initializing Store")
         File.app_root = Path(root)

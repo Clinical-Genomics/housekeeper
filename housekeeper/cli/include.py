@@ -8,7 +8,7 @@ import click
 from housekeeper.constants import ROOT
 from housekeeper.exc import VersionIncludedError
 from housekeeper.include import include_version
-from housekeeper.store.core import Store
+from housekeeper.store.store import Store
 
 LOG = logging.getLogger(__name__)
 

@@ -6,8 +6,8 @@ import pytest
 from sqlalchemy.exc import IntegrityError
 
 from housekeeper.store.api import schema
-from housekeeper.store.core import Store
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
+from housekeeper.store.store import Store
 
 
 def test_schema_with_invalid_input(bundle_data_json):

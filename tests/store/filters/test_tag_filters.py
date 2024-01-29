@@ -1,12 +1,12 @@
 from sqlalchemy.orm import Query
 
-from housekeeper.store.core import Store
 from housekeeper.store.filters.tag_filters import (
     TagFilter,
     apply_tag_filter,
     filter_tag_by_name,
 )
 from housekeeper.store.models import Tag
+from housekeeper.store.store import Store
 
 
 def test_filter_tag_by_name_returns_correct_tag(populated_store: Store, sample_tag_name: str):

@@ -6,8 +6,8 @@ from pathlib import Path
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
-from housekeeper.store.core import Store
 from housekeeper.store.models import Bundle, File
+from housekeeper.store.store import Store
 
 
 def test_delete_files_non_specified(base_context: dict, cli_runner: CliRunner, caplog):

@@ -5,8 +5,8 @@ import json
 from typing import Iterable
 
 from housekeeper.constants import LOGLEVELS
-from housekeeper.store.core import Store
 from housekeeper.store.models import Archive
+from housekeeper.store.store import Store
 
 
 class Helpers:

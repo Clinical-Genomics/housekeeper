@@ -1,7 +1,7 @@
 """Tests for the models"""
 
-from housekeeper.store.core import Store
 from housekeeper.store.models import Archive, Bundle, Version
+from housekeeper.store.store import Store
 
 
 def test_instantiate_bundle_obj(case_id, timestamp):
