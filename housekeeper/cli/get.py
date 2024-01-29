@@ -1,4 +1,5 @@
 """Code for CLI get"""
+
 import json as jsonlib
 import logging
 

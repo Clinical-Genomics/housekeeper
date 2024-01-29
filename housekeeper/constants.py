@@ -1,4 +1,5 @@
 """Constants for housekeeper"""
+
 from datetime import timedelta
 
 LOGLEVELS = ["DEBUG", "INFO", "WARNING", "CRITICAL"]

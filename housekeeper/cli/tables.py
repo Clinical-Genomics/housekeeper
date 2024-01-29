@@ -1,4 +1,5 @@
 """Code for building tables that are displayed in the terminal"""
+
 import re
 from pathlib import Path
 

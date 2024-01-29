@@ -1,4 +1,5 @@
 """Module for adding via CLI"""
+
 import datetime as dt
 import logging
 from logging import Logger

@@ -1,4 +1,5 @@
 """Tests for store core functions."""
+
 from pathlib import Path
 
 import pytest

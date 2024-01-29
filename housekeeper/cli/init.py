@@ -1,4 +1,5 @@
 """Initialise HK db from CLI"""
+
 import logging
 
 import click
