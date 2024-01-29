@@ -7,7 +7,7 @@ from typing import Dict, Tuple
 
 from sqlalchemy.orm import Session
 
-from housekeeper.store.crud.base import BaseHandler
+from housekeeper.store.base import BaseHandler
 from housekeeper.store.crud.read import ReadHandler
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 

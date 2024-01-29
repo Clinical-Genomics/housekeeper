@@ -9,7 +9,7 @@ from pathlib import Path
 
 from sqlalchemy.orm import Query, Session
 
-from housekeeper.store.crud.base import BaseHandler
+from housekeeper.store.base import BaseHandler
 from housekeeper.store.filters.archive_filters import (
     ArchiveFilter,
     apply_archive_filter,
