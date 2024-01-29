@@ -1,7 +1,8 @@
 """Fixture for the Store tests"""
+
 import datetime
-from copy import deepcopy
 import datetime as dt
+from copy import deepcopy
 
 import pytest
 

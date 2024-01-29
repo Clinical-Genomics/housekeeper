@@ -1,4 +1,5 @@
 """Based on https://github.com/pypa/sampleproject/blob/master/setup.py."""
+
 import io
 
 # To use a consistent encoding

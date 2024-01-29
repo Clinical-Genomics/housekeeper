@@ -1,6 +1,7 @@
 """
 This module handles updating entries in the store/database.
 """
+
 import logging
 from datetime import datetime
 

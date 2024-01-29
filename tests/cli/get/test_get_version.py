@@ -1,7 +1,7 @@
 """Tests for get version CLI functionality"""
+
 import logging
 
-from datetime import datetime
 from click import Context
 from click.testing import CliRunner
 

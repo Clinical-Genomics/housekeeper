@@ -1,4 +1,5 @@
 """Tests for finding tags in store."""
+
 import datetime
 from datetime import timedelta
 from pathlib import Path

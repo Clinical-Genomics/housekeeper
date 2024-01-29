@@ -1,4 +1,5 @@
 """Tests for adding versions via CLI"""
+
 import json
 import logging
 

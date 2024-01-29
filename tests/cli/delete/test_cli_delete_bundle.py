@@ -1,4 +1,5 @@
 """Tests for delete CLI functions"""
+
 import logging
 
 from click import Context
@@ -37,7 +38,7 @@ def test_delete_existing_bundle_with_version(
     assert len(bundle_obj.versions) > 0
 
     # WHEN trying to delete a bundle
-    result = cli_runner.invoke(delete.bundle_cmd, [case_id], obj=populated_context)
+    cli_runner.invoke(delete.bundle_cmd, [case_id], obj=populated_context)
 
     # THEN it should ask if you are sure
     assert "Can not delete bundle, please remove all versions first" in caplog.text

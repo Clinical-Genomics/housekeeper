@@ -1,4 +1,5 @@
 """Tests for adding tags via CLI"""
+
 import logging
 
 from housekeeper.cli.add import tag_cmd

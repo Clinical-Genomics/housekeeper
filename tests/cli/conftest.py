@@ -1,10 +1,16 @@
 """Fixtures for CLI tests"""
+
 import datetime
 
 import pytest
 from click.testing import CliRunner
+
 from housekeeper.store import Store
-from housekeeper.store.database import create_all_tables, drop_all_tables, initialize_database
+from housekeeper.store.database import (
+    create_all_tables,
+    drop_all_tables,
+    initialize_database,
+)
 from tests.helper_functions import Helpers
 
 

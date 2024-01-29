@@ -1,4 +1,5 @@
 """Tests for adding bundles via CLI"""
+
 import json
 import logging
 

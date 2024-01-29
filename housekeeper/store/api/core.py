@@ -4,10 +4,10 @@
 import logging
 from pathlib import Path
 
-from housekeeper.store.database import get_session
-from housekeeper.store.api.handlers.update import UpdateHandler
 from housekeeper.store.api.handlers.create import CreateHandler
 from housekeeper.store.api.handlers.read import ReadHandler
+from housekeeper.store.api.handlers.update import UpdateHandler
+from housekeeper.store.database import get_session
 from housekeeper.store.models import File, Version
 
 LOG = logging.getLogger(__name__)
@@ -23,7 +23,6 @@ class CoreHandler(CreateHandler, ReadHandler, UpdateHandler):
 
 
 class Store(CoreHandler):
-
     """
     Handles interactions with the database in the context when a temporary
     database connection is needed, e.g. a command line interface.

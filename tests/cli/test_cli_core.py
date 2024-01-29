@@ -1,4 +1,5 @@
 """Tests for the core cli"""
+
 import logging
 
 import housekeeper

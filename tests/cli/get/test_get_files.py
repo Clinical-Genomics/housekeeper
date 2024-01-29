@@ -1,7 +1,9 @@
 """Tests for cli get file functionality"""
+
 from pathlib import Path
+
 from housekeeper.cli.get import files_cmd
-from housekeeper.cli.tables import squash_names, _get_suffix
+from housekeeper.cli.tables import _get_suffix, squash_names
 from housekeeper.store.api.core import Store
 
 

@@ -1,4 +1,5 @@
 """Module for base CLI"""
+
 import logging
 
 import click

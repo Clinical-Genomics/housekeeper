@@ -1,4 +1,5 @@
 """Tests for adding via CLI"""
+
 from housekeeper.cli.get import bundle_cmd
 from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle
