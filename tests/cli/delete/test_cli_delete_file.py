@@ -6,7 +6,7 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
-from housekeeper.store.api.core import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import File
 
 
@@ -60,7 +60,7 @@ def test_delete_existing_file_no_confirmation(
     assert file_obj
 
     # WHEN trying to delete the file
-    result = cli_runner.invoke(delete.file_cmd, [str(file_id), "--yes"], obj=populated_context)
+    cli_runner.invoke(delete.file_cmd, [str(file_id), "--yes"], obj=populated_context)
 
     # THEN file delete should be in output
     assert "file deleted" in caplog.text

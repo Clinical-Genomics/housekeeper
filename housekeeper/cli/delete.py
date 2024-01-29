@@ -7,7 +7,7 @@ from pathlib import Path
 import click
 
 from housekeeper.date import get_date
-from housekeeper.store.api.core import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import File, Tag
 
 LOG = logging.getLogger(__name__)

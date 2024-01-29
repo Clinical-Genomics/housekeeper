@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Query
 
-from housekeeper.store import Store
+from housekeeper.store.core import Store
 from housekeeper.store.filters.tag_filters import (
     TagFilter,
     apply_tag_filter,

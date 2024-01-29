@@ -5,7 +5,7 @@ import json
 from typing import Iterable
 
 from housekeeper.constants import LOGLEVELS
-from housekeeper.store import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import Archive
 
 

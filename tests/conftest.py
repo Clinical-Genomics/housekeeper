@@ -11,7 +11,7 @@ import pytest
 import yaml
 
 from housekeeper.date import get_date
-from housekeeper.store import Store
+from housekeeper.store.core import Store
 from housekeeper.store.database import (
     create_all_tables,
     drop_all_tables,

@@ -4,9 +4,9 @@
 import logging
 from pathlib import Path
 
-from housekeeper.store.api.handlers.create import CreateHandler
-from housekeeper.store.api.handlers.read import ReadHandler
-from housekeeper.store.api.handlers.update import UpdateHandler
+from housekeeper.store.crud.create import CreateHandler
+from housekeeper.store.crud.read import ReadHandler
+from housekeeper.store.crud.update import UpdateHandler
 from housekeeper.store.database import get_session
 from housekeeper.store.models import File, Version
 

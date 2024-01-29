@@ -6,7 +6,7 @@ import pytest
 from sqlalchemy.exc import IntegrityError
 
 from housekeeper.store.api import schema
-from housekeeper.store.api.core import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 
 

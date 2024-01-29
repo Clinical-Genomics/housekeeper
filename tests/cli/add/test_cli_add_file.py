@@ -7,7 +7,7 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli.add import file_cmd
-from housekeeper.store import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import Bundle, Version
 
 NEW_FILE_ADDED: str = "new file added"

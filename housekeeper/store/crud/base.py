@@ -1,8 +1,10 @@
 """This module defines a BaseHandler class holding different models"""
 
 from typing import Type
-from housekeeper.store.models import Archive, Bundle, File, Version, Tag, Model
+
 from sqlalchemy.orm import Query, Session
+
+from housekeeper.store.models import File, Model, Version
 
 
 class BaseHandler:

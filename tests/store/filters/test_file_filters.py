@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy.orm import Query
 
-from housekeeper.store import Store
+from housekeeper.store.core import Store
 from housekeeper.store.filters.file_filters import (
     filter_files_by_id,
     filter_files_by_is_archived,

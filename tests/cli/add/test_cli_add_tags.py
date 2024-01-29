@@ -3,7 +3,7 @@
 import logging
 
 from housekeeper.cli.add import tag_cmd
-from housekeeper.store.api.core import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import File
 
 

@@ -8,7 +8,7 @@ from click.testing import CliRunner
 
 from housekeeper.cli.include import include
 from housekeeper.constants import ROOT
-from housekeeper.store.api.core import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import Bundle, Version
 
 

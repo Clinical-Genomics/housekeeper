@@ -6,7 +6,7 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
-from housekeeper.store.api.core import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import File, Tag
 
 

@@ -7,7 +7,7 @@ import click
 from rich.console import Console
 
 from housekeeper.store.api import schema
-from housekeeper.store.api.core import Store
+from housekeeper.store.core import Store
 from housekeeper.store.models import Version
 
 from .tables import (
