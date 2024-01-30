@@ -6,6 +6,7 @@ import json
 import shutil
 from copy import deepcopy
 from pathlib import Path
+from typing import Generator
 
 import pytest
 import yaml
@@ -478,7 +479,7 @@ def checksum(checksum_file: Path) -> Path:
 
 
 @pytest.fixture(scope="function")
-def store(project_dir: Path) -> Store:
+def store(project_dir: Path) -> Generator[Store, None, None]:
     """Return a store setup with all tables."""
     initialize_database("sqlite:///")
     _store = Store(root=str(project_dir))

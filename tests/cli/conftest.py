@@ -1,6 +1,8 @@
 """Fixtures for CLI tests"""
 
 import datetime
+from pathlib import Path
+from typing import Generator
 
 import pytest
 from click.testing import CliRunner
@@ -15,8 +17,8 @@ from tests.helper_functions import Helpers
 
 
 @pytest.fixture(scope="function")
-def store(project_dir, db_uri):
-    """Override the store fixture to get a controlled db path"""
+def store(project_dir: Path, db_uri: str) -> Generator[Store, None, None]:
+    """Override the store fixture to get a controlled db path."""
     initialize_database(db_uri)
     _store = Store(root=str(project_dir))
     create_all_tables()
