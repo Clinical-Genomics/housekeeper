@@ -7,8 +7,8 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli.add import bundle_cmd
-from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle
+from housekeeper.store.store import Store
 
 
 def test_add_existing_bundle(populated_context: Context, cli_runner: CliRunner, caplog):

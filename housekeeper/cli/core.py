@@ -8,8 +8,8 @@ import yaml
 
 import housekeeper
 from housekeeper.constants import ROOT
-from housekeeper.store import Store
 from housekeeper.store.database import initialize_database
+from housekeeper.store.store import Store
 
 from . import add, delete, get, include, init
 

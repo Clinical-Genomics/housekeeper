@@ -7,7 +7,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Session
 
-from housekeeper.store.api.handlers.base import BaseHandler
+from housekeeper.store.base import BaseHandler
 from housekeeper.store.filters.archive_filters import (
     ArchiveFilter,
     apply_archive_filter,

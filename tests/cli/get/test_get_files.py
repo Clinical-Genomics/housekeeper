@@ -4,7 +4,7 @@ from pathlib import Path
 
 from housekeeper.cli.get import files_cmd
 from housekeeper.cli.tables import _get_suffix, squash_names
-from housekeeper.store.api.core import Store
+from housekeeper.store.store import Store
 
 
 def test_get_files_no_files(base_context, cli_runner, helpers):

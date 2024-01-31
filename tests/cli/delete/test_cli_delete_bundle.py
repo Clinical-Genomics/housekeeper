@@ -6,7 +6,7 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli import delete
-from housekeeper.store.api.core import Store
+from housekeeper.store.store import Store
 
 
 def test_delete_non_existing_bundle(base_context: Context, cli_runner: CliRunner, caplog):

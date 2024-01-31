@@ -6,8 +6,8 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli.get import version_cmd
-from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle, Version
+from housekeeper.store.store import Store
 
 
 def test_get_version_no_input(populated_context: Context, cli_runner: CliRunner, caplog):

@@ -1,11 +1,11 @@
 from sqlalchemy.orm import Query
 
-from housekeeper.store import Store
-from housekeeper.store.models import Bundle
 from housekeeper.store.filters.bundle_filters import (
-    filter_bundle_by_name,
     filter_bundle_by_id,
+    filter_bundle_by_name,
 )
+from housekeeper.store.models import Bundle
+from housekeeper.store.store import Store
 
 
 def test_get_query_returns_query_object(populated_store: Store):
