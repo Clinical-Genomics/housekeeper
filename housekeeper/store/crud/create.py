@@ -59,7 +59,7 @@ class CreateHandler(BaseHandler):
         """Create file objects and the tags and add them to a version object"""
 
         tag_names = {tag_name for file_data in files for tag_name in file_data["tags"]}
-        tag_map = self._build_tags(list(tag_names))
+        tag_map: dict[str, Tag] = self._build_tags(list(tag_names))
 
         for file_data in files:
             # This if can be removed after decoupling
@@ -94,7 +94,7 @@ class CreateHandler(BaseHandler):
             LOG.debug("version of bundle already added")
             return None
 
-        version = self.new_version(
+        version: Version = self.new_version(
             created_at=created_at,
             expires_at=data.get("expires_at", data.get("expires")),
         )
