@@ -43,7 +43,7 @@ class UpdateHandler(BaseHandler):
         """Sets the archived_at field to now for all archives with the given archiving task id."""
         completed_archives: list[Archive] = apply_archive_filter(
             archives=self._get_query(table=Archive),
-            filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK_ID],
+            filter_functions=[ArchiveFilter.BY_ARCHIVING_TASK_ID],
             task_id=archiving_task_id,
         ).all()
         for archive in completed_archives:
@@ -53,7 +53,7 @@ class UpdateHandler(BaseHandler):
         """Sets the archived_at field to now for all archives with the given archiving task id."""
         completed_archives: list[Archive] = apply_archive_filter(
             archives=self._get_query(table=Archive),
-            filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
+            filter_functions=[ArchiveFilter.BY_RETRIEVAL_TASK_ID],
             task_id=retrieval_task_id,
         ).all()
         for archive in completed_archives:

@@ -34,10 +34,10 @@ def filter_files_by_is_archived(files: Query, is_archived: bool, **kwargs) -> Qu
 class FileFilter(Enum):
     """Define filter functions for Files joined tables."""
 
-    FILTER_BY_ID: Callable = filter_files_by_id
-    FILTER_BY_PATH: Callable = filter_files_by_path
-    FILTER_FILES_BY_TAGS: Callable = filter_files_by_tags
-    FILTER_FILES_BY_IS_ARCHIVED: Callable = filter_files_by_is_archived
+    BY_ID: Callable = filter_files_by_id
+    BY_PATH: Callable = filter_files_by_path
+    FILES_BY_TAGS: Callable = filter_files_by_tags
+    FILES_BY_IS_ARCHIVED: Callable = filter_files_by_is_archived
 
 
 def apply_file_filter(

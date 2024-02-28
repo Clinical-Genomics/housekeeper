@@ -19,8 +19,8 @@ def filter_bundle_by_id(bundles: Query, bundle_id: int, **kwargs) -> Query:
 class BundleFilters(Enum):
     """Define Bundle filter functions."""
 
-    FILTER_BY_NAME: Callable = filter_bundle_by_name
-    FILTER_BY_ID: Callable = filter_bundle_by_id
+    BY_NAME: Callable = filter_bundle_by_name
+    BY_ID: Callable = filter_bundle_by_id
 
 
 def apply_bundle_filter(

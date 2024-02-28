@@ -17,7 +17,7 @@ def filter_version_by_name_and_bundle_date(
 class VersionBundleFilters(Enum):
     """Define Version filter functions."""
 
-    FILTER_BY_DATE_AND_NAME: Callable = filter_version_by_name_and_bundle_date
+    BY_DATE_AND_NAME: Callable = filter_version_by_name_and_bundle_date
 
 
 def apply_version_bundle_filter(
