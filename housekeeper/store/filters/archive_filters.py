@@ -40,11 +40,11 @@ def filter_by_retrieved_before(archives: Query, retrieved_before: datetime, **kw
 class ArchiveFilter(Enum):
     """Define Archive filter functions."""
 
-    FILTER_ARCHIVING_ONGOING: Callable = filter_archiving_ongoing
-    FILTER_RETRIEVAL_ONGOING: Callable = filter_retrieval_ongoing
-    FILTER_BY_ARCHIVING_TASK_ID: Callable = filter_by_archiving_task_id
-    FILTER_BY_RETRIEVAL_TASK_ID: Callable = filter_by_retrieval_task_id
-    FILTER_BY_RETRIEVED_BEFORE: Callable = filter_by_retrieved_before
+    ARCHIVING_ONGOING: Callable = filter_archiving_ongoing
+    RETRIEVAL_ONGOING: Callable = filter_retrieval_ongoing
+    BY_ARCHIVING_TASK_ID: Callable = filter_by_archiving_task_id
+    BY_RETRIEVAL_TASK_ID: Callable = filter_by_retrieval_task_id
+    BY_RETRIEVED_BEFORE: Callable = filter_by_retrieved_before
 
 
 def apply_archive_filter(

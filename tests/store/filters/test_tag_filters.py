@@ -74,7 +74,7 @@ def test_apply_tag_filter_without_tag_name(populated_store: Store):
     # WHEN trying to retrieve a tag with None as name
     tag_query: Query = apply_tag_filter(
         tags=populated_store._get_query(table=Tag),
-        filter_functions=[TagFilter.FILTER_BY_NAME],
+        filter_functions=[TagFilter.BY_NAME],
     )
     assert isinstance(tag_query, Query)
 
