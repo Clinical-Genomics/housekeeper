@@ -6,6 +6,8 @@ import logging
 import click
 from rich.console import Console
 
+from housekeeper.services.file_service.file_service import FileService
+from housekeeper.services.output_service.output_service import OutputService
 from housekeeper.store.api import schema
 from housekeeper.store.models import Archive, File, Version
 from housekeeper.store.store import Store
@@ -143,28 +145,18 @@ def files_cmd(
     compact: bool,
 ):
     """Get files from database"""
-    store: Store = context.obj["store"]
-    file_objs = store.get_files(bundle_name=bundle, tag_names=tag_names, version_id=version_id)
-    template = schema.FileSchema()
-    local_files = []
-    remote_files = []
-    for file in file_objs:
-        if is_file_local(file):
-            local_files.append(template.dump(file))
-        else:
-            remote_files.append(template.dump(file))
-    if json:
-        click.echo(jsonlib.dumps(local_files))
-        return
-    console = Console()
-    local_table = get_files_table(
-        local_files, header="Local files", verbose=verbose, compact=compact
-    )
-    remote_table = get_files_table(
-        remote_files, header="Remote files", verbose=verbose, compact=compact
-    )
-    console.print(local_table)
-    console.print(remote_table)
+    file_service: FileService = context.obj["file_service"]
+    output_service: OutputService = context.obj["output_service"]
+
+    output_service.verbose = verbose
+    output_service.compact = compact
+    output_service.json = json
+
+    local = file_service.get_local_files(bundle=bundle, tags=tag_names, version_id=version_id)
+    remote = file_service.get_remote_files(bundle=bundle, tags=tag_names, version_id=version_id)
+
+    output_service.log_file_table(files=local, header="Local files")
+    output_service.log_file_table(files=remote, header="Remote files")
 
 
 def is_file_local(file: File):

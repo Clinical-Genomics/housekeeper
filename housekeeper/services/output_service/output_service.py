@@ -10,25 +10,16 @@ class OutputService:
 
     def __init__(self):
         self.console = Console()
+        self.verbose = False
+        self.compact = False
+        self.json = False
 
-    def output_local_files(
-        self, files: list[File], verbose: bool, compact: bool, json: bool
-    ) -> None:
+    def log_file_table(self, files: list[File], header: str) -> None:
         rows = format_files(files)
-        header = "Local files"
-        table = get_files_table(rows=rows, header=header, verbose=verbose, compact=compact)
+        table = get_files_table(
+            rows=rows, header=header, verbose=self.verbose, compact=self.compact
+        )
         self.console.print(table)
 
-        if json:
-            click.echo(jsonlib.dumps(files))
-
-    def output_remote_files(
-        self, files: list[File], verbose: bool, compact: bool, json: bool
-    ) -> None:
-        rows = format_files(files)
-        header = "Remote files"
-        table = get_files_table(rows=rows, header=header, verbose=verbose, compact=compact)
-        self.console.print(table)
-
-        if json:
+        if self.json:
             click.echo(jsonlib.dumps(files))
