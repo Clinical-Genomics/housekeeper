@@ -24,10 +24,10 @@ def get_tags_table(rows: list[dict]) -> Table:
     return table
 
 
-def get_files_table(rows: list[dict], verbose=False, compact=False) -> Table:
+def get_files_table(rows: list[dict], header: str, verbose=False, compact=False) -> Table:
     """Return a tag table"""
     table = Table(show_header=True, header_style="bold magenta")
-    table.title = "[not italic]:scroll:[/] Files table [not italic]:scroll:[/]"
+    table.title = f"[not italic]:scroll:[/] {header} [not italic]:scroll:[/]"
     table.add_column("ID")
     table.add_column("File name")
     table.add_column("Tags")

@@ -7,7 +7,7 @@ import click
 from rich.console import Console
 
 from housekeeper.store.api import schema
-from housekeeper.store.models import Version
+from housekeeper.store.models import Archive, File, Version
 from housekeeper.store.store import Store
 
 from .tables import (
@@ -146,14 +146,30 @@ def files_cmd(
     store: Store = context.obj["store"]
     file_objs = store.get_files(bundle_name=bundle, tag_names=tag_names, version_id=version_id)
     template = schema.FileSchema()
-    result = []
+    local_files = []
+    remote_files = []
     for file in file_objs:
-        result.append(template.dump(file))
+        if is_file_local(file):
+            local_files.append(template.dump(file))
+        else:
+            remote_files.append(template.dump(file))
     if json:
-        click.echo(jsonlib.dumps(result))
+        click.echo(jsonlib.dumps(local_files))
         return
     console = Console()
-    console.print(get_files_table(result, verbose=verbose, compact=compact))
+    local_table = get_files_table(
+        local_files, header="Local files", verbose=verbose, compact=compact
+    )
+    remote_table = get_files_table(
+        remote_files, header="Remote files", verbose=verbose, compact=compact
+    )
+    console.print(local_table)
+    console.print(remote_table)
+
+
+def is_file_local(file: File):
+    archive: Archive = file.archive
+    return (not archive) or archive.retrieved_at
 
 
 @get.command("tag")
