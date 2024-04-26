@@ -106,6 +106,8 @@ class ReadHandler(BaseHandler):
         tag_names: list[str] = None,
         version_id: int = None,
         file_path: str = None,
+        local_only: bool = None,
+        remote_only: bool = None,
     ) -> Query:
         """Fetches files from the store based on the specified filters.
         Args:
@@ -152,6 +154,18 @@ class ReadHandler(BaseHandler):
                 file_path=file_path,
             )
 
+        if local_only:
+            query = apply_file_filter(
+                files=query,
+                filter_functions=[FileFilter.FILES_BY_IS_ARCHIVED],
+            )
+
+        if remote_only:
+            query = apply_file_filter(
+                files=query,
+                filter_functions=[FileFilter.FILES_BY_IS_ARCHIVED],
+                is_archived=False,
+            )
         return query
 
     def get_files_before(
