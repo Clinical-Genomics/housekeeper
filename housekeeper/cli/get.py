@@ -28,7 +28,6 @@ def get():
 @click.argument("bundle-name", required=False)
 @click.option("-i", "--bundle-id", type=int, help="Search for a bundle with bundle id")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
-@click.option("-v", "--verbose", is_flag=True, help="List files from latest version")
 @click.option(
     "-c",
     "--compact",
@@ -36,7 +35,7 @@ def get():
     help="print compact filenames IFF verobe flag present",
 )
 @click.pass_context
-def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
+def bundle_cmd(context, bundle_name, bundle_id, json, compact):
     """Get bundle information from database"""
     store: Store = context.obj["store"]
     bundles = store.bundles()
@@ -62,13 +61,12 @@ def bundle_cmd(context, bundle_name, bundle_id, json, verbose, compact):
         return
     console = Console()
     console.print(get_bundles_table(result))
-    if verbose:
-        for bundle in bundles:
-            if len(bundle.versions) == 0:
-                LOG.info("No versions found for bundle %s", bundle.name)
-                return
-            version_obj = bundle.versions[0]
-            context.invoke(version_cmd, version_id=version_obj.id, verbose=True, compact=compact)
+    for bundle in bundles:
+        if len(bundle.versions) == 0:
+            LOG.info("No versions found for bundle %s", bundle.name)
+            return
+        version_obj = bundle.versions[0]
+        context.invoke(version_cmd, version_id=version_obj.id, verbose=True, compact=compact)
 
 
 @get.command("version")
