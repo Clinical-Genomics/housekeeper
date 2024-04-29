@@ -9,12 +9,11 @@ from rich.console import Console
 from housekeeper.services.file_service.file_service import FileService
 from housekeeper.services.output_service.output_service import OutputService
 from housekeeper.store.api import schema
-from housekeeper.store.models import Archive, File, Version
+from housekeeper.store.models import Version
 from housekeeper.store.store import Store
 
 from .tables import (
     get_bundles_table,
-    get_files_table,
     get_tags_table,
     get_versions_table,
 )
@@ -157,11 +156,6 @@ def files_cmd(
 
     output_service.log_file_table(files=local, header="Local files")
     output_service.log_file_table(files=remote, header="Remote files")
-
-
-def is_file_local(file: File):
-    archive: Archive = file.archive
-    return (not archive) or archive.retrieved_at
 
 
 @get.command("tag")
