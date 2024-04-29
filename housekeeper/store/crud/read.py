@@ -157,13 +157,13 @@ class ReadHandler(BaseHandler):
         if local_only:
             query = apply_file_filter(
                 files=query,
-                filter_functions=[FileFilter.FILES_BY_IS_ARCHIVED],
+                filter_functions=[FileFilter.IS_LOCAL],
             )
 
         if remote_only:
             query = apply_file_filter(
                 files=query,
-                filter_functions=[FileFilter.FILES_BY_IS_ARCHIVED],
+                filter_functions=[FileFilter.IS_REMOTE],
                 is_archived=False,
             )
         return query
