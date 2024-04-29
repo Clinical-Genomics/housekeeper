@@ -7,6 +7,8 @@ from typing import Generator
 import pytest
 from click.testing import CliRunner
 
+from housekeeper.services.file_service.file_service import FileService
+from housekeeper.services.output_service.output_service import OutputService
 from housekeeper.store.database import (
     create_all_tables,
     drop_all_tables,
@@ -32,13 +34,27 @@ def cli_runner():
     return CliRunner()
 
 
-@pytest.fixture(scope="function")
-def base_context(db_uri, project_dir, store) -> dict:
+@pytest.fixture
+def output_service() -> OutputService:
+    return OutputService()
+
+
+@pytest.fixture
+def file_service(store: Store) -> FileService:
+    return FileService(store)
+
+
+@pytest.fixture
+def base_context(
+    db_uri, project_dir, store, file_service: FileService, output_service: OutputService
+) -> dict:
     """Return a context with initialized database"""
     return {
         "database": db_uri,
         "root": project_dir,
         "store": store,
+        "file_service": file_service,
+        "output_service": output_service,
     }
 
 
