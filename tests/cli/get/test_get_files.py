@@ -8,7 +8,7 @@ from housekeeper.store.models import File
 from housekeeper.store.store import Store
 
 
-def test_get_files_no_files(base_context, cli_runner, helpers):
+def test_get_files_no_files(base_context, cli_runner):
     """Test to get all files when there are no files"""
     # GIVEN a context with a populated store and a cli runner
     store = base_context["store"]
@@ -23,7 +23,7 @@ def test_get_files_no_files(base_context, cli_runner, helpers):
     assert output
 
 
-def test_get_files_json(populated_context, cli_runner, helpers):
+def test_get_files_json(populated_context, cli_runner):
     """Test to get all files from a populated store"""
     # GIVEN a context
     store: Store = populated_context["store"]
@@ -79,7 +79,7 @@ def test_get_files_tag(populated_context, cli_runner, vcf_tag_name):
 
 
 def test_get_files_multiple_tags(
-    populated_context, cli_runner, helpers, vcf_tag_name, family_tag_name
+    populated_context, cli_runner, vcf_tag_name, family_tag_name
 ):
     """Test to get files with multiple tags tag from a populated store"""
     # GIVEN a context with a populated store
@@ -101,13 +101,12 @@ def test_get_files_multiple_tags(
         assert file.path in result.output
 
 
-def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_name):
+def test_get_files_rare_tag(populated_context, cli_runner, family_tag_name):
     """Test to get files with a tag that is not on all files from a populated store"""
     # GIVEN a context with a populated store and a cli runner
     store: Store = populated_context["store"]
 
     # GIVEN a store with some tagged files
-    all_files: list[File] = store.get_files().all()
     tagged_files: list[File] = store.get_files(tag_names=[family_tag_name]).all()
 
     # WHEN fetching all tagged files
@@ -121,7 +120,7 @@ def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_n
 
 
 
-def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_name, helpers):
+def test_get_files_compact():
     """Test to get all files from a populated store in human friendly format, subsequent names concatenated"""
     # GIVEN an example result file list
     file_list = [
