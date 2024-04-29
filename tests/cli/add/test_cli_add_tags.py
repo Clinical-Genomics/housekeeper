@@ -1,9 +1,10 @@
 """Tests for adding tags via CLI"""
+
 import logging
 
 from housekeeper.cli.add import tag_cmd
-from housekeeper.store.api.core import Store
 from housekeeper.store.models import File
+from housekeeper.store.store import Store
 
 
 def test_add_tags_no_args(populated_context, cli_runner, caplog):

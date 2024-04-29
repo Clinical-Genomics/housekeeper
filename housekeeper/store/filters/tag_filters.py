@@ -14,7 +14,7 @@ def filter_tag_by_name(tags: Query, tag_name: str) -> Query:
 class TagFilter(Enum):
     """Define Tag filter functions."""
 
-    FILTER_BY_NAME: Callable = filter_tag_by_name
+    BY_NAME: Callable = filter_tag_by_name
 
 
 def apply_tag_filter(

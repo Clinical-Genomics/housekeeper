@@ -1,7 +1,6 @@
 """Tests for date parsing module"""
-import datetime
 
-import pytest
+import datetime
 
 from housekeeper.date import get_date, match_date
 

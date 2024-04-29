@@ -7,8 +7,8 @@ from pathlib import Path
 import click
 
 from housekeeper.date import get_date
-from housekeeper.store.api.core import Store
 from housekeeper.store.models import File, Tag
+from housekeeper.store.store import Store
 
 LOG = logging.getLogger(__name__)
 
@@ -130,6 +130,11 @@ def files_cmd(context, yes, tag, bundle_name, before, notondisk, list_files, lis
         raise click.Abort
 
     for file in files:
+        if file.archive:
+            LOG.warning(
+                f"File {file.path} is archived, please delete it with 'cg archive delete-file' instead. Skipping."
+            )
+            continue
         if yes or click.confirm(f"Remove file from disk and database: {file.full_path}?"):
             delete_file(file=file, store=store)
 
@@ -219,6 +224,9 @@ def file_cmd(context, yes, file_id):
     file = store.get_file_by_id(file_id=file_id)
     if not file:
         LOG.info("file not found")
+        raise click.Abort
+    if file.archive:
+        LOG.warning("File is archived, please delete it with 'cg archive delete-file' instead")
         raise click.Abort
 
     if file.is_included:

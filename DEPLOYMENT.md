@@ -4,6 +4,15 @@ This includes instructions for deploying Houskeeper in the Clinical Genomics :ho
 ## Steps
 When all tests are done and successful and the PR is approved by codeowners, follow these steps:
 
+### Deploy feature branch for testing
+To deploy your feature branch to test it, run
+1. `housekeeper-test-deploy <branch_name>`
+2. `housekeeper-test --help` or the command you want to test.
+
+This will pull the latest image tagged with your branch from dockerhub and make it available with `housekeeper-test`. Note that it is not necessary to paxa the environment to do this, unless you need to apply database revisions.
+
+
+### Deploy to stage and production
 1. Select "Squash and merge" to merge branch into default branch (master/main).
 2. Append version increment value `( major | minor | patch )` in the commit message to specify what kind of release is to be created.
 3. Review the details and merge the branch into master.

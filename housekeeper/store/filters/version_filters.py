@@ -20,8 +20,8 @@ def filter_version_by_date(versions: Query, before_date: datetime, **kwargs) -> 
 class VersionFilter(Enum):
     """Define Version filter functions."""
 
-    FILTER_BY_ID: Callable = filter_version_by_id
-    FILTER_BY_DATE: Callable = filter_version_by_date
+    BY_ID: Callable = filter_version_by_id
+    BY_DATE: Callable = filter_version_by_date
 
 
 def apply_version_filter(

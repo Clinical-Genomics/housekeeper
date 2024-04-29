@@ -1,4 +1,5 @@
 """Module for adding via CLI"""
+
 import datetime as dt
 import logging
 from logging import Logger
@@ -12,8 +13,8 @@ from housekeeper.date import get_date
 from housekeeper.exc import VersionIncludedError
 from housekeeper.files import load_json, validate_input
 from housekeeper.include import include_version, link_to_relative_path, relative_path
-from housekeeper.store import Store
 from housekeeper.store.models import Bundle, Tag, Version
+from housekeeper.store.store import Store
 
 LOG: Logger = logging.getLogger(__name__)
 

@@ -1,13 +1,15 @@
 """Tests for include cli command"""
+
 import logging
 from datetime import datetime
 from pathlib import Path
 
 from click.testing import CliRunner
+
 from housekeeper.cli.include import include
 from housekeeper.constants import ROOT
-from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle, Version
+from housekeeper.store.store import Store
 
 
 def test_include_files_creates_bundle_dir(populated_context: dict, cli_runner: CliRunner):

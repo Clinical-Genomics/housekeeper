@@ -1,6 +1,7 @@
 """
 Schema definitions
 """
+
 import marshmallow as ma
 
 

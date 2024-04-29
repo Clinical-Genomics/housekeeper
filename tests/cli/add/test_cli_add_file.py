@@ -1,12 +1,14 @@
 """Tests foe adding files via CLI"""
+
 import logging
 from pathlib import Path
 
 from click import Context
 from click.testing import CliRunner
+
 from housekeeper.cli.add import file_cmd
-from housekeeper.store import Store
 from housekeeper.store.models import Bundle, Version
+from housekeeper.store.store import Store
 
 NEW_FILE_ADDED: str = "new file added"
 

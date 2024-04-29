@@ -27,7 +27,7 @@ class Archive(Model):
     archived_at = Column(types.DateTime(), nullable=True)
     retrieved_at = Column(types.DateTime(), nullable=True)
 
-    file = orm.relationship("File", backref=backref("archive", uselist=False))
+    file = orm.relationship("File", back_populates="archive")
 
 
 class Bundle(Model):
@@ -93,6 +93,9 @@ class File(Model):
     version_id = Column(ForeignKey(Version.id, ondelete="CASCADE"), nullable=False)
     tags = orm.relationship(
         "Tag", secondary=file_tag_link, backref=backref("files", cascade_backrefs=False)
+    )
+    archive = orm.relationship(
+        "Archive", back_populates="file", cascade="save-update, merge, delete", uselist=False
     )
 
     app_root = None

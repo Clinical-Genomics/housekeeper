@@ -1,4 +1,5 @@
 """Fixtures for the CLI add tests"""
+
 import json
 from pathlib import Path
 

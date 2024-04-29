@@ -1,5 +1,7 @@
 """Tests for delete version CLI functions"""
+
 import logging
+
 from click import Context
 from click.testing import CliRunner
 

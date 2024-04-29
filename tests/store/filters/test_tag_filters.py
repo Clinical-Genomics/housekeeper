@@ -1,12 +1,12 @@
 from sqlalchemy.orm import Query
 
-from housekeeper.store import Store
 from housekeeper.store.filters.tag_filters import (
     TagFilter,
     apply_tag_filter,
     filter_tag_by_name,
 )
 from housekeeper.store.models import Tag
+from housekeeper.store.store import Store
 
 
 def test_filter_tag_by_name_returns_correct_tag(populated_store: Store, sample_tag_name: str):
@@ -74,7 +74,7 @@ def test_apply_tag_filter_without_tag_name(populated_store: Store):
     # WHEN trying to retrieve a tag with None as name
     tag_query: Query = apply_tag_filter(
         tags=populated_store._get_query(table=Tag),
-        filter_functions=[TagFilter.FILTER_BY_NAME],
+        filter_functions=[TagFilter.BY_NAME],
     )
     assert isinstance(tag_query, Query)
 

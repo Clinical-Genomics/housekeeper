@@ -1,4 +1,5 @@
 """Tests for adding versions via CLI"""
+
 import json
 import logging
 
@@ -6,8 +7,8 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli.add import version_cmd
-from housekeeper.store.api.core import Store
 from housekeeper.store.models import Bundle
+from housekeeper.store.store import Store
 
 
 def test_add_version_non_input(populated_context: Context, cli_runner: CliRunner, caplog):

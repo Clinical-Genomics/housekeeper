@@ -7,8 +7,8 @@ from typing import Dict, Tuple
 
 from sqlalchemy.orm import Session
 
-from housekeeper.store.api.handlers.base import BaseHandler
-from housekeeper.store.api.handlers.read import ReadHandler
+from housekeeper.store.base import BaseHandler
+from housekeeper.store.crud.read import ReadHandler
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 
 LOG = logging.getLogger(__name__)
@@ -58,8 +58,8 @@ class CreateHandler(BaseHandler):
     def _add_files_to_version(self, files: list[dict], version_obj: Version) -> None:
         """Create file objects and the tags and add them to a version object"""
 
-        tag_names = set(tag_name for file_data in files for tag_name in file_data["tags"])
-        tag_map = self._build_tags(tag_names)
+        tag_names = {tag_name for file_data in files for tag_name in file_data["tags"]}
+        tag_map: dict[str, Tag] = self._build_tags(list(tag_names))
 
         for file_data in files:
             # This if can be removed after decoupling
@@ -85,7 +85,7 @@ class CreateHandler(BaseHandler):
         self,
         data: dict,
         bundle: Bundle,
-    ) -> Version:
+    ) -> Version | None:
         """Build a new version object and add it to an existing bundle"""
         created_at = data.get("created_at", data.get("created"))
         if self.get_version_by_date_and_bundle_name(
@@ -94,15 +94,15 @@ class CreateHandler(BaseHandler):
             LOG.debug("version of bundle already added")
             return None
 
-        version_obj = self.new_version(
+        version: Version = self.new_version(
             created_at=created_at,
             expires_at=data.get("expires_at", data.get("expires")),
         )
         if data.get("files"):
-            self._add_files_to_version(data["files"], version_obj)
+            self._add_files_to_version(data["files"], version)
 
-        version_obj.bundle = bundle
-        return version_obj
+        version.bundle = bundle
+        return version
 
     def add_file(
         self,
@@ -127,7 +127,7 @@ class CreateHandler(BaseHandler):
     def _build_tags(self, tag_names: list[str]) -> Dict[str, Tag]:
         """Build a list of tag objects.
 
-        Take a list of tags, if a tag does not exist create a new tag object.
+        Take a list of tags, if a tag does not exist, create a new tag object.
         Map the tag name to a tag object and return a list of those
         """
         tags = {}

@@ -1,18 +1,24 @@
 """Base fixtures"""
+
 import copy
 import datetime
 import json
 import shutil
 from copy import deepcopy
 from pathlib import Path
+from typing import Generator
 
 import pytest
 import yaml
 
 from housekeeper.date import get_date
-from housekeeper.store import Store
-from housekeeper.store.database import create_all_tables, drop_all_tables, initialize_database
+from housekeeper.store.database import (
+    create_all_tables,
+    drop_all_tables,
+    initialize_database,
+)
 from housekeeper.store.models import Archive, Bundle, Tag, Version
+from housekeeper.store.store import Store
 from tests.helper_functions import Helpers
 
 # basic fixtures
@@ -434,12 +440,6 @@ def non_archived_file(spring_file_2: Path) -> Path:
 
 
 @pytest.fixture(scope="function")
-def spring_file_2(sequencing_files_dir: Path) -> Path:
-    """Return the path to a SPRING file."""
-    return Path(sequencing_files_dir, "lane2.spring")
-
-
-@pytest.fixture(scope="function")
 def family_vcf(vcf_dir: Path) -> Path:
     """Return the path to a vcf file."""
     return Path(vcf_dir, "family.vcf")
@@ -475,17 +475,11 @@ def checksum(checksum_file: Path) -> Path:
     return checksum_file.name.rstrip(".txt")
 
 
-@pytest.fixture(scope="function")
-def helpers() -> Helpers:
-    """Return a test helper object."""
-    return Helpers()
-
-
 # Store fixtures
 
 
 @pytest.fixture(scope="function")
-def store(project_dir: Path) -> Store:
+def store(project_dir: Path) -> Generator[Store, None, None]:
     """Return a store setup with all tables."""
     initialize_database("sqlite:///")
     _store = Store(root=str(project_dir))

@@ -6,6 +6,7 @@ The main entry point for the command line interface.
 Invoke as `housekeeper` (if installed)
 or `python -m housekeeper` (no install required).
 """
+
 import sys
 
 from housekeeper.cli.core import base

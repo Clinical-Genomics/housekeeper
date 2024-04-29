@@ -1,13 +1,15 @@
 """
 This module handles finding things in the store/database
 """
+
+import datetime
 import datetime as dt
 import logging
 from pathlib import Path
 
 from sqlalchemy.orm import Query, Session
 
-from housekeeper.store.api.handlers.base import BaseHandler
+from housekeeper.store.base import BaseHandler
 from housekeeper.store.filters.archive_filters import (
     ArchiveFilter,
     apply_archive_filter,
@@ -44,7 +46,7 @@ class ReadHandler(BaseHandler):
         LOG.debug(f"Fetching bundle with id: {bundle_id}")
         return apply_bundle_filter(
             bundles=self._get_query(table=Bundle),
-            filter_functions=[BundleFilters.FILTER_BY_ID],
+            filter_functions=[BundleFilters.BY_ID],
             bundle_id=bundle_id,
         ).first()
 
@@ -53,7 +55,7 @@ class ReadHandler(BaseHandler):
         LOG.debug(f"Fetching bundle with name: {bundle_name}")
         return apply_bundle_filter(
             bundles=self._get_query(table=Bundle),
-            filter_functions=[BundleFilters.FILTER_BY_NAME],
+            filter_functions=[BundleFilters.BY_NAME],
             bundle_name=bundle_name,
         ).first()
 
@@ -62,7 +64,7 @@ class ReadHandler(BaseHandler):
     ) -> Version:
         return apply_version_bundle_filter(
             version_bundles=self._get_join_version_bundle_query(),
-            filter_functions=[VersionBundleFilters.FILTER_BY_DATE_AND_NAME],
+            filter_functions=[VersionBundleFilters.BY_DATE_AND_NAME],
             version_date=version_date,
             bundle_name=bundle_name,
         ).first()
@@ -72,7 +74,7 @@ class ReadHandler(BaseHandler):
         LOG.debug(f"Fetching version with id: {version_id}")
         return apply_version_filter(
             versions=self._get_query(table=Version),
-            filter_functions=[VersionFilter.FILTER_BY_ID],
+            filter_functions=[VersionFilter.BY_ID],
             version_id=version_id,
         ).first()
 
@@ -81,7 +83,7 @@ class ReadHandler(BaseHandler):
         LOG.debug(f"Fetching tag with name: {tag_name}")
         return apply_tag_filter(
             tags=self._get_query(table=Tag),
-            filter_functions=[TagFilter.FILTER_BY_NAME],
+            filter_functions=[TagFilter.BY_NAME],
             tag_name=tag_name,
         ).first()
 
@@ -94,7 +96,7 @@ class ReadHandler(BaseHandler):
         """Get a file by record id."""
         return apply_file_filter(
             files=self._get_query(table=File),
-            filter_functions=[FileFilter.FILTER_BY_ID],
+            filter_functions=[FileFilter.BY_ID],
             file_id=file_id,
         ).first()
 
@@ -120,7 +122,7 @@ class ReadHandler(BaseHandler):
             LOG.debug(f"Fetching files from bundle {bundle_name}")
             query = apply_bundle_filter(
                 bundles=query.join(File.version).join(Version.bundle),
-                filter_functions=[BundleFilters.FILTER_BY_NAME],
+                filter_functions=[BundleFilters.BY_NAME],
                 bundle_name=bundle_name,
             )
 
@@ -130,7 +132,7 @@ class ReadHandler(BaseHandler):
 
             query = apply_file_filter(
                 files=query.join(File.tags),
-                filter_functions=[FileFilter.FILTER_FILES_BY_TAGS],
+                filter_functions=[FileFilter.FILES_BY_TAGS],
                 tag_names=tag_names,
             )
 
@@ -138,7 +140,7 @@ class ReadHandler(BaseHandler):
             LOG.debug(f"Fetching files from version {version_id}")
             query = apply_version_filter(
                 versions=query.join(File.version),
-                filter_functions=[VersionFilter.FILTER_BY_ID],
+                filter_functions=[VersionFilter.BY_ID],
                 version_id=version_id,
             )
 
@@ -146,7 +148,7 @@ class ReadHandler(BaseHandler):
             LOG.debug(f"Fetching file with path {file_path}")
             query = apply_file_filter(
                 files=query,
-                filter_functions=[FileFilter.FILTER_BY_PATH],
+                filter_functions=[FileFilter.BY_PATH],
                 file_path=file_path,
             )
 
@@ -163,7 +165,7 @@ class ReadHandler(BaseHandler):
         if before_date:
             query = apply_version_filter(
                 versions=self._get_join_version_query(query),
-                filter_functions=[VersionFilter.FILTER_BY_DATE],
+                filter_functions=[VersionFilter.BY_DATE],
                 before_date=before_date,
             )
         return query.all()
@@ -182,13 +184,13 @@ class ReadHandler(BaseHandler):
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
             bundle_name=bundle_name,
-            filter_functions=[BundleFilters.FILTER_BY_NAME],
+            filter_functions=[BundleFilters.BY_NAME],
         )
         return apply_file_filter(
             files=files_filtered_on_bundle,
             filter_functions=[
-                FileFilter.FILTER_FILES_BY_TAGS,
-                FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
+                FileFilter.FILES_BY_TAGS,
+                FileFilter.FILES_BY_IS_ARCHIVED,
             ],
             is_archived=True,
             tag_names=tags,
@@ -199,13 +201,13 @@ class ReadHandler(BaseHandler):
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
             bundle_name=bundle_name,
-            filter_functions=[BundleFilters.FILTER_BY_NAME],
+            filter_functions=[BundleFilters.BY_NAME],
         )
         return apply_file_filter(
             files=files_filtered_on_bundle,
             filter_functions=[
-                FileFilter.FILTER_FILES_BY_TAGS,
-                FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
+                FileFilter.FILES_BY_TAGS,
+                FileFilter.FILES_BY_IS_ARCHIVED,
             ],
             is_archived=False,
             tag_names=tags,
@@ -216,7 +218,7 @@ class ReadHandler(BaseHandler):
         field is empty."""
         return apply_archive_filter(
             archives=self._get_query(table=Archive),
-            filter_functions=[ArchiveFilter.FILTER_ARCHIVING_ONGOING],
+            filter_functions=[ArchiveFilter.ARCHIVING_ONGOING],
         ).all()
 
     def get_ongoing_retrievals(self) -> list[Archive]:
@@ -224,7 +226,7 @@ class ReadHandler(BaseHandler):
         field is empty."""
         return apply_archive_filter(
             archives=self._get_query(table=Archive),
-            filter_functions=[ArchiveFilter.FILTER_RETRIEVAL_ONGOING],
+            filter_functions=[ArchiveFilter.RETRIEVAL_ONGOING],
         ).all()
 
     def get_bundle_name_from_file_path(self, file_path: str) -> str:
@@ -237,8 +239,8 @@ class ReadHandler(BaseHandler):
             apply_file_filter(
                 self._get_join_file_tags_archive_query(),
                 filter_functions=[
-                    FileFilter.FILTER_FILES_BY_TAGS,
-                    FileFilter.FILTER_FILES_BY_IS_ARCHIVED,
+                    FileFilter.FILES_BY_TAGS,
+                    FileFilter.FILES_BY_IS_ARCHIVED,
                 ],
                 tag_names=tag_names,
                 is_archived=False,
@@ -249,7 +251,7 @@ class ReadHandler(BaseHandler):
 
     def get_archives(
         self, archival_task_id: int = None, retrieval_task_id: int = None
-    ) -> list[File] | None:
+    ) -> list[Archive] | None:
         """Returns all entries in the archive table with the specified archival/retrieval task id."""
         if not archival_task_id and not retrieval_task_id:
             return self._get_query(table=Archive).all()
@@ -257,21 +259,38 @@ class ReadHandler(BaseHandler):
             return apply_archive_filter(
                 archives=apply_archive_filter(
                     archives=self._get_query(table=Archive),
-                    filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK_ID],
+                    filter_functions=[ArchiveFilter.BY_ARCHIVING_TASK_ID],
                     task_id=archival_task_id,
                 ),
-                filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
+                filter_functions=[ArchiveFilter.BY_RETRIEVAL_TASK_ID],
                 task_id=retrieval_task_id,
             ).all()
         if archival_task_id:
             return apply_archive_filter(
                 archives=self._get_query(table=Archive),
-                filter_functions=[ArchiveFilter.FILTER_BY_ARCHIVING_TASK_ID],
+                filter_functions=[ArchiveFilter.BY_ARCHIVING_TASK_ID],
                 task_id=archival_task_id,
             ).all()
 
         return apply_archive_filter(
             archives=self._get_query(table=Archive),
-            filter_functions=[ArchiveFilter.FILTER_BY_RETRIEVAL_TASK_ID],
+            filter_functions=[ArchiveFilter.BY_RETRIEVAL_TASK_ID],
             task_id=retrieval_task_id,
         ).all()
+
+    def get_files_retrieved_before(
+        self, date: datetime, tag_names: list[str] | None = None
+    ) -> list[File]:
+        """Returns all files which were retrieved before the given date."""
+        old_enough_files: Query = apply_archive_filter(
+            archives=self._get_join_file_tags_archive_query(),
+            filter_functions=[ArchiveFilter.BY_RETRIEVED_BEFORE],
+            retrieved_before=date,
+        )
+        if tag_names:
+            return apply_file_filter(
+                files=old_enough_files,
+                filter_functions=[FileFilter.FILES_BY_TAGS],
+                tag_names=tag_names,
+            ).all()
+        return old_enough_files.all()
