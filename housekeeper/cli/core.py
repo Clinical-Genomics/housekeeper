@@ -9,7 +9,7 @@ import yaml
 import housekeeper
 from housekeeper.constants import ROOT
 from housekeeper.services.file_service.file_service import FileService
-from housekeeper.services.output_service.output_service import OutputService
+from housekeeper.services.file_report_service.file_report_service import FileReportService
 from housekeeper.store.database import initialize_database
 from housekeeper.store.store import Store
 
@@ -52,7 +52,7 @@ def base(
     store = Store(root=root_path)
     context.obj["store"] = store
     context.obj["file_service"] = FileService(store)
-    context.obj["output_service"] = OutputService()
+    context.obj["file_report_service"] = FileReportService()
 
 
 base.add_command(init.init)

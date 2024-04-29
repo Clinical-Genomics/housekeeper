@@ -8,7 +8,7 @@ import pytest
 from click.testing import CliRunner
 
 from housekeeper.services.file_service.file_service import FileService
-from housekeeper.services.output_service.output_service import OutputService
+from housekeeper.services.file_report_service.file_report_service import FileReportService
 from housekeeper.store.database import (
     create_all_tables,
     drop_all_tables,
@@ -35,8 +35,8 @@ def cli_runner():
 
 
 @pytest.fixture
-def output_service() -> OutputService:
-    return OutputService()
+def output_service() -> FileReportService:
+    return FileReportService()
 
 
 @pytest.fixture
@@ -46,7 +46,7 @@ def file_service(store: Store) -> FileService:
 
 @pytest.fixture
 def base_context(
-    db_uri, project_dir, store, file_service: FileService, output_service: OutputService
+    db_uri, project_dir, store, file_service: FileService, output_service: FileReportService
 ) -> dict:
     """Return a context with initialized database"""
     return {
@@ -54,7 +54,7 @@ def base_context(
         "root": project_dir,
         "store": store,
         "file_service": file_service,
-        "output_service": output_service,
+        "file_report_service": output_service,
     }
 
 
@@ -66,7 +66,7 @@ def populated_context(db_uri, project_dir, populated_store, file_service, output
         "root": project_dir,
         "store": populated_store,
         "file_service": file_service,
-        "output_service": output_service,
+        "file_report_service": output_service,
     }
 
 

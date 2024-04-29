@@ -7,7 +7,7 @@ import click
 from rich.console import Console
 
 from housekeeper.services.file_service.file_service import FileService
-from housekeeper.services.output_service.output_service import OutputService
+from housekeeper.services.file_report_service.file_report_service import FileReportService
 from housekeeper.store.api import schema
 from housekeeper.store.models import Version
 from housekeeper.store.store import Store
@@ -143,7 +143,7 @@ def files_cmd(
 ):
     """Get files from database"""
     file_service: FileService = context.obj["file_service"]
-    output_service: OutputService = context.obj["output_service"]
+    output_service: FileReportService = context.obj["file_report_service"]
 
     output_service.verbose = verbose
     output_service.compact = compact
