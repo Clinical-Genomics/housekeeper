@@ -27,7 +27,7 @@ def test_get_existing_bundle_name(populated_context, cli_runner, helpers):
 
 
 def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
-    """Test to fetch an existing bundle based on name with verbose information"""
+    """Test to fetch an existing bundle based on name."""
 
     # GIVEN a context with a populated store and a cli runner
     store: Store = populated_context["store"]
@@ -39,7 +39,7 @@ def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
 
     # WHEN trying to fetch the bundle based on bundle name
     output = helpers.get_stdout(
-        cli_runner.invoke(bundle_cmd, [bundle_name, "-v"], obj=populated_context).output
+        cli_runner.invoke(bundle_cmd, [bundle_name], obj=populated_context).output
     )
     # THEN assert that the files are printed
     assert "Files table" in output
