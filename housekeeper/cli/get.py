@@ -157,7 +157,6 @@ def files_cmd(
     output_service.log_file_table(files=local, header="Local files")
     output_service.log_file_table(files=remote, header="Remote files")
 
-
 @get.command("tag")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-n", "--name", multiple=True, help="Specify a tag name")

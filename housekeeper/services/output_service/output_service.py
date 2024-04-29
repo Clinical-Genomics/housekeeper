@@ -21,4 +21,4 @@ class OutputService:
         self.console.print(table)
 
         if self.json:
-            click.echo(jsonlib.dumps(files))
+            click.echo(jsonlib.dumps(rows))

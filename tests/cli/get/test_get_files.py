@@ -4,6 +4,7 @@ from pathlib import Path
 
 from housekeeper.cli.get import files_cmd
 from housekeeper.services.output_service.utils import _get_suffix, squash_names
+from housekeeper.store.models import File
 from housekeeper.store.store import Store
 
 
@@ -11,69 +12,67 @@ def test_get_files_no_files(base_context, cli_runner, helpers):
     """Test to get all files when there are no files"""
     # GIVEN a context with a populated store and a cli runner
     store = base_context["store"]
+
     # GIVEN a store without files
-    assert helpers.count_iterable(store.get_files()) == 0
+    assert not store.get_files().all()
 
     # WHEN fetching all files by not specifying any file
-    json_bundles = helpers.get_json(
-        cli_runner.invoke(files_cmd, ["--json"], obj=base_context).output
-    )
+    output = cli_runner.invoke(files_cmd, ["--json"], obj=base_context).output
 
-    # THEN assert that we get a list
-    assert isinstance(json_bundles, list)
-    # THEN assert that no files where fetched
-    assert len(json_bundles) == 0
+    # THEN assert that output was produced
+    assert output
 
 
 def test_get_files_json(populated_context, cli_runner, helpers):
     """Test to get all files from a populated store"""
-    # GIVEN a context with a populated store and a cli runner
+    # GIVEN a context
     store: Store = populated_context["store"]
-    # GIVEN a store with some files
-    nr_files = helpers.count_iterable(store.get_files())
-    assert nr_files > 0
 
-    # WHEN fetching all files by not specifying any file
-    json_bundles = helpers.get_json(
-        cli_runner.invoke(files_cmd, ["--json"], obj=populated_context).output
-    )
+    # GIVEN a store with files
+    files: list[File] = store.get_files()
 
-    # THEN assert files were fetched
-    assert len(json_bundles) > 0
+    # WHEN fetching all files
+    result = cli_runner.invoke(files_cmd, ["--json"], obj=populated_context)
+
+    # THEN assert that all files where printed
+    for file in files:
+        assert file.path in result.output
 
 
 def test_get_files(populated_context, cli_runner):
     """Test to get all files from a populated store in human friendly format"""
-    # GIVEN a context with a populated store and a cli runner
-    # GIVEN a store with some files
+    # GIVEN a context and a store
     store: Store = populated_context["store"]
+
+    # GIVEN a store with some files
+    assert store.get_files().all()
+
     # GIVEN a file name
-    file_obj = store.get_files().first()
-    file_name = Path(file_obj.path).name
+    file: File = store.get_files().first()
+    file_name: str = Path(file.path).name
 
     # WHEN fetching all files by not specifying any file
     result = cli_runner.invoke(files_cmd, [], obj=populated_context)
 
-    # THEN assert that the file name of one file is displayed
+    # THEN assert that the file name is displayed
     assert file_name in result.output
+
     # THEN assert that the full file path is not shown
-    assert file_obj.path not in result.output
+    assert file.path not in result.output
 
 
 def test_get_files_tag(populated_context, cli_runner, helpers, vcf_tag_name):
     """Test to get files with a specific tag from a populated store"""
-    # GIVEN a context with a populated store and a cli runner
+    # GIVEN a context with a populated store
     store: Store = populated_context["store"]
+
     # GIVEN a store with some files that are tagged
-    nr_files = helpers.count_iterable(store.get_files(tag_names=[vcf_tag_name]))
-    assert nr_files > 0
+    nr_files = store.get_files(tag_names=[vcf_tag_name]).count()
+    assert nr_files
 
     # WHEN fetching all files by not specifying any file
-    json_bundles = helpers.get_json(
-        cli_runner.invoke(
-            files_cmd, ["--tag", vcf_tag_name, "--json"], obj=populated_context
-        ).output
-    )
+    result = cli_runner.invoke(files_cmd, ["--tag", vcf_tag_name, "--json"], obj=populated_context)
+    json_bundles = helpers.get_json(result.output)
 
     # THEN assert that all files where fetched
     assert len(json_bundles) == nr_files

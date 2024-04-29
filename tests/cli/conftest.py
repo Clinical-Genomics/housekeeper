@@ -58,13 +58,15 @@ def base_context(
     }
 
 
-@pytest.fixture(scope="function")
-def populated_context(db_uri, project_dir, populated_store) -> dict:
+@pytest.fixture
+def populated_context(db_uri, project_dir, populated_store, file_service, output_service) -> dict:
     """Return a context with initialized database with some data"""
     return {
         "database": db_uri,
         "root": project_dir,
         "store": populated_store,
+        "file_service": file_service,
+        "output_service": output_service,
     }
 
 
