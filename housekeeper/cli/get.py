@@ -153,7 +153,7 @@ def files_cmd(
     remote = file_service.get_remote_files(bundle=bundle, tags=tag_names, version_id=version_id)
 
     output_service.log_file_table(files=local, header="Local files")
-    output_service.log_file_table(files=remote, header="Remote files")
+    output_service.log_file_table(files=remote, header="Remote files", include_full_path=False)
 
 
 @get.command("tag")

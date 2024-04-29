@@ -13,10 +13,16 @@ class FileReportService:
         self.compact = compact
         self.json = json
 
-    def log_file_table(self, files: list[File], header: str) -> None:
+    def log_file_table(
+        self, files: list[File], header: str, include_full_path: bool = True
+    ) -> None:
         rows = format_files(files)
         table = get_files_table(
-            rows=rows, header=header, verbose=self.verbose, compact=self.compact
+            rows=rows,
+            header=header,
+            verbose=self.verbose,
+            compact=self.compact,
+            verbose=include_full_path,
         )
         self.console.print(table)
 
