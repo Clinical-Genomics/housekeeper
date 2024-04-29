@@ -38,7 +38,7 @@ def filter_files_by_is_remote(files: Query, **kwargs) -> Query:
 
 def filter_files_by_is_local(files: Query, **kwargs) -> Query:
     """Filters the query depending on if the files are local or not."""
-    return files.filter(File.archive == None or File.archive.has(File.archive.retrieved_at != None))
+    return files.filter(File.archive == None or File.archive.has(File.archive.retrieved_at))
 
 
 class FileFilter(Enum):
