@@ -145,15 +145,14 @@ def files_cmd(
     file_service: FileService = context.obj["file_service"]
     output_service: FileReportService = context.obj["file_report_service"]
 
-    output_service.verbose = verbose
     output_service.compact = compact
     output_service.json = json
 
     local = file_service.get_local_files(bundle=bundle, tags=tag_names, version_id=version_id)
     remote = file_service.get_remote_files(bundle=bundle, tags=tag_names, version_id=version_id)
 
-    output_service.log_file_table(files=local, header="Local files")
-    output_service.log_file_table(files=remote, header="Remote files", include_full_path=False)
+    output_service.log_file_table(files=local, header="Local files", verbose=verbose)
+    output_service.log_file_table(files=remote, header="Remote files", verbose=False)
 
 
 @get.command("tag")
