@@ -33,12 +33,16 @@ def filter_files_by_is_archived(files: Query, is_archived: bool, **kwargs) -> Qu
 
 def filter_files_by_is_remote(files: Query, **kwargs) -> Query:
     """Filters the query depending on if the files are remote or not."""
-    return files.filter(and_(File.archive != None, Archive.retrieved_at == None))
+    files = files.outerjoin(File.archive)
+    remote_condition = and_(File.archive != None, Archive.retrieved_at == None)
+    return files.filter(remote_condition)
 
 
 def filter_files_by_is_local(files: Query, **kwargs) -> Query:
     """Filters the query depending on if the files are local or not."""
-    return files.filter(or_(File.archive == None, Archive.retrieved_at))
+    files = files.outerjoin(File.archive)
+    local_condition = or_(File.archive == None, Archive.retrieved_at != None)
+    return files.filter(local_condition)
 
 
 class FileFilter(Enum):
