@@ -1,6 +1,5 @@
 import click
-from housekeeper.cli.tables import get_files_table
-from housekeeper.services.output_service.utils import format_files
+from housekeeper.services.output_service.utils import format_files, get_files_table
 from housekeeper.store.models import File
 from rich.console import Console
 import json as jsonlib

@@ -3,7 +3,7 @@
 from pathlib import Path
 
 from housekeeper.cli.get import files_cmd
-from housekeeper.cli.tables import _get_suffix, squash_names
+from housekeeper.services.output_service.utils import _get_suffix, squash_names
 from housekeeper.store.store import Store
 
 
