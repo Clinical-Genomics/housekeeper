@@ -78,9 +78,7 @@ def test_get_files_tag(populated_context, cli_runner, vcf_tag_name):
         assert file.path in result.output
 
 
-def test_get_files_multiple_tags(
-    populated_context, cli_runner, vcf_tag_name, family_tag_name
-):
+def test_get_files_multiple_tags(populated_context, cli_runner, vcf_tag_name, family_tag_name):
     """Test to get files with multiple tags tag from a populated store"""
     # GIVEN a context with a populated store
     store: Store = populated_context["store"]
@@ -117,7 +115,6 @@ def test_get_files_rare_tag(populated_context, cli_runner, family_tag_name):
     # THEN all tagged files where fetched
     for tagged_file in tagged_files:
         assert tagged_file.path in result.output
-
 
 
 def test_get_files_compact():

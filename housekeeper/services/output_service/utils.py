@@ -34,7 +34,7 @@ def get_files_table(rows: list[dict], header: str, verbose=False, compact=False)
         if i % 2 == 0:
             table.add_row(str(file_obj["id"]), f"[yellow]{file_name}[/yellow]", file_tags)
         else:
-            table.add_row(str(file_obj["id"]), f"[blue]{file_name}[/blue]", file_tags)
+            table.add_row(str(file_obj["id"]), f"[cyan]{file_name}[/cyan]", file_tags)
     return table
 
 
