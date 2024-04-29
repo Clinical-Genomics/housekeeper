@@ -104,6 +104,7 @@ def remove_duplicates(tag_list: list[dict]) -> list[dict]:
             no_duplicates.append(i)
     return no_duplicates
 
+
 def _get_suffix(filename):
     """Split a filename if ending with an integer before suffix"""
     # re.split('(\d+)\.\w{3}$', "asdf1.asd")
