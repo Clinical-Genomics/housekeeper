@@ -1,10 +1,10 @@
 from enum import Enum
 from typing import Callable
 
-from sqlalchemy import func as sqlalchemy_func
+from sqlalchemy import and_, func as sqlalchemy_func, or_
 from sqlalchemy.orm import Query
 
-from housekeeper.store.models import File, Tag
+from housekeeper.store.models import Archive, File, Tag
 
 
 def filter_files_by_id(files: Query, file_id: int, **kwargs) -> Query:
@@ -33,12 +33,12 @@ def filter_files_by_is_archived(files: Query, is_archived: bool, **kwargs) -> Qu
 
 def filter_files_by_is_remote(files: Query, **kwargs) -> Query:
     """Filters the query depending on if the files are remote or not."""
-    return files.filter(File.archive.has(File.archive.retrieved_at == None))
+    return files.filter(and_(File.archive != None, Archive.retrieved_at == None))
 
 
 def filter_files_by_is_local(files: Query, **kwargs) -> Query:
     """Filters the query depending on if the files are local or not."""
-    return files.filter(File.archive == None or File.archive.has(File.archive.retrieved_at))
+    return files.filter(or_(File.archive == None, Archive.retrieved_at))
 
 
 class FileFilter(Enum):
