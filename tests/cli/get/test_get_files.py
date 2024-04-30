@@ -17,10 +17,10 @@ def test_get_files_no_files(base_context, cli_runner):
     assert not store.get_files().all()
 
     # WHEN fetching all files by not specifying any file
-    output = cli_runner.invoke(files_cmd, ["--json"], obj=base_context).output
+    result = cli_runner.invoke(files_cmd, ["--json"], obj=base_context)
 
     # THEN assert that output was produced
-    assert output
+    assert result.exit_code == 0
 
 
 def test_get_files_json(populated_context, cli_runner):
