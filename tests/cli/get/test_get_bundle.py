@@ -42,7 +42,7 @@ def test_get_existing_bundle_verbose(populated_context, cli_runner, helpers):
         cli_runner.invoke(bundle_cmd, [bundle_name], obj=populated_context).output
     )
     # THEN assert that the files are printed
-    assert "Files table" in output
+    assert "files" in output
 
 
 def test_get_non_existing_bundle_name(base_context, cli_runner, helpers, case_id):

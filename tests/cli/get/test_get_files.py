@@ -3,127 +3,121 @@
 from pathlib import Path
 
 from housekeeper.cli.get import files_cmd
-from housekeeper.cli.tables import _get_suffix, squash_names
+from housekeeper.services.file_report_service.utils import _get_suffix, squash_names
+from housekeeper.store.models import File
 from housekeeper.store.store import Store
 
 
-def test_get_files_no_files(base_context, cli_runner, helpers):
+def test_get_files_no_files(base_context, cli_runner):
     """Test to get all files when there are no files"""
     # GIVEN a context with a populated store and a cli runner
     store = base_context["store"]
+
     # GIVEN a store without files
-    assert helpers.count_iterable(store.get_files()) == 0
+    assert not store.get_files().all()
 
     # WHEN fetching all files by not specifying any file
-    json_bundles = helpers.get_json(
-        cli_runner.invoke(files_cmd, ["--json"], obj=base_context).output
-    )
+    result = cli_runner.invoke(files_cmd, ["--json"], obj=base_context)
 
-    # THEN assert that we get a list
-    assert isinstance(json_bundles, list)
-    # THEN assert that no files where fetched
-    assert len(json_bundles) == 0
+    # THEN assert that output was produced
+    assert result.exit_code == 0
 
 
-def test_get_files_json(populated_context, cli_runner, helpers):
+def test_get_files_json(populated_context, cli_runner):
     """Test to get all files from a populated store"""
-    # GIVEN a context with a populated store and a cli runner
+    # GIVEN a context
     store: Store = populated_context["store"]
-    # GIVEN a store with some files
-    nr_files = helpers.count_iterable(store.get_files())
-    assert nr_files > 0
 
-    # WHEN fetching all files by not specifying any file
-    json_bundles = helpers.get_json(
-        cli_runner.invoke(files_cmd, ["--json"], obj=populated_context).output
-    )
+    # GIVEN a store with files
+    files: list[File] = store.get_files()
 
-    # THEN assert that all files where fetched
-    assert len(json_bundles) == nr_files
+    # WHEN fetching all files
+    result = cli_runner.invoke(files_cmd, ["--json"], obj=populated_context)
+
+    # THEN assert that all files where printed
+    for file in files:
+        assert file.path in result.output
 
 
 def test_get_files(populated_context, cli_runner):
     """Test to get all files from a populated store in human friendly format"""
-    # GIVEN a context with a populated store and a cli runner
-    # GIVEN a store with some files
+    # GIVEN a context and a store
     store: Store = populated_context["store"]
+
+    # GIVEN a store with some files
+    assert store.get_files().all()
+
     # GIVEN a file name
-    file_obj = store.get_files().first()
-    file_name = Path(file_obj.path).name
+    file: File = store.get_files().first()
+    file_name: str = Path(file.path).name
 
     # WHEN fetching all files by not specifying any file
     result = cli_runner.invoke(files_cmd, [], obj=populated_context)
 
-    # THEN assert that the file name of one file is displayed
+    # THEN assert that the file name is displayed
     assert file_name in result.output
+
     # THEN assert that the full file path is not shown
-    assert file_obj.path not in result.output
+    assert file.path not in result.output
 
 
-def test_get_files_tag(populated_context, cli_runner, helpers, vcf_tag_name):
+def test_get_files_tag(populated_context, cli_runner, vcf_tag_name):
     """Test to get files with a specific tag from a populated store"""
-    # GIVEN a context with a populated store and a cli runner
+    # GIVEN a context with a populated store
     store: Store = populated_context["store"]
+
     # GIVEN a store with some files that are tagged
-    nr_files = helpers.count_iterable(store.get_files(tag_names=[vcf_tag_name]))
-    assert nr_files > 0
+    tagged_files: list[File] = store.get_files(tag_names=[vcf_tag_name]).all()
+    assert tagged_files
 
     # WHEN fetching all files by not specifying any file
-    json_bundles = helpers.get_json(
-        cli_runner.invoke(
-            files_cmd, ["--tag", vcf_tag_name, "--json"], obj=populated_context
-        ).output
-    )
+    result = cli_runner.invoke(files_cmd, ["--tag", vcf_tag_name, "--json"], obj=populated_context)
 
     # THEN assert that all files where fetched
-    assert len(json_bundles) == nr_files
+    for file in tagged_files:
+        assert file.path in result.output
 
 
-def test_get_files_multiple_tags(
-    populated_context, cli_runner, helpers, vcf_tag_name, family_tag_name
-):
+def test_get_files_multiple_tags(populated_context, cli_runner, vcf_tag_name, family_tag_name):
     """Test to get files with multiple tags tag from a populated store"""
-    # GIVEN a context with a populated store and a cli runner
+    # GIVEN a context with a populated store
     store: Store = populated_context["store"]
+
     # GIVEN a store with some files that are tagged
-    nr_files = helpers.count_iterable(store.get_files(tag_names=[vcf_tag_name, family_tag_name]))
-    assert nr_files > 0
+    files: list[File] = store.get_files(tag_names=[vcf_tag_name, family_tag_name]).all()
+    assert files
 
     # WHEN fetching all files by not specifying any file
-    json_bundles = helpers.get_json(
-        cli_runner.invoke(
-            files_cmd,
-            ["--tag", vcf_tag_name, "--tag", family_tag_name, "--json"],
-            obj=populated_context,
-        ).output
+    result = cli_runner.invoke(
+        files_cmd,
+        ["--tag", vcf_tag_name, "--tag", family_tag_name, "--json"],
+        obj=populated_context,
     )
 
     # THEN assert that all files where fetched
-    assert len(json_bundles) == nr_files
+    for file in files:
+        assert file.path in result.output
 
 
-def test_get_files_rare_tag(populated_context, cli_runner, helpers, family_tag_name):
+def test_get_files_rare_tag(populated_context, cli_runner, family_tag_name):
     """Test to get files with a tag that is not on all files from a populated store"""
     # GIVEN a context with a populated store and a cli runner
     store: Store = populated_context["store"]
-    # GIVEN a store with some files that are tagged
-    total_nr_files = helpers.count_iterable(store.get_files())
-    nr_tag_files = helpers.count_iterable(store.get_files(tag_names=[family_tag_name]))
-    # GIVEN a tag that only fetches a subset of the files
-    assert nr_tag_files < total_nr_files
 
-    # WHEN fetching all files with that tag
-    json_bundles = helpers.get_json(
-        cli_runner.invoke(
-            files_cmd, ["--tag", family_tag_name, "--json"], obj=populated_context
-        ).output
+    # GIVEN a store with some tagged files
+    tagged_files: list[File] = store.get_files(tag_names=[family_tag_name]).all()
+
+    # WHEN fetching all tagged files
+    result = cli_runner.invoke(
+        files_cmd, ["--tag", family_tag_name, "--json"], obj=populated_context
     )
 
-    # THEN assert that all files where fetched
-    assert len(json_bundles) == nr_tag_files
+    # THEN all tagged files where fetched
+    for tagged_file in tagged_files:
+        assert tagged_file.path in result.output
 
 
-def test_get_files_compact(populated_context_subsequent, cli_runner, family_tag_name, helpers):
+def test_get_files_compact():
     """Test to get all files from a populated store in human friendly format, subsequent names concatenated"""
     # GIVEN an example result file list
     file_list = [

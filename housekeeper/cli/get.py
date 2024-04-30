@@ -6,13 +6,14 @@ import logging
 import click
 from rich.console import Console
 
+from housekeeper.services.file_service.file_service import FileService
+from housekeeper.services.file_report_service.file_report_service import FileReportService
 from housekeeper.store.api import schema
 from housekeeper.store.models import Version
 from housekeeper.store.store import Store
 
 from .tables import (
     get_bundles_table,
-    get_files_table,
     get_tags_table,
     get_versions_table,
 )
@@ -141,17 +142,17 @@ def files_cmd(
     compact: bool,
 ):
     """Get files from database"""
-    store: Store = context.obj["store"]
-    file_objs = store.get_files(bundle_name=bundle, tag_names=tag_names, version_id=version_id)
-    template = schema.FileSchema()
-    result = []
-    for file in file_objs:
-        result.append(template.dump(file))
-    if json:
-        click.echo(jsonlib.dumps(result))
-        return
-    console = Console()
-    console.print(get_files_table(result, verbose=verbose, compact=compact))
+    file_service: FileService = context.obj["file_service"]
+    output_service: FileReportService = context.obj["file_report_service"]
+
+    output_service.compact = compact
+    output_service.json = json
+
+    local = file_service.get_local_files(bundle=bundle, tags=tag_names, version_id=version_id)
+    remote = file_service.get_remote_files(bundle=bundle, tags=tag_names, version_id=version_id)
+
+    output_service.log_file_table(files=local, header="Local files", verbose=verbose)
+    output_service.log_file_table(files=remote, header="Remote files", verbose=False)
 
 
 @get.command("tag")

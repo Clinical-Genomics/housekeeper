@@ -1,10 +1,10 @@
 from enum import Enum
 from typing import Callable
 
-from sqlalchemy import func as sqlalchemy_func
+from sqlalchemy import and_, func as sqlalchemy_func, or_
 from sqlalchemy.orm import Query
 
-from housekeeper.store.models import File, Tag
+from housekeeper.store.models import Archive, File, Tag
 
 
 def filter_files_by_id(files: Query, file_id: int, **kwargs) -> Query:
@@ -31,6 +31,20 @@ def filter_files_by_is_archived(files: Query, is_archived: bool, **kwargs) -> Qu
     return files.filter((File.archive != None) == is_archived)
 
 
+def filter_files_by_is_remote(files: Query, **kwargs) -> Query:
+    """Filters the query depending on if the files are remote or not."""
+    files = files.outerjoin(File.archive)
+    remote_condition = and_(File.archive != None, Archive.retrieved_at == None)
+    return files.filter(remote_condition)
+
+
+def filter_files_by_is_local(files: Query, **kwargs) -> Query:
+    """Filters the query depending on if the files are local or not."""
+    files = files.outerjoin(File.archive)
+    local_condition = or_(File.archive == None, Archive.retrieved_at != None)
+    return files.filter(local_condition)
+
+
 class FileFilter(Enum):
     """Define filter functions for Files joined tables."""
 
@@ -38,6 +52,8 @@ class FileFilter(Enum):
     BY_PATH: Callable = filter_files_by_path
     FILES_BY_TAGS: Callable = filter_files_by_tags
     FILES_BY_IS_ARCHIVED: Callable = filter_files_by_is_archived
+    IS_REMOTE: Callable = filter_files_by_is_remote
+    IS_LOCAL: Callable = filter_files_by_is_local
 
 
 def apply_file_filter(
