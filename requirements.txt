@@ -1,5 +1,6 @@
 Click
 coloredlogs
+cryptography
 marshmallow
 pyyaml
 SQLAlchemy
