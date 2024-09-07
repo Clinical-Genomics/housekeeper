@@ -1,3 +1,31 @@
+[tool.poetry]
+name = "housekeeper"
+version = "4.13.2"
+description =  "File data orchestrator"
+authors = ["henrikstranneheim <henrik.stranneheim@scilifelab.se>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1.7"
+coloredlogs = "^15.0.1"
+cryptography = "^43.0.1"
+marshmallow = "^3.22.0"
+PyYAML = "^6.0.2"
+SQLAlchemy = "^2.0.34"
+rich = "^13.8.0"
+PyMySQL = "^1.1.1"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.8.0"
+pytest = "^8.3.2"
+pytest-mock = "^3.14.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
 [tool.black]
 line-length = 100
 

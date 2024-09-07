@@ -1,8 +1,0 @@
-Click
-coloredlogs
-cryptography
-marshmallow
-pyyaml
-SQLAlchemy
-rich
-pymysql
