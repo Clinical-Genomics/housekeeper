@@ -22,7 +22,7 @@ jobs:
 
       - name: Test with Pytest & Coveralls
         run: |
-          pytest --cov=housekeeper/
+          poetry run pytest --cov=housekeeper/
           coveralls
         env:
           GITHUB: 1
