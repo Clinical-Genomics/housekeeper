@@ -8,7 +8,10 @@ COPY . /app/
 
 # Install app requirements
 RUN pip install poetry \
-&& poetry export -f requirements.txt -o requirements.txt --without-hashes \
-&& pip install -r requirements.txt -e .
+RUN pip install poetry
+RUN poetry config virtualenvs.create false \
+  && poetry install
+
+
 
 USER nonroot
