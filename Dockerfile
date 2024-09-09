@@ -6,9 +6,8 @@ RUN addgroup --system nonroot \
 WORKDIR /app
 COPY . /app/
 
-RUN pip install poetry
-
 # Install app requirements
+RUN pip install poetry
 RUN poetry export -f requirements.txt -o requirements.txt --without-hashes
 RUN pip install -r requirements.txt -e .
 
