@@ -20,7 +20,7 @@ setuptools = "*"
 
 
 [tool.poetry.group.dev.dependencies]
-coveralls =  "*"
+coveralls =  "^3"
 pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
