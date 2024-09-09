@@ -7,20 +7,23 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+PyMySQL = "^1.1.1"
+PyYAML = "^6.0.2"
+SQLAlchemy = "^2.0.34"
 click = "^8.1.7"
 coloredlogs = "^15.0.1"
 cryptography = "^43.0.1"
 marshmallow = "^3.22.0"
-PyYAML = "^6.0.2"
-SQLAlchemy = "^2.0.34"
+python = "^3.11"
 rich = "^13.8.0"
-PyMySQL = "^1.1.1"
+setuptools = "*"
+
 
 [tool.poetry.group.dev.dependencies]
 coveralls = "*"
 pre-commit = "^3.8.0"
-pytest = "^7.4.2"
+pytest = "*"
+pytest-cov = "*"
 pytest-mock = "^3.14.0"
 
 [build-system]
