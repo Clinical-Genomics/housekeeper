@@ -8,7 +8,7 @@ COPY . /app/
 
 # Install app requirements
 RUN pip install poetry \
-&& poetry export -f requrements.txt -o requirements.txt --without-hashes \
+&& poetry export -f requirements.txt -o requirements.txt --without-hashes \
 && pip install -r requirements.txt -e .
 
 USER nonroot
