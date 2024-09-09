@@ -7,24 +7,24 @@ license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-PyMySQL = "^1.1.1"
-PyYAML = "^6.0.2"
-SQLAlchemy = "^2.0.34"
-click = "^8.1.7"
-coloredlogs = "^15.0.1"
-cryptography = "^43.0.1"
-marshmallow = "^3.22.0"
+PyMySQL = "*"
+PyYAML = "*"
+SQLAlchemy = "*"
+click = "*"
+coloredlogs = "*"
+cryptography = "*"
+marshmallow = "*"
 python = "^3.11"
-rich = "^13.8.0"
+rich = "*"
 setuptools = "*"
 
 
 [tool.poetry.group.dev.dependencies]
-coveralls = "*"
-pre-commit = "^3.8.0"
+coveralls =  "*"
+pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
-pytest-mock = "^3.14.0"
+pytest-mock = "*"
 
 [build-system]
 requires = ["poetry-core"]
