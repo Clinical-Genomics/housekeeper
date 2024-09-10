@@ -7,9 +7,6 @@ WORKDIR /app
 COPY . /app/
 
 # Install app requirements
-
-RUN pip install poetry \
-&& poetry export -f requirements.txt -o requirements.txt --without-hashes \
-&& pip install --no-cache-dir -r requirements.txt .
+&& pip install --no-cache-dir .
 
 USER nonroot
