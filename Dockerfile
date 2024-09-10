@@ -7,10 +7,9 @@ WORKDIR /app
 COPY . /app/
 
 # Install app requirements
+
 RUN pip install poetry \
-&& poetry config virtualenvs.create false \
-&& poetry install --no-interaction --no-ansi
-
-
+&& poetry export -f requirements.txt -o requirements.txt --without-hashes \
+&& pip install --no-cache-dir -r requirements.txt -e . \
 
 USER nonroot
