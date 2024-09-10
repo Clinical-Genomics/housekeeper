@@ -8,9 +8,8 @@ COPY . /app/
 
 # Install app requirements
 RUN pip install poetry \
-RUN pip install poetry
-RUN poetry config virtualenvs.create false \
-  && poetry install
+&& poetry config virtualenvs.create false \
+&& poetry install
 
 
 
