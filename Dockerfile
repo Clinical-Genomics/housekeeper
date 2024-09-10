@@ -10,6 +10,6 @@ COPY . /app/
 
 RUN pip install poetry \
 && poetry export -f requirements.txt -o requirements.txt --without-hashes \
-&& pip install --no-cache-dir -r requirements.txt -e . \
+&& pip install --no-cache-dir -r requirements.txt -e .
 
 USER nonroot
