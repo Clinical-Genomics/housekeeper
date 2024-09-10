@@ -6,7 +6,10 @@ RUN addgroup --system nonroot \
 WORKDIR /app
 COPY . /app/
 
-# Install app requirements
-&& pip install --no-cache-dir .
-
 USER nonroot
+# Install app requirements
+
+RUN pip install poetry \
+&& poetry export -f requirements.txt -o requirements.txt --without-hashes \
+&& pip install --no-cache-dir -r requirements.txt -e .
+
