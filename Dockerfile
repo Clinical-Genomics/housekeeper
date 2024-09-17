@@ -1,7 +1,7 @@
 FROM docker.io/library/python:3.11-slim-bullseye
-
-COPY . /app/
 WORKDIR /app
+COPY poetry.lock pyproject.toml /app/
+COPY . /app/
 
 # Install app requirements
 RUN pip install poetry \
