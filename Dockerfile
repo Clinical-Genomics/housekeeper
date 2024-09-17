@@ -5,7 +5,6 @@ WORKDIR /app
 
 # Install app requirements
 RUN pip install poetry \
-    && poetry config virtualenvs.create false \
-    && poetry install
+    && poetry install --only main
 
 ENTRYPOINT ["poetry", "run", "housekeeper"]
