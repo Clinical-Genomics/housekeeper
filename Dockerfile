@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . /app/
 
 # Install app requirements
-RUN pip install poetry \
+RUN pip install --ignore-installed poetry \
     && poetry config virtualenvs.create false \
     && poetry install --only main
 
