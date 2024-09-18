@@ -5,6 +5,12 @@ description =  "File data orchestrator"
 authors = ["henrikstranneheim <henrik.stranneheim@scilifelab.se>"]
 license = "MIT"
 readme = "README.md"
+include = [
+  "README.md",
+  "housekeeper/**/*",
+  "tests/**/*"
+]
+
 
 [tool.poetry.dependencies]
 PyMySQL = "*"
@@ -29,6 +35,9 @@ pytest-mock = "*"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+housekeeper = "housekeeper.cli.core:base"
 
 [tool.black]
 line-length = 100

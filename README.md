@@ -9,18 +9,12 @@
 - different interfaces (Python, CLI, REST) for fetching files based on tags
 - a way to backup and retrieve bundles from long-term storage
 
-### Todo
-
-- [ ] re-implement the archive/encryption interface [@ingkebil]
-- [ ] handle clean up of expired bundles [@robinandeer]
-- [ ] expand the CLI with `get` command etc. [@robinandeer]
-
 ## Installation
 
 Housekeeper written in Python 3.6+ and is available on the [Python Package Index][pypi] (PyPI).
 
 ```bash
-pip install housekeeper
+poetry install
 ```
 
 If you would like to install the latest development version:
@@ -28,12 +22,12 @@ If you would like to install the latest development version:
 ```bash
 git clone https://github.com/Clinical-Genomics/housekeeper
 cd housekeeper
-pip install --editable .
+poetry install
 ```
 
 ## Contributing
 
-Housekeeper is using github flow branching model as described in our [development manual][development manual].
+Housekeeper is using GitHub flow branching model as described in our [development manual][development manual].
 
 ## Documentation
 
@@ -41,7 +35,7 @@ Housekeeper is using github flow branching model as described in our [developmen
 
 #### Config file
 
-Housekeeper supports a very simple YAML config. The following options are supported:
+Housekeeper supports a basic YAML config. The following options are supported:
 
 ```yaml
 ---
