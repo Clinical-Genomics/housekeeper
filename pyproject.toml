@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "housekeeper"
-version = "4.13.5"
+version = "4.13.6"
 description =  "File data orchestrator"
 authors = ["henrikstranneheim <henrik.stranneheim@scilifelab.se>"]
 license = "MIT"
