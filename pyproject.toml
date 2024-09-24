@@ -20,7 +20,7 @@ click = "*"
 coloredlogs = "*"
 cryptography = "*"
 marshmallow = "*"
-python = "^3.11"
+python = "^3.12"
 rich = "*"
 setuptools = "*"
 
