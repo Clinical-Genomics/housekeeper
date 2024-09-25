@@ -40,7 +40,7 @@ def get_files_table(rows: list[dict], header: str, verbose=False, compact=False)
 
 
 def squash_names(list_of_files: list[dict]) -> list[dict]:
-    """If subsequent elements (filenames) in 'list_of_files' end in an integer- And that integer is
+    """If subsequent elements (filenames) in 'list_of_files' end in an integer - And that integer is
     following the previous - those are squashed when displayed.
     Example:
 
@@ -51,14 +51,14 @@ def squash_names(list_of_files: list[dict]) -> list[dict]:
         Traverse a list of dictionaries, where each dictionary represents
         a file with 'name', 'path' and 'tag', etc. For each name in the list ending
         with integer n, for every subsequent name ending in n+1, n+2, ... n+i displayed
-        name wlll be: name[n-i].
+        name will be: name[n-i].
 
-        Input list will not be sorted.
+        The input list will not be sorted.
 
         For each element e in the list, e will be searched by regular expression for integers
-        at specific location, this is cached for next iteration where a comparision is done. If
-        subsequent cache is updated, if not the result is printed. Print will look in the cache
-        to check if current iteration has a subsequent integer ending. Tags associated to squashed
+         at a specific location; this is cached for the next iteration where a comparison is done. If
+        subsequent cache is updated, if not, the result is printed. Print will look in the cache
+        to check if the current iteration has a subsequent integer ending. Tags associated with squashed
         filenames will be sorted and duplicates removed.
     """
     list_of_squashed = []
@@ -75,7 +75,7 @@ def squash_names(list_of_files: list[dict]) -> list[dict]:
         if counter == str(_to_int(previous_counter) + 1) and (previous_file == filename):
             squash = squash + [counter]
             tag_list = tag_list + (hk_json["tags"])
-        elif len(squash) == 1:  # only previous element in list
+        elif len(squash) == 1:  # only previous element in the list
             list_of_squashed.append(previous_hkjson)
             squash = [counter]
         else:
@@ -103,13 +103,12 @@ def remove_duplicates(tag_list: list[dict]) -> list[dict]:
     return no_duplicates
 
 
-def _get_suffix(filename):
+def _get_suffix(filename: str):
     """Split a filename if ending with an integer before suffix."""
-    # re.split('(\d+)\.\w{3}$', "asdf1.asd")
-    parsed = re.split(r"(\d+)\.(\w{2,3}$)", filename)
+    parsed: list[str] = re.split(pattern=r"(\d+)\.(\w{2,3}$)", string=filename)
     if len(parsed) == 4:
         return parsed[0], parsed[1], f".{parsed[2]}"
-    return (filename, "", "")
+    return filename, "", ""
 
 
 def _to_int(string):
