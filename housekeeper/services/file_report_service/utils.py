@@ -103,7 +103,7 @@ def remove_duplicates(tag_list: list[dict]) -> list[dict]:
     return no_duplicates
 
 
-def _get_suffix(filename: str):
+def _get_suffix(filename: str) -> tuple[str, str, str]:
     """Split a filename if ending with an integer before suffix."""
     parsed: list[str] = re.split(pattern=r"(\d+)\.(\w{2,3}$)", string=filename)
     if len(parsed) == 4:
