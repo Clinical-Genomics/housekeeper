@@ -1,9 +1,10 @@
-from pathlib import Path
 import re
-from housekeeper.store.api import schema
-from housekeeper.store.models import File
+from pathlib import Path
 
 from rich.table import Table
+
+from housekeeper.store.api import schema
+from housekeeper.store.models import File
 
 
 def format_files(files: list[File]):
@@ -39,8 +40,8 @@ def get_files_table(rows: list[dict], header: str, verbose=False, compact=False)
 
 
 def squash_names(list_of_files: list[dict]) -> list[dict]:
-    """If subsequent elements (filenames) in 'list_of_files' end in an integer- And that integer is
-    following the previous- those are squashed when displayed.
+    """If subsequent elements (filenames) in 'list_of_files' end in an integer - And that integer is
+    following the previous - those are squashed when displayed.
     Example:
 
         ["asdf1.txt", "asdf2.txt"] becomes asdf[1-2].txt'
@@ -50,19 +51,19 @@ def squash_names(list_of_files: list[dict]) -> list[dict]:
         Traverse a list of dictionaries, where each dictionary represents
         a file with 'name', 'path' and 'tag', etc. For each name in the list ending
         with integer n, for every subsequent name ending in n+1, n+2, ... n+i displayed
-        name wlll be: name[n-i].
+        name will be: name[n-i].
 
-        Input list will not be sorted.
+        The input list will not be sorted.
 
         For each element e in the list, e will be searched by regular expression for integers
-        at specific location, this is cached for next iteration where a comparision is done. If
-        subsequent cache is updated, if not the result is printed. Print will look in the cache
-        to check if current iteration has a subsequent integer ending. Tags associated to squashed
+         at a specific location; this is cached for the next iteration where a comparison is done. If
+        subsequent cache is updated, if not, the result is printed. Print will look in the cache
+        to check if the current iteration has a subsequent integer ending. Tags associated with squashed
         filenames will be sorted and duplicates removed.
     """
     list_of_squashed = []
     tag_list = []
-    if list_of_files == []:
+    if not list_of_files:
         return list_of_squashed
     head = list_of_files[0]
     tail = list_of_files[1:]
@@ -74,21 +75,18 @@ def squash_names(list_of_files: list[dict]) -> list[dict]:
         if counter == str(_to_int(previous_counter) + 1) and (previous_file == filename):
             squash = squash + [counter]
             tag_list = tag_list + (hk_json["tags"])
+        elif len(squash) == 1:  # only previous element in the list
+            list_of_squashed.append(previous_hkjson)
+            squash = [counter]
         else:
-            if len(squash) == 1:  # only previous element in list
-                list_of_squashed.append(previous_hkjson)
-                squash = [counter]
-            else:
-                squashed_path = (
-                    previous_file + "[" + squash[0] + "-" + squash[-1] + "]" + previous_suffix
-                )
-                previous_hkjson["path"] = squashed_path
-                previous_hkjson["full_path"] = squashed_path
-                previous_hkjson["tags"] = remove_duplicates(sorted(tag_list, key=lambda i: i["id"]))
-                previous_hkjson["id"] = "-"
-                list_of_squashed.append(previous_hkjson)
-                squash = [counter]
-                tag_list = []
+            squashed_path = f"{previous_file}[{squash[0]}-{squash[-1]}]{previous_suffix}"
+            previous_hkjson["path"] = squashed_path
+            previous_hkjson["full_path"] = squashed_path
+            previous_hkjson["tags"] = remove_duplicates(sorted(tag_list, key=lambda i: i["id"]))
+            previous_hkjson["id"] = "-"
+            list_of_squashed.append(previous_hkjson)
+            squash = [counter]
+            tag_list = []
         previous_counter = counter
         previous_suffix = suffix
         previous_file = filename
@@ -105,17 +103,14 @@ def remove_duplicates(tag_list: list[dict]) -> list[dict]:
     return no_duplicates
 
 
-def _get_suffix(filename):
-    """Split a filename if ending with an integer before suffix"""
-    # re.split('(\d+)\.\w{3}$', "asdf1.asd")
-    parsed = re.split("(\d+)\.(\w{2,3}$)", filename)
+def _get_suffix(filename: str) -> tuple[str, str, str]:
+    """Split a filename if ending with an integer before suffix."""
+    parsed: list[str] = re.split(pattern=r"(\d+)\.(\w{2,3}$)", string=filename)
     if len(parsed) == 4:
-        return (parsed[0], parsed[1], "." + parsed[2])
-    return (filename, "", "")
+        return parsed[0], parsed[1], f".{parsed[2]}"
+    return filename, "", ""
 
 
 def _to_int(string):
     """Cast to int, empty string becomes 0"""
-    if string == "":
-        return 0
-    return int(string)
+    return 0 if string == "" else int(string)
