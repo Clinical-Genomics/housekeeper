@@ -1,6 +1,4 @@
-"""
-This module handles finding things in the store/database
-"""
+"""This module handles reading the database."""
 
 import datetime
 import datetime as dt
@@ -109,59 +107,45 @@ class ReadHandler(BaseHandler):
         local_only: bool = None,
         remote_only: bool = None,
     ) -> Query:
-        """Fetches files from the store based on the specified filters.
-        Args:
-            bundle_name (str, optional): Name of the bundle to fetch files from.
-            tag_names (list[str], optional): list of tags to filter files by.
-            version_id (int, optional): ID of the version to fetch files from.
-            path (str, optional): Path to the file to fetch.
-
-        Returns:
-            Query: A query that match the specified filters.
-        """
-        query = self._get_query(table=File)
+        """Return a query with specified filters for files from the database."""
+        query: Query = self._get_query(table=File)
         if bundle_name:
             LOG.debug(f"Fetching files from bundle {bundle_name}")
-            query = apply_bundle_filter(
+            query: Query = apply_bundle_filter(
                 bundles=query.join(File.version).join(Version.bundle),
                 filter_functions=[BundleFilters.BY_NAME],
                 bundle_name=bundle_name,
             )
-
         if tag_names:
-            formatted_tags = ",".join(tag_names)
+            formatted_tags: str = ",".join(tag_names)
             LOG.debug(f"Fetching files with tags in [{formatted_tags}]")
 
-            query = apply_file_filter(
+            query: Query = apply_file_filter(
                 files=query.join(File.tags),
                 filter_functions=[FileFilter.FILES_BY_TAGS],
                 tag_names=tag_names,
             )
-
         if version_id:
             LOG.debug(f"Fetching files from version {version_id}")
-            query = apply_version_filter(
+            query: Query = apply_version_filter(
                 versions=query.join(File.version),
                 filter_functions=[VersionFilter.BY_ID],
                 version_id=version_id,
             )
-
         if file_path:
             LOG.debug(f"Fetching file with path {file_path}")
-            query = apply_file_filter(
+            query: Query = apply_file_filter(
                 files=query,
                 filter_functions=[FileFilter.BY_PATH],
                 file_path=file_path,
             )
-
         if local_only:
-            query = apply_file_filter(
+            query: Query = apply_file_filter(
                 files=query,
                 filter_functions=[FileFilter.IS_LOCAL],
             )
-
         if remote_only:
-            query = apply_file_filter(
+            query: Query = apply_file_filter(
                 files=query,
                 filter_functions=[FileFilter.IS_REMOTE],
                 is_archived=False,
