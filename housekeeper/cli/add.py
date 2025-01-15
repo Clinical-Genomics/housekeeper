@@ -12,7 +12,7 @@ from housekeeper.constants import ROOT
 from housekeeper.date import get_date
 from housekeeper.exc import VersionIncludedError
 from housekeeper.files import load_json, validate_input
-from housekeeper.include import include_version, relative_path, link_file
+from housekeeper.include import include_version, link_file, relative_path
 from housekeeper.store.models import Bundle, Tag, Version
 from housekeeper.store.store import Store
 
