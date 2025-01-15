@@ -12,7 +12,7 @@ from housekeeper.constants import ROOT
 from housekeeper.date import get_date
 from housekeeper.exc import VersionIncludedError
 from housekeeper.files import load_json, validate_input
-from housekeeper.include import include_version, link_to_relative_path, relative_path
+from housekeeper.include import include_version, relative_path, link_file
 from housekeeper.store.models import Bundle, Tag, Version
 from housekeeper.store.store import Store
 
@@ -133,7 +133,13 @@ def file_cmd(
     tags = data.get("tags", tags)
     if not keep_input_path:
         version: Version = bundle.versions[0]
-        link_to_relative_path(version=version, file_path=file_path, root_path=context.obj[ROOT])
+        housekeeper_file_path: Path = Path(context.obj[ROOT], version.relative_root_dir, file_path.name)
+        if housekeeper_file_path.exists():
+            if not Path.samefile(housekeeper_file_path, path):
+                LOG.warning("A file with the same name already exists in %s.", file_path)
+                raise click.Abort
+        else:
+            link_file(file_path=file_path, new_path=housekeeper_file_path, hardlink=True)
         file_path: Path = relative_path(version=version, file=file_path)
     new_file = store.add_file(file_path=file_path, bundle=bundle, tags=tags)
     store.session.add(new_file)
