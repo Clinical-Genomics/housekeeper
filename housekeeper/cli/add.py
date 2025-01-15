@@ -133,7 +133,9 @@ def file_cmd(
     tags = data.get("tags", tags)
     if not keep_input_path:
         version: Version = bundle.versions[0]
-        housekeeper_file_path: Path = Path(context.obj[ROOT], version.relative_root_dir, file_path.name)
+        housekeeper_file_path: Path = Path(
+            context.obj[ROOT], version.relative_root_dir, file_path.name
+        )
         if housekeeper_file_path.exists():
             if not Path.samefile(housekeeper_file_path, path):
                 LOG.warning("A file with the same name already exists in %s.", file_path)
