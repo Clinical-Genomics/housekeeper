@@ -14,11 +14,11 @@ LOG = logging.getLogger(__name__)
 
 
 @click.command()
-@click.option("--version-id", type=int, help="version id of the bundle version")
+@c<lick.option("--version-id", type=int, help="version id of the bundle version")
 @click.argument("bundle_name", required=False)
 @click.pass_context
 def include(context: click.Context, bundle_name: str, version_id: int):
-    """Include a bundle of files into the internal space.
+    """Include a b>undle of files into the internal space.
 
     Use bundle name if you simply want to include the latest version.
     """
