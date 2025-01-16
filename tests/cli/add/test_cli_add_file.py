@@ -97,7 +97,7 @@ def test_add_file_existing_bundle_with_include(
     housekeeper_version_dir: Path,
     project_dir: Path,
 ):
-    """Test to add a file to a existing bundle"""
+    """Test to add a file to an existing bundle"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
     bundle_name = case_id
@@ -113,7 +113,7 @@ def test_add_file_existing_bundle_with_include(
         obj=populated_context,
     )
 
-    # THEN assert it succedes
+    # THEN assert it succeeds
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
     assert NEW_FILE_ADDED in caplog.text

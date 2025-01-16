@@ -57,17 +57,20 @@ def checksum(path: Path) -> str:
             buf = stream.read(BLOCKSIZE)
     return hasher.hexdigest()
 
-def different_file_with_same_name_exists_in_bundle_directory(file_path: Path, bundle_root_path=Path, version= Version) -> bool:
-    housekeeper_file_path: Path = Path(
-        bundle_root_path, version.relative_root_dir, file_path.name
-    )
+
+def different_file_with_same_name_exists_in_bundle_directory(
+    file_path: Path, bundle_root_path=Path, version=Version
+) -> bool:
+    housekeeper_file_path: Path = Path(bundle_root_path, version.relative_root_dir, file_path.name)
     return housekeeper_file_path.exists() and not Path.samefile(file_path, housekeeper_file_path)
 
-def file_exists_in_bundle_directory(file_path: Path, bundle_root_path=Path, version= Version) -> bool:
-    housekeeper_file_path: Path = Path(
-        bundle_root_path, version.relative_root_dir, file_path.name
-    )
+
+def file_exists_in_bundle_directory(
+    file_path: Path, bundle_root_path=Path, version=Version
+) -> bool:
+    housekeeper_file_path: Path = Path(bundle_root_path, version.relative_root_dir, file_path.name)
     return housekeeper_file_path.exists() and Path.samefile(file_path, housekeeper_file_path)
+
 
 def link_to_relative_path(file_path: Path, root_path: Path, version: Version) -> None:
     """Link the given absolute path to the path of the given bundle version."""
