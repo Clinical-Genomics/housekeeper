@@ -137,6 +137,7 @@ def file_cmd(
             context.obj[ROOT], version.relative_root_dir, file_path.name
         )
         if housekeeper_file_path.exists():
+            LOG.warning("File %s already exists.", file_path)
             if not Path.samefile(housekeeper_file_path, path):
                 LOG.warning("A file with the same name already exists in %s.", file_path)
                 raise click.Abort
