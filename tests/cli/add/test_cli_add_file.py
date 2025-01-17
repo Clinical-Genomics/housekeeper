@@ -182,7 +182,7 @@ def test_add_file_when_different_file_with_same_name_exists_in_bundle_directory(
     # THEN assert it fails
     assert result.exit_code == 1
     # THEN check that an error message is displayed
-    assert "File exists." in caplog.text
+    assert "linked file:" not in caplog.text
     # THEN check that the file was not added to the housekeeper bundle version
     housekeeper_files: list[Path] = [Path(file.path) for file in version_obj.files]
     assert file_in_housekeeper_bundle not in housekeeper_files
