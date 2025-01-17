@@ -164,6 +164,10 @@ def test_add_file_when_different_file_with_same_name_exists_in_bundle_directory(
     # GIVEN a context with a populated store and a cli runner
     bundle_name = case_id
 
+    store: Store = populated_context["store"]
+    bundle_obj: Bundle = store.bundles().first()
+    version_obj: Version = bundle_obj.versions[0]
+
     # GIVEN that there is a file in the bundle directory
     file_in_housekeeper_bundle: Path = Path(housekeeper_version_dir, second_sample_vcf.name)
     open(file_in_housekeeper_bundle, "w").close()
@@ -177,6 +181,11 @@ def test_add_file_when_different_file_with_same_name_exists_in_bundle_directory(
 
     # THEN assert it fails
     assert result.exit_code == 1
+    # THEN check that an error message is displayed
+    assert "File exists." in caplog.text
+    # THEN check that the file was not added to the housekeeper bundle version
+    housekeeper_files: list[Path] = [Path(file.path) for file in version_obj.files]
+    assert file_in_housekeeper_bundle not in housekeeper_files
 
 
 def test_add_file_in_bundle_directory(
