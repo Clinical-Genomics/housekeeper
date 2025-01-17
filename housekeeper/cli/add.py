@@ -138,29 +138,33 @@ def file_cmd(
 
     tags = data.get("tags", tags)
     version: Version = bundle.versions[0]
-    if not keep_input_path:
-        if different_file_with_same_name_exists_in_bundle_directory(
-            file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
-        ):
-            housekeeper_file_path: Path = Path(
-                context.obj[ROOT], version.relative_root_dir, file_path.name
-            )
-            LOG.warning(
-                "A different file with the same name already exists in the bundle at %s.",
-                housekeeper_file_path,
-            )
-            raise click.Abort
-        if file_exists_in_bundle_directory(
-            file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
-        ):
-            file_path: Path = relative_path(version=version, file=file_path)
-        if not file_exists_in_bundle_directory(
-            file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
-        ):
-            link_to_relative_path(version=version, file_path=file_path, root_path=context.obj[ROOT])
-            file_path: Path = relative_path(version=version, file=file_path)
+    if keep_input_path:
+        housekeeper_file_path: Path = file_path
 
-    new_file = store.add_file(file_path=file_path, bundle=bundle, tags=tags)
+    if different_file_with_same_name_exists_in_bundle_directory(
+        file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
+    ):
+        housekeeper_file_path: Path = Path(
+            context.obj[ROOT], version.relative_root_dir, file_path.name
+        )
+        LOG.warning(
+            "A different file with the same name already exists in the bundle at %s.",
+            housekeeper_file_path,
+        )
+        raise click.Abort
+
+    if file_exists_in_bundle_directory(
+        file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
+    ):
+        housekeeper_file_path: Path = relative_path(version=version, file=file_path)
+
+    if not file_exists_in_bundle_directory(
+        file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
+    ):
+        link_to_relative_path(version=version, file_path=file_path, root_path=context.obj[ROOT])
+        housekeeper_file_path: Path = relative_path(version=version, file=file_path)
+
+    new_file = store.add_file(file_path=housekeeper_file_path, bundle=bundle, tags=tags)
     store.session.add(new_file)
     store.session.commit()
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
