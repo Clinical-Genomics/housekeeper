@@ -208,9 +208,8 @@ def test_add_file_in_bundle_directory(
     version_obj: Version = bundle_obj.versions[0]
 
     # GIVEN that the file is in the bundle directory
-    file_in_housekeeper_bundle: Path = Path(
-        housekeeper_version_dir, "file_in_housekeeper_bundle.txt"
-    )
+    file_name: str = "file_in_housekeeper_bundle.txt"
+    file_in_housekeeper_bundle: Path = Path(housekeeper_version_dir, file_name)
     open(file_in_housekeeper_bundle, "w").close()
 
     # WHEN trying to add a file with the same name to the bundle
@@ -226,7 +225,7 @@ def test_add_file_in_bundle_directory(
     assert NEW_FILE_ADDED in caplog.text
     # THEN check that the file was added to the housekeeper bundle version
     housekeeper_files: list[Path] = [Path(file.path) for file in version_obj.files]
-    assert file_in_housekeeper_bundle in housekeeper_files
+    assert Path(version_obj.relative_root_dir, file_name) in housekeeper_files
 
 
 def test_add_file_json(
