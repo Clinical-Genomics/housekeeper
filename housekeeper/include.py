@@ -58,14 +58,7 @@ def checksum(path: Path) -> str:
     return hasher.hexdigest()
 
 
-def different_file_with_same_name_exists_in_bundle_directory(
-    file_path: Path, bundle_root_path=Path, version=Version
-) -> bool:
-    housekeeper_file_path: Path = Path(bundle_root_path, version.relative_root_dir, file_path.name)
-    return housekeeper_file_path.exists() and not Path.samefile(file_path, housekeeper_file_path)
-
-
-def file_exists_in_bundle_directory(
+def same_file_exists_in_bundle_directory(
     file_path: Path, bundle_root_path=Path, version=Version
 ) -> bool:
     housekeeper_file_path: Path = Path(bundle_root_path, version.relative_root_dir, file_path.name)

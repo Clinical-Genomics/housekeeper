@@ -13,11 +13,10 @@ from housekeeper.date import get_date
 from housekeeper.exc import VersionIncludedError
 from housekeeper.files import load_json, validate_input
 from housekeeper.include import (
-    different_file_with_same_name_exists_in_bundle_directory,
-    file_exists_in_bundle_directory,
     include_version,
     link_to_relative_path,
     relative_path,
+    same_file_exists_in_bundle_directory,
 )
 from housekeeper.store.models import Bundle, Tag, Version
 from housekeeper.store.store import Store
@@ -141,29 +140,12 @@ def file_cmd(
     if keep_input_path:
         housekeeper_file_path: Path = file_path
 
-    if different_file_with_same_name_exists_in_bundle_directory(
-        file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
-    ):
-        housekeeper_file_path: Path = Path(
-            context.obj[ROOT], version.relative_root_dir, file_path.name
-        )
-        LOG.warning(
-            "A different file with the same name already exists in the bundle at %s.",
-            housekeeper_file_path,
-        )
-        raise click.Abort
-
-    if file_exists_in_bundle_directory(
-        file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
-    ):
-        housekeeper_file_path: Path = relative_path(version=version, file=file_path)
-
-    if not file_exists_in_bundle_directory(
+    if not same_file_exists_in_bundle_directory(
         file_path=file_path, bundle_root_path=context.obj[ROOT], version=version
     ):
         link_to_relative_path(version=version, file_path=file_path, root_path=context.obj[ROOT])
-        housekeeper_file_path: Path = relative_path(version=version, file=file_path)
 
+    housekeeper_file_path: Path = relative_path(version=version, file=file_path)
     new_file = store.add_file(file_path=housekeeper_file_path, bundle=bundle, tags=tags)
     store.session.add(new_file)
     store.session.commit()
