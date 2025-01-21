@@ -88,7 +88,7 @@ def test_add_non_existing_file(base_context: Context, cli_runner: CliRunner, cap
     assert f"File: {non_existing} does not exist" in caplog.text
 
 
-def test_add_file_existing_bundle_with_include(
+def test_add_new_file_existing_bundle_with_include(
     populated_context: dict,
     cli_runner: CliRunner,
     case_id: str,
@@ -97,7 +97,7 @@ def test_add_file_existing_bundle_with_include(
     housekeeper_version_dir: Path,
     project_dir: Path,
 ):
-    """Test to add a file to a existing bundle"""
+    """Test to add a new file to an existing bundle"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
     bundle_name = case_id
@@ -113,7 +113,7 @@ def test_add_file_existing_bundle_with_include(
         obj=populated_context,
     )
 
-    # THEN assert it succedes
+    # THEN assert it succeeds
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
     assert NEW_FILE_ADDED in caplog.text
@@ -125,7 +125,7 @@ def test_add_file_existing_bundle_with_include(
     )
 
 
-def test_add_file_existing_bundle_without_include(
+def test_add_new_file_existing_bundle_without_include(
     populated_context: Context,
     cli_runner: CliRunner,
     case_id: str,
@@ -133,7 +133,7 @@ def test_add_file_existing_bundle_without_include(
     caplog,
     housekeeper_version_dir: Path,
 ):
-    """Test to add a file to a existing bundle"""
+    """Test to add a file to an existing bundle"""
     caplog.set_level(logging.DEBUG)
     # GIVEN a context with a populated store and a cli runner
     bundle_name = case_id
@@ -149,6 +149,80 @@ def test_add_file_existing_bundle_without_include(
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
     assert NEW_FILE_ADDED in caplog.text
+
+
+def test_add_file_when_different_file_with_same_name_exists_in_bundle_directory(
+    populated_context: dict,
+    cli_runner: CliRunner,
+    case_id: str,
+    second_sample_vcf: Path,
+    housekeeper_version_dir: Path,
+    caplog,
+):
+    """Test adding a file to an existing bundle when a different file with the same name already exists in the bundle directory."""
+    caplog.set_level(logging.DEBUG)
+    # GIVEN a context with a populated store and a cli runner
+    bundle_name = case_id
+
+    store: Store = populated_context["store"]
+    bundle_obj: Bundle = store.bundles().first()
+    version_obj: Version = bundle_obj.versions[0]
+
+    # GIVEN that there is a file in the bundle directory
+    file_in_housekeeper_bundle: Path = Path(housekeeper_version_dir, second_sample_vcf.name)
+    open(file_in_housekeeper_bundle, "w").close()
+
+    # WHEN trying to add a file with the same name to the bundle
+    result = cli_runner.invoke(
+        file_cmd,
+        [str(second_sample_vcf), "-b", bundle_name],
+        obj=populated_context,
+    )
+
+    # THEN assert it fails
+    assert result.exit_code == 1
+    # THEN check that an error message is displayed
+    assert "linked file:" not in caplog.text
+    # THEN check that the file was not added to the housekeeper bundle version
+    housekeeper_files: list[Path] = [Path(file.path) for file in version_obj.files]
+    assert file_in_housekeeper_bundle not in housekeeper_files
+
+
+def test_add_file_in_bundle_directory(
+    populated_context: dict,
+    cli_runner: CliRunner,
+    case_id: str,
+    housekeeper_version_dir: Path,
+    caplog,
+):
+    """Test adding a file to an existing bundle given that the file is in the bundle directory."""
+    caplog.set_level(logging.DEBUG)
+    # GIVEN a context with a populated store and a cli runner
+    bundle_name = case_id
+
+    store: Store = populated_context["store"]
+    bundle_obj: Bundle = store.bundles().first()
+    version_obj: Version = bundle_obj.versions[0]
+
+    # GIVEN that the file is in the bundle directory
+    file_name: str = "file_in_housekeeper_bundle.txt"
+    file_in_housekeeper_bundle: Path = Path(housekeeper_version_dir, file_name)
+    open(file_in_housekeeper_bundle, "w").close()
+
+    # WHEN trying to add a file with the same name to the bundle
+    result = cli_runner.invoke(
+        file_cmd,
+        [str(file_in_housekeeper_bundle), "-b", bundle_name],
+        obj=populated_context,
+    )
+
+    # THEN assert it succeeds
+    assert result.exit_code == 0
+    # THEN check that the proper information is displayed
+    assert NEW_FILE_ADDED in caplog.text
+    # THEN check that the file was added to the housekeeper bundle version
+    housekeeper_files: list[Path] = [Path(file.path) for file in version_obj.files]
+    assert Path(version_obj.relative_root_dir, file_name) in housekeeper_files
 
 
 def test_add_file_json(
