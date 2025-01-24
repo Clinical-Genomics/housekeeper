@@ -22,11 +22,9 @@ jobs:
     - name: Create tags
       id: create_tags
       run: |
-        BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/} | tr "/" "-")
+        BRANCH_NAME=$(echo ${GITHUB_REF#refs/h  keads/} | tr "/" "-")
         TAGS="clinicalgenomics/housekeeper:$BRANCH_NAME"
         echo "TAGS=$TAGS" >> $
-    - name: Build and Push Docker Image
-      uses: docker/build-push-action@v6
       with:
         context: ./
         file: ./Dockerfile
