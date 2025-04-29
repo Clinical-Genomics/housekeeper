@@ -1,7 +1,7 @@
 """re-initialize
 
 Revision ID: 156d2138ea8b
-Revises: 
+Revises:
 Create Date: 2017-01-23 08:04:16.177540
 
 """
