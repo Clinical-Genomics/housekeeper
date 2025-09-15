@@ -8,10 +8,7 @@ from pathlib import Path
 from sqlalchemy.orm import Query, Session
 
 from housekeeper.store.base import BaseHandler
-from housekeeper.store.filters.archive_filters import (
-    ArchiveFilter,
-    apply_archive_filter,
-)
+from housekeeper.store.filters.archive_filters import ArchiveFilter, apply_archive_filter
 from housekeeper.store.filters.bundle_filters import BundleFilters, apply_bundle_filter
 from housekeeper.store.filters.file_filters import FileFilter, apply_file_filter
 from housekeeper.store.filters.tag_filters import TagFilter, apply_tag_filter
@@ -19,10 +16,7 @@ from housekeeper.store.filters.version_bundle_filters import (
     VersionBundleFilters,
     apply_version_bundle_filter,
 )
-from housekeeper.store.filters.version_filters import (
-    VersionFilter,
-    apply_version_filter,
-)
+from housekeeper.store.filters.version_filters import VersionFilter, apply_version_filter
 from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 
 LOG = logging.getLogger(__name__)
@@ -177,7 +171,9 @@ class ReadHandler(BaseHandler):
         files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
         return files_not_on_disk
 
-    def get_archived_files_for_bundle(self, bundle_name: str, tags: list | None) -> list[File]:
+    def get_archived_files_for_bundle_including_ongoing_retrievals(
+        self, bundle_name: str, tags: list | None
+    ) -> list[File]:
         """Returns all files in the given bundle, with the given tags, and are archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
@@ -192,6 +188,28 @@ class ReadHandler(BaseHandler):
             ],
             is_archived=True,
             tag_names=tags,
+        ).all()
+
+    def get_archived_files_for_bundle_excluding_ongoing_retrievals(
+        self, bundle_name: str, tags: list | None
+    ) -> list[File]:
+        """Returns all files in the given bundle, with the given tags, and are archived."""
+        files_filtered_on_bundle: Query = apply_bundle_filter(
+            bundles=self._get_join_file_tags_archive_query(),
+            bundle_name=bundle_name,
+            filter_functions=[BundleFilters.BY_NAME],
+        )
+        archived_files = apply_file_filter(
+            files=files_filtered_on_bundle,
+            filter_functions=[
+                FileFilter.FILES_BY_TAGS,
+                FileFilter.FILES_BY_IS_ARCHIVED,
+            ],
+            is_archived=True,
+            tag_names=tags,
+        )
+        return apply_archive_filter(
+            archives=archived_files, filter_functions=[ArchiveFilter.RETRIEVAL_NOT_ONGOING]
         ).all()
 
     def get_non_archived_files_for_bundle(self, bundle_name: str, tags: list | None) -> list[File]:

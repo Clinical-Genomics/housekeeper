@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from housekeeper.store.models import Archive, File, Tag
+from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 from housekeeper.store.store import Store
 
 
@@ -96,27 +96,101 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     assert len(files) == 0
 
 
-def test_get_archived_files_for_bundle(
-    archived_file: Path,
-    non_archived_file: Path,
-    populated_store: Store,
-    sample_id: str,
-    spring_tag: str,
-):
-    """Tests fetching all archive SPRING files in a given bundle."""
+def test_get_archived_files_for_bundle_including_ongoing_retrievals(store: Store):
+    """Tests fetching all archived SPRING files in a given bundle."""
+    """Tests fetching archived SPRING files in a given bundle which are not being retrieved."""
     # GIVEN a bundle with two files, where one is archive and one is not
+    tag = store.new_tag(name="spring")
+    store.session.add(tag)
+    store.session.commit()
+    bundle: Bundle = store.new_bundle(name="sample_id", created_at=datetime.datetime.now())
+    version: Version = store.new_version(created_at=datetime.datetime.now())
+    bundle.versions.append(version)
+    not_archived_file: File = store.add_file(
+        bundle=bundle, file_path=Path("not", "archived", "file.txt"), tags=["spring"]
+    )
+    archived_file: File = store.add_file(
+        bundle=bundle, file_path=Path("archived", "file.txt"), tags=["spring"]
+    )
+    archived_file_ongoing_retrieval = store.add_file(
+        bundle=bundle,
+        file_path=Path("retrieval", "ongoing", "archived", "file.txt"),
+        tags=["spring"],
+    )
+    store.session.add(bundle)
+    store.session.add(not_archived_file)
+    store.session.add(archived_file)
+    store.session.add(archived_file_ongoing_retrieval)
+    store.session.add(version)
+    store.session.commit()
+    archive_retrieval_not_ongoing = store.create_archive(
+        file_id=archived_file.id, archiving_task_id=123
+    )
+    archive_retrieval_ongoing = store.create_archive(
+        file_id=archived_file_ongoing_retrieval.id, archiving_task_id=1234
+    )
+    archive_retrieval_ongoing.archived_at = datetime.datetime.now()
+    archive_retrieval_ongoing.retrieval_task_id = 12345
+    store.session.add(archive_retrieval_ongoing)
+    store.session.add(archive_retrieval_not_ongoing)
+    store.session.commit()
 
-    # WHEN asking for all archived files
-    archived_files: list[Path] = [
-        Path(file.path)
-        for file in populated_store.get_archived_files_for_bundle(
-            bundle_name=sample_id, tags=[spring_tag]
-        )
-    ]
+    # WHEN asking for archived files
+    files: list[File] = store.get_archived_files_for_bundle_including_ongoing_retrievals(
+        bundle_name="sample_id", tags=["spring"]
+    )
 
     # THEN only one should be returned
-    assert archived_file in archived_files
-    assert non_archived_file not in archived_files
+    assert files == [archived_file, archived_file_ongoing_retrieval]
+
+
+def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
+    store: Store,
+):
+    """Tests fetching archived SPRING files in a given bundle which are not being retrieved."""
+    # GIVEN a bundle with two files, where one is archive and one is not
+    tag = store.new_tag(name="spring")
+    store.session.add(tag)
+    store.session.commit()
+    bundle: Bundle = store.new_bundle(name="sample_id", created_at=datetime.datetime.now())
+    version: Version = store.new_version(created_at=datetime.datetime.now())
+    bundle.versions.append(version)
+    not_archived_file: File = store.add_file(
+        bundle=bundle, file_path=Path("not", "archived", "file.txt"), tags=["spring"]
+    )
+    archived_file: File = store.add_file(
+        bundle=bundle, file_path=Path("archived", "file.txt"), tags=["spring"]
+    )
+    archived_file_ongoing_retrieval = store.add_file(
+        bundle=bundle,
+        file_path=Path("retrieval", "ongoing", "archived", "file.txt"),
+        tags=["spring"],
+    )
+    store.session.add(bundle)
+    store.session.add(not_archived_file)
+    store.session.add(archived_file)
+    store.session.add(archived_file_ongoing_retrieval)
+    store.session.add(version)
+    store.session.commit()
+    archive_retrieval_not_ongoing = store.create_archive(
+        file_id=archived_file.id, archiving_task_id=123
+    )
+    archive_retrieval_ongoing = store.create_archive(
+        file_id=archived_file_ongoing_retrieval.id, archiving_task_id=1234
+    )
+    archive_retrieval_ongoing.archived_at = datetime.datetime.now()
+    archive_retrieval_ongoing.retrieval_task_id = 12345
+    store.session.add(archive_retrieval_ongoing)
+    store.session.add(archive_retrieval_not_ongoing)
+    store.session.commit()
+
+    # WHEN asking for archived files which are not being retrieved
+    files: list[File] = store.get_archived_files_for_bundle_excluding_ongoing_retrievals(
+        bundle_name="sample_id", tags=["spring"]
+    )
+
+    # THEN only one should be returned
+    assert files == [archived_file]
 
 
 def test_get_non_archived_files_for_bundle(
