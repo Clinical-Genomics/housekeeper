@@ -179,7 +179,9 @@ class ReadHandler(BaseHandler):
         self, bundle_name: str, tags: list | None
     ) -> list[File]:
         """Returns all files in the given bundle, with the given tags, that are archived."""
-        archived_files: Query = self._get_archived_files_for_bundle(bundle_name=bundle_name, tags=tags)
+        archived_files: Query = self._get_archived_files_for_bundle(
+            bundle_name=bundle_name, tags=tags
+        )
         return apply_archive_filter(
             archives=archived_files, filter_functions=[ArchiveFilter.RETRIEVAL_NOT_ONGOING]
         ).all()

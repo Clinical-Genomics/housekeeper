@@ -105,10 +105,8 @@ def test_get_archived_files_for_bundle(
     # and one which has been archived and retrieved
 
     # WHEN asking for archived files
-    files: list[File] = (
-        store_for_testing_getting_archived_files.get_archived_files_for_bundle(
-            bundle_name="sample_id", tags=["spring"]
-        )
+    files: list[File] = store_for_testing_getting_archived_files.get_archived_files_for_bundle(
+        bundle_name="sample_id", tags=["spring"]
     )
 
     # THEN all files with archives should be returned
