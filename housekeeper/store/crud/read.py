@@ -171,9 +171,7 @@ class ReadHandler(BaseHandler):
         files_not_on_disk = [f for f in files if not Path(f.full_path).is_file()]
         return files_not_on_disk
 
-    def get_archived_files_for_bundle_including_ongoing_retrievals(
-        self, bundle_name: str, tags: list | None
-    ) -> list[File]:
+    def get_archived_files_for_bundle(self, bundle_name: str, tags: list | None) -> list[File]:
         """Returns all files in the given bundle, with the given tags, and are archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),

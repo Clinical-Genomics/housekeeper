@@ -96,7 +96,7 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     assert not files
 
 
-def test_get_archived_files_for_bundle_including_ongoing_retrievals(
+def test_get_archived_files_for_bundle(
     store_for_testing_getting_archived_files: Store,
 ):
     """Tests fetching all archived SPRING files in a given bundle."""
@@ -106,7 +106,7 @@ def test_get_archived_files_for_bundle_including_ongoing_retrievals(
 
     # WHEN asking for archived files
     files: list[File] = (
-        store_for_testing_getting_archived_files.get_archived_files_for_bundle_including_ongoing_retrievals(
+        store_for_testing_getting_archived_files.get_archived_files_for_bundle(
             bundle_name="sample_id", tags=["spring"]
         )
     )
