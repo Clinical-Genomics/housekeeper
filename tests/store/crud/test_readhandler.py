@@ -98,13 +98,12 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
 
 def test_get_archived_files_for_bundle_including_ongoing_retrievals(store: Store):
     """Tests fetching all archived SPRING files in a given bundle."""
-    """Tests fetching archived SPRING files in a given bundle which are not being retrieved."""
     # GIVEN a store containing a tag
     tag = store.new_tag(name="spring")
     store.session.add(tag)
     store.session.commit()
 
-    # GIVEN that the store contains a bundle, a version, and three files - one which is not archived, one which is archived and is not being retrieved, one which is archived and being retrieved and one which has been archived and retrieved
+    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived, one which is archived and is not being retrieved, one which is archived and being retrieved and one which has been archived and retrieved
     bundle: Bundle = store.new_bundle(name="sample_id", created_at=datetime.datetime.now())
     version: Version = store.new_version(created_at=datetime.datetime.now())
     bundle.versions.append(version)
@@ -151,7 +150,7 @@ def test_get_archived_files_for_bundle_including_ongoing_retrievals(store: Store
         bundle_name="sample_id", tags=["spring"]
     )
 
-    # THEN only one should be returned
+    # THEN all files with archives should be returned
     assert files == [archived_file, archived_file_ongoing_retrieval, retrieved_file]
 
 
@@ -159,7 +158,7 @@ def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
     store: Store,
 ):
     """Tests fetching archived SPRING files in a given bundle which are not being retrieved."""
-    # GIVEN a bundle with two files, where one is archive and one is not
+    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived, one which is archived and is not being retrieved, one which is archived and being retrieved and one which has been archived and retrieved
     tag = store.new_tag(name="spring")
     store.session.add(tag)
     store.session.commit()
