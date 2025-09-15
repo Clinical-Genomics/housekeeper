@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from housekeeper.store.models import Archive, Bundle, File, Tag, Version
+from housekeeper.store.models import Archive, File, Tag
 from housekeeper.store.store import Store
 
 
@@ -93,7 +93,7 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     files: list[File] = store.get_files_before(before_date=date)
 
     # THEN assert no files where that old
-    assert len(files) == 0
+    assert not files
 
 
 def test_get_archived_files_for_bundle_including_ongoing_retrievals(
