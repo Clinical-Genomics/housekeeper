@@ -2,7 +2,7 @@ from datetime import datetime
 from enum import Enum
 from typing import Callable
 
-from sqlalchemy import and_
+from sqlalchemy import and_, not_
 from sqlalchemy.orm import Query
 from sqlalchemy.sql.elements import BooleanClauseList
 
@@ -10,6 +10,9 @@ from housekeeper.store.models import Archive
 
 ARCHIVING_ONGOING: BooleanClauseList = and_(Archive.archiving_task_id, Archive.archived_at == None)
 RETRIEVAL_ONGOING: BooleanClauseList = and_(Archive.retrieval_task_id, Archive.retrieved_at == None)
+RETRIEVAL_NOT_ONGOING: BooleanClauseList = not_(
+    and_(Archive.retrieval_task_id != None, Archive.retrieved_at == None)
+)
 
 
 def filter_archiving_ongoing(archives: Query, **kwargs) -> Query:
@@ -20,6 +23,10 @@ def filter_archiving_ongoing(archives: Query, **kwargs) -> Query:
 def filter_retrieval_ongoing(archives: Query, **kwargs) -> Query:
     """Return archives where the retrieval is not marked as completed."""
     return archives.filter(RETRIEVAL_ONGOING)
+
+
+def filter_retrieval_not_ongoing(archives: Query, **kwargs) -> Query:
+    return archives.filter(RETRIEVAL_NOT_ONGOING)
 
 
 def filter_by_archiving_task_id(archives: Query, task_id: int, **kwargs) -> Query:
@@ -41,6 +48,7 @@ class ArchiveFilter(Enum):
     """Define Archive filter functions."""
 
     ARCHIVING_ONGOING: Callable = filter_archiving_ongoing
+    RETRIEVAL_NOT_ONGOING: Callable = filter_retrieval_not_ongoing
     RETRIEVAL_ONGOING: Callable = filter_retrieval_ongoing
     BY_ARCHIVING_TASK_ID: Callable = filter_by_archiving_task_id
     BY_RETRIEVAL_TASK_ID: Callable = filter_by_retrieval_task_id

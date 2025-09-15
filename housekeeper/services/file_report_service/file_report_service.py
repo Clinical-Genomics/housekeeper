@@ -6,7 +6,6 @@ import json as jsonlib
 
 
 class FileReportService:
-
     def __init__(self, compact: bool = False, json: bool = False):
         self.console = Console()
         self.compact = compact

@@ -93,30 +93,47 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     files: list[File] = store.get_files_before(before_date=date)
 
     # THEN assert no files where that old
-    assert len(files) == 0
+    assert not files
 
 
 def test_get_archived_files_for_bundle(
-    archived_file: Path,
-    non_archived_file: Path,
-    populated_store: Store,
-    sample_id: str,
-    spring_tag: str,
+    store_for_testing_getting_archived_files: Store,
 ):
-    """Tests fetching all archive SPRING files in a given bundle."""
-    # GIVEN a bundle with two files, where one is archive and one is not
+    """Tests fetching all archived SPRING files in a given bundle."""
+    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived,
+    # one which is archived and is not being retrieved, one which is archived and being retrieved
+    # and one which has been archived and retrieved
 
-    # WHEN asking for all archived files
-    archived_files: list[Path] = [
-        Path(file.path)
-        for file in populated_store.get_archived_files_for_bundle(
-            bundle_name=sample_id, tags=[spring_tag]
-        )
+    # WHEN asking for archived files
+    files: list[File] = store_for_testing_getting_archived_files.get_archived_files_for_bundle(
+        bundle_name="sample_id", tags=["spring"]
+    )
+
+    # THEN all files with archives should be returned
+    assert [file.path for file in files] == [
+        "archived/file.txt",
+        "retrieval/ongoing/archived/file.txt",
+        "retrieved/file.txt",
     ]
 
-    # THEN only one should be returned
-    assert archived_file in archived_files
-    assert non_archived_file not in archived_files
+
+def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
+    store_for_testing_getting_archived_files: Store,
+):
+    """Tests fetching archived SPRING files in a given bundle which are not being retrieved."""
+    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived,
+    # one which is archived and is not being retrieved, one which is archived and being retrieved
+    # and one which has been archived and retrieved
+
+    # WHEN asking for archived files which are not being retrieved
+    files: list[File] = (
+        store_for_testing_getting_archived_files.get_archived_files_for_bundle_excluding_ongoing_retrievals(
+            bundle_name="sample_id", tags=["spring"]
+        )
+    )
+
+    # THEN the archived and retrieved file should be returned
+    assert [file.path for file in files] == ["archived/file.txt", "retrieved/file.txt"]
 
 
 def test_get_non_archived_files_for_bundle(
@@ -197,9 +214,9 @@ def test_get_ongoing_archiving_tasks(
     archive.archived_at = None
 
     # WHEN getting ongoing archiving tasks
-    ongoing_task_ids: set[int] = set(
+    ongoing_task_ids: set[int] = {
         archive_entry.archiving_task_id for archive_entry in populated_store.get_ongoing_archivals()
-    )
+    }
 
     # THEN the set should include the initial archiving task id
     assert archiving_task_id in ongoing_task_ids
@@ -214,10 +231,10 @@ def test_get_ongoing_retrieval_tasks(
     archive.retrieved_at = None
 
     # WHEN getting ongoing retrieval tasks
-    ongoing_task_ids: set[int] = set(
+    ongoing_task_ids: set[int] = {
         archive_entry.retrieval_task_id
         for archive_entry in populated_store.get_ongoing_retrievals()
-    )
+    }
 
     # THEN the set should include the initial retrieval task id
     assert retrieval_task_id in ongoing_task_ids
