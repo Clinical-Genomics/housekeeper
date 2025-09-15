@@ -99,10 +99,12 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
 def test_get_archived_files_for_bundle_including_ongoing_retrievals(store: Store):
     """Tests fetching all archived SPRING files in a given bundle."""
     """Tests fetching archived SPRING files in a given bundle which are not being retrieved."""
-    # GIVEN a bundle with two files, where one is archive and one is not
+    # GIVEN a store containing a tag
     tag = store.new_tag(name="spring")
     store.session.add(tag)
     store.session.commit()
+
+    # GIVEN that the store contains a bundle, a version, and three files - one which is not archived, one which is archived and is not being retrieved, one which is archived and being retrieved and one which has been archived and retrieved
     bundle: Bundle = store.new_bundle(name="sample_id", created_at=datetime.datetime.now())
     version: Version = store.new_version(created_at=datetime.datetime.now())
     bundle.versions.append(version)
@@ -117,22 +119,31 @@ def test_get_archived_files_for_bundle_including_ongoing_retrievals(store: Store
         file_path=Path("retrieval", "ongoing", "archived", "file.txt"),
         tags=["spring"],
     )
+    retrieved_file = store.add_file(
+        bundle=bundle, file_path=Path("retrieved", "file.txt"), tags=["spring"]
+    )
     store.session.add(bundle)
     store.session.add(not_archived_file)
     store.session.add(archived_file)
     store.session.add(archived_file_ongoing_retrieval)
+    store.session.add(retrieved_file)
     store.session.add(version)
     store.session.commit()
     archive_retrieval_not_ongoing = store.create_archive(
-        file_id=archived_file.id, archiving_task_id=123
+        file_id=archived_file.id, archiving_task_id=1
     )
     archive_retrieval_ongoing = store.create_archive(
-        file_id=archived_file_ongoing_retrieval.id, archiving_task_id=1234
+        file_id=archived_file_ongoing_retrieval.id, archiving_task_id=2
     )
+    archive_retrieved = store.create_archive(file_id=retrieved_file.id, archiving_task_id=3)
     archive_retrieval_ongoing.archived_at = datetime.datetime.now()
-    archive_retrieval_ongoing.retrieval_task_id = 12345
+    archive_retrieval_ongoing.retrieval_task_id = 1
+    archive_retrieved.archived_at = datetime.datetime.now()
+    archive_retrieved.retrieval_task_id = 2
+    archive_retrieved.retrieved_at = datetime.datetime.now()
     store.session.add(archive_retrieval_ongoing)
     store.session.add(archive_retrieval_not_ongoing)
+    store.session.add(archive_retrieved)
     store.session.commit()
 
     # WHEN asking for archived files
@@ -141,7 +152,7 @@ def test_get_archived_files_for_bundle_including_ongoing_retrievals(store: Store
     )
 
     # THEN only one should be returned
-    assert files == [archived_file, archived_file_ongoing_retrieval]
+    assert files == [archived_file, archived_file_ongoing_retrieval, retrieved_file]
 
 
 def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
@@ -166,10 +177,14 @@ def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
         file_path=Path("retrieval", "ongoing", "archived", "file.txt"),
         tags=["spring"],
     )
+    retrieved_file = store.add_file(
+        bundle=bundle, file_path=Path("retrieved", "file.txt"), tags=["spring"]
+    )
     store.session.add(bundle)
     store.session.add(not_archived_file)
     store.session.add(archived_file)
     store.session.add(archived_file_ongoing_retrieval)
+    store.session.add(retrieved_file)
     store.session.add(version)
     store.session.commit()
     archive_retrieval_not_ongoing = store.create_archive(
@@ -178,8 +193,12 @@ def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
     archive_retrieval_ongoing = store.create_archive(
         file_id=archived_file_ongoing_retrieval.id, archiving_task_id=1234
     )
+    archive_retrieved = store.create_archive(file_id=retrieved_file.id, archiving_task_id=3)
     archive_retrieval_ongoing.archived_at = datetime.datetime.now()
     archive_retrieval_ongoing.retrieval_task_id = 12345
+    archive_retrieved.archived_at = datetime.datetime.now()
+    archive_retrieved.retrieval_task_id = 2
+    archive_retrieved.retrieved_at = datetime.datetime.now()
     store.session.add(archive_retrieval_ongoing)
     store.session.add(archive_retrieval_not_ongoing)
     store.session.commit()
