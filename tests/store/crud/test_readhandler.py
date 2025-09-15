@@ -216,9 +216,10 @@ def test_get_ongoing_archiving_tasks(
     archive.archived_at = None
 
     # WHEN getting ongoing archiving tasks
-    ongoing_task_ids: set[int] = set(
-        archive_entry.archiving_task_id for archive_entry in populated_store.get_ongoing_archivals()
-    )
+    ongoing_task_ids: set[int] = {
+        archive_entry.archiving_task_id
+        for archive_entry in populated_store.get_ongoing_archivals()
+    }
 
     # THEN the set should include the initial archiving task id
     assert archiving_task_id in ongoing_task_ids
@@ -233,10 +234,10 @@ def test_get_ongoing_retrieval_tasks(
     archive.retrieved_at = None
 
     # WHEN getting ongoing retrieval tasks
-    ongoing_task_ids: set[int] = set(
+    ongoing_task_ids: set[int] = {
         archive_entry.retrieval_task_id
         for archive_entry in populated_store.get_ongoing_retrievals()
-    )
+    }
 
     # THEN the set should include the initial retrieval task id
     assert retrieval_task_id in ongoing_task_ids
