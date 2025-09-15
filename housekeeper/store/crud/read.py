@@ -191,7 +191,7 @@ class ReadHandler(BaseHandler):
     def get_archived_files_for_bundle_excluding_ongoing_retrievals(
         self, bundle_name: str, tags: list | None
     ) -> list[File]:
-        """Returns all files in the given bundle, with the given tags, and are archived."""
+        """Returns all files in the given bundle, with the given tags, that are archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
             bundle_name=bundle_name,
