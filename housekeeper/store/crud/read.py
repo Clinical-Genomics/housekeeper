@@ -173,6 +173,19 @@ class ReadHandler(BaseHandler):
 
     def get_archived_files_for_bundle(self, bundle_name: str, tags: list | None) -> list[File]:
         """Returns all files in the given bundle, with the given tags, and are archived."""
+        return self._get_archived_files_for_bundle(bundle_name=bundle_name, tags=tags).all()
+
+    def get_archived_files_for_bundle_excluding_ongoing_retrievals(
+        self, bundle_name: str, tags: list | None
+    ) -> list[File]:
+        """Returns all files in the given bundle, with the given tags, and are archived."""
+        archived_files: Query = self._get_archived_files_for_bundle(bundle_name=bundle_name, tags=tags)
+        return apply_archive_filter(
+            archives=archived_files, filter_functions=[ArchiveFilter.RETRIEVAL_NOT_ONGOING]
+        ).all()
+
+    def _get_archived_files_for_bundle(self, bundle_name: str, tags: list | None) -> Query:
+        """Returns all files in the given bundle, with the given tags, and are archived."""
         files_filtered_on_bundle: Query = apply_bundle_filter(
             bundles=self._get_join_file_tags_archive_query(),
             bundle_name=bundle_name,
@@ -186,29 +199,7 @@ class ReadHandler(BaseHandler):
             ],
             is_archived=True,
             tag_names=tags,
-        ).all()
-
-    def get_archived_files_for_bundle_excluding_ongoing_retrievals(
-        self, bundle_name: str, tags: list | None
-    ) -> list[File]:
-        """Returns all files in the given bundle, with the given tags, and are archived."""
-        files_filtered_on_bundle: Query = apply_bundle_filter(
-            bundles=self._get_join_file_tags_archive_query(),
-            bundle_name=bundle_name,
-            filter_functions=[BundleFilters.BY_NAME],
         )
-        archived_files = apply_file_filter(
-            files=files_filtered_on_bundle,
-            filter_functions=[
-                FileFilter.FILES_BY_TAGS,
-                FileFilter.FILES_BY_IS_ARCHIVED,
-            ],
-            is_archived=True,
-            tag_names=tags,
-        )
-        return apply_archive_filter(
-            archives=archived_files, filter_functions=[ArchiveFilter.RETRIEVAL_NOT_ONGOING]
-        ).all()
 
     def get_non_archived_files_for_bundle(self, bundle_name: str, tags: list | None) -> list[File]:
         """Returns all files in the given bundle, with the given tags, and are not archived."""
