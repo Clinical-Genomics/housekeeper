@@ -217,8 +217,7 @@ def test_get_ongoing_archiving_tasks(
 
     # WHEN getting ongoing archiving tasks
     ongoing_task_ids: set[int] = {
-        archive_entry.archiving_task_id
-        for archive_entry in populated_store.get_ongoing_archivals()
+        archive_entry.archiving_task_id for archive_entry in populated_store.get_ongoing_archivals()
     }
 
     # THEN the set should include the initial archiving task id
