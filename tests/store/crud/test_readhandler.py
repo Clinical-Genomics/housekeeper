@@ -103,7 +103,9 @@ def test_get_archived_files_for_bundle_including_ongoing_retrievals(store: Store
     store.session.add(tag)
     store.session.commit()
 
-    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived, one which is archived and is not being retrieved, one which is archived and being retrieved and one which has been archived and retrieved
+    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived,
+    # one which is archived and is not being retrieved, one which is archived and being retrieved
+    # and one which has been archived and retrieved
     bundle: Bundle = store.new_bundle(name="sample_id", created_at=datetime.datetime.now())
     version: Version = store.new_version(created_at=datetime.datetime.now())
     bundle.versions.append(version)
@@ -158,7 +160,9 @@ def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
     store: Store,
 ):
     """Tests fetching archived SPRING files in a given bundle which are not being retrieved."""
-    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived, one which is archived and is not being retrieved, one which is archived and being retrieved and one which has been archived and retrieved
+    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived,
+    # one which is archived and is not being retrieved, one which is archived and being retrieved
+    # and one which has been archived and retrieved
     tag = store.new_tag(name="spring")
     store.session.add(tag)
     store.session.commit()
