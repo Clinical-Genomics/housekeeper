@@ -96,123 +96,46 @@ def test_get_no_get_files_before_oldest(populated_store, bundle_data_old, old_ti
     assert len(files) == 0
 
 
-def test_get_archived_files_for_bundle_including_ongoing_retrievals(store: Store):
+def test_get_archived_files_for_bundle_including_ongoing_retrievals(
+    store_for_testing_getting_archived_files: Store,
+):
     """Tests fetching all archived SPRING files in a given bundle."""
-    # GIVEN a store containing a tag
-    tag = store.new_tag(name="spring")
-    store.session.add(tag)
-    store.session.commit()
-
     # GIVEN that the store contains a bundle, a version, and four files - one which is not archived,
     # one which is archived and is not being retrieved, one which is archived and being retrieved
     # and one which has been archived and retrieved
-    bundle: Bundle = store.new_bundle(name="sample_id", created_at=datetime.datetime.now())
-    version: Version = store.new_version(created_at=datetime.datetime.now())
-    bundle.versions.append(version)
-    not_archived_file: File = store.add_file(
-        bundle=bundle, file_path=Path("not", "archived", "file.txt"), tags=["spring"]
-    )
-    archived_file: File = store.add_file(
-        bundle=bundle, file_path=Path("archived", "file.txt"), tags=["spring"]
-    )
-    archived_file_ongoing_retrieval = store.add_file(
-        bundle=bundle,
-        file_path=Path("retrieval", "ongoing", "archived", "file.txt"),
-        tags=["spring"],
-    )
-    retrieved_file = store.add_file(
-        bundle=bundle, file_path=Path("retrieved", "file.txt"), tags=["spring"]
-    )
-    store.session.add(bundle)
-    store.session.add(not_archived_file)
-    store.session.add(archived_file)
-    store.session.add(archived_file_ongoing_retrieval)
-    store.session.add(retrieved_file)
-    store.session.add(version)
-    store.session.commit()
-    archive_retrieval_not_ongoing = store.create_archive(
-        file_id=archived_file.id, archiving_task_id=1
-    )
-    archive_retrieval_ongoing = store.create_archive(
-        file_id=archived_file_ongoing_retrieval.id, archiving_task_id=2
-    )
-    archive_retrieved = store.create_archive(file_id=retrieved_file.id, archiving_task_id=3)
-    archive_retrieval_ongoing.archived_at = datetime.datetime.now()
-    archive_retrieval_ongoing.retrieval_task_id = 1
-    archive_retrieved.archived_at = datetime.datetime.now()
-    archive_retrieved.retrieval_task_id = 2
-    archive_retrieved.retrieved_at = datetime.datetime.now()
-    store.session.add(archive_retrieval_ongoing)
-    store.session.add(archive_retrieval_not_ongoing)
-    store.session.add(archive_retrieved)
-    store.session.commit()
 
     # WHEN asking for archived files
-    files: list[File] = store.get_archived_files_for_bundle_including_ongoing_retrievals(
+    files: list[
+        File
+    ] = store_for_testing_getting_archived_files.get_archived_files_for_bundle_including_ongoing_retrievals(
         bundle_name="sample_id", tags=["spring"]
     )
 
     # THEN all files with archives should be returned
-    assert files == [archived_file, archived_file_ongoing_retrieval, retrieved_file]
+    assert [file.path for file in files] == [
+        "archived/file.txt",
+        "retrieval/ongoing/archived/file.txt",
+        "retrieved/file.txt",
+    ]
 
 
 def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
-    store: Store,
+    store_for_testing_getting_archived_files: Store,
 ):
     """Tests fetching archived SPRING files in a given bundle which are not being retrieved."""
     # GIVEN that the store contains a bundle, a version, and four files - one which is not archived,
     # one which is archived and is not being retrieved, one which is archived and being retrieved
     # and one which has been archived and retrieved
-    tag = store.new_tag(name="spring")
-    store.session.add(tag)
-    store.session.commit()
-    bundle: Bundle = store.new_bundle(name="sample_id", created_at=datetime.datetime.now())
-    version: Version = store.new_version(created_at=datetime.datetime.now())
-    bundle.versions.append(version)
-    not_archived_file: File = store.add_file(
-        bundle=bundle, file_path=Path("not", "archived", "file.txt"), tags=["spring"]
-    )
-    archived_file: File = store.add_file(
-        bundle=bundle, file_path=Path("archived", "file.txt"), tags=["spring"]
-    )
-    archived_file_ongoing_retrieval = store.add_file(
-        bundle=bundle,
-        file_path=Path("retrieval", "ongoing", "archived", "file.txt"),
-        tags=["spring"],
-    )
-    retrieved_file = store.add_file(
-        bundle=bundle, file_path=Path("retrieved", "file.txt"), tags=["spring"]
-    )
-    store.session.add(bundle)
-    store.session.add(not_archived_file)
-    store.session.add(archived_file)
-    store.session.add(archived_file_ongoing_retrieval)
-    store.session.add(retrieved_file)
-    store.session.add(version)
-    store.session.commit()
-    archive_retrieval_not_ongoing = store.create_archive(
-        file_id=archived_file.id, archiving_task_id=123
-    )
-    archive_retrieval_ongoing = store.create_archive(
-        file_id=archived_file_ongoing_retrieval.id, archiving_task_id=1234
-    )
-    archive_retrieved = store.create_archive(file_id=retrieved_file.id, archiving_task_id=3)
-    archive_retrieval_ongoing.archived_at = datetime.datetime.now()
-    archive_retrieval_ongoing.retrieval_task_id = 12345
-    archive_retrieved.archived_at = datetime.datetime.now()
-    archive_retrieved.retrieval_task_id = 2
-    archive_retrieved.retrieved_at = datetime.datetime.now()
-    store.session.add(archive_retrieval_ongoing)
-    store.session.add(archive_retrieval_not_ongoing)
-    store.session.commit()
 
     # WHEN asking for archived files which are not being retrieved
-    files: list[File] = store.get_archived_files_for_bundle_excluding_ongoing_retrievals(
+    files: list[
+        File
+    ] = store_for_testing_getting_archived_files.get_archived_files_for_bundle_excluding_ongoing_retrievals(
         bundle_name="sample_id", tags=["spring"]
     )
 
-    # THEN only one should be returned
-    assert files == [archived_file]
+    # THEN the archived and retrieved file should be returned
+    assert [file.path for file in files] == ["archived/file.txt", "retrieved/file.txt"]
 
 
 def test_get_non_archived_files_for_bundle(

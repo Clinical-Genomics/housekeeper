@@ -3,10 +3,13 @@
 import datetime
 import datetime as dt
 from copy import deepcopy
+from pathlib import Path
 
 import pytest
 
 from housekeeper.store import models
+from housekeeper.store.models import Bundle, File, Version
+from housekeeper.store.store import Store
 
 
 @pytest.fixture(scope="function")
@@ -68,3 +71,54 @@ def bundle_data_old(
 def time_stamp_now() -> dt.datetime:
     """Time stamp now"""
     return dt.datetime.now()
+
+
+@pytest.fixture
+def store_for_testing_getting_archived_files(store: Store) -> Store:
+    """Returns a store containing a bundle with four spring files, one not archived,
+    one archived, one being retrieved and one which has been retrieved."""
+    tag = store.new_tag(name="spring")
+    store.session.add(tag)
+    store.session.commit()
+
+    bundle: Bundle = store.new_bundle(name="sample_id", created_at=datetime.datetime.now())
+    version: Version = store.new_version(created_at=datetime.datetime.now())
+    bundle.versions.append(version)
+    not_archived_file: File = store.add_file(
+        bundle=bundle, file_path=Path("not", "archived", "file.txt"), tags=["spring"]
+    )
+    archived_file: File = store.add_file(
+        bundle=bundle, file_path=Path("archived", "file.txt"), tags=["spring"]
+    )
+    archived_file_ongoing_retrieval = store.add_file(
+        bundle=bundle,
+        file_path=Path("retrieval", "ongoing", "archived", "file.txt"),
+        tags=["spring"],
+    )
+    retrieved_file = store.add_file(
+        bundle=bundle, file_path=Path("retrieved", "file.txt"), tags=["spring"]
+    )
+    store.session.add(bundle)
+    store.session.add(not_archived_file)
+    store.session.add(archived_file)
+    store.session.add(archived_file_ongoing_retrieval)
+    store.session.add(retrieved_file)
+    store.session.add(version)
+    store.session.commit()
+    archive_retrieval_not_ongoing = store.create_archive(
+        file_id=archived_file.id, archiving_task_id=1
+    )
+    archive_retrieval_ongoing = store.create_archive(
+        file_id=archived_file_ongoing_retrieval.id, archiving_task_id=2
+    )
+    archive_retrieved = store.create_archive(file_id=retrieved_file.id, archiving_task_id=3)
+    archive_retrieval_ongoing.archived_at = datetime.datetime.now()
+    archive_retrieval_ongoing.retrieval_task_id = 1
+    archive_retrieved.archived_at = datetime.datetime.now()
+    archive_retrieved.retrieval_task_id = 2
+    archive_retrieved.retrieved_at = datetime.datetime.now()
+    store.session.add(archive_retrieval_ongoing)
+    store.session.add(archive_retrieval_not_ongoing)
+    store.session.add(archive_retrieved)
+    store.session.commit()
+    return store
