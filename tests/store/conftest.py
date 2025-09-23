@@ -111,6 +111,7 @@ def store_for_testing_getting_archived_files(store: Store) -> Store:
     archive_retrieval_ongoing = store.create_archive(
         file_id=archived_file_ongoing_retrieval.id, archiving_task_id=2
     )
+    archive_retrieval_not_ongoing.archived_at = datetime.datetime.now()
     archive_retrieved = store.create_archive(file_id=retrieved_file.id, archiving_task_id=3)
     archive_retrieval_ongoing.archived_at = datetime.datetime.now()
     archive_retrieval_ongoing.retrieval_task_id = 1

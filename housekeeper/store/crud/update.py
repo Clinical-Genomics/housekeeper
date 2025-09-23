@@ -8,10 +8,7 @@ from datetime import datetime
 from sqlalchemy.orm import Session
 
 from housekeeper.store.base import BaseHandler
-from housekeeper.store.filters.archive_filters import (
-    ArchiveFilter,
-    apply_archive_filter,
-)
+from housekeeper.store.filters.archive_filters import ArchiveFilter, apply_archive_filter
 from housekeeper.store.models import Archive
 
 LOG = logging.getLogger(__name__)
@@ -50,7 +47,7 @@ class UpdateHandler(BaseHandler):
             self.update_archiving_time_stamp(archive=archive)
 
     def update_finished_retrieval_task(self, retrieval_task_id: int) -> None:
-        """Sets the archived_at field to now for all archives with the given archiving task id."""
+        """Sets the retrieved_at field to now for all archives with the given retrieving task id."""
         completed_archives: list[Archive] = apply_archive_filter(
             archives=self._get_query(table=Archive),
             filter_functions=[ArchiveFilter.BY_RETRIEVAL_TASK_ID],
