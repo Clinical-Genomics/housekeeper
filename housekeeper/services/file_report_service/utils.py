@@ -67,11 +67,11 @@ def squash_names(list_of_files: list[dict]) -> list[dict]:
         return list_of_squashed
     head = list_of_files[0]
     tail = list_of_files[1:]
-    (previous_file, previous_counter, previous_suffix) = _get_suffix(head["path"])
+    previous_file, previous_counter, previous_suffix = _get_suffix(head["path"])
     squash = [previous_counter]
     previous_hkjson = head
     for hk_json in tail + [{"path": ""}]:  # Add padding for final iteration
-        (filename, counter, suffix) = _get_suffix(hk_json["path"])
+        filename, counter, suffix = _get_suffix(hk_json["path"])
         if counter == str(_to_int(previous_counter) + 1) and (previous_file == filename):
             squash = squash + [counter]
             tag_list = tag_list + (hk_json["tags"])
