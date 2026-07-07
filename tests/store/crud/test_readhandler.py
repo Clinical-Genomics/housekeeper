@@ -136,6 +136,25 @@ def test_get_archived_files_for_bundle_excluding_ongoing_retrievals(
     assert [file.path for file in files] == ["archived/file.txt", "retrieved/file.txt"]
 
 
+def test_get_files_with_ongoing_retrievals_for_bundle(
+    store_for_testing_getting_archived_files: Store,
+):
+    """Tests fetching archived SPRING files in a given bundle which are being retrieved."""
+    # GIVEN that the store contains a bundle, a version, and four files - one which is not archived,
+    # one which is archived and is not being retrieved, one which is archived and being retrieved
+    # and one which has been archived and retrieved
+
+    # WHEN asking for archived files which are being retrieved
+    files: list[File] = (
+        store_for_testing_getting_archived_files.get_files_with_ongoing_retrievals_for_bundle(
+            bundle_name="sample_id", tags=["spring"]
+        )
+    )
+
+    # THEN only the file with an ongoing retrieval should be returned
+    assert [file.path for file in files] == ["retrieval/ongoing/archived/file.txt"]
+
+
 def test_get_non_archived_files_for_bundle(
     archived_file: Path,
     non_archived_file: Path,
