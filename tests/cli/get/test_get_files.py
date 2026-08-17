@@ -29,13 +29,18 @@ def test_get_files_json(populated_context, cli_runner):
     store: Store = populated_context["store"]
 
     # GIVEN a store with files
-    files: list[File] = store.get_files()
 
     # WHEN fetching all files
     result = cli_runner.invoke(files_cmd, ["--json"], obj=populated_context)
 
-    # THEN assert that all files where printed
-    for file in files:
+    # THEN assert that the full paths of all local files were printed
+    local_files: list[File] = store.get_files(local_only=True)
+    for file in local_files:
+        assert file.full_path in result.output
+
+    # THEN assert that the relative paths for the remote files were printed
+    remote_files: list[File] = store.get_files(remote_only=True)
+    for file in remote_files:
         assert file.path in result.output
 
 
@@ -47,18 +52,15 @@ def test_get_files(populated_context, cli_runner):
     # GIVEN a store with some files
     assert store.get_files().all()
 
-    # GIVEN a file name
-    file: File = store.get_files().first()
+    # GIVEN a local file name
+    file: File = store.get_files(local_only=True).first()
     file_name: str = Path(file.path).name
 
     # WHEN fetching all files by not specifying any file
     result = cli_runner.invoke(files_cmd, [], obj=populated_context)
 
-    # THEN assert that the file name is displayed
-    assert file_name in result.output
-
-    # THEN assert that the full file path is not shown
-    assert file.path not in result.output
+    # THEN assert that the full file path is shown
+    assert file.full_path in result.output
 
 
 def test_get_files_tag(populated_context, cli_runner, vcf_tag_name):

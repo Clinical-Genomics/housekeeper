@@ -16,7 +16,7 @@ def format_files(files: list[File]):
     return formatted_files
 
 
-def get_files_table(rows: list[dict], header: str, verbose=False, compact=False) -> Table:
+def get_files_table(rows: list[dict], header: str, relative_paths: bool, compact=False) -> Table:
     """Return a tag table"""
     table = Table(show_header=True, header_style="bold magenta")
     table.title = f"[not italic]:scroll:[/] {header} [not italic]:scroll:[/]"
@@ -27,15 +27,14 @@ def get_files_table(rows: list[dict], header: str, verbose=False, compact=False)
         rows = squash_names(rows)
     for i, file_obj in enumerate(rows, 1):
         file_tags = ", ".join(tag["name"] for tag in file_obj["tags"])
-        file_path = Path(file_obj["path"])
-        file_name = file_path.name
-        if verbose:
-            file_name = file_obj["full_path"]
+        file_path = Path(file_obj["full_path"])
+        if relative_paths:
+            file_path = file_obj["path"]
 
         if i % 2 == 0:
-            table.add_row(str(file_obj["id"]), f"[yellow]{file_name}[/yellow]", file_tags)
+            table.add_row(str(file_obj["id"]), f"[yellow]{file_path}[/yellow]", file_tags)
         else:
-            table.add_row(str(file_obj["id"]), f"[cyan]{file_name}[/cyan]", file_tags)
+            table.add_row(str(file_obj["id"]), f"[cyan]{file_path}[/cyan]", file_tags)
     return table
 
 

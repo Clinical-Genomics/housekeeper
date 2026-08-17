@@ -127,7 +127,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
 @get.command("file")
 @click.option("-t", "--tag", "tag_names", multiple=True, help="filter by file tag")
 @click.option("-v", "--version", "version_id", type=int, help="filter by version of the bundle")
-@click.option("-V", "--verbose", is_flag=True, help="print additional information")
+@click.option("-r", "--relative-paths", is_flag=True, help="Use relative paths")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-c", "--compact", is_flag=True, help="print compact filenames")
 @click.argument("bundle", required=False)
@@ -136,7 +136,7 @@ def files_cmd(
     context,
     tag_names: list[str],
     version_id: int,
-    verbose: bool,
+    relative_paths: bool,
     bundle: str,
     json: bool,
     compact: bool,
@@ -151,8 +151,8 @@ def files_cmd(
     local = file_service.get_local_files(bundle=bundle, tags=tag_names, version_id=version_id)
     remote = file_service.get_remote_files(bundle=bundle, tags=tag_names, version_id=version_id)
 
-    output_service.log_file_table(files=local, header="Local files", verbose=verbose)
-    output_service.log_file_table(files=remote, header="Remote files", verbose=False)
+    output_service.log_file_table(files=local, header="Local files", relative_paths=relative_paths)
+    output_service.log_file_table(files=remote, header="Remote files", relative_paths=True)
 
 
 @get.command("tag")
