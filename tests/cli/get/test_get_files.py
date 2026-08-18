@@ -1,6 +1,10 @@
 """Tests for cli get file functionality"""
 
 from pathlib import Path
+from unittest.mock import ANY, call
+
+from pytest_mock import MockerFixture
+from rich.table import Table
 
 from housekeeper.cli.get import files_cmd
 from housekeeper.services.file_report_service.utils import _get_suffix, squash_names
@@ -44,7 +48,7 @@ def test_get_files_json(populated_context, cli_runner):
         assert file.path in result.output
 
 
-def test_get_files(populated_context, cli_runner):
+def test_get_files(populated_context, cli_runner, mocker: MockerFixture):
     """Test to get all files from a populated store in human friendly format"""
     # GIVEN a context and a store
     store: Store = populated_context["store"]
@@ -53,14 +57,15 @@ def test_get_files(populated_context, cli_runner):
     assert store.get_files().all()
 
     # GIVEN a local file name
+    row_spy = mocker.spy(Table, "add_row")
     file: File = store.get_files(local_only=True).first()
-    file_name: str = Path(file.path).name
 
     # WHEN fetching all files by not specifying any file
-    result = cli_runner.invoke(files_cmd, [], obj=populated_context)
+    cli_runner.invoke(files_cmd, [], obj=populated_context)
 
     # THEN assert that the full file path is shown
-    assert file.full_path in result.output
+    file_paths_in_output = [done_call.args[2] for done_call in row_spy.call_args_list]
+    assert any(file.full_path in file_path for file_path in file_paths_in_output)
 
 
 def test_get_files_tag(populated_context, cli_runner, vcf_tag_name):

@@ -11,15 +11,15 @@ class FileReportService:
         self.compact = compact
         self.json = json
 
-    def log_file_table(self, files: list[File], header: str, relative_paths: bool = False) -> None:
+    def log_file_table(self, files: list[File], header: str, file_names: bool) -> None:
         rows = format_files(files)
         table = get_files_table(
             rows=rows,
             header=header,
-            relative_paths=relative_paths,
+            file_names=file_names,
             compact=self.compact,
         )
-        self.console.print(table)
+        self.console.print(table, no_wrap=True)
 
         if self.json:
             click.echo(jsonlib.dumps(rows))
