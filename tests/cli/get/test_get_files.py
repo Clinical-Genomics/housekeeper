@@ -1,6 +1,10 @@
 """Tests for cli get file functionality"""
 
 from pathlib import Path
+from unittest.mock import ANY, call
+
+from pytest_mock import MockerFixture
+from rich.table import Table
 
 from housekeeper.cli.get import files_cmd
 from housekeeper.services.file_report_service.utils import _get_suffix, squash_names
@@ -29,17 +33,22 @@ def test_get_files_json(populated_context, cli_runner):
     store: Store = populated_context["store"]
 
     # GIVEN a store with files
-    files: list[File] = store.get_files()
 
     # WHEN fetching all files
     result = cli_runner.invoke(files_cmd, ["--json"], obj=populated_context)
 
-    # THEN assert that all files where printed
-    for file in files:
+    # THEN assert that the full paths of all local files were printed
+    local_files: list[File] = store.get_files(local_only=True)
+    for file in local_files:
+        assert file.full_path in result.output
+
+    # THEN assert that the relative paths for the remote files were printed
+    remote_files: list[File] = store.get_files(remote_only=True)
+    for file in remote_files:
         assert file.path in result.output
 
 
-def test_get_files(populated_context, cli_runner):
+def test_get_files(populated_context, cli_runner, mocker: MockerFixture):
     """Test to get all files from a populated store in human friendly format"""
     # GIVEN a context and a store
     store: Store = populated_context["store"]
@@ -47,18 +56,16 @@ def test_get_files(populated_context, cli_runner):
     # GIVEN a store with some files
     assert store.get_files().all()
 
-    # GIVEN a file name
-    file: File = store.get_files().first()
-    file_name: str = Path(file.path).name
+    # GIVEN a local file name
+    row_spy = mocker.spy(Table, "add_row")
+    file: File = store.get_files(local_only=True).first()
 
     # WHEN fetching all files by not specifying any file
-    result = cli_runner.invoke(files_cmd, [], obj=populated_context)
+    cli_runner.invoke(files_cmd, [], obj=populated_context)
 
-    # THEN assert that the file name is displayed
-    assert file_name in result.output
-
-    # THEN assert that the full file path is not shown
-    assert file.path not in result.output
+    # THEN assert that the full file path is shown
+    file_paths_in_output = [done_call.args[2] for done_call in row_spy.call_args_list]
+    assert any(file.full_path in file_path for file_path in file_paths_in_output)
 
 
 def test_get_files_tag(populated_context, cli_runner, vcf_tag_name):
