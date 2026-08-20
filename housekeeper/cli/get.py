@@ -6,8 +6,8 @@ import logging
 import click
 from rich.console import Console
 
-from housekeeper.services.file_service.file_service import FileService
 from housekeeper.services.file_report_service.file_report_service import FileReportService
+from housekeeper.services.file_service.file_service import FileService
 from housekeeper.store.api import schema
 from housekeeper.store.models import Version
 from housekeeper.store.store import Store
@@ -121,7 +121,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
         return
 
     for version_obj in version_objs:
-        context.invoke(files_cmd, version_id=version_obj.id, verbose=True, compact=compact)
+        context.invoke(files_cmd, version_id=version_obj.id, file_names=False, compact=compact)
 
 
 @get.command("file")
