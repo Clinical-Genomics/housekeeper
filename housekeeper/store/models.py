@@ -3,7 +3,7 @@
 import datetime as dt
 from pathlib import Path
 
-from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, orm, types
+from sqlalchemy import Column, ForeignKey, Table, UniqueConstraint, column, orm, types
 from sqlalchemy.orm import backref, declarative_base
 
 Model = declarative_base()
@@ -80,6 +80,21 @@ class Version(Model):
         return Path(self.app_root) / self.bundle.name / str(self.created_at.date())
 
 
+class DeliverableType(Model):
+
+    __tablename__ = "deliverable_type"
+
+    id = Column(types.Integer, primary_key=True)
+    name = Column(types.String, nullable=False)
+    workflow = Column(types.Enum(["trana"]), nullable=False)  # TODO
+    version = Column(types.Integer, nullable=False)
+    scout_key = Column(types.String, nullable=True)
+    chanjo_key = Column(types.String, nullable=True)
+    loqusdb_key = Column(types.String, nullable=True)
+    upload_to_delivery_inbox = Column(types.Boolean, nullable=False)
+    description = Column(types.String, required=False)
+
+
 class File(Model):
     """Represent a file."""
 
@@ -97,6 +112,8 @@ class File(Model):
     archive = orm.relationship(
         "Archive", back_populates="file", cascade="save-update, merge, delete", uselist=False
     )
+    deliverable_type_id = Column(ForeignKey(DeliverableType.id), nullable=True)
+    deliverable_type = orm.relationship(foreign_keys=[deliverable_type_id])
 
     app_root = None
 
