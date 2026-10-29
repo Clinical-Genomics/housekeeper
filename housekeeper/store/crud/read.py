@@ -236,6 +236,17 @@ class ReadHandler(BaseHandler):
             filter_functions=[ArchiveFilter.RETRIEVAL_ONGOING],
         ).all()
 
+    def get_files_with_ongoing_retrievals_for_bundle(
+        self, bundle_name: str, tags: list | None
+    ) -> list[File]:
+        """Returns all files in the given bundle, with the given tags, that have an ongoing retrieval."""
+        archived_files: Query = self._get_archived_files_for_bundle(
+            bundle_name=bundle_name, tags=tags
+        )
+        return apply_archive_filter(
+            archives=archived_files, filter_functions=[ArchiveFilter.RETRIEVAL_ONGOING]
+        ).all()
+
     def get_bundle_name_from_file_path(self, file_path: str) -> str:
         """Return the bundle name for the specified file."""
         return self.get_files(file_path=file_path).first().version.bundle.name
