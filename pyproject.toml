@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "housekeeper"
-version = "4.13.18"
+version = "4.13.19"
 description =  "File data orchestrator"
 authors = ["henrikstranneheim <henrik.stranneheim@scilifelab.se>"]
 license = "MIT"
@@ -23,6 +23,7 @@ marshmallow = "^3.0"
 python = ">=3.11"
 rich = "*"
 setuptools = "*"
+alembic = "*"
 
 
 [tool.poetry.group.dev.dependencies]
