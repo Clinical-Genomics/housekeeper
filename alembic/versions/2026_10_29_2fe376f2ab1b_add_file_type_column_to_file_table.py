@@ -20,7 +20,7 @@ def upgrade():
     op.add_column(
         table_name="file",
         column=sa.Column(
-            name="file_type", nullable=True, type_=sa.String(64), default=None, index=True
+            name="file_type", nullable=True, type_=sa.String(128), default=None, index=True
         ),
     )
 

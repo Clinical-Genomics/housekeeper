@@ -89,6 +89,7 @@ class File(Model):
     path = Column(types.String(256), unique=True, nullable=False)
     checksum = Column(types.String(256))
     to_archive = Column(types.Boolean, nullable=False, default=False)
+    file_type = Column(types.String(128), default=None, index=True, nullable=True)
 
     version_id = Column(ForeignKey(Version.id, ondelete="CASCADE"), nullable=False)
     tags = orm.relationship(
