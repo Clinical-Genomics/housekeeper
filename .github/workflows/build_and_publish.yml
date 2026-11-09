@@ -58,3 +58,9 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ env.TAGS }}
+          # OCI index (provenance attestation) breaks Singularity 3.1.1 on Hasta. This can be removed once we're using
+          # newer versions of Apptainer/Singularity that can pull OCI image indexes everywhere (i.e. once Hasta is retired).
+          # Needed on: Singularity 3.1.1
+          # No longer needed on: Apptainer 1.5.3
+          # See: https://docs.docker.com/build/ci/github-actions/attestations/
+          provenance: false
