@@ -119,7 +119,6 @@ def test_add_bundle_with_file_type(family_vcf: Path, store: Store):
         "path": family_vcf.as_posix(),
         "file_type": "file_type",
         "tags": ["sample_id"],
-        "archive": False,
     }
     bundle_data = {"name": "case_id", "created_at": datetime.now(), "files": [file_data]}
 
