@@ -110,6 +110,17 @@ def test_add_bundle_twice(populated_store: Store, bundle_data):
     assert new_bundle is None
 
 
+def test_add_bundle_with_file_type(store: Store):
+    # GIVEN a store
+
+    # GIVEN a valid bundle data dictionary with a file with file type set
+
+    # WHEN adding the bundle
+
+    # THEN the bundle was created and contains the file with the correct file type
+    pass
+
+
 def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data: dict):
     """Test to add two versions of the same bundle."""
     store: Store = populated_store

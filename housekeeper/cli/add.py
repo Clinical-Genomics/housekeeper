@@ -91,6 +91,7 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str, exclude: boo
     LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
 
+# TODO: expand to add file type
 @add.command("file")
 @click.option("-t", "--tag", "tags", multiple=True, help="tag to associate the file by")
 @click.option("-b", "--bundle-name", help="name of bundle that file should be added to")
