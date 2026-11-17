@@ -75,7 +75,7 @@ class CreateHandler(BaseHandler):
                 new_file = self.new_file(
                     path,
                     file_type=file_data.get("file_type"),
-                    to_archive=file_data["archive"],
+                    to_archive=file_data.get("archive", False),
                     tags=tags,
                 )
                 version_obj.files.append(new_file)
