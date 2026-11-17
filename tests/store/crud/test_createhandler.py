@@ -1,4 +1,5 @@
 """Tests for store core functions."""
+
 from datetime import datetime
 from pathlib import Path
 
@@ -118,13 +119,9 @@ def test_add_bundle_with_file_type(family_vcf: Path, store: Store):
         "path": family_vcf.as_posix(),
         "file_type": "file_type",
         "tags": ["sample_id"],
-        "archive": False
+        "archive": False,
     }
-    bundle_data = {
-        "name": "case_id",
-        "created_at": datetime.now(),
-        "files": [file_data]
-    }
+    bundle_data = {"name": "case_id", "created_at": datetime.now(), "files": [file_data]}
 
     # WHEN adding the bundle
     bundle, _ = store.add_bundle(data=bundle_data)
