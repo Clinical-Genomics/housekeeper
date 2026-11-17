@@ -100,6 +100,7 @@ class ReadHandler(BaseHandler):
         file_path: str = None,
         local_only: bool = None,
         remote_only: bool = None,
+        # TODO: Add support for file types
     ) -> Query:
         """Return a query with specified filters for files from the database."""
         query: Query = self._get_query(table=File)
