@@ -72,7 +72,12 @@ class CreateHandler(BaseHandler):
                 if not Path(path).exists():
                     raise FileNotFoundError(path)
                 tags = [tag_map[tag_name] for tag_name in file_data["tags"]]
-                new_file = self.new_file(path, to_archive=file_data["archive"], tags=tags)
+                new_file = self.new_file(
+                    path,
+                    file_type=file_data.get("file_type"),
+                    to_archive=file_data.get("archive", False),
+                    tags=tags,
+                )
                 version_obj.files.append(new_file)
 
     def new_version(self, created_at: dt.datetime, expires_at: dt.datetime = None) -> Version:
@@ -104,6 +109,7 @@ class CreateHandler(BaseHandler):
         version.bundle = bundle
         return version
 
+    # TODO: Expand to add file_type
     def add_file(
         self,
         file_path: Path,
@@ -143,11 +149,14 @@ class CreateHandler(BaseHandler):
         self,
         path: str,
         checksum: str = None,
+        file_type: str | None = None,
         to_archive: bool = False,
         tags: list[Tag] = None,
     ) -> File:
         """Create a new file object based on the information given."""
-        return File(path=path, checksum=checksum, to_archive=to_archive, tags=tags)
+        return File(
+            path=path, checksum=checksum, file_type=file_type, to_archive=to_archive, tags=tags
+        )
 
     def new_tag(self, name: str, category: str = None) -> Tag:
         """Create a new tag object based on the information given."""
