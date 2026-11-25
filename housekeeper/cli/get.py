@@ -124,6 +124,7 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
         context.invoke(files_cmd, version_id=version_obj.id, file_names=False, compact=compact)
 
 
+# TODO add support for file_type
 @get.command("file")
 @click.option("-t", "--tag", "tag_names", multiple=True, help="filter by file tag")
 @click.option("-v", "--version", "version_id", type=int, help="filter by version of the bundle")
