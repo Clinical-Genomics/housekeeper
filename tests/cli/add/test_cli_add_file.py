@@ -7,7 +7,7 @@ from click import Context
 from click.testing import CliRunner
 
 from housekeeper.cli.add import file_cmd
-from housekeeper.store.models import Bundle, Version
+from housekeeper.store.models import Bundle, Version, File
 from housekeeper.store.store import Store
 
 NEW_FILE_ADDED: str = "new file added"
@@ -212,7 +212,7 @@ def test_add_file_in_bundle_directory(
     # WHEN trying to add a file with the same name to the bundle
     result = cli_runner.invoke(
         file_cmd,
-        [str(file_in_housekeeper_bundle), "-b", bundle_name],
+        [str(file_in_housekeeper_bundle), "-b", bundle_name, "-ft", "output-file"],
         obj=populated_context,
     )
 
@@ -223,12 +223,14 @@ def test_add_file_in_bundle_directory(
     # THEN check that the file was added to the housekeeper bundle version
     housekeeper_files: list[Path] = [Path(file.path) for file in version_obj.files]
     assert Path(version_obj.relative_root_dir, file_name) in housekeeper_files
+    assert "output-file" in [file.file_type for file in version_obj.files]
 
 
 def test_add_file_json(
     populated_context: Context,
     cli_runner: CliRunner,
     file_data_json: str,
+    case_id: str,
     housekeeper_version_dir: Path,
     caplog,
 ):
@@ -243,3 +245,7 @@ def test_add_file_json(
     assert result.exit_code == 0
     # THEN check that the proper information is displayed
     assert NEW_FILE_ADDED in caplog.text
+    # THEN the new file has a file type
+    store: Store = populated_context["store"]
+    files: list[File] = store.get_files(bundle_name=case_id).all()
+    assert "output-file" in [file.file_type for file in files]
