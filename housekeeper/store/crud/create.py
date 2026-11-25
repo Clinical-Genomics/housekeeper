@@ -109,11 +109,11 @@ class CreateHandler(BaseHandler):
         version.bundle = bundle
         return version
 
-    # TODO: Expand to add file_type
     def add_file(
         self,
         file_path: Path,
         bundle: Bundle,
+        file_type: str | None = None,
         to_archive: bool = False,
         tags: list[str] = None,
     ) -> File:
@@ -124,6 +124,7 @@ class CreateHandler(BaseHandler):
         file_path_to_use: str = str(file_path)
         new_file = self.new_file(
             path=file_path_to_use,
+            file_type=file_type,
             to_archive=to_archive,
             tags=tag_objs,
         )
