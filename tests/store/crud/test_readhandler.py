@@ -5,6 +5,7 @@ from datetime import timedelta
 from pathlib import Path
 
 import pytest
+from sqlalchemy.orm import Query
 
 from housekeeper.store.models import Archive, File, Tag
 from housekeeper.store.store import Store
@@ -203,6 +204,16 @@ def test_get_non_archived_files(populated_store: Store, spring_tag: str, limit: 
     else:
         # THEN no files should be returned
         assert not non_archived_spring_files
+
+
+def test_get_files_with_file_type(store: Store):
+    # GIVEN that there is a file in the database with a given file type
+    file_with_correct_type = File(path="path/to/file", file_type="output_file")
+    file_with_incorrect_type = File(path="path/to/another/file", file_type="some-other-file-type")
+    file_without_type = File(path="path/to/third/file")
+
+    # WHEN getting files with a specified file_type
+    files: Query = store.get_files(bundle_name="case_1", file_type="output_file")
 
 
 def test_get_ongoing_archiving_tasks(
