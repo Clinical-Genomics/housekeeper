@@ -148,8 +148,8 @@ def files_cmd(
     output_service.compact = compact
     output_service.json = json
 
-    local = file_service.get_local_files(bundle=bundle, tags=tag_names, version_id=version_id)
-    remote = file_service.get_remote_files(bundle=bundle, tags=tag_names, version_id=version_id)
+    local = file_service.get_local_files(bundle=bundle, file_type=file_type, tags=tag_names, version_id=version_id)
+    remote = file_service.get_remote_files(bundle=bundle, file_type=file_type, tags=tag_names, version_id=version_id)
 
     output_service.log_file_table(files=local, header="Local files", file_names=file_names)
     output_service.log_file_table(files=remote, header="Remote files", file_names=True)

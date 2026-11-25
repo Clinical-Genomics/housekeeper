@@ -1,5 +1,5 @@
 """Tests for cli get file functionality"""
-
+from datetime import datetime
 from pathlib import Path
 from unittest.mock import ANY, call
 
@@ -8,8 +8,9 @@ from rich.table import Table
 
 from housekeeper.cli.get import files_cmd
 from housekeeper.services.file_report_service.utils import _get_suffix, squash_names
-from housekeeper.store.models import File
+from housekeeper.store.models import File, Bundle, Version
 from housekeeper.store.store import Store
+from tests.cli.conftest import populated_context
 
 
 def test_get_files_no_files(base_context, cli_runner):
@@ -85,15 +86,24 @@ def test_get_files_tag(populated_context, cli_runner, vcf_tag_name):
         assert file.path in result.output
 
 
-def test_get_files_with_file_type(populated_context, cli_runner, vcf_tag_name):
+def test_get_files_with_file_type(populated_context, store, cli_runner, vcf_tag_name):
     """Test to get files with a specific file type from a populated store"""
     # GIVEN a store with a file with a file type
+
+    vcf_file = File(file_type="vcf", path="path/to/vcf/file")
+    version = Version(created_at=datetime.now(), files=[vcf_file])
+    bundle = Bundle(name="case_1", created_at=datetime.now(), versions=[version])
+    store.session.add(bundle)
+    store.session.commit()
+    populated_context["store"] = store
+
 
     # WHEN fetching all files by not specifying any file
     result = cli_runner.invoke(files_cmd, ["--file-type", "vcf", "--json"], obj=populated_context)
 
     # THEN assert that all files where fetched
-    assert "vcf" in result.output
+    assert result.output == "?"
+    assert vcf_file.path in result.output
 
 
 def test_get_files_multiple_tags(populated_context, cli_runner, vcf_tag_name, family_tag_name):
