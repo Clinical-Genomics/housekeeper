@@ -226,7 +226,7 @@ def test_get_files_with_file_type(store: Store):
     store.session.commit()
 
     # WHEN getting files with a specified file_type
-    files: Query = store.get_files(bundle_name="case_1", file_type="output_file")
+    files: Query = store.get_files(bundle_name="case_1", file_types=["output_file"])
 
     # THEN only the file with the expected type was returned
     assert files.one() == file_with_correct_type

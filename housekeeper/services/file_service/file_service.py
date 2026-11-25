@@ -11,7 +11,7 @@ class FileService:
     ) -> list[File]:
         return self.store.get_files(
             bundle_name=bundle,
-            file_type=file_type,
+            file_types=[file_type] if file_type else None,
             tag_names=tags,
             version_id=version_id,
             local_only=True,
@@ -22,7 +22,7 @@ class FileService:
     ) -> list[File]:
         return self.store.get_files(
             bundle_name=bundle,
-            file_type=file_type,
+            file_types=[file_type] if file_type else None,
             tag_names=tags,
             version_id=version_id,
             remote_only=True,
