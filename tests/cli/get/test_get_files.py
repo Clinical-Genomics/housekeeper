@@ -85,6 +85,17 @@ def test_get_files_tag(populated_context, cli_runner, vcf_tag_name):
         assert file.path in result.output
 
 
+def test_get_files_with_file_type(populated_context, cli_runner, vcf_tag_name):
+    """Test to get files with a specific file type from a populated store"""
+    # GIVEN a store with a file with a file type
+
+    # WHEN fetching all files by not specifying any file
+    result = cli_runner.invoke(files_cmd, ["--file-type", "vcf", "--json"], obj=populated_context)
+
+    # THEN assert that all files where fetched
+    assert "vcf" in result.output
+
+
 def test_get_files_multiple_tags(populated_context, cli_runner, vcf_tag_name, family_tag_name):
     """Test to get files with multiple tags tag from a populated store"""
     # GIVEN a context with a populated store

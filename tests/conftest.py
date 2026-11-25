@@ -12,11 +12,7 @@ import pytest
 import yaml
 
 from housekeeper.date import get_date
-from housekeeper.store.database import (
-    create_all_tables,
-    drop_all_tables,
-    initialize_database,
-)
+from housekeeper.store.database import create_all_tables, drop_all_tables, initialize_database
 from housekeeper.store.models import Archive, Bundle, Tag, Version
 from housekeeper.store.store import Store
 from tests.helper_functions import Helpers
@@ -141,7 +137,7 @@ def spring_file_3_with_tags(sample_id: str, spring_tag: str, spring_file_3: Path
 @pytest.fixture(scope="function")
 def family_data(family_tag_names: list[str], family_vcf: Path) -> dict:
     """Return file and tags for sample."""
-    return {"tags": family_tag_names, "file": family_vcf}
+    return {"tags": family_tag_names, "file": family_vcf, "file_type": "vcf"}
 
 
 @pytest.fixture(scope="function")
