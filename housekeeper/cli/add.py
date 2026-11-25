@@ -91,7 +91,6 @@ def bundle_cmd(context: click.Context, bundle_name: str, json: str, exclude: boo
     LOG.info("new bundle added: %s (%s)", new_bundle.name, new_bundle.id)
 
 
-# TODO: expand to add file type
 @add.command("file")
 @click.option("-t", "--tag", "tags", multiple=True, help="tag to associate the file by")
 @click.option("-b", "--bundle-name", help="name of bundle that file should be added to")
@@ -139,6 +138,7 @@ def file_cmd(
         raise click.Abort
 
     tags = data.get("tags", tags)
+    file_type = data.get("file_type", file_type)
     version: Version = bundle.versions[0]
     if keep_input_path:
         housekeeper_file_path: Path = file_path
@@ -149,7 +149,9 @@ def file_cmd(
         link_to_relative_path(version=version, file_path=file_path, root_path=context.obj[ROOT])
 
     housekeeper_file_path: Path = relative_path(version=version, file=file_path)
-    new_file = store.add_file(file_path=housekeeper_file_path, bundle=bundle, file_type=file_type, tags=tags)
+    new_file = store.add_file(
+        file_path=housekeeper_file_path, bundle=bundle, file_type=file_type, tags=tags
+    )
     store.session.add(new_file)
     store.session.commit()
     LOG.info("new file added: %s (%s)", new_file.path, new_file.id)
