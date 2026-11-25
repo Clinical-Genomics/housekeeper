@@ -26,6 +26,7 @@ def get():
     """Get info from database"""
 
 
+# TODO add support for displaying file_type
 @get.command("bundle")
 @click.argument("bundle-name", required=False)
 @click.option("-i", "--bundle-id", type=int, help="Search for a bundle with bundle id")
