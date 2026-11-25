@@ -98,9 +98,9 @@ class ReadHandler(BaseHandler):
         tag_names: list[str] = None,
         version_id: int = None,
         file_path: str = None,
+        file_type: str | None = None,
         local_only: bool = None,
         remote_only: bool = None,
-        # TODO: Add support for file types
     ) -> Query:
         """Return a query with specified filters for files from the database."""
         query: Query = self._get_query(table=File)
@@ -134,6 +134,8 @@ class ReadHandler(BaseHandler):
                 filter_functions=[FileFilter.BY_PATH],
                 file_path=file_path,
             )
+        if file_type:
+            query: Query = query.filter(File.file_type == file_type)
         if local_only:
             query: Query = apply_file_filter(
                 files=query,

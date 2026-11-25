@@ -7,7 +7,7 @@ from pathlib import Path
 import pytest
 from sqlalchemy.orm import Query
 
-from housekeeper.store.models import Archive, File, Tag
+from housekeeper.store.models import Archive, Bundle, File, Tag, Version
 from housekeeper.store.store import Store
 
 
@@ -212,8 +212,24 @@ def test_get_files_with_file_type(store: Store):
     file_with_incorrect_type = File(path="path/to/another/file", file_type="some-other-file-type")
     file_without_type = File(path="path/to/third/file")
 
+    # GIVEN a version
+    version = Version(
+        id=1,
+        created_at=datetime.datetime.now(),
+        files=[file_with_correct_type, file_with_incorrect_type, file_without_type],
+    )
+
+    # GIVEN a bundle
+    bundle = Bundle(id=1, name="case_1", versions=[version])
+
+    store.session.add(bundle)
+    store.session.commit()
+
     # WHEN getting files with a specified file_type
     files: Query = store.get_files(bundle_name="case_1", file_type="output_file")
+
+    # THEN only the file with the expected type was returned
+    assert files.one() == file_with_correct_type
 
 
 def test_get_ongoing_archiving_tasks(
