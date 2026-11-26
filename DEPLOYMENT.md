@@ -16,12 +16,13 @@ This will pull the latest image tagged with your branch from dockerhub and make 
 1. Select "Squash and merge" to merge branch into default branch (master/main).
 2. Append version increment value `( major | minor | patch )` in the commit message to specify what kind of release is to be created.
 3. Review the details and merge the branch into master.
-4. Deploy the latest version to stage and production with `housekeeper-deploy`.
-5. Apply any migrations against the stage and prod databases with alembic.
+4. Deploy the latest version to stage with `housekeeper-test-deploy latest`
+5. Deploy the latest version to production with `housekeeper-deploy`.
+6. Apply any migrations against the stage and prod databases with alembic.
     - Ensure that you have the latest revisions in your branch.
     - Ensure that you have the correct tunnels open against Hasta.
     - Ensure that you point to the correct alembic config when you apply the revisions with `alembic --config <config path>` upgrade head`
-6. Take a screenshot or copy log text and post as a comment on the PR. Screenshot should include environment and that it succeeded.
-7. Great job :whale2:
+7. Take a screenshot or copy log text and post as a comment on the PR. Screenshot should include environment and that it succeeded.
+8. Great job :whale2:
 
 [development-guide]: http://www.clinicalgenomics.se/development/publish/prod/
