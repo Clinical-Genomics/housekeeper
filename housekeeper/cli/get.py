@@ -12,11 +12,7 @@ from housekeeper.store.api import schema
 from housekeeper.store.models import Version
 from housekeeper.store.store import Store
 
-from .tables import (
-    get_bundles_table,
-    get_tags_table,
-    get_versions_table,
-)
+from .tables import get_bundles_table, get_tags_table, get_versions_table
 
 LOG = logging.getLogger(__name__)
 
@@ -128,18 +124,20 @@ def version_cmd(context, bundle_name, json, version_id, verbose, compact):
 @click.option("-t", "--tag", "tag_names", multiple=True, help="filter by file tag")
 @click.option("-v", "--version", "version_id", type=int, help="filter by version of the bundle")
 @click.option("-fn", "--file-names", is_flag=True, help="Show only the file names")
+@click.option("-ft", "--file-type", "file_type", help="filter by file type")
 @click.option("-j", "--json", is_flag=True, help="Output to json format")
 @click.option("-c", "--compact", is_flag=True, help="print compact filenames")
 @click.argument("bundle", required=False)
 @click.pass_context
 def files_cmd(
     context,
-    tag_names: list[str],
-    version_id: int,
-    file_names: bool,
-    bundle: str,
-    json: bool,
-    compact: bool,
+    tag_names: list[str] | None,
+    version_id: int | None,
+    file_names: bool | None,
+    bundle: str | None,
+    json: bool | None,
+    compact: bool | None,
+    file_type: str | None,
 ):
     """Get files from database"""
     file_service: FileService = context.obj["file_service"]
@@ -148,8 +146,12 @@ def files_cmd(
     output_service.compact = compact
     output_service.json = json
 
-    local = file_service.get_local_files(bundle=bundle, tags=tag_names, version_id=version_id)
-    remote = file_service.get_remote_files(bundle=bundle, tags=tag_names, version_id=version_id)
+    local = file_service.get_local_files(
+        bundle=bundle, file_type=file_type, tags=tag_names, version_id=version_id
+    )
+    remote = file_service.get_remote_files(
+        bundle=bundle, file_type=file_type, tags=tag_names, version_id=version_id
+    )
 
     output_service.log_file_table(files=local, header="Local files", file_names=file_names)
     output_service.log_file_table(files=remote, header="Remote files", file_names=True)

@@ -54,6 +54,7 @@ class InputFileSchema(ma.Schema):
     bundle = ma.fields.Str(required=True, error_messages={"required": "Bundle name is required."})
     archive = ma.fields.Boolean(default=False)
     tags = ma.fields.List(ma.fields.Str, required=False)
+    file_type = ma.fields.Str(required=False)
 
 
 class VersionSchema(ma.Schema):

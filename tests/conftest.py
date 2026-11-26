@@ -12,11 +12,7 @@ import pytest
 import yaml
 
 from housekeeper.date import get_date
-from housekeeper.store.database import (
-    create_all_tables,
-    drop_all_tables,
-    initialize_database,
-)
+from housekeeper.store.database import create_all_tables, drop_all_tables, initialize_database
 from housekeeper.store.models import Archive, Bundle, Tag, Version
 from housekeeper.store.store import Store
 from tests.helper_functions import Helpers

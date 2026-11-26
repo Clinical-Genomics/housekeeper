@@ -1,5 +1,6 @@
 """Tests for store core functions."""
 
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -110,6 +111,24 @@ def test_add_bundle_twice(populated_store: Store, bundle_data):
     assert new_bundle is None
 
 
+def test_add_bundle_with_file_type(family_vcf: Path, store: Store):
+    # GIVEN a store
+
+    # GIVEN a valid bundle data dictionary with a file with file type set
+    file_data: dict = {
+        "path": family_vcf.as_posix(),
+        "file_type": "file_type",
+        "tags": ["sample_id"],
+    }
+    bundle_data = {"name": "case_id", "created_at": datetime.now(), "files": [file_data]}
+
+    # WHEN adding the bundle
+    bundle, _ = store.add_bundle(data=bundle_data)
+
+    # THEN the bundle was created and contains the file with the correct file type
+    assert bundle.versions[0].files[0].file_type == "file_type"
+
+
 def test_add_two_versions_of_bundle(populated_store: Store, second_bundle_data: dict):
     """Test to add two versions of the same bundle."""
     store: Store = populated_store
@@ -177,11 +196,11 @@ def test_add_file(
 
     # GIVEN a store populated with a bundle
     bundle: Bundle = populated_store.bundles().first()
-    assert isinstance(bundle, Bundle)
 
     # WHEN using the add file method to create a new file object
     new_file: File = populated_store.add_file(
         file_path=second_family_vcf,
+        file_type="output-file",
         bundle=bundle,
         tags=family_tag_names,
     )
@@ -194,6 +213,8 @@ def test_add_file(
     assert len(new_file.tags) == len(family_tag_names)
     for tag_obj in new_file.tags:
         assert isinstance(tag_obj, Tag)
+    # THEN the file has the correct type
+    assert new_file.file_type is "output-file"
 
 
 def test_add_file_no_tags(

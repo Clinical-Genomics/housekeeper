@@ -98,6 +98,7 @@ class ReadHandler(BaseHandler):
         tag_names: list[str] = None,
         version_id: int = None,
         file_path: str = None,
+        file_types: list[str] | None = None,
         local_only: bool = None,
         remote_only: bool = None,
     ) -> Query:
@@ -133,6 +134,8 @@ class ReadHandler(BaseHandler):
                 filter_functions=[FileFilter.BY_PATH],
                 file_path=file_path,
             )
+        if file_types:
+            query: Query = query.filter(File.file_type.in_(file_types))
         if local_only:
             query: Query = apply_file_filter(
                 files=query,
